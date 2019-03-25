@@ -3,11 +3,11 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>tim3</groupId>
-  <artifactId>spring.project.isamrs</artifactId>
+  <artifactId>ProjekatIsaMrsTim3</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
 
-  <name>spring.project.isamrs</name>
+  <name>ProjekatIsaMrsTim3</name>
   <url>http://maven.apache.org</url>
 
   <parent>
@@ -37,6 +37,7 @@
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
+			<version>8.0.15</version>
 			</dependency>
 
 	</dependencies>
