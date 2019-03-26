@@ -1,28 +1,43 @@
 package tim3.spring.project.isamrs.dto;
 
-import tim3.spring.project.isamrs.model.Airline;
-
 public class AirlineDTO {
-	public long getId() {
-		return id;
+	private String airlineNameRegister;
+	private String airlineAddressRegister;
+	private String airlinePromotionalDescription;
+
+	public String getAirlineNameRegister() {
+		return airlineNameRegister;
 	}
 
-	public void setId(long id) {
-		this.id = id;
+	public void setAirlineNameRegister(String airlineNameRegister) {
+		this.airlineNameRegister = airlineNameRegister;
 	}
 
-	public String getName() {
-		return name;
+	public String getAirlineAddressRegister() {
+		return airlineAddressRegister;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setAirlineAddressRegister(String airlineAddressRegister) {
+		this.airlineAddressRegister = airlineAddressRegister;
 	}
 
-	private long id;
-	private String name;
-	
-	public AirlineDTO(Airline airline) {
-		this.id = airline.getId();
+	public String getAirlinePromotionalDescription() {
+		return airlinePromotionalDescription;
 	}
+
+	public void setAirlinePromotionalDescription(String airlinePromotionalDescription) {
+		this.airlinePromotionalDescription = airlinePromotionalDescription;
+	}
+
+	public AirlineDTO() {
+		super();
+	}
+
+	public AirlineDTO(String airlineNameRegister, String airlineAddressRegister, String airlinePromotionalDescription) {
+		super();
+		this.airlineNameRegister = airlineNameRegister;
+		this.airlineAddressRegister = airlineAddressRegister;
+		this.airlinePromotionalDescription = airlinePromotionalDescription;
+	}
+
 }
