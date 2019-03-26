@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.OneToOne;
 
 @Entity
 @Table(catalog = "dbtim3", name = "destination") 
@@ -21,6 +22,13 @@ public class Destination {
 	
 	@ManyToOne(fetch = FetchType.EAGER) 
 	Airline airline;
+	
+	@OneToOne(mappedBy="startDestination")
+	Flight startFlight;
+	
+	@OneToOne(mappedBy="finalDestination")
+	Flight finalFlight;
+	
 
 	public Long getId() {
 		return id;
