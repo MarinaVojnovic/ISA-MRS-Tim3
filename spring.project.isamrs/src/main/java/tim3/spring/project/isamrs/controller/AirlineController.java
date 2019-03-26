@@ -29,7 +29,6 @@ public class AirlineController {
 	
 	@RequestMapping(value="/createAirline",method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Airline> create(@RequestBody AirlineDTO airlineDTO) {
-		System.out.println(airlineDTO.getAirlineAddressRegister()+"*******");
 		Airline retVal = airlineService.create(new Airline(airlineDTO));
 		return new ResponseEntity<>(retVal, HttpStatus.CREATED);
 	}
