@@ -1,5 +1,6 @@
 var urlRoot1 = "http://localhost:8080/createAirline";
 var urlRoot2 = "http://localhost:8080/createHotel";
+var urlRoot3 = "http://localhost:8080/createRentacar";
 
 $(document).on('click', '#logoutClicked', function(e) {
 	e.preventDefault();
@@ -86,6 +87,47 @@ $(document)
 					}
 				});
 
+$(document)
+		.on(
+				"submit",
+				"#form3",
+				function(e) {
+					e.preventDefault();
+					var rentacarNameRegister = document
+							.getElementById("rentacarNameRegister").value;
+					var rentacarAddressRegister = document
+							.getElementById("rentacarAddressRegister").value;
+					var rentacarPromotionalDescription = document
+							.getElementById("rentacarPromotionalDescription").value;
+					if (rentacarNameRegister == ""
+							|| rentacarAddressRegister == ""
+							|| rentacarPromotionalDescription == "") {
+						alert('At least one field is blank, please fill it up with proper information!');
+					} else {
+						$
+								.ajax({
+									type : 'POST',
+									url : urlRoot3,
+									contentType : 'application/json',
+									dataType : "json",
+									data : createRentacarToJSON(
+											rentacarNameRegister,
+											rentacarAddressRegister,
+											rentacarPromotionalDescription),
+									success : function(data) {
+										alert("Successful registration, congratulations!");
+									},
+									error : function(jqXHR, textStatus,
+											errorThrown) {
+										alert(jqXHR.status);
+										alert(textStatus);
+										alert(errorThrown);
+
+									}
+								})
+					}
+				});
+
 function createAirlineToJSON(airlineNameRegister, airlineAddressRegister,
 		airlinePromotionalDescription) {
 	return JSON.stringify({
@@ -101,5 +143,14 @@ function createHotelToJSON(hotelNameRegister, hotelAddressRegister,
 		"hotelNameRegister" : hotelNameRegister,
 		"hotelAddressRegister" : hotelAddressRegister,
 		"hotelPromotionalDescription" : hotelPromotionalDescription,
+	})
+}
+
+function createRentacarToJSON(rentacarNameRegister, rentacarAddressRegister,
+		rentacarPromotionalDescription) {
+	return JSON.stringify({
+		"rentacarNameRegister" : rentacarNameRegister,
+		"rentacarAddressRegister" : rentacarAddressRegister,
+		"rentacarPromotionalDescription" : rentacarPromotionalDescription,
 	})
 }

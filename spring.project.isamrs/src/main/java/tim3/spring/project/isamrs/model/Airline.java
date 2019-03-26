@@ -52,8 +52,8 @@ public class Airline {
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "airline", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
-	@Column(name = "airline_service")
-	private Set<AirlineService> airlineServices = new HashSet<AirlineService>();
+	@Column(name = "airline_customer_service")
+	private Set<AirlineCustomerService> airlineCustomerServices = new HashSet<AirlineCustomerService>();
 
 	public Airline() {
 		super();
@@ -140,17 +140,17 @@ public class Airline {
 		this.airplanes = airplanes;
 	}
 
-	public Set<AirlineService> getAirlineServices() {
-		return airlineServices;
+	public Set<AirlineCustomerService> getAirlineCustomerServices() {
+		return airlineCustomerServices;
 	}
 
-	public void setAirlineServices(Set<AirlineService> airlineServices) {
-		this.airlineServices = airlineServices;
+	public void setAirlineServices(Set<AirlineCustomerService> airlineCustomerServices) {
+		this.airlineCustomerServices = airlineCustomerServices;
 	}
 
 	public Airline(String name, String address, String promotionalDescription, Set<Destination> destinations,
 			Set<Flight> flights, Set<Ticket> quickBookingTickets, Set<Airplane> airplanes,
-			Set<AirlineService> airlineServices) {
+			Set<AirlineCustomerService> airlineCustomerServices) {
 		super();
 		this.name = name;
 		this.address = address;
@@ -159,7 +159,7 @@ public class Airline {
 		this.flights = flights;
 		this.quickBookingTickets = quickBookingTickets;
 		this.airplanes = airplanes;
-		this.airlineServices = airlineServices;
+		this.airlineCustomerServices = airlineCustomerServices;
 	}
 
 	public Airline(AirlineDTO airlineDTO) {
@@ -170,7 +170,7 @@ public class Airline {
 		this.flights = new HashSet<Flight>();
 		this.quickBookingTickets = new HashSet<Ticket>();
 		this.airplanes = new HashSet<Airplane>();
-		this.airlineServices = new HashSet<AirlineService>();
+		this.airlineCustomerServices = new HashSet<AirlineCustomerService>();
 	}
 
 }

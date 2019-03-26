@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import tim3.spring.project.isamrs.model.Airline;
 import tim3.spring.project.isamrs.model.Hotel;
 import tim3.spring.project.isamrs.repository.HotelRepository;
 import tim3.spring.project.isamrs.service.HotelService;

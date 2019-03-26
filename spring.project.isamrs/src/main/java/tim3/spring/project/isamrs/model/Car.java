@@ -9,8 +9,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(catalog = "dbtim3", name = "airline_service")
-public class AirlineService {
+@Table(catalog = "dbtim3", name = "car")
+public class Car {
 	@Id
 	@GeneratedValue
 	private Long id;
@@ -19,7 +19,7 @@ public class AirlineService {
 	private String name;
 
 	@ManyToOne(fetch = FetchType.EAGER)
-	Airline airline;
+	Rentacar rentacar;
 
 	public Long getId() {
 		return id;
@@ -37,11 +37,11 @@ public class AirlineService {
 		this.name = name;
 	}
 
-	public Airline getAirline() {
-		return airline;
+	public Rentacar getRentacar() {
+		return rentacar;
 	}
 
-	public void setAirline(Airline airline) {
-		this.airline = airline;
+	public void setRentacar(Rentacar rentacar) {
+		this.rentacar = rentacar;
 	}
 }

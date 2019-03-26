@@ -35,7 +35,7 @@ public class Hotel {
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "hotel", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
-	private Set<HotelService> hotelServices = new HashSet<HotelService>();
+	private Set<HotelCustomerService> hotelCustomerServices = new HashSet<HotelCustomerService>();
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "hotel", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
@@ -77,12 +77,12 @@ public class Hotel {
 		this.promotionalDescription = promotionalDescription;
 	}
 
-	public Set<HotelService> getHotelServices() {
-		return hotelServices;
+	public Set<HotelCustomerService> getHotelCustomerServices() {
+		return hotelCustomerServices;
 	}
 
-	public void setHotelServices(Set<HotelService> hotelServices) {
-		this.hotelServices = hotelServices;
+	public void setHotelCustomerServices(Set<HotelCustomerService> hotelCustomerServices) {
+		this.hotelCustomerServices = hotelCustomerServices;
 	}
 
 	public Set<Room> getRooms() {
@@ -110,13 +110,13 @@ public class Hotel {
 		return id == other.id;
 	}
 
-	public Hotel(String name, String address, String promotionalDescription, Set<HotelService> hotelServices,
-			Set<Room> rooms) {
+	public Hotel(String name, String address, String promotionalDescription,
+			Set<HotelCustomerService> hotelCustomerServices, Set<Room> rooms) {
 		super();
 		this.name = name;
 		this.address = address;
 		this.promotionalDescription = promotionalDescription;
-		this.hotelServices = hotelServices;
+		this.hotelCustomerServices = hotelCustomerServices;
 		this.rooms = rooms;
 	}
 
@@ -124,7 +124,7 @@ public class Hotel {
 		this.name = hotelDTO.getHotelNameRegister();
 		this.address = hotelDTO.getHotelAddressRegister();
 		this.promotionalDescription = hotelDTO.getHotelPromotionalDescription();
-		this.hotelServices = new HashSet<HotelService>();
+		this.hotelCustomerServices = new HashSet<HotelCustomerService>();
 		this.rooms = new HashSet<Room>();
 	}
 
