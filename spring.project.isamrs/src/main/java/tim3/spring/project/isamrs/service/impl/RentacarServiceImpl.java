@@ -41,5 +41,10 @@ public class RentacarServiceImpl implements RentacarService{
 		// TODO Auto-generated method stub
 
 	}
+	
+	@Override
+	public Rentacar save(Rentacar rentacar) {
+		return rentacarRepository.save(rentacar);
+	}
 
 }
