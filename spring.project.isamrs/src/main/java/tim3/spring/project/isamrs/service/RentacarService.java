@@ -14,4 +14,6 @@ public interface RentacarService {
 	public Rentacar update(Rentacar rentacar);
 
 	public void delete(long id);
+	
+	public Rentacar save(Rentacar rentacar);
 }
