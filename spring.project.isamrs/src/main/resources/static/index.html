@@ -67,8 +67,8 @@ body {font-family: "Lato", sans-serif;}
 
 <div class="tab">
   <button class="tablinks fastLoginSysAdmin" onclick="openCity(event, 'sysadmin')" id="defaultOpen">Login as a system administrator</button>
+  <button class="tablinks editAirline" onclick="openCity(event, 'editAirline')">Login as airline administrator</button>
   <button class="tablinks fastLoginRentACarAdmin" onclick="openCity(event, 'rentACarAdmin')">Login as rent-a-car administrator</button>
-  <button class="tablinks" onclick="openCity(event, 'soon2')">Soon</button>
 </div>
 
 <div id="sysadmin" class="tabcontent">
@@ -81,8 +81,9 @@ body {font-family: "Lato", sans-serif;}
     <h1></h1>
 </div>
 
-<div id="soon2" class="tabcontent">
-    <h1>SOON!</h1>
+<div id="editAirline" class="tabcontent">
+    <h1>For this version of project just click on button "Edit airline as a system administrator" to your left and you will be 
+    redirected to system administrator page.</h1>
 </div>
 
 <script>
@@ -106,6 +107,11 @@ document.getElementById("defaultOpen").click();
 $(document).on('click', '.fastLoginSysAdmin', function(e) {
 	e.preventDefault();
 	window.location.href = "sysadmin.html";
+})
+
+$(document).on('click','.editAirline',function(e){
+	e.preventDefault();
+	window.location.href="airlineadmin.html";
 })
 
 $(document).on('click', '.fastLoginRentACarAdmin', function(e) {

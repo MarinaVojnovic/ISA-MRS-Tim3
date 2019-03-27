@@ -42,4 +42,12 @@ public class AirlineServiceImpl implements AirlineService {
 
 	}
 
+	@Override
+	public Airline save(Airline airline) {
+		// TODO Auto-generated method stub
+		return airlineRepository.save(airline);
+	}
+	
+	
+
 }
