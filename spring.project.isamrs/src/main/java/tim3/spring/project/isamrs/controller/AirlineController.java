@@ -44,7 +44,7 @@ public class AirlineController {
 	}
 	
 	@RequestMapping(value="/saveChangesAirline", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces =MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Airline> saveChangesRentACar(@RequestBody Airline airline){
+	public ResponseEntity<Airline> saveChangesAirline(@RequestBody Airline airline){
 		Airline a = airlineService.getOne(airline.getId());
 		if (a==null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);

@@ -10,25 +10,24 @@ import javax.persistence.Table;
 import javax.persistence.OneToOne;
 
 @Entity
-@Table(catalog = "dbtim3", name = "destination") 
+@Table(catalog = "dbtim3", name = "destination")
 public class Destination {
-	
+
 	@Id
 	@GeneratedValue
 	private Long id;
-	
-	@Column(name="name")
+
+	@Column(name = "name")
 	private String name;
-	
-	@ManyToOne(fetch = FetchType.EAGER) 
+
+	@ManyToOne(fetch = FetchType.EAGER)
 	Airline airline;
-	
-	@OneToOne(mappedBy="startDestination")
+
+	@OneToOne(mappedBy = "startDestination")
 	Flight startFlight;
-	
-	@OneToOne(mappedBy="finalDestination")
+
+	@OneToOne(mappedBy = "finalDestination")
 	Flight finalFlight;
-	
 
 	public Long getId() {
 		return id;
@@ -53,7 +52,13 @@ public class Destination {
 	public void setAirline(Airline airline) {
 		this.airline = airline;
 	}
-	
-	
-	
+
+	public Destination() {
+
+	}
+
+	public Destination(String name) {
+		this.name = name;
+	}
+
 }

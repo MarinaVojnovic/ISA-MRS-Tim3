@@ -18,39 +18,37 @@ import tim3.spring.project.isamrs.dto.FlightDTO;
 @Entity
 @Table(catalog = "dbtim3", name = "flight")
 public class Flight {
-	
 
 	@Id
 	@GeneratedValue
 	private Long id;
-	
-	@Column(name="number")
+
+	@Column(name = "number")
 	private String number;
-	
-	@OneToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
-	@JoinColumn(name="start_id")
+
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "start_id")
 	Destination startDestination;
-	
-	@OneToOne(fetch=FetchType.LAZY,cascade=CascadeType.ALL)
-	@JoinColumn(name="first_id")
+
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "final_id")
 	Destination finalDestination;
-	
-	@Column(name="cost")
+
+	@Column(name = "cost")
 	private double cost;
-	
-	@Column(name="date")
+
+	@Column(name = "date")
 	private Date date;
-	
-	
-	@ManyToOne(fetch = FetchType.EAGER) 
+
+	@ManyToOne(fetch = FetchType.EAGER)
 	Airline airline;
 
 	public Flight(FlightDTO flightDTO) {
-		number=flightDTO.getFlightNumberRegister();
-		startDestination=new Destination();
-		finalDestination=new Destination();
-		cost=flightDTO.getCostOfFlight();
-		date=new Date();
+		number = flightDTO.getFlightNumberRegister();
+		startDestination = new Destination(flightDTO.getStartDestinationRegister());
+		finalDestination = new Destination(flightDTO.getFinalDestinationRegister());
+		cost = flightDTO.getCostOfFlight();
+		date = new Date();
 	}
 
 	public Long getId() {
@@ -108,7 +106,7 @@ public class Flight {
 	public void setAirline(Airline airline) {
 		this.airline = airline;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

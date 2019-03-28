@@ -1,7 +1,5 @@
 package tim3.spring.project.isamrs.dto;
 
-import javax.persistence.Column;
-
 public class CarDTO {
 	
 	private String name;
