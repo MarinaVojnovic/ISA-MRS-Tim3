@@ -143,7 +143,7 @@ body {
 				<div class="form-group">
 					<label class="control-label col-sm-2" for="dateOfFlight">Date of flight: </label>
 					<div class="col-sm-10">
-						<input type="datetime" class="form-control" id="dateOfFlight"
+						<input type="date" class="form-control" id="dateOfFlight"
 							placeholder="Insert date of the flight" name="dateOfFlight">
 					</div>
 				</div>
@@ -173,7 +173,7 @@ body {
 				tablinks[i].className = tablinks[i].className.replace(
 						" active", "");
 			}
-			document.getElementById(cityName).style.display = "block";
+			$('#' + cityName).slideToggle(1000);
 			evt.currentTarget.className += " active";
 		}
 	</script>

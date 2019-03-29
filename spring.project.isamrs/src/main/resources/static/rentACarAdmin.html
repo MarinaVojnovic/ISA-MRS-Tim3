@@ -179,7 +179,7 @@ body {
 				tablinks[i].className = tablinks[i].className.replace(
 						" active", "");
 			}
-			document.getElementById(cityName).style.display = "block";
+			$('#' + cityName).slideToggle(1000);
 			evt.currentTarget.className += " active";
 		}
 	</script>

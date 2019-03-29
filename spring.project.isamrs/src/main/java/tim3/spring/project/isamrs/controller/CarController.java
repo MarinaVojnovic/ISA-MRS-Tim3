@@ -22,7 +22,6 @@ public class CarController {
 	@RequestMapping(value = "/createCar", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Car> create(@RequestBody CarDTO carDTO) {
 		Car retVal = carService.create(new Car(carDTO));
-		System.out.println("POSTSSSS");
 		return new ResponseEntity<>(retVal, HttpStatus.CREATED);
 	}
 
