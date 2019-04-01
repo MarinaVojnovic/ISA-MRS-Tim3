@@ -70,6 +70,7 @@ body {font-family: "Lato", sans-serif;}
   <button class="tablinks fastLoginAirlineAdmin" onclick="openCity(event, 'airlineAdmin')">Login as an airline administrator</button>
   <button class="tablinks fastLoginRentACarAdmin" onclick="openCity(event, 'rentACarAdmin')">Login as a rent-a-car administrator</button>
   <button class="tablinks fastLoginHotelAdmin" onclick="openCity(event, 'hotelAdmin')">Login as a hotel administrator</button>
+	<button class="tablinks fastLoginUser" onclick="openCity(event, 'user')">Login as a user</button>
 </div>
 
 <div id="sysadmin" class="tabcontent">
@@ -95,6 +96,8 @@ body {font-family: "Lato", sans-serif;}
 
 <div id="hotelAdmin" class="tabcontent">
 </div>
+
+<div id="user" class="tabcontent"></div>
 
 <script>
 function openCity(evt, cityName) {
@@ -133,6 +136,15 @@ $(document).on('click', '.fastLoginHotelAdmin', function(e) {
 	e.preventDefault();
 	window.location.href = "hoteladmin.html";
 })
+
+
+$(document).on('click', '.fastLoginUser', function(e) {
+	e.preventDefault();
+	window.location.href = "user.html";
+})
+
+
+
 
 </script>
    
