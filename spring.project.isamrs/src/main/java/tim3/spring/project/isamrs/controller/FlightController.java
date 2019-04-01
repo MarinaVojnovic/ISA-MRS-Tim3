@@ -1,5 +1,7 @@
 package tim3.spring.project.isamrs.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -23,5 +25,16 @@ public class FlightController {
 		Flight retVal = flightService.create(new Flight(flightDTO));
 		return new ResponseEntity<>(retVal, HttpStatus.CREATED);
 	}
+	
+	@RequestMapping(value="/getAllFlights",method=RequestMethod.GET,produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<Flight>> getAllFlights() {
+		List<Flight> flights = flightService.getAll();
+		return new ResponseEntity<>(flights, HttpStatus.OK); 
+	}
+	
+//	@RequestMapping(value="/searchFlight",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE,consumes=MediaType.APPLICATION_JSON_VALUE)
+//	public ResponseEntity<List<Flight>> searchFlights(){
+//		List<Flight> flights=flightService.
+//	}
 
 }

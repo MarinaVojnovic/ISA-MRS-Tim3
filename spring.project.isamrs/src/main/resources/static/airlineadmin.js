@@ -2,6 +2,7 @@ var urlRoot1 = "http://localhost:8080/createFlight";
 var urlRoot2 = "http://localhost:8080/findAirline";
 var urlRoot3 = "http://localhost:8080/saveChangesAirline";
 
+
 findAirline();
 
 $(document).on('click', '#logoutClicked', function(e) {
@@ -56,11 +57,14 @@ $(document)
 							.getElementById("finalDestinationRegister").value;
 					var costOfFlight = document.getElementById("costOfFlight").value;
 					var dateOfFlight = document.getElementById("dateOfFlight").value;
+					var dateOfArrival=document.getElementById("dateOfArrival").value;
+					var length=document.getElementById("lengthOfFlight").value;
 
 					if (flightNumberRegister == ""
 							|| startDestinationRegister == ""
 							|| finalDestinationRegister == ""
-							|| costOfFlight == "" || dateOfFlight == "") {
+							|| costOfFlight == "" || dateOfFlight == "",dateOfArrival==""
+								|| length=="") {
 						alert('At least one field is blank, please fill it up with proper information!');
 					} else {
 						$
@@ -73,7 +77,7 @@ $(document)
 											flightNumberRegister,
 											startDestinationRegister,
 											finalDestinationRegister,
-											costOfFlight, dateOfFlight),
+											costOfFlight, dateOfFlight,dateOfArrival,length),
 									success : function(data) {
 										alert("Successful registration, congratulations!");
 									},
@@ -141,14 +145,18 @@ $(document)
 
 				});
 
+$(document).on()
+
 function createFlightToJSON(flightNumberRegister, startDestinationRegister,
-		finalDestinationRegister, costOfFlight, dateOfFlight) {
+		finalDestinationRegister, costOfFlight, dateOfFlight,dateOfArrival,length) {
 	return JSON.stringify({
 		"flightNumberRegister" : flightNumberRegister,
 		"startDestinationRegister" : startDestinationRegister,
 		"finalDestinationRegister" : finalDestinationRegister,
 		"costOfFlight" : costOfFlight,
 		"dateOfFlight" : dateOfFlight,
+		"dateOfArrival":dateOfArrival,
+		"length":length
 	})
 }
 

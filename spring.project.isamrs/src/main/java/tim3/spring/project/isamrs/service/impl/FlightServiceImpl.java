@@ -1,9 +1,11 @@
 package tim3.spring.project.isamrs.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import tim3.spring.project.isamrs.model.Destination;
 import tim3.spring.project.isamrs.model.Flight;
 import tim3.spring.project.isamrs.repository.FlightRepository;
 import tim3.spring.project.isamrs.service.FlightService;
@@ -43,6 +45,13 @@ public class FlightServiceImpl implements FlightService{
 		// TODO Auto-generated method stub
 		
 	}
+
+//	@Override
+//	public List<Flight> findByStartDestinationAndFinalDestinationAndDateOfStartAndDateOfEnd(
+//			Destination startDestination, Destination finalDestination, Date dateOfStart, Date dateOfEnd) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
 
 	
 
