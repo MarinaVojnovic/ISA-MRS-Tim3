@@ -1,9 +1,7 @@
 package tim3.spring.project.isamrs.service;
 
-import java.util.Date;
 import java.util.List;
 
-import tim3.spring.project.isamrs.model.Destination;
 import tim3.spring.project.isamrs.model.Flight;
 
 public interface FlightService {

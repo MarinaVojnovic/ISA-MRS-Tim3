@@ -59,8 +59,10 @@ body {
 	<div class="tab">
 		<button class="tablinks"
 			onclick="openCity(event, 'addRoom')">Add room</button>
-		<button class="tablinks"
+		<button id = "removeRoomsButton" class="tablinks"
 			onclick="openCity(event, 'deleteRoom')">Delete room</button>
+		<button id = "editRoomsButton" class="tablinks"
+			onclick="openCity(event, 'editRoom')">Edit room</button>
 		<button id="logoutClicked" class="tablinks"
 			onclick="openCity(event, 'logout')">Logout</button>
 	</div>
@@ -103,11 +105,59 @@ body {
 	
 	<div id="deleteRoom" class="tabcontent">
 		<div class="container">
-			<h2>List of room in hotel:</h2>
-			<table class="table table-hover" id="tableOfRoomForDelete">
+			<h2>List of rooms in hotel:</h2>
+			<table class="table table-hover" id="tableOfRoomsForDelete">
 				
   			</table>
 			<br>
+		</div>
+	</div>
+	
+	<div id="editRoom" class="tabcontent">
+		<div  class="container">
+			<h2>List of rooms in hotel:</h2>
+	
+			
+			<table class="table table-hover" id="tableOfRoomsForEdit">
+				
+  			</table>
+  			<br>
+		</div>
+	</div>
+	
+	<div id = "editRoomFormular" class="tabcontent">
+		<div class = "container">
+			<form class="form-horizontal" action="#" method="post" id="editRoomForm">
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="roomNumberEdit">Room number: </label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" id="roomNumberEdit"
+							placeholder="Insert a room number"
+							name="roomNumberEdit">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="roomPriceEdit">Price: </label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" id="roomPriceEdit"
+							placeholder="Insert price of the room" name="roomPriceEdit">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="roomNumberPeopleEdit">Number of people: </label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" id="roomNumberPeopleEdit"
+							placeholder="Insert number of people for the room" name="roomNumberPeopleEdit">
+					</div>
+				</div>
+			
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10">
+						<button type="submit" class="btn btn-default" id="buttonSubmitEditRoom">Submit</button>
+					</div>
+				</div>
+				<input type="hidden" id="roomIdEdit">
+			</form>
 		</div>
 	</div>
 

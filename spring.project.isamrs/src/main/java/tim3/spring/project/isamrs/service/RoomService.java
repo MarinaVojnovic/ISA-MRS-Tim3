@@ -10,4 +10,5 @@ public interface RoomService {
 	public Room create(Room room);
 	public Room update(Room room);
 	public void delete(long id);
+	public Room save(Room room);
 }

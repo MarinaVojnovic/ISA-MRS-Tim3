@@ -13,9 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import tim3.spring.project.isamrs.dto.CarDTO;
-import tim3.spring.project.isamrs.model.Airline;
 import tim3.spring.project.isamrs.model.Car;
-import tim3.spring.project.isamrs.model.Rentacar;
 import tim3.spring.project.isamrs.service.CarService;
 
 @RestController
