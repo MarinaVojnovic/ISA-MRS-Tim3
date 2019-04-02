@@ -10,7 +10,7 @@
 <script src="bootstrap.min.js"></script>
 <style>
 body {
-	background-image: url("airlineadmin.jpg");
+	background: pink;
 	font-family: Arial;
 }
 
@@ -73,9 +73,9 @@ body {
 				<div class="form-group">
 					<label class="control-label col-sm-2" for="airlineNameEdit">Name: </label>
 					<div class="col-sm-10">
-						<input type="text" class="form-control" id="carNameEdit"
-							placeholder="Insert a name for the car"
-							name="carNameEdit">
+						<input type="text" class="form-control" id="airlineNameEdit"
+							placeholder="Insert a name for the airline"
+							name="airlineNameEdit">
 					</div>
 				</div>
 				<div class="form-group">
@@ -189,7 +189,7 @@ body {
 				tablinks[i].className = tablinks[i].className.replace(
 						" active", "");
 			}
-			document.getElementById(cityName).style.display = "block";
+			$('#' + cityName).slideToggle(1000);
 			evt.currentTarget.className += " active";
 		}
 	</script>

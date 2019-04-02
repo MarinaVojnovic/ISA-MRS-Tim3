@@ -10,7 +10,7 @@
 <script src="bootstrap.min.js"></script>
 <style>
 body {
-	background-image: url("hoteladmin.jpg");
+	background: pink;
 	font-family: Arial;
 }
 
@@ -59,6 +59,8 @@ body {
 	<div class="tab">
 		<button class="tablinks"
 			onclick="openCity(event, 'addRoom')">Add room</button>
+		<button class="tablinks"
+			onclick="openCity(event, 'deleteRoom')">Delete room</button>
 		<button id="logoutClicked" class="tablinks"
 			onclick="openCity(event, 'logout')">Logout</button>
 	</div>
@@ -95,6 +97,16 @@ body {
 					</div>
 				</div>
 			</form>
+			<br>
+		</div>
+	</div>
+	
+	<div id="deleteRoom" class="tabcontent">
+		<div class="container">
+			<h2>List of room in hotel:</h2>
+			<table class="table table-hover" id="tableOfRoomForDelete">
+				
+  			</table>
 			<br>
 		</div>
 	</div>
