@@ -61,10 +61,6 @@ body {
 			onclick="openCity(event, 'editRentacar')">Edit a rent-a-car</button>
 		<button id = "addCarsButton" class="tablinks"
 			onclick="openCity(event, 'addCar')">Add car</button>
-		<button id = "removeCarsButton" class="tablinks"
-			onclick="openCity(event, 'deleteCar')">Delete car</button>
-		<button id = "editCarsButton" class="tablinks"
-			onclick="openCity(event, 'editCar')">Edit car</button>
 		<button id="logoutClicked" class="tablinks"
 			onclick="openCity(event, 'logout')">Logout</button>
 	</div>
@@ -144,64 +140,7 @@ body {
 			<br>
 		</div>
 	</div>
-	
-	<div id="deleteCar" class="tabcontent">
-		<div class="container">
-			<h2>List of car in service:</h2>
-			<table class="table table-hover" id="tableOfCarsForDelete">
-				
-  			</table>
-			<br>
-		</div>
-	</div>
-	
-	<div id="editCar" class="tabcontent">
-		<div  class="container">
-			<h2>List of cars in service:</h2>
-	
-			
-			<table class="table table-hover" id="tableOfCarsForEdit">
-				
-  			</table>
-  			<br>
-		</div>
-	</div>
-	
-	<div id = "editCarFormular" class="tabcontent">
-		<div class = "container">
-			<form class="form-horizontal" action="#" method="post" id="editCarForm">
-				<div class="form-group">
-					<label class="control-label col-sm-2" for="carNameEdit">Name: </label>
-					<div class="col-sm-10">
-						<input type="text" class="form-control" id="carNameEdit"
-							placeholder="Insert a name for the rent-a-car"
-							name="carNameEdit">
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="control-label col-sm-2" for="carPriceEdit">Price: </label>
-					<div class="col-sm-10">
-						<input type="text" class="form-control" id="carPriceEdit"
-							placeholder="Insert price of the car" name="carPriceEdit">
-					</div>
-				</div>
-				<div class="form-group">
-					<label class="control-label col-sm-2" for="carYearEdit">Year: </label>
-					<div class="col-sm-10">
-						<input type="text" class="form-control" id="carYearEdit"
-							placeholder="Insert year of the car" name="carYearEdit">
-					</div>
-				</div>
-			
-				<div class="form-group">
-					<div class="col-sm-offset-2 col-sm-10">
-						<button type="submit" class="btn btn-default" id="buttonSubmitEditCar">Submit</button>
-					</div>
-				</div>
-				<input type="hidden" id="carIdEdit">
-			</form>
-		</div>
-	</div>
+
 	<div id="registerAirlineAdmin" class="tabcontent">
 		<h1>Soon</h1>
 	</div>
