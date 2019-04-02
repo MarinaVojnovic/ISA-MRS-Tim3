@@ -21,10 +21,10 @@ function getAllFlights(){
 				: (data instanceof Array? data: [data]);
 				if(list.length>0){
 					var tableBody=$('<tbody></tbody>')
-					var i=1
+					var i=0
 					$.each(list,function(index,flight){
 						var tr=$('<tr></tr>')
-						tr.append('<th scope="row">'+i+'</th><td>'+flight.number+'</td><td>'+flight.startDestination.name+'</td><td>'+flight.finalDestination.name+'</td><td>'+flight.cost+'</td><td>'+flight.dateOfStart+'</td><td>'+flight.dateOfEnd+'</td><td>'+flight.lengthOfFlight+'</td><td><button id="chooseFlightButton" name="'+flight.id+'">Choose</button></td>')
+						tr.append('<th scope="row">'+(++i)+'</th><td>'+flight.number+'</td><td>'+flight.startDestination.name+'</td><td>'+flight.finalDestination.name+'</td><td>'+flight.cost+'</td><td>'+flight.dateOfStart+'</td><td>'+flight.dateOfEnd+'</td><td>'+flight.lengthOfFlight+'</td><td><button id="chooseFlightButton" name="'+flight.id+'" align="center">Choose</button></td>')
 						tableBody.append(tr)
 					})
 					$(".table1").append(tableBody)
