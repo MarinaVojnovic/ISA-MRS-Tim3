@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import tim3.spring.project.isamrs.model.Car;
-import tim3.spring.project.isamrs.model.Rentacar;
 import tim3.spring.project.isamrs.repository.CarRepository;
 import tim3.spring.project.isamrs.service.CarService;
 

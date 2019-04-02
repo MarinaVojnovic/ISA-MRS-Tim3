@@ -40,7 +40,12 @@ public class RoomServiceImpl implements RoomService{
 
 	@Override
 	public void delete(long id) {
-		// TODO Auto-generated method stub
+		roomRepository.delete(id);
 		
+	}
+	
+	@Override
+	public Room save(Room room) {
+		return roomRepository.save(room);
 	}
 }
