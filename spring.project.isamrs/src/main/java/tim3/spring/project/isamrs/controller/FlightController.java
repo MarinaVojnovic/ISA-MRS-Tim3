@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import tim3.spring.project.isamrs.dto.FlightDTO;
+import tim3.spring.project.isamrs.dto.SearchFlightDTO;
 import tim3.spring.project.isamrs.model.Flight;
 import tim3.spring.project.isamrs.service.FlightService;
 
@@ -32,9 +33,11 @@ public class FlightController {
 		return new ResponseEntity<>(flights, HttpStatus.OK); 
 	}
 	
-//	@RequestMapping(value="/searchFlight",method=RequestMethod.GET,produces=MediaType.APPLICATION_JSON_VALUE,consumes=MediaType.APPLICATION_JSON_VALUE)
-//	public ResponseEntity<List<Flight>> searchFlights(){
-//		List<Flight> flights=flightService.
-//	}
+	@RequestMapping(value="/searchFlight",method=RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE,consumes=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<Flight>> searchFlights(@RequestBody SearchFlightDTO searchFlight){
+		//List<Flight> flights=flightService.findByStartDestinationAndFinalDestination(Integer.parseInt(flightDto.getStartDestination()),Integer.parseInt(flightDto.getFinalDestination()));
+		List<Flight> flights=flightService.findByStartDestinationAndFinalDestination(searchFlight.getStartDestination(),searchFlight.getFinalDestination());
+		return new ResponseEntity<>(flights, HttpStatus.OK); 
+	}
 
 }

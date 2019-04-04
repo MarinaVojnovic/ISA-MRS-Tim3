@@ -1,27 +1,27 @@
 package tim3.spring.project.isamrs.dto;
 
 public class SearchFlightDTO {
-	private String startDestination;
-	private String finalDestination;
+	private int startDestination;
+	private int finalDestination;
 	private String startDate;
 	private String endDate;
 	
-	public String getStartDestination() {
+	public int getStartDestination() {
 		return startDestination;
 	}
-	public void setStartDestination(String startDestination) {
+	public void setStartDestination(int startDestination) {
 		this.startDestination = startDestination;
 	}
-	public String getFinalDestination() {
+	public int getFinalDestination() {
 		return finalDestination;
 	}
-	public void setFinalDestination(String finalDestination) {
+	public void setFinalDestination(int finalDestination) {
 		this.finalDestination = finalDestination;
 	}
 	public String getStartDate() {
 		return startDate;
 	}
-	public void setStartDate(String startDate) {
+	void setStartDate(String startDate) {
 		this.startDate = startDate;
 	}
 	public String getEndDate() {
@@ -35,7 +35,7 @@ public class SearchFlightDTO {
 		super();
 	}
 	
-	public SearchFlightDTO(String startDestination, String finalDestination, String startDate, String endDate) {
+	public SearchFlightDTO(int startDestination, int finalDestination, String startDate, String endDate) {
 		super();
 		this.startDestination = startDestination;
 		this.finalDestination = finalDestination;
