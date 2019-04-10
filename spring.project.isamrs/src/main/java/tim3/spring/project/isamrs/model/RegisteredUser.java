@@ -29,17 +29,53 @@ public class RegisteredUser {
 	@Column(name = "password")
 	String password;
 	
+	@Column(name="city")
+	String city;
+	
+	@Column(name="phone")
+	String phone;
+	
+	@Column(name="firstTime")
+	Boolean firstTime;
+	
+	public Boolean getFirstTime() {
+		return firstTime;
+	}
+
+	public void setFirstTime(Boolean firstTime) {
+		this.firstTime = firstTime;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
 	public RegisteredUser() {
 		
 	}
 	
-	public RegisteredUser(String name, String surname, String email, String username, String password) {
+	public RegisteredUser(String name, String surname, String email, String username, String password, String city, String phone, Boolean firstTime) {
 		super();
 		this.name = name;
 		this.surname = surname;
 		this.email = email;
 		this.username=username;
 		this.password = password;
+		this.city=city;
+		this.phone=phone;
+		this.firstTime=firstTime;
 	}
 
 	

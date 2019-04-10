@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rent-a-car Administrator</title>
+<meta charset="utf-8">
+<link rel="stylesheet" href="bootstrap.min.css">
+<script src="jquery.min.js"></script>
+<script src="bootstrap.min.js"></script>
+<script type="text/javascript" src="registeredUser.js"></script>
+<style>
+body {
+	background: pink;
+	font-family: Arial;
+}
+
+/* Style the tab */
+.tab {
+	overflow: hidden;
+	border: 1px solid #ccc;
+	background-color: #d8ac1d;
+}
+
+/* Style the buttons inside the tab */
+.tab button {
+	background-color: inherit;
+	float: left;
+	border: none;
+	outline: none;
+	cursor: pointer;
+	padding: 14px 16px;
+	transition: 0.3s;
+	font-size: 17px;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+	background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+	background-color: #ccc;
+}
+
+/* Style the tab content */
+.tabcontent {
+	display: none;
+	padding: 6px 12px;
+	border: 1px solid #ccc;
+	border-top: none;
+	background: #00defc;
+}
+
+</style>
+</head>
+<body>
+
+	<div class="tab">
+		<button class="tablinks"
+			onclick="openCity(event, 'airlines')">Airlines</button>
+		<button id = "addCarsButton" class="tablinks"
+			onclick="openCity(event, 'hotels')">Hotels</button>
+		<button id = "removeCarsButton" class="tablinks"
+			onclick="openCity(event, 'rentACars')">Rent a cars</button>
+		<button id = "editCarsButton" class="tablinks"
+			onclick="openCity(event, 'friends')">Friends</button>
+		<button id = "editCarsButton" class="tablinks"
+			onclick="openCity(event, 'editProfile')">Edit profile</button>
+		<button id="logoutClicked" class="tablinks"
+			onclick="openCity(event, 'logout')">Logout</button>
+	</div>
+
+	<div id="airlines" class="tabcontent">
+		<div class="container">
+			<h2>Airlines in the system:</h2>
+			
+			<br>
+		</div>
+	</div>
+
+	<div id="hotels" class="tabcontent">
+		<div class="container">
+			<h2>Hotels in the system:</h2>
+			<table class="table table-hover" id="tableOfCarsForDelete">
+				
+  			</table>
+			<br>
+		</div>
+	</div>
+	
+	<div id="rentACars" class="tabcontent">
+		<div class="container">
+			<h2>Rent a cars in the system:</h2>
+			
+			<br>
+		</div>
+	</div>
+	
+	<div id="friends" class="tabcontent">
+		<div  class="container">
+			<h2>Friends:</h2>
+	
+			
+			
+  			<br>
+		</div>
+	</div>
+	
+	<div id = "editProfile" class="tabcontent">
+		<div class = "container">
+		<h2>Profile information:</h2>
+			
+		</div>
+	</div>
+	<div id="registerAirlineAdmin" class="tabcontent">
+		<h1>Soon</h1>
+	</div>
+
+	<div id="registerHotelAdmin" class="tabcontent">
+		<h1>Soon</h1>
+	</div>
+
+	<div id="registerRentACarAdmin" class="tabcontent">
+		<h1>Soon</h1>
+	</div>
+
+	<div id="registerSystemAdmin" class="tabcontent">
+		<h1>Soon</h1>
+	</div>
+
+	<div id="defineDiscount" class="tabcontent">
+		<h1>Soon</h1>
+	</div>
+
+	<div id="logout" class="tabcontent">
+		<h1>Soon</h1>
+	</div>
+	
+	
+
+	<script>
+		function openCity(evt, cityName) {
+			var i, tabcontent, tablinks;
+			tabcontent = document.getElementsByClassName("tabcontent");
+			for (i = 0; i < tabcontent.length; i++) {
+				tabcontent[i].style.display = "none";
+			}
+			tablinks = document.getElementsByClassName("tablinks");
+			for (i = 0; i < tablinks.length; i++) {
+				tablinks[i].className = tablinks[i].className.replace(
+						" active", "");
+			}
+			$('#' + cityName).slideToggle(1000);
+			evt.currentTarget.className += " active";
+		}
+	</script>
+	
+	
+
+</body>
+</html>

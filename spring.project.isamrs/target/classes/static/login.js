@@ -38,6 +38,7 @@ function login() {
         		alert('user successfully found');
         		console.log("SUCCESS : ", data.email);
                 $("#login").prop("disabled", false);
+                window.location="http://localhost:8080/registeredUser.html";
               
         	},
         error: function (e) {

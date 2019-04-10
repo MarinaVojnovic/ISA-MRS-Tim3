@@ -15,6 +15,8 @@ import tim3.spring.project.isamrs.service.RegisteredUserService;
 
 @RestController
 public class RegisteredUserController {
+	
+
 
 	@Autowired
 	RegisteredUserService registeredUserService;
@@ -27,8 +29,19 @@ public class RegisteredUserController {
 		System.out.println("Email: "+registeredUser.getEmail());
 		System.out.println("username: "+registeredUser.getUsername());
 		System.out.println("password: "+registeredUser.getPassword());
-		RegisteredUser user = registeredUserService.create(registeredUser);
-		return new ResponseEntity<>(user, HttpStatus.CREATED);
+		System.out.println("password: "+registeredUser.getCity());
+		System.out.println("password: "+registeredUser.getPhone());
+		RegisteredUser user = registeredUserService.findByUsername(registeredUser.getUsername());
+		if (user == null) {
+			user = registeredUserService.create(registeredUser);
+			return new ResponseEntity<>(user, HttpStatus.CREATED);
+		}else {
+			
+			return new ResponseEntity<>(null, HttpStatus.OK);
+		}
+		
+		
+		
 	}
 	
 	@RequestMapping(value = "/loginUser", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -38,6 +51,7 @@ public class RegisteredUserController {
 		RegisteredUser user = registeredUserService.findByUsernameAndPassword(userDto.getUsername(), userDto.getPassword());
 		if (user != null) {
 			System.out.println("Nadjen user");
+			
 			return new ResponseEntity<>(user, HttpStatus.OK);
 		} else {
 			

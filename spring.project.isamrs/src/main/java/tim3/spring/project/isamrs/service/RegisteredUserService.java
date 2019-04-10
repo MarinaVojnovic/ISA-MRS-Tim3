@@ -12,4 +12,5 @@ public interface RegisteredUserService {
 	public void delete(long id);
 	public RegisteredUser save(RegisteredUser user);
 	public RegisteredUser findByUsernameAndPassword(String username, String password);
+	public RegisteredUser findByUsername(String username);
 }

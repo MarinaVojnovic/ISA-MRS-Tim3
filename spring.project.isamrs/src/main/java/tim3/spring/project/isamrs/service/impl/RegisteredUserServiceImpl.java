@@ -56,4 +56,9 @@ public class RegisteredUserServiceImpl implements RegisteredUserService{
 		return registeredUserRepository.findByUsernameAndPassword(username, password);
 	}
 
+	@Override
+	public RegisteredUser findByUsername(String username) {
+		// TODO Auto-generated method stub
+		return registeredUserRepository.findByUsername(username);
+	}
 }
