@@ -28,6 +28,9 @@ public class Rentacar {
 
 	@Column(name = "address")
 	private String address;
+	
+	@Column(name = "grade")
+	private Double grade;
 
 	@Column(name = "promotional_description")
 	private String promotionalDescription;
@@ -130,7 +133,7 @@ public class Rentacar {
 		this.branches = new HashSet<BranchOffice>();
 	}
 
-	public Rentacar(String name, String address, String promotionalDescription,
+	public Rentacar(String name, String address, String promotionalDescription, Double grade,
 			Set<RentacarCustomerService> rentacarCustomerServices, Set<Car> cars, Set<BranchOffice> branches) {
 		super();
 		this.name = name;
@@ -139,5 +142,14 @@ public class Rentacar {
 		this.rentacarCustomerServices = rentacarCustomerServices;
 		this.cars = cars;
 		this.branches = branches;
+		this.grade=grade;
+	}
+
+	public Double getGrade() {
+		return grade;
+	}
+
+	public void setGrade(Double grade) {
+		this.grade = grade;
 	}
 }

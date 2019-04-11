@@ -39,12 +39,23 @@ public class RentacarServiceImpl implements RentacarService{
 	@Override
 	public void delete(long id) {
 		// TODO Auto-generated method stub
-
 	}
 	
 	@Override
 	public Rentacar save(Rentacar rentacar) {
 		return rentacarRepository.save(rentacar);
+	}
+
+	@Override
+	public List<Rentacar> findByName(String name) {
+		// TODO Auto-generated method stub
+		return rentacarRepository.findByName(name);
+	}
+
+	@Override
+	public List<Rentacar> findByAddress(String address) {
+		// TODO Auto-generated method stub
+		return rentacarRepository.findByAddress(address);
 	}
 
 }
