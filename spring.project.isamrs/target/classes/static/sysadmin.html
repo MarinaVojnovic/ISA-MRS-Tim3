@@ -18,7 +18,7 @@ body {
 .tab {
 	overflow: hidden;
 	border: 1px solid #ccc;
-	background-color: #d8ac1d;
+	background-color: #e6e6fa;
 }
 
 /* Style the buttons inside the tab */
@@ -51,25 +51,31 @@ body {
 	border-top: none;
 	background: #00defc;
 }
-
 </style>
 </head>
 <body>
 
 	<div class="tab">
+		<button class="tablinks" onclick="openCity(event, 'registerAirline')">Register
+			an airline</button>
+		<button class="tablinks" onclick="openCity(event, 'registerHotel')">Register
+			a hotel</button>
+		<button class="tablinks" onclick="openCity(event, 'registerRentACar')">Register
+			a rent-a-car service</button>
 		<button class="tablinks"
-			onclick="openCity(event, 'registerAirline')">Register an airline</button>
+			onclick="openCity(event, 'registerAirlineAdmin')">Register
+			an airline administrator</button>
 		<button class="tablinks"
-			onclick="openCity(event, 'registerHotel')">Register a hotel</button>
+			onclick="openCity(event, 'registerHotelAdmin')">Register a
+			hotel administrator</button>
 		<button class="tablinks"
-			onclick="openCity(event, 'registerRentACar')">Register a rent-a-car service</button>
-		<button class="tablinks" onclick="openCity(event, 'registerAirlineAdmin')">Register an airline administrator</button>
-		<button class="tablinks" onclick="openCity(event, 'registerHotelAdmin')">Register a hotel administrator</button>
-		<button class="tablinks" onclick="openCity(event, 'registerRentACarAdmin')">Register a rent-a-car service administrator</button>
+			onclick="openCity(event, 'registerRentACarAdmin')">Register
+			a rent-a-car service administrator</button>
 		<button class="tablinks"
-			onclick="openCity(event, 'registerSystemAdmin')">Register a system administrator</button>
-		<button class="tablinks"
-			onclick="openCity(event, 'defineDiscount')">Define a discount</button>
+			onclick="openCity(event, 'registerSystemAdmin')">Register a
+			system administrator</button>
+		<button class="tablinks" onclick="openCity(event, 'defineDiscount')">Define
+			a discount</button>
 		<button id="logoutClicked" class="tablinks"
 			onclick="openCity(event, 'logout')">Logout</button>
 	</div>
@@ -79,7 +85,8 @@ body {
 			<h2>Registering an airline:</h2>
 			<form class="form-horizontal" action="#" method="post" id="form1">
 				<div class="form-group">
-					<label class="control-label col-sm-2" for="airlineNameRegister">Name: </label>
+					<label class="control-label col-sm-2" for="airlineNameRegister">Name:
+					</label>
 					<div class="col-sm-10">
 						<input type="text" class="form-control" id="airlineNameRegister"
 							placeholder="Insert a name for the airline"
@@ -87,17 +94,24 @@ body {
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="control-label col-sm-2" for="airlineAddressRegister">Address: </label>
+					<label class="control-label col-sm-2" for="airlineAddressRegister">Address:
+					</label>
 					<div class="col-sm-10">
-						<input type="text" class="form-control" id="airlineAddressRegister"
-							placeholder="Insert an address for the airline" name="airlineAddressRegister">
+						<input type="text" class="form-control"
+							id="airlineAddressRegister"
+							placeholder="Insert an address for the airline"
+							name="airlineAddressRegister">
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="control-label col-sm-2" for="airlinePromotionalDescription">Promotional description: </label>
+					<label class="control-label col-sm-2"
+						for="airlinePromotionalDescription">Promotional
+						description: </label>
 					<div class="col-sm-10">
-						<input type="text" class="form-control" id="airlinePromotionalDescription"
-							placeholder="Insert a promotional description for the airline" name="airlinePromotionalDescription">
+						<input type="text" class="form-control"
+							id="airlinePromotionalDescription"
+							placeholder="Insert a promotional description for the airline"
+							name="airlinePromotionalDescription">
 					</div>
 				</div>
 				<div class="form-group">
@@ -115,7 +129,8 @@ body {
 			<h2>Registering a hotel:</h2>
 			<form class="form-horizontal" action="#" method="post" id="form2">
 				<div class="form-group">
-					<label class="control-label col-sm-2" for="hotelNameRegister">Name: </label>
+					<label class="control-label col-sm-2" for="hotelNameRegister">Name:
+					</label>
 					<div class="col-sm-10">
 						<input type="text" class="form-control" id="hotelNameRegister"
 							placeholder="Insert a name for the hotel"
@@ -123,17 +138,23 @@ body {
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="control-label col-sm-2" for="hotelAddressRegister">Address: </label>
+					<label class="control-label col-sm-2" for="hotelAddressRegister">Address:
+					</label>
 					<div class="col-sm-10">
 						<input type="text" class="form-control" id="hotelAddressRegister"
-							placeholder="Insert an address for the hotel" name="hotelAddressRegister">
+							placeholder="Insert an address for the hotel"
+							name="hotelAddressRegister">
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="control-label col-sm-2" for="hotelPromotionalDescription">Promotional description: </label>
+					<label class="control-label col-sm-2"
+						for="hotelPromotionalDescription">Promotional description:
+					</label>
 					<div class="col-sm-10">
-						<input type="text" class="form-control" id="hotelPromotionalDescription"
-							placeholder="Insert a promotional description for the hotel" name="hotelPromotionalDescription">
+						<input type="text" class="form-control"
+							id="hotelPromotionalDescription"
+							placeholder="Insert a promotional description for the hotel"
+							name="hotelPromotionalDescription">
 					</div>
 				</div>
 				<div class="form-group">
@@ -151,7 +172,8 @@ body {
 			<h2>Registering a rent-a-car service:</h2>
 			<form class="form-horizontal" action="#" method="post" id="form3">
 				<div class="form-group">
-					<label class="control-label col-sm-2" for="rentacarNameRegister">Name: </label>
+					<label class="control-label col-sm-2" for="rentacarNameRegister">Name:
+					</label>
 					<div class="col-sm-10">
 						<input type="text" class="form-control" id="rentacarNameRegister"
 							placeholder="Insert a name for the rent-a-car service"
@@ -159,17 +181,24 @@ body {
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="control-label col-sm-2" for="rentacarAddressRegister">Address: </label>
+					<label class="control-label col-sm-2" for="rentacarAddressRegister">Address:
+					</label>
 					<div class="col-sm-10">
-						<input type="text" class="form-control" id="rentacarAddressRegister"
-							placeholder="Insert an address for the rent-a-car service" name="rentacarAddressRegister">
+						<input type="text" class="form-control"
+							id="rentacarAddressRegister"
+							placeholder="Insert an address for the rent-a-car service"
+							name="rentacarAddressRegister">
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="control-label col-sm-2" for="rentacarPromotionalDescription">Promotional description: </label>
+					<label class="control-label col-sm-2"
+						for="rentacarPromotionalDescription">Promotional
+						description: </label>
 					<div class="col-sm-10">
-						<input type="text" class="form-control" id="rentacarPromotionalDescription"
-							placeholder="Insert a promotional description for the rent-a-car service" name="rentacarPromotionalDescription">
+						<input type="text" class="form-control"
+							id="rentacarPromotionalDescription"
+							placeholder="Insert a promotional description for the rent-a-car service"
+							name="rentacarPromotionalDescription">
 					</div>
 				</div>
 				<div class="form-group">
@@ -183,7 +212,95 @@ body {
 	</div>
 
 	<div id="registerAirlineAdmin" class="tabcontent">
-		<h1>Soon</h1>
+		<div class="container">
+			<h2>Registering an airline admin:</h2>
+			<form class="form-horizontal" action="#" method="post" id="form4">
+
+				<div class="form-group">
+					<label class="control-label col-sm-2"
+						for="airlineAdminUsernameRegister">Username: </label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control"
+							id="airlineAdminUsernameRegister"
+							placeholder="Insert a username for the airline admin"
+							name="airlineAdminUsernameRegister">
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-2"
+						for="airlineAdminPassword1Register">Password: </label>
+					<div class="col-sm-10">
+						<input type="password" class="form-control"
+							id="airlineAdminPassword1Register"
+							placeholder="Insert a password for the airline admin"
+							name="airlineAdminPassword1Register">
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-2"
+						for="airlineAdminPassword2Register">Repeat password: </label>
+					<div class="col-sm-10">
+						<input type="password" class="form-control"
+							id="airlineAdminPassword2Register"
+							placeholder="Insert a password second time for the airline admin"
+							name="airlineAdminPassword2Register">
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-2"
+						for="airlineAdminFirstNameRegister">First name: </label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control"
+							id="airlineAdminFirstNameRegister"
+							placeholder="Insert a first name for the airline admin"
+							name="airlineAdminFirstNameRegister">
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-2"
+						for="airlineAdminLastNameRegister">Last name: </label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control"
+							id="airlineAdminLastNameRegister"
+							placeholder="Insert a last name for the airline admin"
+							name="airlineAdminLastNameRegister">
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-2"
+						for="airlineAdminEmailRegister">Email: </label>
+					<div class="col-sm-10">
+						<input type="email" class="form-control"
+							id="airlineAdminEmailRegister"
+							placeholder="Insert an email for the airline admin"
+							name="airlineAdminEmailRegister">
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-2"
+						for="airlineAdminPhoneNumberRegister">Phone number: </label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control"
+							id="airlineAdminPhoneNumberRegister"
+							placeholder="Insert a phone number for the airline admin"
+							name="airlineAdminPhoneNumberRegister">
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10">
+						<button type="submit" class="btn btn-default" id="button5">Submit</button>
+					</div>
+				</div>
+			</form>
+			<br>
+		</div>
 	</div>
 
 	<div id="registerHotelAdmin" class="tabcontent">

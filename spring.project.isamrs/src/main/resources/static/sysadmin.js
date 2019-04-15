@@ -1,6 +1,10 @@
 var urlRoot1 = "http://localhost:8080/createAirline";
 var urlRoot2 = "http://localhost:8080/createHotel";
 var urlRoot3 = "http://localhost:8080/createRentacar";
+var urlRoot4 = "http://localhost:8080/auth/registerAirlineAdmin";
+var urlRoot5 = "http://localhost:8080/auth/registerHotelAdmin";
+var urlRoot6 = "http://localhost:8080/auth/registerRentacarAdmin";
+var urlRoot7 = "http://localhost:8080/auth/registerSystemAdmin";
 
 $(document).on('click', '#logoutClicked', function(e) {
 	e.preventDefault();
@@ -128,6 +132,65 @@ $(document)
 					}
 				});
 
+$(document)
+		.on(
+				"submit",
+				"#form4",
+				function(e) {
+					e.preventDefault();
+					var username = document
+							.getElementById("airlineAdminUsernameRegister").value;
+					var password1 = document
+							.getElementById("airlineAdminPassword1Register").value;
+					var password2 = document
+							.getElementById("airlineAdminPassword2Register").value;
+					var firstName = document
+							.getElementById("airlineAdminFirstNameRegister").value;
+					var lastName = document
+							.getElementById("airlineAdminLastNameRegister").value;
+					var email = document
+							.getElementById("airlineAdminEmailRegister").value;
+					var phoneNumber = document
+							.getElementById("airlineAdminPhoneNumberRegister").value;
+					if (username == "" || password1 == "" || password2 == ""
+							|| firstName == "" || lastName == "" || email == ""
+							|| phoneNumber == "") {
+						alert('At least one field is blank, please fill it up with proper information!');
+					} else if (password1 != password2) {
+						alert("Password must match, try again!");
+					} else {
+						$
+								.ajax({
+									type : 'POST',
+									url : urlRoot4,
+									contentType : 'application/json',
+									dataType : "json",
+									data : createAirlineAdminToJSON(username,
+											password1, firstName, lastName,
+											email, phoneNumber),
+									success : function(data) {
+										if (data.message != undefined) {
+											alert(data.message);
+										} else {
+											if (data) {
+												alert("Successful registration, congratulations!");
+											} else {
+												alert("Error while registrating!");
+											}
+										}
+
+									},
+									error : function(jqXHR, textStatus,
+											errorThrown) {
+										alert(jqXHR.status);
+										alert(textStatus);
+										alert(errorThrown);
+
+									}
+								})
+					}
+				});
+
 function createAirlineToJSON(airlineNameRegister, airlineAddressRegister,
 		airlinePromotionalDescription) {
 	return JSON.stringify({
@@ -152,5 +215,17 @@ function createRentacarToJSON(rentacarNameRegister, rentacarAddressRegister,
 		"rentacarNameRegister" : rentacarNameRegister,
 		"rentacarAddressRegister" : rentacarAddressRegister,
 		"rentacarPromotionalDescription" : rentacarPromotionalDescription,
+	})
+}
+
+function createAirlineAdminToJSON(username, password1, firstName, lastName,
+		email, phoneNumber) {
+	return JSON.stringify({
+		"username" : username,
+		"password" : password1,
+		"firstName" : firstName,
+		"lastName" : lastName,
+		"email" : email,
+		"phoneNumber" : phoneNumber,
 	})
 }
