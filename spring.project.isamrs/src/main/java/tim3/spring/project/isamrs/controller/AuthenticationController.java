@@ -1,6 +1,9 @@
 package tim3.spring.project.isamrs.controller;
 
 import java.io.IOException;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -19,6 +22,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import tim3.spring.project.isamrs.dto.MessageDTO;
+import tim3.spring.project.isamrs.dto.UserDTO;
+import tim3.spring.project.isamrs.model.AirlineAdmin;
+import tim3.spring.project.isamrs.model.Authority;
 import tim3.spring.project.isamrs.model.User;
 import tim3.spring.project.isamrs.model.UserRoleName;
 import tim3.spring.project.isamrs.model.UserTokenState;
@@ -74,6 +80,41 @@ public class AuthenticationController {
 		}
 		return new ResponseEntity<Boolean>(false, HttpStatus.OK);
 	}*/
+	
+	@RequestMapping(value = "auth/registerAirlineAdmin", method = RequestMethod.POST)
+	public ResponseEntity<?> register(@RequestBody UserDTO user) {
+		if (this.userDetailsService.usernameTaken(user.getUsername()) == true) {
+			return new ResponseEntity<MessageDTO>(new MessageDTO("Username is already taken.", "Error"), HttpStatus.OK);
+		}
+		
+		AirlineAdmin aa = new AirlineAdmin();
+		aa.setUsername(user.getUsername());
+		aa.setId(null);
+		aa.setEmail(user.getEmail());
+		aa.setPassword(this.userDetailsService.encodePassword(user.getPassword()));
+		//ru.setAddress(user.getAddress());
+		List<Authority> authorities = new ArrayList<Authority>();
+		Authority a = new Authority();
+		a.setName(UserRoleName.ROLE_AIRLINE_ADMIN);
+		authorities.add(a);
+		aa.setAuthorities(authorities);
+		//ru.setDiscountPoints(0);
+		aa.setEnabled(false);
+		//ru.setFriends(new HashSet<RegisteredUser>());
+		aa.setFirstName(user.getFirstName());
+		aa.setLastName(user.getLastName());
+		aa.setLastPasswordResetDate(new Timestamp(System.currentTimeMillis()));
+		aa.setPhoneNumber(user.getPhoneNumber());
+		//ru.setUserReservations(new HashSet<UserReservation>());
+		//ru.setServiceGrades(new HashSet<ServiceGrade>());
+		aa.setAirline(null);
+
+		if (this.userDetailsService.saveUser(aa)) {
+			//mailService.sendMailAsync(ru);
+			return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+		}
+		return new ResponseEntity<Boolean>(false, HttpStatus.OK);
+	}
 
 	@RequestMapping(value = "auth/login", method = RequestMethod.POST)
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest,
