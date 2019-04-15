@@ -1,5 +1,7 @@
 package tim3.spring.project.isamrs.controller;
 
+import java.util.Properties;
+
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Session;
@@ -7,13 +9,11 @@ import javax.mail.Transport;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import java.util.Properties;
 
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import tim3.spring.project.isamrs.dto.SearchFlightDTO;
 import tim3.spring.project.isamrs.model.Mail;
 
 @RestController
