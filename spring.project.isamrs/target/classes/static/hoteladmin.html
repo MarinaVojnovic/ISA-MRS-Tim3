@@ -57,6 +57,8 @@ body {
 <body>
 
 	<div class="tab">
+	    <button class="tablinks"
+			onclick="openCity(event, 'editHotel')">Edit hotel</button>
 		<button class="tablinks"
 			onclick="openCity(event, 'addRoom')">Add room</button>
 		<button id = "removeRoomsButton" class="tablinks"
@@ -65,6 +67,45 @@ body {
 			onclick="openCity(event, 'editRoom')">Edit room</button>
 		<button id="logoutClicked" class="tablinks"
 			onclick="openCity(event, 'logout')">Logout</button>
+	</div>
+	
+	<div id="editHotel" class="tabcontent">
+		<div class="container">
+			<h2>Editing a rent-a-car service:</h2>
+			<form class="form-horizontal" action="#" method="post" id="form3">
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="hotelNameEdit">Name: </label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" id="hotelNameEdit"
+							placeholder="Insert a name for the hotel"
+							name="hotelNameEdit">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="hotelAddressEdit">Address: </label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" id="hotelAddressEdit"
+							placeholder="Insert an address for the hotel" name="hotelAddressEdit">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="hotelPromotionalDescriptionEdit">Promotional description: </label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" id="hotelPromotionalDescriptionEdit"
+							placeholder="Insert a promotional description for the hotel" name="hotelPromotionalDescriptionEdit">
+					</div>
+				</div>
+				<input type="hidden" id="hotelIdEdit">
+				<input type="hidden" id="hotelCustomerServicesEdit">
+				<input type="hidden" id="hotelRoomsEdit">
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10">
+						<button type="submit" class="btn btn-default" id="button2">Submit</button>
+					</div>
+				</div>
+			</form>
+			<br>
+		</div>
 	</div>
 
 	<div id="addRoom" class="tabcontent">
