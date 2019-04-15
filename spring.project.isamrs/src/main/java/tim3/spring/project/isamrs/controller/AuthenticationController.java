@@ -25,6 +25,8 @@ import tim3.spring.project.isamrs.dto.MessageDTO;
 import tim3.spring.project.isamrs.dto.UserDTO;
 import tim3.spring.project.isamrs.model.AirlineAdmin;
 import tim3.spring.project.isamrs.model.Authority;
+import tim3.spring.project.isamrs.model.HotelAdmin;
+import tim3.spring.project.isamrs.model.RentacarAdmin;
 import tim3.spring.project.isamrs.model.User;
 import tim3.spring.project.isamrs.model.UserRoleName;
 import tim3.spring.project.isamrs.model.UserTokenState;
@@ -82,7 +84,7 @@ public class AuthenticationController {
 	}*/
 	
 	@RequestMapping(value = "auth/registerAirlineAdmin", method = RequestMethod.POST)
-	public ResponseEntity<?> register(@RequestBody UserDTO user) {
+	public ResponseEntity<?> registerAirlineAdmin(@RequestBody UserDTO user) {
 		if (this.userDetailsService.usernameTaken(user.getUsername()) == true) {
 			return new ResponseEntity<MessageDTO>(new MessageDTO("Username is already taken.", "Error"), HttpStatus.OK);
 		}
@@ -110,6 +112,110 @@ public class AuthenticationController {
 		aa.setAirline(null);
 
 		if (this.userDetailsService.saveUser(aa)) {
+			//mailService.sendMailAsync(ru);
+			return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+		}
+		return new ResponseEntity<Boolean>(false, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "auth/registerHotelAdmin", method = RequestMethod.POST)
+	public ResponseEntity<?> registerHotelAdmin(@RequestBody UserDTO user) {
+		if (this.userDetailsService.usernameTaken(user.getUsername()) == true) {
+			return new ResponseEntity<MessageDTO>(new MessageDTO("Username is already taken.", "Error"), HttpStatus.OK);
+		}
+		
+		HotelAdmin ha = new HotelAdmin();
+		ha.setUsername(user.getUsername());
+		ha.setId(null);
+		ha.setEmail(user.getEmail());
+		ha.setPassword(this.userDetailsService.encodePassword(user.getPassword()));
+		//ru.setAddress(user.getAddress());
+		List<Authority> authorities = new ArrayList<Authority>();
+		Authority a = new Authority();
+		a.setName(UserRoleName.ROLE_HOTEL_ADMIN);
+		authorities.add(a);
+		ha.setAuthorities(authorities);
+		//ru.setDiscountPoints(0);
+		ha.setEnabled(false);
+		//ru.setFriends(new HashSet<RegisteredUser>());
+		ha.setFirstName(user.getFirstName());
+		ha.setLastName(user.getLastName());
+		ha.setLastPasswordResetDate(new Timestamp(System.currentTimeMillis()));
+		ha.setPhoneNumber(user.getPhoneNumber());
+		//ru.setUserReservations(new HashSet<UserReservation>());
+		//ru.setServiceGrades(new HashSet<ServiceGrade>());
+		ha.setHotel(null);
+
+		if (this.userDetailsService.saveUser(ha)) {
+			//mailService.sendMailAsync(ru);
+			return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+		}
+		return new ResponseEntity<Boolean>(false, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "auth/registerRentacarAdmin", method = RequestMethod.POST)
+	public ResponseEntity<?> registerRentacarAdmin(@RequestBody UserDTO user) {
+		if (this.userDetailsService.usernameTaken(user.getUsername()) == true) {
+			return new ResponseEntity<MessageDTO>(new MessageDTO("Username is already taken.", "Error"), HttpStatus.OK);
+		}
+		
+		RentacarAdmin ra = new RentacarAdmin();
+		ra.setUsername(user.getUsername());
+		ra.setId(null);
+		ra.setEmail(user.getEmail());
+		ra.setPassword(this.userDetailsService.encodePassword(user.getPassword()));
+		//ru.setAddress(user.getAddress());
+		List<Authority> authorities = new ArrayList<Authority>();
+		Authority a = new Authority();
+		a.setName(UserRoleName.ROLE_RENTACAR_ADMIN);
+		authorities.add(a);
+		ra.setAuthorities(authorities);
+		//ru.setDiscountPoints(0);
+		ra.setEnabled(false);
+		//ru.setFriends(new HashSet<RegisteredUser>());
+		ra.setFirstName(user.getFirstName());
+		ra.setLastName(user.getLastName());
+		ra.setLastPasswordResetDate(new Timestamp(System.currentTimeMillis()));
+		ra.setPhoneNumber(user.getPhoneNumber());
+		//ru.setUserReservations(new HashSet<UserReservation>());
+		//ru.setServiceGrades(new HashSet<ServiceGrade>());
+		ra.setRentacar(null);
+
+		if (this.userDetailsService.saveUser(ra)) {
+			//mailService.sendMailAsync(ru);
+			return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+		}
+		return new ResponseEntity<Boolean>(false, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "auth/registerSystemAdmin", method = RequestMethod.POST)
+	public ResponseEntity<?> registerSystemAdmin(@RequestBody UserDTO user) {
+		if (this.userDetailsService.usernameTaken(user.getUsername()) == true) {
+			return new ResponseEntity<MessageDTO>(new MessageDTO("Username is already taken.", "Error"), HttpStatus.OK);
+		}
+		
+		User sa = new User();
+		sa.setUsername(user.getUsername());
+		sa.setId(null);
+		sa.setEmail(user.getEmail());
+		sa.setPassword(this.userDetailsService.encodePassword(user.getPassword()));
+		//ru.setAddress(user.getAddress());
+		List<Authority> authorities = new ArrayList<Authority>();
+		Authority a = new Authority();
+		a.setName(UserRoleName.ROLE_SYSTEM_ADMIN);
+		authorities.add(a);
+		sa.setAuthorities(authorities);
+		//ru.setDiscountPoints(0);
+		sa.setEnabled(false);
+		//ru.setFriends(new HashSet<RegisteredUser>());
+		sa.setFirstName(user.getFirstName());
+		sa.setLastName(user.getLastName());
+		sa.setLastPasswordResetDate(new Timestamp(System.currentTimeMillis()));
+		sa.setPhoneNumber(user.getPhoneNumber());
+		//ru.setUserReservations(new HashSet<UserReservation>());
+		//ru.setServiceGrades(new HashSet<ServiceGrade>());
+
+		if (this.userDetailsService.saveUser(sa)) {
 			//mailService.sendMailAsync(ru);
 			return new ResponseEntity<Boolean>(true, HttpStatus.OK);
 		}
