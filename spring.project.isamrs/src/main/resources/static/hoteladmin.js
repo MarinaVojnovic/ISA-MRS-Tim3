@@ -3,11 +3,89 @@ var urlRoot2 = "http://localhost:8080/getRooms";
 var urlRoot3 = "http://localhost:8080/deleteRoom";
 var urlRoot4 = "http://localhost:8080/findRoom";
 var urlRoot5 = "http://localhost:8080/saveEditedRoom";
+var urlRoot6 = "http://localhost:8080/findHotel";
+var urlRoot7 = "http://localhost:8080/saveChangesHotel";
+
+findHotel();
 
 $(document).on('click', '#logoutClicked', function(e) {
 	e.preventDefault();
 	window.location.href = "index.html";
 })
+
+$(document)
+		.on(
+				"submit",
+				"#form3",
+				function(e) {
+					e.preventDefault();
+					var name = document.getElementById("hotelNameEdit").value;
+					var address = document
+							.getElementById("hotelAddressEdit").value;
+					var promotionalDescription = document
+							.getElementById("hotelPromotionalDescriptionEdit").value;
+
+					var hotelCustomerServices = document
+							.getElementById("hotelCustomerServicesEdit").value;
+					var rooms = document.getElementById("hotelRoomsEdit").value;
+
+					var id = document.getElementById("hotelIdEdit").value;
+
+					if (name == "" || address == ""
+							|| promotionalDescription == "") {
+						alert('None of the fields is allowed to be empty!');
+					} else {
+
+						$
+								.ajax({
+									type : 'PUT',
+									url : urlRoot7,
+									data : hotelToJson(id, name, address,
+											promotionalDescription,
+											hotelCustomerServices, rooms),
+									dataType : "json",
+									contentType : 'application/json',
+									success : function(data) {
+										alert("Successful editing, congratulations!");
+
+									},
+									error : function(XMLHttpRequest) {
+										alert("Error while changing profile information ");
+									}
+
+								})
+					}
+
+				});
+
+function findHotel() {
+	$
+			.ajax({
+				type : 'GET',
+				url : urlRoot6,
+				dataType : "json",
+				success : function(data) {
+					if (data == null) {
+						console.log('profile not found');
+					} else {
+						document.getElementById("hotelIdEdit").value = data.id;
+						document.getElementById("hotelNameEdit").value = data.name;
+						document.getElementById("hotelAddressEdit").value = data.address;
+						document
+								.getElementById("hotelPromotionalDescriptionEdit").value = data.promotionalDescription;
+						document.getElementById("hotelCustomerServicesEdit").value = data.hotelCustomerServices;
+						document.getElementById("hotelRoomsEdit").value = data.rooms;
+					}
+				},
+				error : function(jqXHR, textStatus, errorThrown) {
+					alert(jqXHR.status);
+					alert(textStatus);
+					alert(errorThrown);
+				}
+
+			})
+
+}
 
 function saveEditedRoom() {
 	console.log('save edited room called');
@@ -267,5 +345,18 @@ function roomToJson(id, roomNumber, price, numberPeople) {
 		"roomNumber" : roomNumber,
 		"price" : price,
 		"numberPeople" : numberPeople,
+	})
+}
+
+function hotelToJson(id, name, address, promotionalDescription,
+		hotelCustomerServices, rooms) {
+	return JSON.stringify({
+		"id" : id,
+		"name" : name,
+		"address" : address,
+		"promotionalDescription" : promotionalDescription,
+		"hotelCustomerServices" : hotelCustomerServices,
+		"rooms" : rooms,
+
 	})
 }

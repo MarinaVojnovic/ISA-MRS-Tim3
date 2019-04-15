@@ -11,7 +11,7 @@ import tim3.spring.project.isamrs.service.HotelService;
 
 @Service
 public class HotelServiceImpl implements HotelService {
-	
+
 	@Autowired
 	HotelRepository hotelRepository;
 
@@ -40,5 +40,10 @@ public class HotelServiceImpl implements HotelService {
 	public void delete(long id) {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public Hotel save(Hotel hotel) {
+		return hotelRepository.save(hotel);
 	}
 }
