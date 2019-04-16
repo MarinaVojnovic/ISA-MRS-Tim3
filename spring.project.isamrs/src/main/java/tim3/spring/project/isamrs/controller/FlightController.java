@@ -1,5 +1,6 @@
 package tim3.spring.project.isamrs.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +38,50 @@ public class FlightController {
 	public ResponseEntity<List<Flight>> searchFlights(@RequestBody SearchFlightDTO searchFlight){
 		//List<Flight> flights=flightService.findByStartDestinationAndFinalDestination(Integer.parseInt(flightDto.getStartDestination()),Integer.parseInt(flightDto.getFinalDestination()));
 		List<Flight> flights=flightService.findByStartDestinationAndFinalDestination(searchFlight.getStartDestination(),searchFlight.getFinalDestination());
-		return new ResponseEntity<>(flights, HttpStatus.OK); 
+		List<Flight> filtered=new ArrayList<>();
+		double from,to;
+		int fromL,toL;
+		String name;
+		if(!searchFlight.getFrom().equals("")) {
+			from=Double.parseDouble(searchFlight.getFrom());
+		}else {
+			from=-1;
+		}
+		if(!searchFlight.getTo().equals("")) {
+			to=Double.parseDouble(searchFlight.getTo());
+		}else {
+			to=10000000;
+		}
+		if(!searchFlight.getFromL().equals("")) {
+			fromL=Integer.parseInt(searchFlight.getFromL());
+		}else {
+			fromL=-1;
+		}
+		if(!searchFlight.getToL().equals("")) {
+			toL=Integer.parseInt(searchFlight.getToL());
+		}else {
+			toL=1000000;
+		}
+		if(!searchFlight.getName().equalsIgnoreCase("")) {
+			name=searchFlight.getName();
+		}else {
+			name="";
+		}
+		for(Flight f: flights) {
+			if(f.getCost()>from &&f.getCost()<to && f.getLengthOfFlight()>fromL && f.getLengthOfFlight()<toL) {
+				if(!name.equals("")) {
+					if(f.getAirline().getName().equalsIgnoreCase(name)) {
+						filtered.add(f);
+					}
+				}else{
+					filtered.add(f);
+				}
+			}
+		
+		}
+		
+		
+		return new ResponseEntity<>(filtered, HttpStatus.OK); 
 	}
 
 }

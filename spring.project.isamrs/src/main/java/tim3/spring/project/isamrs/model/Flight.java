@@ -59,6 +59,10 @@ public class Flight {
 	@JsonIgnore 
 	@ManyToOne(fetch = FetchType.EAGER)
 	Airline airline;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "flight", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
+	private Set<Seat> seats = new HashSet<Seat>();
 
 	public Flight(FlightDTO flightDTO) {
 		super();
@@ -69,6 +73,10 @@ public class Flight {
 		this.dateOfStart = new Date();
 		this.dateOfEnd = new Date();
 		this.lengthOfFlight = flightDTO.getLength();
+		this.seats=new HashSet<Seat>();
+		for(int i=0;i<flightDTO.getNumOfSeats();i++) {
+			this.seats.add(new Seat(this,false));
+		}
 		
 	}
 
@@ -151,7 +159,7 @@ public class Flight {
 
 
 	public Flight() {
-		super();
+		this.seats=new HashSet<Seat>();
 	}
 
 	public void setAirline(Airline airline) {

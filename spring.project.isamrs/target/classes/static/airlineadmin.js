@@ -1,6 +1,11 @@
 var urlRoot1 = "http://localhost:8080/createFlight";
 var urlRoot2 = "http://localhost:8080/findAirline";
 var urlRoot3 = "http://localhost:8080/saveChangesAirline";
+var urlRoot4 = "http://localhost:8080/api/editUser";
+var urlRoot5 = "http://localhost:8080/api/getLogged";
+
+var TOKEN_KEY = 'jwtToken';
+getLogged();
 
 
 findAirline();
@@ -44,53 +49,53 @@ function findAirline() {
 };
 
 $(document)
-		.on(
-				"submit",
-				"#form2",
-				function(e) {
-					e.preventDefault();
-					var flightNumberRegister = document
-							.getElementById("flightNumberRegister").value;
-					var startDestinationRegister = document
-							.getElementById("startDestinationRegister").value;
-					var finalDestinationRegister = document
-							.getElementById("finalDestinationRegister").value;
-					var costOfFlight = document.getElementById("costOfFlight").value;
-					var dateOfFlight = document.getElementById("dateOfFlight").value;
-					var dateOfArrival=document.getElementById("dateOfArrival").value;
-					var length=document.getElementById("lengthOfFlight").value;
+.on(
+		"submit",
+		"#form2",
+		function(e) {
+			e.preventDefault();
+			var flightNumberRegister = document
+					.getElementById("flightNumberRegister").value;
+			var startDestinationRegister = document
+					.getElementById("startDestinationRegister").value;
+			var finalDestinationRegister = document
+					.getElementById("finalDestinationRegister").value;
+			var costOfFlight = document.getElementById("costOfFlight").value;
+			var dateOfFlight = document.getElementById("dateOfFlight").value;
+			var dateOfArrival=document.getElementById("dateOfArrival").value;
+			var length=document.getElementById("lengthOfFlight").value;
+			var numOfSeats=document.getElementById("numberOfSeats").value;
+			if (flightNumberRegister == ""
+					|| startDestinationRegister == ""
+					|| finalDestinationRegister == ""
+					|| costOfFlight == "" || dateOfFlight == "",dateOfArrival==""
+						|| length=="" || numOfSeats=="" || isNaN(length) || isNaN(numOfSeats)) {
+				alert('At least one field is blank, please fill it up with proper information!');
+			} else {
+				$
+						.ajax({
+							type : 'POST',
+							url : urlRoot1,
+							contentType : 'application/json',
+							dataType : "json",
+							data : createFlightToJSON(
+									flightNumberRegister,
+									startDestinationRegister,
+									finalDestinationRegister,
+									costOfFlight, dateOfFlight,dateOfArrival,length,numOfSeats),
+							success : function(data) {
+								alert("Successful registration, congratulations!");
+							},
+							error : function(jqXHR, textStatus,
+									errorThrown) {
+								alert(jqXHR.status);
+								alert(textStatus);
+								alert(errorThrown);
 
-					if (flightNumberRegister == ""
-							|| startDestinationRegister == ""
-							|| finalDestinationRegister == ""
-							|| costOfFlight == "" || dateOfFlight == "",dateOfArrival==""
-								|| length=="") {
-						alert('At least one field is blank, please fill it up with proper information!');
-					} else {
-						$
-								.ajax({
-									type : 'POST',
-									url : urlRoot1,
-									contentType : 'application/json',
-									dataType : "json",
-									data : createFlightToJSON(
-											flightNumberRegister,
-											startDestinationRegister,
-											finalDestinationRegister,
-											costOfFlight, dateOfFlight,dateOfArrival,length),
-									success : function(data) {
-										alert("Successful registration, congratulations!");
-									},
-									error : function(jqXHR, textStatus,
-											errorThrown) {
-										alert(jqXHR.status);
-										alert(textStatus);
-										alert(errorThrown);
-
-									}
-								})
-					}
-				});
+							}
+						})
+			}
+		});
 
 $(document)
 		.on(
@@ -145,10 +150,95 @@ $(document)
 
 				});
 
-$(document).on()
+function getLogged() {
+	var token = getJwtToken(TOKEN_KEY);
+	if (token) {
+		$
+				.ajax({
+					type : 'GET',
+					url : urlRoot5,
+					headers : createAuthorizationTokenHeader(TOKEN_KEY),
+					dataType : "json",
+					success : function(data) {
+						if (data == null) {
+							alert('Error while finding loged one!');
+						} else {
+							document.getElementById("airlineAdminUsernameEdit").value = data.username;
+							document.getElementById("airlineAdminFirstNameEdit").value = data.firstName;
+							document.getElementById("airlineAdminLastNameEdit").value = data.lastName;
+							document.getElementById("airlineAdminEmailEdit").value = data.email;
+							document
+									.getElementById("airlineAdminPhoneNumberEdit").value = data.phoneNumber;
+						}
+					},
+					error : function(jqXHR, textStatus, errorThrown) {
+						alert(jqXHR.status);
+						alert(textStatus);
+						alert(errorThrown);
+					}
+
+				})
+	}
+}
+
+$(document)
+		.on(
+				"submit",
+				"#form4",
+				function(e) {
+					e.preventDefault();
+					var username = document
+							.getElementById("airlineAdminUsernameEdit").value;
+					var password1 = document
+							.getElementById("airlineAdminPassword1Edit").value;
+					var password2 = document
+							.getElementById("airlineAdminPassword2Edit").value;
+					var firstName = document
+							.getElementById("airlineAdminFirstNameEdit").value;
+					var lastName = document
+							.getElementById("airlineAdminLastNameEdit").value;
+					var email = document
+							.getElementById("airlineAdminEmailEdit").value;
+					var phoneNumber = document
+							.getElementById("airlineAdminPhoneNumberEdit").value;
+					if (username == "" || password1 == "" || password2 == ""
+							|| firstName == "" || lastName == "" || email == ""
+							|| phoneNumber == "") {
+						alert('At least one field is blank, please fill it up with proper information!');
+					} else if (password1 != password2) {
+						alert("Password must match, try again!");
+					} else {
+						$
+								.ajax({
+									type : 'PUT',
+									url : urlRoot4,
+									headers : createAuthorizationTokenHeader(TOKEN_KEY),
+									contentType : 'application/json',
+									dataType : "json",
+									data : airlineAdminEditToJSON(username,
+											password1, firstName, lastName,
+											email, phoneNumber),
+									success : function(data) {
+										if (data) {
+											alert("Successful editing, congratulations!");
+										} else {
+											alert("Error while editing!");
+										}
+
+									},
+									error : function(jqXHR, textStatus,
+											errorThrown) {
+										alert(jqXHR.status);
+										alert(textStatus);
+										alert(errorThrown);
+
+									}
+								})
+					}
+				});
 
 function createFlightToJSON(flightNumberRegister, startDestinationRegister,
-		finalDestinationRegister, costOfFlight, dateOfFlight,dateOfArrival,length) {
+		finalDestinationRegister, costOfFlight, dateOfFlight,dateOfArrival,length,numOfSeats) {
 	return JSON.stringify({
 		"flightNumberRegister" : flightNumberRegister,
 		"startDestinationRegister" : startDestinationRegister,
@@ -156,9 +246,11 @@ function createFlightToJSON(flightNumberRegister, startDestinationRegister,
 		"costOfFlight" : costOfFlight,
 		"dateOfFlight" : dateOfFlight,
 		"dateOfArrival":dateOfArrival,
-		"length":length
+		"length":length,
+		"numOfSeats":numOfSeats,
 	})
 }
+
 
 function airlineToJson(id, name, address, promotionalDescription, destinations,
 		flights, quickBookingTickets, airplanes, airlineCustomerServices) {
@@ -174,5 +266,17 @@ function airlineToJson(id, name, address, promotionalDescription, destinations,
 		"airlineCustomerServices" : airlineCustomerServices,
 
 	})
+}
 
+
+function airlineAdminEditToJSON(username, password1, firstName, lastName,
+		email, phoneNumber) {
+	return JSON.stringify({
+		"username" : username,
+		"password" : password1,
+		"firstName" : firstName,
+		"lastName" : lastName,
+		"email" : email,
+		"phoneNumber" : phoneNumber,
+	})
 }

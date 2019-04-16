@@ -1,6 +1,23 @@
 var urlShowHotels = "http://localhost:8080/showHotels";
 var urlShowRentacars = "http://localhost:8080/showRentACars"
 var urlFindRentacars = "http://localhost:8080/findRentacars";
+var urlRoot="http://localhost:8080/getAllFlights";
+var urlRoot2="http://localhost:8080/searchFlight"
+var urlRoot3="http://localhost:8080/getAllDestinations"
+var urlRoot4 = "http://localhost:8080/api/editUser";
+var urlRoot5 = "http://localhost:8080/api/getLogged";
+
+var TOKEN_KEY = 'jwtToken';
+getLogged();
+
+getAllFlights()
+getAllDestinations()
+
+$(document).on('click', '#logoutClicked', function(e) {
+	e.preventDefault();
+	window.location.href = "index.html";
+})
+
 
 function showHotels(criteria){
 	console.log('showing hotels');
@@ -152,6 +169,265 @@ function findRentacars(){
 	
 }
 
+
+$(document).on('click','.tablinks',function(e){
+	e.preventDefault();
+	$("#foundFlights").empty();
+})
+
+function getAllFlights(){
+	$.ajax({
+		type: 'GET',
+		url: urlRoot,
+		dataType: "json",
+		success: function(data){
+			if(data==null){
+				
+			}else{
+				$("#foundFlights").empty();
+				var list=data==null?[]
+				: (data instanceof Array? data: [data]);
+				if(list.length>0){
+					var tableBody=$('<tbody></tbody>')
+					var i=0
+					$.each(list,function(index,flight){
+						var tr=$('<tr></tr>')
+						tr.append('<th scope="row">'+(++i)+'</th><td>'+flight.number+'</td><td>'+flight.startDestination.name+'</td><td>'+flight.finalDestination.name+'</td><td>'+flight.cost+'</td><td>'+flight.dateOfStart+'</td><td>'+flight.dateOfEnd+'</td><td>'+flight.lengthOfFlight+'</td><td><button id="chooseFlightButton" name="'+flight.id+'" align="center">Choose</button></td>')
+						tableBody.append(tr)
+					})
+					$(".table1").append(tableBody)
+				}
+			}
+		},
+		error: function(){
+			
+		}
+	})
+}
+
+function getAllDestinations(){
+	$.ajax({
+		type: 'GET',
+		url: urlRoot3,
+		dataType: "json",
+		success: function(data){
+			var list=data==null?[]
+			: (data instanceof Array? data: [data]);
+			if(data==null){
+				
+			}else{
+				$("#foundFlights").empty();
+				var list=data==null?[]
+				: (data instanceof Array? data: [data]);
+				if(list.length>0){
+					var i=0
+					$.each(list,function(index,destination){
+						var option=$('<option name="'+destination.id+'">'+destination.name+'</option>')
+						$("#startDestination").append(option);
+					})
+					$.each(list,function(index,destination){
+						var option=$('<option name="'+destination.id+'">'+destination.name+'</option>')
+						$("#finalDestination").append(option);
+					})
+					
+				}
+				$('#searchAndFilterFlight').append("<h2 align='center'>Filter </h2>");
+				$('#searchAndFilterFlight').append("<p align='center'><b>Price:</b>   From <input type='text' id='from' style='width: 50px'>  to  <input type='text' id='to' style='width: 50px'></p>");
+				$('#searchAndFilterFlight').append("<p align='center'><b>Length:</b>  From <input type='text' id='fromL' style='width: 50px'>  to  <input type='text' id='toL' style='width: 50px'></p>");
+				$('#searchAndFilterFlight').append("<p align='center'><b>Airline:</b> Name <input type='text' id='nameL' style='width: 50px'></p>");
+				
+			}
+		},
+		error: function(){
+			
+		}
+	})
+	
+}
+
+function searchFlights(){
+	
+}
+
+$(document).on('click','#searchFlightButton',function(e){
+	e.preventDefault();
+	$("#foundFlights").remove();
+	var startDestination=document.getElementById("startDestination").value;
+	var finalDestination=document.getElementById("finalDestination").value;
+	var dateOfFlight=document.getElementById("dateOfFlight").value;
+	var dateOfArrival=document.getElementById("dateOfReturn").value;
+	var startID = $('option:selected', "#startDestination").attr('name');
+	var finalID=$('option:selected',"#finalDestination").attr('name');
+	var from=document.getElementById("from").value;
+	var to=document.getElementById("to").value;
+	var fromL=document.getElementById("fromL").value;
+	var toL=document.getElementById("toL").value;
+	var name=document.getElementById("nameL").value;
+	if(startDestination=="" || finalDestination=="" || dateOfFlight=="" || dateOfArrival==""){
+		alert("All fields must be filled in.")
+	}else{
+	$.ajax({
+		type: 'POST',
+		url: urlRoot2,
+		contentType : 'application/json',
+		dataType : "json",
+		data : searchToJson(startID,finalID,dateOfFlight,dateOfArrival,from,to,fromL,toL,name),
+		success: function(data){
+			var list=data==null?[]
+			: (data instanceof Array? data: [data]);
+			if(data==null){
+				
+			}else{
+				var list=data==null?[]
+				: (data instanceof Array? data: [data]);
+				if(list.length>0){
+						$("#foundFlights").empty();
+						var table=$('<table id="foundFlights" class="table table-hover" border="1" bordercolor="black" font-size></table>');
+						table.append('<tr><td>#</td><td>Flight number</td><td>Start destination</td><td>Final destination</td><td>Cost of flight</td><td>Date of flight</td><td>Date of arrival</td><td>Length</td></tr>')
+						var i=0
+						$.each(list,function(index,flight){
+							table.append('<tr><td>'+(++i)+'</td><td>'+flight.number+'</td><td>'+flight.startDestination.name+'</td><td>'+flight.finalDestination.name+'</td><td>'+flight.cost+'</td><td>'+flight.dateOfStart+'</td><td>'+flight.dateOfEnd+'</td><td>'+flight.lengthOfFlight+'</td></tr>')
+						})
+						$("#searchAndFilterFlight").append('<p align="center" style="font-size:35px;">Found flights:</p>')
+						$("#searchAndFilterFlight").append(table);
+			
+		}
+			}
+		},
+		error : function(jqXHR, textStatus,
+				errorThrown) {
+			alert(jqXHR.status);
+			alert(textStatus);
+			alert(errorThrown);
+
+		}
+	})
+	
+	}
+	
+})
+
+function getLogged() {
+	var token = getJwtToken(TOKEN_KEY);
+	if (token) {
+		$
+				.ajax({
+					type : 'GET',
+					url : urlRoot5,
+					headers : createAuthorizationTokenHeader(TOKEN_KEY),
+					dataType : "json",
+					success : function(data) {
+						if (data == null) {
+							alert('Error while finding loged one!');
+						} else {
+							document.getElementById("userUsernameEdit").value = data.username;
+							document.getElementById("userFirstNameEdit").value = data.firstName;
+							document.getElementById("userLastNameEdit").value = data.lastName;
+							document.getElementById("userEmailEdit").value = data.email;
+							document
+									.getElementById("userPhoneNumberEdit").value = data.phoneNumber;
+						}
+					},
+					error : function(jqXHR, textStatus, errorThrown) {
+						alert(jqXHR.status);
+						alert(textStatus);
+						alert(errorThrown);
+					}
+
+				})
+	}
+}
+
+$(document)
+		.on(
+				"submit",
+				"#form4",
+				function(e) {
+					e.preventDefault();
+					var username = document
+							.getElementById("userUsernameEdit").value;
+					var password1 = document
+							.getElementById("userPassword1Edit").value;
+					var password2 = document
+							.getElementById("userPassword2Edit").value;
+					var firstName = document
+							.getElementById("userFirstNameEdit").value;
+					var lastName = document
+							.getElementById("userLastNameEdit").value;
+					var email = document
+							.getElementById("userEmailEdit").value;
+					var phoneNumber = document
+							.getElementById("userPhoneNumberEdit").value;
+					if (username == "" || password1 == "" || password2 == ""
+							|| firstName == "" || lastName == "" || email == ""
+							|| phoneNumber == "") {
+						alert('At least one field is blank, please fill it up with proper information!');
+					} else if (password1 != password2) {
+						alert("Password must match, try again!");
+					} else {
+						$
+								.ajax({
+									type : 'PUT',
+									url : urlRoot4,
+									headers : createAuthorizationTokenHeader(TOKEN_KEY),
+									contentType : 'application/json',
+									dataType : "json",
+									data : userEditToJSON(username,
+											password1, firstName, lastName,
+											email, phoneNumber),
+									success : function(data) {
+										if (data) {
+											alert("Successful editing, congratulations!");
+										} else {
+											alert("Error while editing!");
+										}
+
+									},
+									error : function(jqXHR, textStatus,
+											errorThrown) {
+										alert(jqXHR.status);
+										alert(textStatus);
+										alert(errorThrown);
+
+									}
+								})
+					}
+				});
+
+
+
+$(document).on('click','#chooseFlightButton',function(e){
+	e.preventDefault();
+	console.log($(this).attr('name'));
+})
+
+function searchToJson(startDestination,finalDestination,dateOfFlight,dateOfArrival,from,to,fromL,toL,name){
+	return JSON.stringify({
+		"startDestination":startDestination,
+		"finalDestination":finalDestination,
+		"startDate" : dateOfFlight,
+		"endDate":dateOfArrival,
+		"from" : from,
+		"to" : to,
+		"fromL": fromL,
+		"toL": toL,
+		"name":name
+	})
+}
+
+
+function userEditToJSON(username, password1, firstName, lastName,
+		email, phoneNumber) {
+	return JSON.stringify({
+		"username" : username,
+		"password" : password1,
+		"firstName" : firstName,
+		"lastName" : lastName,
+		"email" : email,
+		"phoneNumber" : phoneNumber,
+	})
+}
+
 function rentacarReservation(id){
 	console.log('Rentacar reservation called.');
 }
@@ -234,3 +510,4 @@ $(document).on('click','.chooseRentacar',function(e){
     rentacarReservation(this.id);
    
 });
+
