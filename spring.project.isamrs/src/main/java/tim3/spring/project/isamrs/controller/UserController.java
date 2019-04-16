@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,6 +37,23 @@ public class UserController {
 		UserDTO retVal = new UserDTO(user.getUsername(), "", user.getFirstName(), user.getLastName(), user.getEmail(),
 				user.getPhoneNumber());
 		return new ResponseEntity<UserDTO>(retVal, HttpStatus.OK);
+	}
+	
+	@RequestMapping(method = RequestMethod.PUT, value = "/editUser", consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Boolean> editUser(@RequestBody UserDTO userEdit) {
+		User user = (User) this.userDetailsService.loadUserByUsername(
+				((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername());
+		
+		user.setPassword(this.userDetailsService.encodePassword(userEdit.getPassword()));
+		user.setFirstName(userEdit.getFirstName());
+		user.setLastName(userEdit.getLastName());
+		user.setEmail(userEdit.getEmail());
+		user.setPhoneNumber(userEdit.getPhoneNumber());	
+		
+		if (this.userDetailsService.saveUser(user)) {
+			return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+		}
+		return new ResponseEntity<Boolean>(false, HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/user/{userId}")

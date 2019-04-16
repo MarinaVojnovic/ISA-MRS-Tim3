@@ -6,6 +6,7 @@ var urlRoot5 = "http://localhost:8080/saveEditedRoom";
 var urlRoot6 = "http://localhost:8080/findHotel";
 var urlRoot7 = "http://localhost:8080/saveChangesHotel";
 var urlRoot8 = "http://localhost:8080/api/getLogged";
+var urlRoot9 = "http://localhost:8080/api/editUser";
 
 var TOKEN_KEY = 'jwtToken';
 
@@ -47,6 +48,62 @@ function getLogged() {
 				})
 	}
 }
+
+$(document)
+		.on(
+				"submit",
+				"#form4",
+				function(e) {
+					e.preventDefault();
+					var username = document
+							.getElementById("hotelAdminUsernameEdit").value;
+					var password1 = document
+							.getElementById("hotelAdminPassword1Edit").value;
+					var password2 = document
+							.getElementById("hotelAdminPassword2Edit").value;
+					var firstName = document
+							.getElementById("hotelAdminFirstNameEdit").value;
+					var lastName = document
+							.getElementById("hotelAdminLastNameEdit").value;
+					var email = document
+							.getElementById("hotelAdminEmailEdit").value;
+					var phoneNumber = document
+							.getElementById("hotelAdminPhoneNumberEdit").value;
+					if (username == "" || password1 == "" || password2 == ""
+							|| firstName == "" || lastName == "" || email == ""
+							|| phoneNumber == "") {
+						alert('At least one field is blank, please fill it up with proper information!');
+					} else if (password1 != password2) {
+						alert("Password must match, try again!");
+					} else {
+						$
+								.ajax({
+									type : 'PUT',
+									url : urlRoot9,
+									headers : createAuthorizationTokenHeader(TOKEN_KEY),
+									contentType : 'application/json',
+									dataType : "json",
+									data : HotelAdminEditToJSON(username,
+											password1, firstName, lastName,
+											email, phoneNumber),
+									success : function(data) {
+										if (data) {
+											alert("Successful editing, congratulations!");
+										} else {
+											alert("Error while editing!");
+										}
+
+									},
+									error : function(jqXHR, textStatus,
+											errorThrown) {
+										alert(jqXHR.status);
+										alert(textStatus);
+										alert(errorThrown);
+
+									}
+								})
+					}
+				});
 
 $(document).on(
 		"submit",
@@ -395,5 +452,17 @@ function hotelToJson(id, name, address, promotionalDescription,
 function loginToJSON(token) {
 	return JSON.stringify({
 		"token" : token,
+	})
+}
+
+function HotelAdminEditToJSON(username, password1, firstName, lastName,
+		email, phoneNumber) {
+	return JSON.stringify({
+		"username" : username,
+		"password" : password1,
+		"firstName" : firstName,
+		"lastName" : lastName,
+		"email" : email,
+		"phoneNumber" : phoneNumber,
 	})
 }
