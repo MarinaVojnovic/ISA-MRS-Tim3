@@ -32,14 +32,18 @@ function login() {
 				alert(data.message);
 			} else {
 				setJwtToken(TOKEN_KEY, data.accessToken);
+				console.log(data.userRoleName)
 				if (data.userRoleName == "ROLE_HOTEL_ADMIN") {
 					window.location.href = "hoteladmin.html";
 				} else if (data.userRoleName == "ROLE_AIRLINE_ADMIN") {
 					window.location.href = "airlineadmin.html";
 				} else if (data.userRoleName == "ROLE_RENTACAR_ADMIN") {
-					window.location.href = "rentacaradmin.html";
-				} else {
-					window.location.href = "sysadmin.html";
+					window.location.href="rentacaradmin.html"
+				} 
+				else if (data.userRoleName=="ROLE_USER"){
+					window.location.href = "registeredUser.html";
+				}else{
+					window.location.href="sysadmin.html"
 				}
 			}
 		},

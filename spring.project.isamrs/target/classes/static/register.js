@@ -1,6 +1,8 @@
 var urlRegisterUser = "http://localhost:8080/registerUser";
 var urlRootSendMail="http://localhost:8080/sendEmail";
 
+var urlUserRegistration = "http://localhost:8080/auth/registerUser"; 
+
 $(document).ready(function () {
 
     $("#registerForm").submit(function (event) {
@@ -17,19 +19,21 @@ $(document).ready(function () {
 function fire_submit() {
 
     console.log('fire submit called');
+ 
+    
+    var username=$("#username").val();
+    var password = $("#passwordOne").val();
+    var passwordTwo = $("#passwordTwo").val();
     var name = $("#name").val();
     var surname = $("#surname").val();
     var email = $("#emailField").val();
-    var password = $("#passwordOne").val();
-    var passwordTwo = $("#passwordTwo").val();
-    var username=$("#username").val();
-    var city=$("#city").val();
     var phone=$("#phone").val();
+    
     
     console.log('phone: '+phone);
     
     
-    if (name=="" || surname=="" || email=="" || password=="" || username=="" || city=="" || phone==""){
+    if (name=="" || surname=="" || email=="" || password=="" || username=="" || phone==""){
     	alert('None of the fields is allowed to be empty');
     }
     
@@ -41,30 +45,32 @@ function fire_submit() {
 
     	    $.ajax({
     	        type: "POST",
+    	        url: urlUserRegistration,
     	        contentType: "application/json",
-    	        url: urlRegisterUser,
-    	        data: userToJson(name,surname,email,username, password, city, phone),
+    	        data: createUserToJSON(username, password, name, surname, email, phone),
     	        dataType: 'json',
     	        success: function (data) {
-    	        	if (data==null){
-    	        		 $("#register").prop("disabled", false);
-    	        		alert('Username already exists!');
-    	        		
-    	        	}else{
-    	        		alert('You have successfully registered. Please go to your email and verify registration in order to be able to use funcionalites of system.');
-        	        	console.log('user successfully registered');
-        	        	sendEMail(email);
-    	        	}
-    	        
+    	        	if (data.message != undefined) {
+						alert(data.message);
+					} else {
+						if (data) {
+							alert("Successful registration, congratulations! Please go to email to verify your registration!");
+							sendEMail(email);
+						} else {
+							alert("Error while registrating!");
+						}
+					}	
+    	        	
     	        	
     	        },
-    	        error: function (e) {
-    	        	 
-    	             console.log("ERROR : ");
-    	            
+    	        error : function(jqXHR, textStatus,
+						errorThrown) {
+					alert(jqXHR.status);
+					alert(textStatus);
+					alert(errorThrown);
 
-    	        }
-    	    });
+				}
+    	    })
     	    
     	   
     }
@@ -101,16 +107,15 @@ function mailToJson(emailAddress){
 		"body": "http://localhost:8080/login.html"
 	})
 }
-function userToJson(name, surname, email, username, password, city, phone) {
+
+function createUserToJSON(username, password1, firstName, lastName,
+		email, phoneNumber) {
 	return JSON.stringify({
-		"name" : name,
-		"surname" : surname,
+		"username" : username,
+		"password" : password1,
+		"firstName" : firstName,
+		"lastName" : lastName,
 		"email" : email,
-		"username": username,
-		"password":password,
-		"city": city,
-		"phone": phone,
-		"firstTime": true
+		"phoneNumber" : phoneNumber,
 	})
 }
-
