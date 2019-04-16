@@ -69,7 +69,7 @@ $(document)
 					|| startDestinationRegister == ""
 					|| finalDestinationRegister == ""
 					|| costOfFlight == "" || dateOfFlight == "",dateOfArrival==""
-						|| length=="" || numOfSeats=="" || isNaN(length) || isNaN(numOfSeats)) {
+						|| length=="" || numOfSeats=="" || isNaN(length) || isNaN(numOfSeats) || numOfSeats<=0) {
 				alert('At least one field is blank, please fill it up with proper information!');
 			} else {
 				$
