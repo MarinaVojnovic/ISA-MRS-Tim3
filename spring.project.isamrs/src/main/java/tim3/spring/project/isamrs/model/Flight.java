@@ -61,8 +61,8 @@ public class Flight {
 	Airline airline;
 	
 	@JsonIgnore
-	@OneToMany(mappedBy = "flight", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
-	private Set<Seat> seats = new HashSet<Seat>();
+	@OneToMany(mappedBy = "flight", cascade = CascadeType.ALL)
+	private Set<Seat> seats;
 
 	public Flight(FlightDTO flightDTO) {
 		super();
