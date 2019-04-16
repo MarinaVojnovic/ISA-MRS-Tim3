@@ -5,58 +5,89 @@ var urlRoot4 = "http://localhost:8080/findRoom";
 var urlRoot5 = "http://localhost:8080/saveEditedRoom";
 var urlRoot6 = "http://localhost:8080/findHotel";
 var urlRoot7 = "http://localhost:8080/saveChangesHotel";
+var urlRoot8 = "http://localhost:8080/api/getLogged";
+
+var TOKEN_KEY = 'jwtToken';
 
 findHotel();
+getLogged();
 
 $(document).on('click', '#logoutClicked', function(e) {
 	e.preventDefault();
 	window.location.href = "index.html";
 })
 
-$(document)
-		.on(
-				"submit",
-				"#form3",
-				function(e) {
-					e.preventDefault();
-					var name = document.getElementById("hotelNameEdit").value;
-					var address = document
-							.getElementById("hotelAddressEdit").value;
-					var promotionalDescription = document
-							.getElementById("hotelPromotionalDescriptionEdit").value;
-
-					var hotelCustomerServices = document
-							.getElementById("hotelCustomerServicesEdit").value;
-					var rooms = document.getElementById("hotelRoomsEdit").value;
-
-					var id = document.getElementById("hotelIdEdit").value;
-
-					if (name == "" || address == ""
-							|| promotionalDescription == "") {
-						alert('None of the fields is allowed to be empty!');
-					} else {
-
-						$
-								.ajax({
-									type : 'PUT',
-									url : urlRoot7,
-									data : hotelToJson(id, name, address,
-											promotionalDescription,
-											hotelCustomerServices, rooms),
-									dataType : "json",
-									contentType : 'application/json',
-									success : function(data) {
-										alert("Successful editing, congratulations!");
-
-									},
-									error : function(XMLHttpRequest) {
-										alert("Error while changing profile information ");
-									}
-
-								})
+function getLogged() {
+	var token = getJwtToken(TOKEN_KEY);
+	if (token) {
+		$
+				.ajax({
+					type : 'GET',
+					url : urlRoot8,
+					headers : createAuthorizationTokenHeader(TOKEN_KEY),
+					dataType : "json",
+					success : function(data) {
+						if (data == null) {
+							alert('Error while finding loged one!');
+						} else {
+							document.getElementById("hotelAdminUsernameEdit").value = data.username;
+							document.getElementById("hotelAdminFirstNameEdit").value = data.firstName;
+							document.getElementById("hotelAdminLastNameEdit").value = data.lastName;
+							document.getElementById("hotelAdminEmailEdit").value = data.email;
+							document
+									.getElementById("hotelAdminPhoneNumberEdit").value = data.phoneNumber;
+						}
+					},
+					error : function(jqXHR, textStatus, errorThrown) {
+						alert(jqXHR.status);
+						alert(textStatus);
+						alert(errorThrown);
 					}
 
-				});
+				})
+	}
+}
+
+$(document).on(
+		"submit",
+		"#form3",
+		function(e) {
+			e.preventDefault();
+			var name = document.getElementById("hotelNameEdit").value;
+			var address = document.getElementById("hotelAddressEdit").value;
+			var promotionalDescription = document
+					.getElementById("hotelPromotionalDescriptionEdit").value;
+
+			var hotelCustomerServices = document
+					.getElementById("hotelCustomerServicesEdit").value;
+			var rooms = document.getElementById("hotelRoomsEdit").value;
+
+			var id = document.getElementById("hotelIdEdit").value;
+
+			if (name == "" || address == "" || promotionalDescription == "") {
+				alert('None of the fields is allowed to be empty!');
+			} else {
+
+				$.ajax({
+					type : 'PUT',
+					url : urlRoot7,
+					data : hotelToJson(id, name, address,
+							promotionalDescription, hotelCustomerServices,
+							rooms),
+					dataType : "json",
+					contentType : 'application/json',
+					success : function(data) {
+						alert("Successful editing, congratulations!");
+
+					},
+					error : function(XMLHttpRequest) {
+						alert("Error while changing profile information ");
+					}
+
+				})
+			}
+
+		});
 
 function findHotel() {
 	$
@@ -255,13 +286,13 @@ function showRooms(type) {
 			})
 }
 
-$(document).on("click", "#removeRoomsButton", function(e){
-	
+$(document).on("click", "#removeRoomsButton", function(e) {
+
 	showRooms("forDelete");
 })
 
-$(document).on("click", "#editRoomsButton", function(e){
-	
+$(document).on("click", "#editRoomsButton", function(e) {
+
 	showRooms("forEdit");
 })
 
@@ -358,5 +389,11 @@ function hotelToJson(id, name, address, promotionalDescription,
 		"hotelCustomerServices" : hotelCustomerServices,
 		"rooms" : rooms,
 
+	})
+}
+
+function loginToJSON(token) {
+	return JSON.stringify({
+		"token" : token,
 	})
 }
