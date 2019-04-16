@@ -1,5 +1,8 @@
 package tim3.spring.project.isamrs.dto;
+import tim3.spring.project.isamrs.model.Seat;
 
+import java.util.HashSet;
+import java.util.Set;
 
 public class FlightDTO {
 	String flightNumberRegister;
@@ -9,6 +12,8 @@ public class FlightDTO {
 	String dateOfFlight;
 	String dateOfArrival;
 	int length;
+	int numOfSeats;
+
 	public String getFlightNumberRegister() {
 		return flightNumberRegister;
 	}
@@ -48,6 +53,7 @@ public class FlightDTO {
 	public int getLength() {
 		return length;
 	}
+
 	public void setLength(int length) {
 		this.length = length;
 	}
@@ -55,7 +61,7 @@ public class FlightDTO {
 		super();
 	}
 	public FlightDTO(String flightNumberRegister, String startDestinationRegister, String finalDestinationRegister,
-			double costOfFlight, String dateOfFlight, String dateOfArrival, int length) {
+			double costOfFlight, String dateOfFlight, String dateOfArrival, int length, int numOfSeats) {
 		super();
 		this.flightNumberRegister = flightNumberRegister;
 		this.startDestinationRegister = startDestinationRegister;
@@ -64,10 +70,13 @@ public class FlightDTO {
 		this.dateOfFlight = dateOfFlight;
 		this.dateOfArrival = dateOfArrival;
 		this.length = length;
+		this.numOfSeats = numOfSeats;
 	}
-
+	public int getNumOfSeats() {
+		return numOfSeats;
+	}
+	public void setNumOfSeats(int numOfSeats) {
+		this.numOfSeats = numOfSeats;
+	}
 	
-
-	
-
 }
