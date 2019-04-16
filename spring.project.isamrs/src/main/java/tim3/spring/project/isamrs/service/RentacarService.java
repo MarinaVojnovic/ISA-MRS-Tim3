@@ -16,4 +16,8 @@ public interface RentacarService {
 	public void delete(long id);
 	
 	public Rentacar save(Rentacar rentacar);
+	
+    public List<Rentacar> findByName(String name);
+	
+	public List<Rentacar> findByAddress(String address);
 }

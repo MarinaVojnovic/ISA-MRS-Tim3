@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.hibernate.usertype.UserType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +27,7 @@ import tim3.spring.project.isamrs.dto.UserDTO;
 import tim3.spring.project.isamrs.model.AirlineAdmin;
 import tim3.spring.project.isamrs.model.Authority;
 import tim3.spring.project.isamrs.model.HotelAdmin;
+import tim3.spring.project.isamrs.model.RegularUser;
 import tim3.spring.project.isamrs.model.RentacarAdmin;
 import tim3.spring.project.isamrs.model.User;
 import tim3.spring.project.isamrs.model.UserRoleName;
@@ -142,7 +144,7 @@ public class AuthenticationController {
 			return new ResponseEntity<MessageDTO>(new MessageDTO("Username is already taken.", "Error"), HttpStatus.OK);
 		}
 
-		User newUser = new User();
+		RegularUser newUser = new RegularUser();
 		newUser.setUsername(user.getUsername());
 		newUser.setId(null);
 		newUser.setEmail(user.getEmail());
@@ -226,7 +228,10 @@ public class AuthenticationController {
 			userType = UserRoleName.ROLE_RENTACAR_ADMIN;
 		} else if (user instanceof AirlineAdmin) {
 			userType = UserRoleName.ROLE_AIRLINE_ADMIN;
-		} else {
+		} else if (user instanceof RegularUser){
+			System.out.println("USLO U REGULAR USER");
+			userType = UserRoleName.ROLE_USER;
+		}else {
 			userType = UserRoleName.ROLE_SYSTEM_ADMIN;
 		}
 
