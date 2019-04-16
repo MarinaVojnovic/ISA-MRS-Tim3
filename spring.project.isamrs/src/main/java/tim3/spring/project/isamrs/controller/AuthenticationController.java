@@ -32,7 +32,6 @@ import tim3.spring.project.isamrs.model.UserRoleName;
 import tim3.spring.project.isamrs.model.UserTokenState;
 import tim3.spring.project.isamrs.security.TokenHelper;
 import tim3.spring.project.isamrs.security.auth.JwtAuthenticationRequest;
-import tim3.spring.project.isamrs.service.UserService;
 import tim3.spring.project.isamrs.service.impl.CustomUserDetailsService;
 
 @RestController
@@ -45,9 +44,6 @@ public class AuthenticationController {
 
 	@Autowired
 	private CustomUserDetailsService userDetailsService;
-
-	@Autowired
-	private UserService userService;
 
 	@RequestMapping(value = "auth/registerAirlineAdmin", method = RequestMethod.POST)
 	public ResponseEntity<?> registerAirlineAdmin(@RequestBody UserDTO user) {
