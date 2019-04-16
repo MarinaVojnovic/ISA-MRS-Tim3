@@ -1,7 +1,5 @@
 # ISA-MRS-Tim3
 
--- First Sprint
-
 To execute this program just start it as "Spring Boot App" and then go to "http://localhost:8080" 
 and you will enter our welcome page where you can see further instructions.
 For database, this sprint we used local database so to be able to use this program you need to
