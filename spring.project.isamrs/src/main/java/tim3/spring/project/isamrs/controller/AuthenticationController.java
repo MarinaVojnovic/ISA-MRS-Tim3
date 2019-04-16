@@ -136,6 +136,35 @@ public class AuthenticationController {
 		return new ResponseEntity<Boolean>(false, HttpStatus.OK);
 	}
 
+	@RequestMapping(value = "auth/registerUser", method = RequestMethod.POST)
+	public ResponseEntity<?> registerUser(@RequestBody UserDTO user) {
+		if (this.userDetailsService.usernameTaken(user.getUsername()) == true) {
+			return new ResponseEntity<MessageDTO>(new MessageDTO("Username is already taken.", "Error"), HttpStatus.OK);
+		}
+
+		User newUser = new User();
+		newUser.setUsername(user.getUsername());
+		newUser.setId(null);
+		newUser.setEmail(user.getEmail());
+		newUser.setPassword(this.userDetailsService.encodePassword(user.getPassword()));
+		List<Authority> authorities = new ArrayList<Authority>();
+		Authority a = new Authority();
+		a.setName(UserRoleName.ROLE_USER);
+		authorities.add(a);
+		newUser.setAuthorities(authorities);
+		newUser.setEnabled(true);
+		newUser.setFirstName(user.getFirstName());
+		newUser.setLastName(user.getLastName());
+		newUser.setLastPasswordResetDate(new Timestamp(System.currentTimeMillis()));
+		newUser.setPhoneNumber(user.getPhoneNumber());
+		
+
+		if (this.userDetailsService.saveUser(newUser)) {
+			return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+		}
+		return new ResponseEntity<Boolean>(false, HttpStatus.OK);
+	}
+	
 	@RequestMapping(value = "auth/registerSystemAdmin", method = RequestMethod.POST)
 	public ResponseEntity<?> registerSystemAdmin(@RequestBody UserDTO user) {
 		if (this.userDetailsService.usernameTaken(user.getUsername()) == true) {
