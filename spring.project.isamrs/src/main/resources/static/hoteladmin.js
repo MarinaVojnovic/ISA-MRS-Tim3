@@ -65,8 +65,7 @@ $(document)
 							.getElementById("hotelAdminFirstNameEdit").value;
 					var lastName = document
 							.getElementById("hotelAdminLastNameEdit").value;
-					var email = document
-							.getElementById("hotelAdminEmailEdit").value;
+					var email = document.getElementById("hotelAdminEmailEdit").value;
 					var phoneNumber = document
 							.getElementById("hotelAdminPhoneNumberEdit").value;
 					if (username == "" || password1 == "" || password2 == ""
@@ -87,11 +86,8 @@ $(document)
 											password1, firstName, lastName,
 											email, phoneNumber),
 									success : function(data) {
-										if (data) {
-											alert("Successful editing, congratulations!");
-										} else {
-											alert("Error while editing!");
-										}
+										setJwtToken(TOKEN_KEY, data.accessToken);
+										alert("Successful editing, congratulations!");
 
 									},
 									error : function(jqXHR, textStatus,
@@ -455,8 +451,8 @@ function loginToJSON(token) {
 	})
 }
 
-function HotelAdminEditToJSON(username, password1, firstName, lastName,
-		email, phoneNumber) {
+function HotelAdminEditToJSON(username, password1, firstName, lastName, email,
+		phoneNumber) {
 	return JSON.stringify({
 		"username" : username,
 		"password" : password1,

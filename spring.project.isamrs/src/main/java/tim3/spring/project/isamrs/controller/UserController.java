@@ -17,13 +17,19 @@ import org.springframework.web.bind.annotation.RestController;
 
 import tim3.spring.project.isamrs.dto.UserDTO;
 import tim3.spring.project.isamrs.model.User;
+import tim3.spring.project.isamrs.model.UserRoleName;
+import tim3.spring.project.isamrs.model.UserTokenState;
+import tim3.spring.project.isamrs.security.TokenHelper;
 import tim3.spring.project.isamrs.service.UserService;
 import tim3.spring.project.isamrs.service.impl.CustomUserDetailsService;
 
 @RestController
 @RequestMapping(value = "/api", produces = MediaType.APPLICATION_JSON_VALUE)
 public class UserController {
-
+	
+	@Autowired
+	TokenHelper tokenUtils;
+	
 	@Autowired
 	private UserService userService;
 
@@ -32,30 +38,34 @@ public class UserController {
 
 	@RequestMapping(method = RequestMethod.GET, value = "/getLogged", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<UserDTO> getLogged() {
-		User user = (User) this.userDetailsService.loadUserByUsername(
-				((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername());
+		User user = (User) this.userDetailsService
+				.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
 		UserDTO retVal = new UserDTO(user.getUsername(), "", user.getFirstName(), user.getLastName(), user.getEmail(),
 				user.getPhoneNumber());
 		return new ResponseEntity<UserDTO>(retVal, HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(method = RequestMethod.PUT, value = "/editUser", consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Boolean> editUser(@RequestBody UserDTO userEdit) {
-		User user = (User) this.userDetailsService.loadUserByUsername(
-				((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername());
-		
+	public ResponseEntity<?> editUser(@RequestBody UserDTO userEdit) {
+		User user = (User) this.userDetailsService
+				.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+
 		user.setPassword(this.userDetailsService.encodePassword(userEdit.getPassword()));
 		user.setFirstName(userEdit.getFirstName());
 		user.setLastName(userEdit.getLastName());
 		user.setEmail(userEdit.getEmail());
-		user.setPhoneNumber(userEdit.getPhoneNumber());	
+		user.setPhoneNumber(userEdit.getPhoneNumber());
+		//user.getAuthorities()
 		
-		if (this.userDetailsService.saveUser(user)) {
-			return new ResponseEntity<Boolean>(true, HttpStatus.OK);
-		}
-		return new ResponseEntity<Boolean>(false, HttpStatus.OK);
+		String jwt = tokenUtils.generateToken(user.getUsername());
+		int expiresIn = tokenUtils.getExpiredIn();
+		UserRoleName userType = null;
+
+		this.userDetailsService.saveUser(user);
+		return new ResponseEntity<UserTokenState>(new UserTokenState(jwt, expiresIn, userType), HttpStatus.OK);
 	}
 
+	
 	@RequestMapping(method = RequestMethod.GET, value = "/user/{userId}")
 	@PreAuthorize("hasRole('ROLE_USER')")
 	public User loadById(@PathVariable Long userId) {
@@ -68,14 +78,10 @@ public class UserController {
 		return this.userService.findAll();
 	}
 
-	/*
-	 * We are not using userService.findByUsername here(we could), so it is good
-	 * that we are making sure that the user has role "ROLE_USER" to access this
-	 * endpoint.
-	 */
 	@RequestMapping("/whoami")
 	@PreAuthorize("hasRole('ROLE_USER')")
 	public User user(Principal user) {
 		return this.userService.findByUsername(user.getName());
+		
 	}
 }
