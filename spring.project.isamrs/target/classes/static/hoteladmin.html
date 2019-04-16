@@ -5,6 +5,7 @@
 <title>Hotel Administrator</title>
 <meta charset="utf-8">
 <link rel="stylesheet" href="bootstrap.min.css">
+<script src="auth.js"></script>
 <script src="jquery.min.js"></script>
 <script src="hoteladmin.js"></script>
 <script src="bootstrap.min.js"></script>
@@ -51,53 +52,60 @@ body {
 	border-top: none;
 	background: #00defc;
 }
-
 </style>
 </head>
 <body>
 
 	<div class="tab">
-	    <button class="tablinks"
-			onclick="openCity(event, 'editHotel')">Edit hotel</button>
-		<button class="tablinks"
-			onclick="openCity(event, 'addRoom')">Add room</button>
-		<button id = "removeRoomsButton" class="tablinks"
+		<button class="tablinks" onclick="openCity(event, 'editHotel')">Edit
+			hotel</button>
+		<button class="tablinks" onclick="openCity(event, 'addRoom')">Add
+			room</button>
+		<button id="removeRoomsButton" class="tablinks"
 			onclick="openCity(event, 'deleteRoom')">Delete room</button>
-		<button id = "editRoomsButton" class="tablinks"
+		<button id="editRoomsButton" class="tablinks"
 			onclick="openCity(event, 'editRoom')">Edit room</button>
+		<button class="tablinks" onclick="openCity(event, 'editProfile')">Edit
+			profile</button>
 		<button id="logoutClicked" class="tablinks"
 			onclick="openCity(event, 'logout')">Logout</button>
 	</div>
-	
+
 	<div id="editHotel" class="tabcontent">
 		<div class="container">
 			<h2>Editing a rent-a-car service:</h2>
 			<form class="form-horizontal" action="#" method="post" id="form3">
 				<div class="form-group">
-					<label class="control-label col-sm-2" for="hotelNameEdit">Name: </label>
+					<label class="control-label col-sm-2" for="hotelNameEdit">Name:
+					</label>
 					<div class="col-sm-10">
 						<input type="text" class="form-control" id="hotelNameEdit"
-							placeholder="Insert a name for the hotel"
-							name="hotelNameEdit">
+							placeholder="Insert a name for the hotel" name="hotelNameEdit">
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="control-label col-sm-2" for="hotelAddressEdit">Address: </label>
+					<label class="control-label col-sm-2" for="hotelAddressEdit">Address:
+					</label>
 					<div class="col-sm-10">
 						<input type="text" class="form-control" id="hotelAddressEdit"
-							placeholder="Insert an address for the hotel" name="hotelAddressEdit">
+							placeholder="Insert an address for the hotel"
+							name="hotelAddressEdit">
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="control-label col-sm-2" for="hotelPromotionalDescriptionEdit">Promotional description: </label>
+					<label class="control-label col-sm-2"
+						for="hotelPromotionalDescriptionEdit">Promotional
+						description: </label>
 					<div class="col-sm-10">
-						<input type="text" class="form-control" id="hotelPromotionalDescriptionEdit"
-							placeholder="Insert a promotional description for the hotel" name="hotelPromotionalDescriptionEdit">
+						<input type="text" class="form-control"
+							id="hotelPromotionalDescriptionEdit"
+							placeholder="Insert a promotional description for the hotel"
+							name="hotelPromotionalDescriptionEdit">
 					</div>
 				</div>
-				<input type="hidden" id="hotelIdEdit">
-				<input type="hidden" id="hotelCustomerServicesEdit">
-				<input type="hidden" id="hotelRoomsEdit">
+				<input type="hidden" id="hotelIdEdit"> <input type="hidden"
+					id="hotelCustomerServicesEdit"> <input type="hidden"
+					id="hotelRoomsEdit">
 				<div class="form-group">
 					<div class="col-sm-offset-2 col-sm-10">
 						<button type="submit" class="btn btn-default" id="button2">Submit</button>
@@ -113,22 +121,26 @@ body {
 			<h2>Adding Room:</h2>
 			<form class="form-horizontal" action="#" method="post" id="form1">
 				<div class="form-group">
-					<label class="control-label col-sm-2" for="roomNumberRegister">Room number: </label>
+					<label class="control-label col-sm-2" for="roomNumberRegister">Room
+						number: </label>
 					<div class="col-sm-10">
 						<input type="number" class="form-control" id="roomNumberRegister"
-							placeholder="Insert a room number"
-							name="roomNumberRegister">
+							placeholder="Insert a room number" name="roomNumberRegister">
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="control-label col-sm-2" for="roomPeopleNumberRegister">Number of people in room: </label>
+					<label class="control-label col-sm-2"
+						for="roomPeopleNumberRegister">Number of people in room: </label>
 					<div class="col-sm-10">
-						<input type="number" class="form-control" id="roomPeopleNumberRegister"
-							placeholder="Insert number of people in the room [must be between 1 and 5]" name="roomPeopleNumberRegister">
+						<input type="number" class="form-control"
+							id="roomPeopleNumberRegister"
+							placeholder="Insert number of people in the room [must be between 1 and 5]"
+							name="roomPeopleNumberRegister">
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="control-label col-sm-2" for="roomPriceRegister">Price: </label>
+					<label class="control-label col-sm-2" for="roomPriceRegister">Price:
+					</label>
 					<div class="col-sm-10">
 						<input type="number" class="form-control" id="roomPriceRegister"
 							placeholder="Insert price for the room" name="roomPriceRegister">
@@ -143,62 +155,159 @@ body {
 			<br>
 		</div>
 	</div>
-	
+
 	<div id="deleteRoom" class="tabcontent">
 		<div class="container">
 			<h2>List of rooms in hotel:</h2>
 			<table class="table table-hover" id="tableOfRoomsForDelete">
-				
-  			</table>
+
+			</table>
 			<br>
 		</div>
 	</div>
-	
+
 	<div id="editRoom" class="tabcontent">
-		<div  class="container">
+		<div class="container">
 			<h2>List of rooms in hotel:</h2>
-	
-			
+
+
 			<table class="table table-hover" id="tableOfRoomsForEdit">
-				
-  			</table>
-  			<br>
+
+			</table>
+			<br>
 		</div>
 	</div>
-	
-	<div id = "editRoomFormular" class="tabcontent">
-		<div class = "container">
-			<form class="form-horizontal" action="#" method="post" id="editRoomForm">
+
+	<div id="editRoomFormular" class="tabcontent">
+		<div class="container">
+			<form class="form-horizontal" action="#" method="post"
+				id="editRoomForm">
 				<div class="form-group">
-					<label class="control-label col-sm-2" for="roomNumberEdit">Room number: </label>
+					<label class="control-label col-sm-2" for="roomNumberEdit">Room
+						number: </label>
 					<div class="col-sm-10">
 						<input type="text" class="form-control" id="roomNumberEdit"
-							placeholder="Insert a room number"
-							name="roomNumberEdit">
+							placeholder="Insert a room number" name="roomNumberEdit">
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="control-label col-sm-2" for="roomPriceEdit">Price: </label>
+					<label class="control-label col-sm-2" for="roomPriceEdit">Price:
+					</label>
 					<div class="col-sm-10">
 						<input type="text" class="form-control" id="roomPriceEdit"
 							placeholder="Insert price of the room" name="roomPriceEdit">
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="control-label col-sm-2" for="roomNumberPeopleEdit">Number of people: </label>
+					<label class="control-label col-sm-2" for="roomNumberPeopleEdit">Number
+						of people: </label>
 					<div class="col-sm-10">
 						<input type="text" class="form-control" id="roomNumberPeopleEdit"
-							placeholder="Insert number of people for the room" name="roomNumberPeopleEdit">
+							placeholder="Insert number of people for the room"
+							name="roomNumberPeopleEdit">
 					</div>
 				</div>
-			
+
 				<div class="form-group">
 					<div class="col-sm-offset-2 col-sm-10">
-						<button type="submit" class="btn btn-default" id="buttonSubmitEditRoom">Submit</button>
+						<button type="submit" class="btn btn-default"
+							id="buttonSubmitEditRoom">Submit</button>
 					</div>
 				</div>
 				<input type="hidden" id="roomIdEdit">
 			</form>
+		</div>
+	</div>
+
+	<div id="editProfile" class="tabcontent">
+		<div class="container">
+			<h2>Editing profile</h2>
+			<form class="form-horizontal" action="#" method="post" id="form4">
+
+				<div class="form-group">
+					<label class="control-label col-sm-2"
+						for="hotelAdminUsernameEdit">Username: </label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control"
+							id="hotelAdminUsernameEdit"
+							placeholder="Insert a username for the hotel admin"
+							name="hotelAdminUsernameEdit">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="control-label col-sm-2"
+						for="hotelAdminPassword1Edit">Current password: </label>
+					<div class="col-sm-10">
+						<input type="password" class="form-control"
+							id="hotelAdminPassword1Edit"
+							placeholder="Insert a current password for the hotel admin"
+							name="hotelAdminPassword1Edit">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="control-label col-sm-2"
+						for="hotelAdminPassword2Edit">New password: </label>
+					<div class="col-sm-10">
+						<input type="password" class="form-control"
+							id="hotelAdminPassword2Edit"
+							placeholder="Insert new password for the hotel admin"
+							name="hotelAdminPassword2Edit">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="control-label col-sm-2"
+						for="hotelAdminFirstNameEdit">First name: </label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control"
+							id="hotelAdminFirstNameEdit"
+							placeholder="Insert a first name for the hotel admin"
+							name="hotelAdminFirstNameEdit">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="control-label col-sm-2"
+						for="hotelAdminLastNameEdit">Last name: </label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control"
+							id="hotelAdminLastNameEdit"
+							placeholder="Insert a last name for the hotel admin"
+							name="hotelAdminLastNameEdit">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="hotelAdminEmailEdit">Email:
+					</label>
+					<div class="col-sm-10">
+						<input type="email" class="form-control"
+							id="hotelAdminEmailEdit"
+							placeholder="Insert an email for the hotel admin"
+							name="hotelAdminEmailEdit">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="control-label col-sm-2"
+						for="hotelAdminPhoneNumberEdit">Phone number: </label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control"
+							id="hotelAdminPhoneNumberEdit"
+							placeholder="Insert a phone number for the hotel admin"
+							name="hotelAdminPhoneNumberEdit">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10">
+						<button type="submit" class="btn btn-default" id="button6">Submit</button>
+					</div>
+				</div>
+			</form>
+			<br>
 		</div>
 	</div>
 
