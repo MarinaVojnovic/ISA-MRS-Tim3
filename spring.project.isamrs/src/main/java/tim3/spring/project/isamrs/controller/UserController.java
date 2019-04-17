@@ -1,6 +1,8 @@
 package tim3.spring.project.isamrs.controller;
 
 import java.security.Principal;
+import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +17,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import tim3.spring.project.isamrs.dto.MessageDTO;
 import tim3.spring.project.isamrs.dto.UserDTO;
+import tim3.spring.project.isamrs.model.Authority;
+import tim3.spring.project.isamrs.model.Rentacar;
 import tim3.spring.project.isamrs.model.User;
 import tim3.spring.project.isamrs.model.UserRoleName;
 import tim3.spring.project.isamrs.model.UserTokenState;
@@ -35,6 +40,18 @@ public class UserController {
 
 	@Autowired
 	private CustomUserDetailsService userDetailsService;
+	
+	@RequestMapping(value="/confirmRegistration/{id}", method = RequestMethod.GET)
+	public ResponseEntity<?> showRentACars(@PathVariable Long id) {
+		System.out.println("Uslo u confirm message registration.");
+		System.out.println("Id: "+id);
+		User user = (User) userDetailsService.loadUserById(id);
+		System.out.println(user.getFirstName());
+        user.setEnabled(true);
+        userService.save(user);
+        return new ResponseEntity<>("You have successfully confired your registration. You can now go to login page and use application.",HttpStatus.OK);
+		
+	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/getLogged", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<UserDTO> getLogged() {

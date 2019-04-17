@@ -18,6 +18,10 @@ public class UserServiceImpl implements UserService{
 	public User findUserByToken(String token){
 		return userRepository.findByToken(token);
 	}
+	
+	public void save(User user) {
+		userRepository.save(user);
+	}
 
 	public String editProfile(User user) {
 		User userToEdit = userRepository.findOneByUsername(user.getUsername());

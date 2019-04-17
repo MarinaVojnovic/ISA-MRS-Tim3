@@ -10,11 +10,17 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import tim3.spring.project.isamrs.model.Mail;
+import tim3.spring.project.isamrs.model.User;
+import tim3.spring.project.isamrs.security.TokenHelper;
+import tim3.spring.project.isamrs.service.impl.CustomUserDetailsService;
 
 @RestController
 public class EMailController {
@@ -23,8 +29,18 @@ public class EMailController {
 	static Session getMailSession;
 	static MimeMessage generateMailMessage;
 	
+	@Autowired
+	TokenHelper tokenUtils;
+
+	@Autowired
+	private AuthenticationManager authenticationManager;
+
+	@Autowired
+	private CustomUserDetailsService userDetailsService;
+	
 	@RequestMapping("/sendEmail")
 	public void sendEmail(@RequestBody Mail mail) throws AddressException, MessagingException{
+		
 		mailServerProperties = System.getProperties();
 		mailServerProperties.put("mail.smtp.port", "587");
 		mailServerProperties.put("mail.smtp.auth", "true");

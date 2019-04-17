@@ -1,6 +1,8 @@
 var urlShowHotels = "http://localhost:8080/showHotels";
 var urlShowRentacars = "http://localhost:8080/showRentACars"
+var urlShowAirlines = "http://localhost:8080/showAirlines"
 var urlFindRentacars = "http://localhost:8080/findRentacars";
+var urlFindAirlines="http://localhost:8080/findAirlines"
 var urlRoot="http://localhost:8080/getAllFlights";
 var urlRoot2="http://localhost:8080/searchFlight"
 var urlRoot3="http://localhost:8080/getAllDestinations"
@@ -18,6 +20,94 @@ $(document).on('click', '#logoutClicked', function(e) {
 	window.location.href = "index.html";
 })
 
+function fillTabelAirlines(data){
+	console.log('fill table airlines called');
+	var response = data;
+	$("#tableOfAirlines").find("tr").remove();
+    var tabela=tabela = document.getElementById("tableOfAirlines");
+	console.log(tabela);
+	
+	for(var counter in response){
+		console.log('counter: '+counter);
+		var row = tabela.insertRow(counter);
+		var cell1 = row.insertCell(0);
+		var cell2 = row.insertCell(1);
+		var cell3 = row.insertCell(2);
+		var cell4 = row.insertCell(3);
+		
+		
+		cell1.innerHTML = response[counter].name;
+		cell2.innerHTML = response[counter].address;
+		cell3.innerHTML = response[counter].promotionalDescription;
+		cell4.innerHTML= '<button id=\"'+ response[counter].id+'\" class=\"chooseAirline\" class="btn btn-primary">Choose</button>';
+		
+	}
+	var row = tabela.insertRow(0);
+	var cell1 = row.insertCell(0);
+	var cell2 = row.insertCell(1);
+	var cell3 = row.insertCell(2);
+	var cell4 = row.insertCell(3);
+
+	
+	
+	cell1.innerHTML = "Name";
+	cell2.innerHTML = "Address";
+	cell3.innerHTML = "Promotional Description";
+	cell4.innerHTML = "";
+	
+}
+
+function findAirlines(){
+	console.log('Find airlines called!');
+	
+	var field =  document.getElementById("nameLocationAirline").value;
+	console.log('Field: '+field);
+	if (field==""){
+		alert("Field is not allowed to be empty, fill it!");
+	}
+	else{
+		
+		$
+		.ajax({
+			type : 'GET',
+			url : urlFindAirlines+"/"+field,
+			dataType : "json",
+			success : function(data) {
+				console.log('uslo u success');
+				fillTabelAirlines(data);
+				
+			},
+			error : function(jqXHR, textStatus, errorThrown) {
+				alert(jqXHR.status);
+				alert(textStatus);
+				alert(errorThrown);
+			}
+
+		})
+	}
+}
+
+function showAirlines(criteria){
+	console.log('showing airlines');
+	$
+	.ajax({
+		type : 'GET',
+		url : urlShowAirlines+"/"+criteria,
+		dataType : "json",
+		success : function(data) {
+			fillTabelAirlines(data);
+			
+			
+			
+		},
+		error : function(jqXHR, textStatus, errorThrown) {
+			alert(jqXHR.status);
+			alert(textStatus);
+			alert(errorThrown);
+		}
+
+	})
+}
 
 function showHotels(criteria){
 	console.log('showing hotels');
@@ -435,8 +525,6 @@ $(document).on('click','#hotelsButton',function(e){
 	console.log('hotels button clicked');
 	//e.preventDefault();
 	
-
-
 	showHotels("bez");
    
 });
@@ -451,6 +539,13 @@ $(document).on('click','#rentACarButton',function(e){
    
 });
 
+$(document).on('click','.airlinesButton',function(e){
+	console.log('airlines button clicked');
+	//e.preventDefault();
+	
+	showAirlines("bez");
+   
+});
 $(document).on('click','.sortByName',function(e){
 	console.log('sort by name clicked');
 	//e.preventDefault();
@@ -501,6 +596,17 @@ $(document).on('click','.searchRentACarButton',function(e){
    
 });
 
+$(document).on('click','.searchAirlineButton',function(e){
+	console.log('search airline button clicked');
+	//e.preventDefault();
+	
+	findAirlines();
+
+	$(".sortByNameAirlines").hide();
+	$(".sortByAddressAirlines").hide();
+   
+});
+
 $(document).on('click','.chooseRentacar',function(e){
 	//e.preventDefault();
 	var _this = $(this);
@@ -510,4 +616,22 @@ $(document).on('click','.chooseRentacar',function(e){
     rentacarReservation(this.id);
    
 });
+
+
+
+$(document).on('click','.sortByAddressAirlines',function(e){
+	console.log('sort by address clicked');
+	//e.preventDefault();
+	
+	showAirlines("sortByAddressAirlines");
+   
+});
+
+$(document).on('click','.sortByNameAirlines',function(e){
+	console.log('sort by address clicked');
+	//e.preventDefault();
+	showAirlines("sortByNameAirlines");
+   
+});
+
 

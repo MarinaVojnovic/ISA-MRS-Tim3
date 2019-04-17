@@ -10,4 +10,5 @@ public interface UserService {
     List<User> findAll ();
     String editProfile(User user);
     User findUserByToken(String token);
+    void save(User user);
 }

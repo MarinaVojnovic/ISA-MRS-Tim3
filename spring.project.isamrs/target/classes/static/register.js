@@ -53,9 +53,9 @@ function fire_submit() {
     	        	if (data.message != undefined) {
 						alert(data.message);
 					} else {
-						if (data) {
+						if (data!=null) {
 							alert("Successful registration, congratulations! Please go to email to verify your registration!");
-							sendEMail(email);
+							sendEMail(email, data.id);
 						} else {
 							alert("Error while registrating!");
 						}
@@ -78,7 +78,7 @@ function fire_submit() {
    
 }
 
-function sendEMail(email){
+function sendEMail(email, id){
 	console.log(email);
 	
 	$.ajax({
@@ -86,7 +86,7 @@ function sendEMail(email){
 		url : urlRootSendMail,
 		contentType : 'application/json',
 		
-		data : mailToJson(email),
+		data : mailToJson(email, id),
 		success : function(data) {
 			
 		},
@@ -100,11 +100,11 @@ function sendEMail(email){
 	
 }
 
-function mailToJson(emailAddress){
+function mailToJson(emailAddress, id){
 	return JSON.stringify({
 		"emailAddress": emailAddress,
 		"subject": "Register verification",
-		"body": "http://localhost:8080/login.html"
+		"body": "http://localhost:8080/api/confirmRegistration/"+id
 	})
 }
 

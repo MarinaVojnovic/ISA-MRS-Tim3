@@ -58,6 +58,16 @@ public class CustomUserDetailsService implements UserDetailsService {
 			return user;
 		}
 	}
+	
+	public UserDetails loadUserById(long id) {
+		User user = userRepository.findOne(id);
+		if (user == null) {
+			throw new UsernameNotFoundException(String.format("No user found with id '%s'.", id));
+		} else {
+			return user;
+		}
+	}
+
 
 	public String encodePassword(String password) {
 		return this.passwordEncoder.encode(password);

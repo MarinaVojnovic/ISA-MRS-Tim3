@@ -16,6 +16,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -27,6 +28,7 @@ import tim3.spring.project.isamrs.model.AirlineAdmin;
 import tim3.spring.project.isamrs.model.Authority;
 import tim3.spring.project.isamrs.model.HotelAdmin;
 import tim3.spring.project.isamrs.model.RegularUser;
+import tim3.spring.project.isamrs.model.Rentacar;
 import tim3.spring.project.isamrs.model.RentacarAdmin;
 import tim3.spring.project.isamrs.model.User;
 import tim3.spring.project.isamrs.model.UserRoleName;
@@ -68,6 +70,7 @@ public class AuthenticationController {
 		aa.setLastPasswordResetDate(new Timestamp(System.currentTimeMillis()));
 		aa.setPhoneNumber(user.getPhoneNumber());
 		aa.setAirline(null);
+		
 
 		if (this.userDetailsService.saveUser(aa)) {
 			return new ResponseEntity<Boolean>(true, HttpStatus.OK);
@@ -149,7 +152,7 @@ public class AuthenticationController {
 		a.setName(UserRoleName.ROLE_USER);
 		authorities.add(a);
 		newUser.setAuthorities(authorities);
-		newUser.setEnabled(true);
+		newUser.setEnabled(false);
 		newUser.setFirstName(user.getFirstName());
 		newUser.setLastName(user.getLastName());
 		newUser.setLastPasswordResetDate(new Timestamp(System.currentTimeMillis()));
@@ -157,9 +160,9 @@ public class AuthenticationController {
 		
 
 		if (this.userDetailsService.saveUser(newUser)) {
-			return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+			return new ResponseEntity<>(newUser, HttpStatus.OK);
 		}
-		return new ResponseEntity<Boolean>(false, HttpStatus.OK);
+		return new ResponseEntity<>(null, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value = "auth/registerSystemAdmin", method = RequestMethod.POST)
@@ -190,6 +193,7 @@ public class AuthenticationController {
 		return new ResponseEntity<Boolean>(false, HttpStatus.OK);
 	}
 
+
 	@RequestMapping(value = "auth/login", method = RequestMethod.POST)
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest,
 			HttpServletResponse response) throws AuthenticationException, IOException {
@@ -204,11 +208,12 @@ public class AuthenticationController {
 		}
 		User user = (User) authentication.getPrincipal();
 
-		/*
-		 * ZA EMAIL if (!user.isEnabled()) { return new ResponseEntity<MessageDTO>(new
-		 * MessageDTO("Account is not verified. Check your email.", "Error"),
-		 * HttpStatus.OK); }
-		 */
+		
+	    if (user.isEnabled()==false) { 
+	    	System.out.println("Nije potvrdjen mail"); 
+			return new ResponseEntity<MessageDTO>(new MessageDTO("Account is not verified. Check your email.", "Error"),HttpStatus.OK); 
+	    }
+		 
 		// Ubaci username + password u kontext
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 

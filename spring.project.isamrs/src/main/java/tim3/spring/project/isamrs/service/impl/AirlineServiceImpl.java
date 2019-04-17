@@ -48,6 +48,12 @@ public class AirlineServiceImpl implements AirlineService {
 		return airlineRepository.save(airline);
 	}
 	
+	public List<Airline> findByName(String name){
+		return airlineRepository.findByName(name);
+	}
+	public List<Airline> findByAddress(String address){
+		return airlineRepository.findByAddress(address);
+	}
 	
 
 }
