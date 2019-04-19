@@ -16,9 +16,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import tim3.spring.project.isamrs.dto.MessageDTO;
@@ -46,7 +45,7 @@ public class AuthenticationController {
 	@Autowired
 	private CustomUserDetailsService userDetailsService;
 
-	@RequestMapping(value = "auth/registerAirlineAdmin", method = RequestMethod.POST)
+	@PostMapping(value = "auth/registerAirlineAdmin")
 	public ResponseEntity<?> registerAirlineAdmin(@RequestBody UserDTO user) {
 		if (this.userDetailsService.usernameTaken(user.getUsername()) == true) {
 			return new ResponseEntity<MessageDTO>(new MessageDTO("Username is already taken.", "Error"), HttpStatus.OK);
@@ -68,7 +67,6 @@ public class AuthenticationController {
 		aa.setLastPasswordResetDate(new Timestamp(System.currentTimeMillis()));
 		aa.setPhoneNumber(user.getPhoneNumber());
 		aa.setAirline(null);
-		
 
 		if (this.userDetailsService.saveUser(aa)) {
 			return new ResponseEntity<Boolean>(true, HttpStatus.OK);
@@ -76,7 +74,7 @@ public class AuthenticationController {
 		return new ResponseEntity<Boolean>(false, HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "auth/registerHotelAdmin", method = RequestMethod.POST)
+	@PostMapping(value = "auth/registerHotelAdmin")
 	public ResponseEntity<?> registerHotelAdmin(@RequestBody UserDTO user) {
 		if (this.userDetailsService.usernameTaken(user.getUsername()) == true) {
 			return new ResponseEntity<MessageDTO>(new MessageDTO("Username is already taken.", "Error"), HttpStatus.OK);
@@ -105,7 +103,7 @@ public class AuthenticationController {
 		return new ResponseEntity<Boolean>(false, HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "auth/registerRentacarAdmin", method = RequestMethod.POST)
+	@PostMapping(value = "auth/registerRentacarAdmin")
 	public ResponseEntity<?> registerRentacarAdmin(@RequestBody UserDTO user) {
 		if (this.userDetailsService.usernameTaken(user.getUsername()) == true) {
 			return new ResponseEntity<MessageDTO>(new MessageDTO("Username is already taken.", "Error"), HttpStatus.OK);
@@ -134,7 +132,7 @@ public class AuthenticationController {
 		return new ResponseEntity<Boolean>(false, HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "auth/registerUser", method = RequestMethod.POST)
+	@PostMapping(value = "auth/registerUser")
 	public ResponseEntity<?> registerUser(@RequestBody UserDTO user) {
 		if (this.userDetailsService.usernameTaken(user.getUsername()) == true) {
 			return new ResponseEntity<MessageDTO>(new MessageDTO("Username is already taken.", "Error"), HttpStatus.OK);
@@ -155,15 +153,14 @@ public class AuthenticationController {
 		newUser.setLastName(user.getLastName());
 		newUser.setLastPasswordResetDate(new Timestamp(System.currentTimeMillis()));
 		newUser.setPhoneNumber(user.getPhoneNumber());
-		
 
 		if (this.userDetailsService.saveUser(newUser)) {
 			return new ResponseEntity<>(newUser, HttpStatus.OK);
 		}
 		return new ResponseEntity<>(null, HttpStatus.OK);
 	}
-	
-	@RequestMapping(value = "auth/registerSystemAdmin", method = RequestMethod.POST)
+
+	@PostMapping(value = "auth/registerSystemAdmin")
 	public ResponseEntity<?> registerSystemAdmin(@RequestBody UserDTO user) {
 		if (this.userDetailsService.usernameTaken(user.getUsername()) == true) {
 			return new ResponseEntity<MessageDTO>(new MessageDTO("Username is already taken.", "Error"), HttpStatus.OK);
@@ -191,8 +188,7 @@ public class AuthenticationController {
 		return new ResponseEntity<Boolean>(false, HttpStatus.OK);
 	}
 
-
-	@RequestMapping(value = "auth/login", method = RequestMethod.POST)
+	@PostMapping(value = "auth/login")
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest,
 			HttpServletResponse response) throws AuthenticationException, IOException {
 
@@ -206,12 +202,11 @@ public class AuthenticationController {
 		}
 		User user = (User) authentication.getPrincipal();
 
-		
-	    if (user.isEnabled()==false) { 
-	    	System.out.println("Nije potvrdjen mail"); 
-			return new ResponseEntity<MessageDTO>(new MessageDTO("Account is not verified. Check your email.", "Error"),HttpStatus.OK); 
-	    }
-		 
+		if (user.isEnabled() == false) {
+			return new ResponseEntity<MessageDTO>(new MessageDTO("Account is not verified. Check your email.", "Error"),
+					HttpStatus.OK);
+		}
+
 		// Ubaci username + password u kontext
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 
@@ -226,10 +221,9 @@ public class AuthenticationController {
 			userType = UserRoleName.ROLE_RENTACAR_ADMIN;
 		} else if (user instanceof AirlineAdmin) {
 			userType = UserRoleName.ROLE_AIRLINE_ADMIN;
-		} else if (user instanceof RegularUser){
-			System.out.println("USLO U REGULAR USER");
+		} else if (user instanceof RegularUser) {
 			userType = UserRoleName.ROLE_USER;
-		}else {
+		} else {
 			userType = UserRoleName.ROLE_SYSTEM_ADMIN;
 		}
 

@@ -243,7 +243,7 @@ function deleteRoom(roomId) {
 
 	urlRoot3 = urlRoot3 + "/" + roomId;
 	$.ajax({
-		type : 'GET',
+		type : 'DELETE',
 		url : urlRoot3,
 		dataType : "json",
 		success : function(data) {
@@ -256,8 +256,10 @@ function deleteRoom(roomId) {
 			urlRoot3 = "http://localhost:8080/deleteRoom";
 			showRooms("forDelete");
 		},
-		error : function(XMLHttpRequest) {
-			alert("Error while deleting room");
+		error : function(jqXHR, textStatus, errorThrown) {
+			alert(jqXHR.status);
+			alert(textStatus);
+			alert(errorThrown);
 		}
 
 	})

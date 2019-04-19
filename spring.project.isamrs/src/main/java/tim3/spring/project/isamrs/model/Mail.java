@@ -1,9 +1,9 @@
 package tim3.spring.project.isamrs.model;
 
 public class Mail {
-	public String emailAddress;
-	public String subject;
-	public String body;
+	private String emailAddress;
+	private String subject;
+	private String body;
 	
 	Mail(){
 		

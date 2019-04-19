@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import tim3.spring.project.comparator.HotelsComparatorAddress;
-import tim3.spring.project.comparator.HotelsComparatorName;
+import tim3.spring.project.isamrs.comparator.HotelsComparatorAddress;
+import tim3.spring.project.isamrs.comparator.HotelsComparatorName;
 import tim3.spring.project.isamrs.dto.HotelDTO;
 import tim3.spring.project.isamrs.model.Hotel;
 import tim3.spring.project.isamrs.service.HotelService;

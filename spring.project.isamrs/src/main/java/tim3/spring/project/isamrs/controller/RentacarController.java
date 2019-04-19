@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import tim3.spring.project.comparator.RentACarComparatorAddress;
-import tim3.spring.project.comparator.RentACarComparatorName;
+import tim3.spring.project.isamrs.comparator.RentACarComparatorAddress;
+import tim3.spring.project.isamrs.comparator.RentACarComparatorName;
 import tim3.spring.project.isamrs.dto.RentacarDTO;
 import tim3.spring.project.isamrs.model.Rentacar;
 import tim3.spring.project.isamrs.service.RentacarService;
