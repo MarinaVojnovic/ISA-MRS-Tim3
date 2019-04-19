@@ -73,39 +73,22 @@ public class AirlineController {
 	public ResponseEntity<List<Airline>> showAirlines(@PathVariable String criteria) {
 		System.out.println("Show airlines pozvano");
 		List<Airline> airlines=airlineService.getAll();
-		//List<Hotel> cars = hotelService.getAll();
-		/*
-		 * List<Rentacar> rentACars = new ArrayList<Rentacar>(); Rentacar h1=new
-		 * Rentacar("ANameOne", "CAddressOne", "CPromoDesOne",5.0, null,null, null);
-		 * Rentacar h2=new Rentacar("BNameTwo", "BAddressTwo", "CPromoDesTwo",4.0,
-		 * null,null, null); Rentacar h3=new Rentacar("CNameThree", "AAddressThree",
-		 * "CPromoDesThree",3.0, null,null, null); rentACars.add(h1); rentACars.add(h2);
-		 * rentACars.add(h3);
-		 */
 		if (criteria.equals("sortByNameAirlines")) {
 			Collections.sort(airlines, new AirlineComparatorName());
 		}else if (criteria.equals("sortByAddressAirlines")) {
 			Collections.sort(airlines, new AirlineComparatorAddress());
 		}
-		return new ResponseEntity<>(airlines, HttpStatus.OK); 
+		return new ResponseEntity<List<Airline>>(airlines, HttpStatus.OK); 
 	}
 	
 	@RequestMapping(value="/findAirlines/{field}", method = RequestMethod.GET)
 	public ResponseEntity<List<Airline>> findAirlines(@PathVariable String field) {
 		System.out.println("Find airlines pozvano");
-		//List<Hotel> cars = hotelService.getAll();
 		List<Airline> airlines = new ArrayList<Airline>();
 		airlines = (List<Airline>) airlineService.findByName(field);
 		if (airlines.size()==0) {
 			airlines = (List<Airline>) airlineService.findByAddress(field);
 		}
-		/*
-		 * Rentacar h1=new Rentacar("ANameOne", "CAddressOne", "CPromoDesOne",5.0,
-		 * null,null, null); Rentacar h2=new Rentacar("BNameTwo", "BAddressTwo",
-		 * "CPromoDesTwo",4.0, null,null, null); Rentacar h3=new Rentacar("CNameThree",
-		 * "AAddressThree", "CPromoDesThree",3.0, null,null, null); rentACars.add(h1);
-		 * rentACars.add(h2); rentACars.add(h3);
-		 */
 		
 		return new ResponseEntity<>(airlines, HttpStatus.OK); 
 	}

@@ -52,26 +52,25 @@ body {
 	border-top: none;
 	background: #00defc;
 }
-
 </style>
 </head>
 <body>
 
 	<div class="tab">
-		<button class="airlinesButton"
-			onclick="openCity(event, 'airlines')">Airlines</button>
-		<button id = "hotelsButton" class="tablinks"
+		<button class="airlinesButton" onclick="openCity(event, 'airlines')">Airlines</button>
+		<button id="hotelsButton" class="tablinks"
 			onclick="openCity(event, 'hotels')">Hotels</button>
-		<button id = "rentACarButton" class="tablinks"
+		<button id="rentACarButton" class="tablinks"
 			onclick="openCity(event, 'rentACars')">Rent a cars</button>
-		<button id = "friendsButton" class="tablinks"
+		<button id="friendsButton" class="tablinks"
 			onclick="openCity(event, 'friends')">Friends</button>
-		<button id = "editProfileButton" class="tablinks"
+		<button id="editProfileButton" class="tablinks"
 			onclick="openCity(event, 'editProfile')">Edit profile</button>
+		<button class="tablinks" onclick="openCity(event, 'chooseFlight')">Choose
+			flight from a list</button>
 		<button class="tablinks"
-			onclick="openCity(event, 'chooseFlight')">Choose flight from a list</button>
-		<button class="tablinks"
-			onclick="openCity(event, 'searchAndFilterFlight')">Search and filter flight</button>
+			onclick="openCity(event, 'searchAndFilterFlight')">Search
+			and filter flight</button>
 		<button id="logoutClicked" class="tablinks"
 			onclick="openCity(event, 'logout')">Logout</button>
 	</div>
@@ -79,95 +78,106 @@ body {
 	<div id="airlines" class="tabcontent">
 		<div class="container">
 			<h2>Airlines in the system:</h2>
-			<button class="sortByNameAirlines class="btn btn-primary">Sort by name</button>
-			<button class="sortByAddressAirline" class="btn btn-primary">Sort by address</button>
+			<button class="sortByNameAirlines" class="btn btn-primary">Sort
+				by name</button>
+			<button class="sortByAddressAirlines" class="btn btn-primary">Sort
+				by address</button>
 			<input type="text" name="" value=""
 				placeholder="Enter name or location" id="nameLocationAirline" />
 			<button class="searchAirlineButton" class="btn btn-primary">Search</button>
-			</h2>
 			<br>
-			
-			
-			
+
+
+
 			<table class="table table-hover" id="tableOfAirlines">
-				
-  			</table>
-			
+
+			</table>
+
 			<br>
 		</div>
 	</div>
 
 	<div id="hotels" class="tabcontent">
 		<div class="container">
-			<h2>Hotels in the system:
-			<button class="sortByName" class="btn btn-primary">Sort by name</button>
-			<button class="sortByAddress" class="btn btn-primary">Sort by address</button>
-			 </h2>
+			<h2>Hotels in the system:</h2>
+			<button class="sortByNameHotels" class="btn btn-primary">Sort by
+				name</button>
+			<button class="sortByAddressHotels" class="btn btn-primary">Sort
+				by address</button>
+			<input type="text" name="" value=""
+				placeholder="Enter name or location" id="nameLocationHotel" />
+			<button class="searchHotelButton" class="btn btn-primary">Search</button>
+			<br>
 			<table class="table table-hover" id="tableOfHotels">
-				
-  			</table>
+
+			</table>
 			<br>
 		</div>
 	</div>
-	
+
 	<div id="rentACars" class="tabcontent">
 		<div class="container">
-			<h2>Rent a cars:
-			<button class="sortByNameRentACars" class="btn btn-primary">Sort by name</button>
-			<button class="sortByAddressRentACars" class="btn btn-primary">Sort by address</button>
+			<h2>Rent a cars:</h2>
+			<button class="sortByNameRentACars" class="btn btn-primary">Sort
+				by name</button>
+			<button class="sortByAddressRentACars" class="btn btn-primary">Sort
+				by address</button>
 			<input type="text" name="" value=""
 				placeholder="Enter name or location" id="nameLocationRentACar" />
 			<button class="searchRentACarButton" class="btn btn-primary">Search</button>
-			</h2>
 			<br>
-			
-			
-			
+
+
+
 			<table class="table table-hover" id="tableOfRentacars">
-				
-  			</table>
+
+			</table>
 			<br>
 		</div>
 	</div>
-	
+
 	<div id="friends" class="tabcontent">
-		<div  class="container">
+		<div class="container">
 			<h2>Friends:</h2>
-	
-			
-			
-  			<br>
+
+
+
+			<br>
 		</div>
 	</div>
-	
+
 	<div id="rentacarReservation" class="tabcontent">
 		<div class="container">
 			<h2>Making reservation of rentacar:</h2>
-			<form class="form-horizontal" action="#" method="post" id="carReservationForm">
+			<form class="form-horizontal" action="#" method="post"
+				id="carReservationForm">
 				<div class="form-group">
-					<label class="control-label col-sm-2" for="pickupDateCar">Pickup date: </label>
+					<label class="control-label col-sm-2" for="pickupDateCar">Pickup
+						date: </label>
 					<div class="col-sm-10">
 						<input type="date" class="form-control" id="pickupDateCar"
-							placeholder="Insert pickup date"
-							name="pickupDateCar">
+							placeholder="Insert pickup date" name="pickupDateCar">
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="control-label col-sm-2" for="endDateCar">End date: </label>
+					<label class="control-label col-sm-2" for="endDateCar">End
+						date: </label>
 					<div class="col-sm-10">
 						<input type="date" class="form-control" id="endDateCar"
 							placeholder="Insert end date" name="endDateCar">
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="control-label col-sm-2" for="pickupCity">Pickup city: </label>
+					<label class="control-label col-sm-2" for="pickupCity">Pickup
+						city: </label>
 					<div class="col-sm-10">
 						<input type="number" class="form-control" id="pickupCity"
 							placeholder="Insert pickup city" name="pickupCity">
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="control-label col-sm-2" for="endCity">End city: </label>
+					<label class="control-label col-sm-2" for="endCity">End
+						city: </label>
 					<div class="col-sm-10">
 						<input type="number" class="form-control" id="endCity"
 							placeholder="Insert end city" name="endCity">
@@ -189,58 +199,62 @@ body {
 		<div class="container">
 			<h2>Choosing flight from a list:</h2>
 			<form class="form-horizontal" action="#" method="post" id="form3">
-				<table class="table1" border="1" cellspacing="1" cellpadding="1">
-					  <thead>
-					    <tr>
-					      <th scope="col">#</th>
-					      <th scope="col">Flight number</th>
-					      <th scope="col">Start destination</th>
-					      <th scope="col">Final destination</th>
-					      <th scope="col">Cost of flight</th>
-					      <th scope="col">Date of flight</th>
-					      <th scope="col">Date of arrival</th>
-					      <th scope="col">Length</th>
-					      <th scope="col"></th>
-					    </tr>
-					  </thead>
-					</table>
-					
-				
-				
+				<table class="table1" border="1">
+					<thead>
+						<tr>
+							<th scope="col">#</th>
+							<th scope="col">Flight number</th>
+							<th scope="col">Start destination</th>
+							<th scope="col">Final destination</th>
+							<th scope="col">Cost of flight</th>
+							<th scope="col">Date of flight</th>
+							<th scope="col">Date of arrival</th>
+							<th scope="col">Length</th>
+							<th scope="col"></th>
+						</tr>
+					</thead>
+				</table>
+
+
+
 			</form>
 			<br>
 		</div>
 	</div>
-	
-		<div id="searchAndFilterFlight" class="tabcontent">
+
+	<div id="searchAndFilterFlight" class="tabcontent">
 		<div class="container">
 			<h2>Searching flight:</h2>
 			<form class="form-horizontal" action="#" method="get" id="form2">
 				<div class="form-group">
-					<label class="control-label col-sm-2" for="startDestination">Start destination: </label>
+					<label class="control-label col-sm-2" for="startDestination">Start
+						destination: </label>
 					<div class="col-sm-10">
 						<select class="form-control" id="startDestination"
-							 name="startDestinationRegister">
+							name="startDestinationRegister">
 						</select>
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="control-label col-sm-2" for="finalDestination">Final destination: </label>
+					<label class="control-label col-sm-2" for="finalDestination">Final
+						destination: </label>
 					<div class="col-sm-10">
 						<select class="form-control" id="finalDestination"
-							 name="finalDestinationRegister">
+							name="finalDestinationRegister">
 						</select>
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="control-label col-sm-2" for="dateOfFlight">Date of flight: </label>
+					<label class="control-label col-sm-2" for="dateOfFlight">Date
+						of flight: </label>
 					<div class="col-sm-10">
 						<input type="date" class="form-control" id="dateOfFlight"
 							placeholder="Insert date of the flight" name="dateOfFlight">
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="control-label col-sm-2" for="dateOfReturn">Date of return: </label>
+					<label class="control-label col-sm-2" for="dateOfReturn">Date
+						of return: </label>
 					<div class="col-sm-10">
 						<input type="date" class="form-control" id="dateOfReturn"
 							placeholder="Insert date of the return" name="dateOfReturn">
@@ -248,70 +262,66 @@ body {
 				</div>
 				<div class="form-group">
 					<div class="col-sm-offset-2 col-sm-10">
-						<button type="submit" class="btn btn-default" id="searchFlightButton">Search</button>
+						<button type="submit" class="btn btn-default"
+							id="searchFlightButton">Search</button>
 					</div>
 				</div>
 			</form>
 			<br>
 		</div>
 	</div>
-	
-	
+
+
 	<div id="editProfile" class="tabcontent">
 		<div class="container">
 			<h2>Editing profile</h2>
 			<form class="form-horizontal" action="#" method="post" id="form4">
 
 				<div class="form-group">
-					<label class="control-label col-sm-2"
-						for="userUsernameEdit">Username: </label>
+					<label class="control-label col-sm-2" for="userUsernameEdit">Username:
+					</label>
 					<div class="col-sm-10">
-						<input type="text" class="form-control"
-							id="userUsernameEdit"
+						<input type="text" class="form-control" id="userUsernameEdit"
 							placeholder="Insert a username for the user admin"
-							name="userUsernameEdit"  disabled>
+							name="userUsernameEdit" disabled>
 					</div>
 				</div>
 
 				<div class="form-group">
-					<label class="control-label col-sm-2"
-						for="userPassword1Edit">New password: </label>
+					<label class="control-label col-sm-2" for="userPassword1Edit">New
+						password: </label>
 					<div class="col-sm-10">
-						<input type="password" class="form-control"
-							id="userPassword1Edit"
+						<input type="password" class="form-control" id="userPassword1Edit"
 							placeholder="Insert new password for the user admin"
 							name="userPassword1Edit">
 					</div>
 				</div>
 
 				<div class="form-group">
-					<label class="control-label col-sm-2"
-						for="userPassword2Edit">Repeat new password: </label>
+					<label class="control-label col-sm-2" for="userPassword2Edit">Repeat
+						new password: </label>
 					<div class="col-sm-10">
-						<input type="password" class="form-control"
-							id="userPassword2Edit"
+						<input type="password" class="form-control" id="userPassword2Edit"
 							placeholder="Insert new password second time for the user admin"
 							name="userPassword2Edit">
 					</div>
 				</div>
 
 				<div class="form-group">
-					<label class="control-label col-sm-2"
-						for="userFirstNameEdit">First name: </label>
+					<label class="control-label col-sm-2" for="userFirstNameEdit">First
+						name: </label>
 					<div class="col-sm-10">
-						<input type="text" class="form-control"
-							id="userFirstNameEdit"
+						<input type="text" class="form-control" id="userFirstNameEdit"
 							placeholder="Insert a first name for the user admin"
 							name="userFirstNameEdit">
 					</div>
 				</div>
 
 				<div class="form-group">
-					<label class="control-label col-sm-2"
-						for="userLastNameEdit">Last name: </label>
+					<label class="control-label col-sm-2" for="userLastNameEdit">Last
+						name: </label>
 					<div class="col-sm-10">
-						<input type="text" class="form-control"
-							id="userLastNameEdit"
+						<input type="text" class="form-control" id="userLastNameEdit"
 							placeholder="Insert a last name for the user admin"
 							name="userLastNameEdit">
 					</div>
@@ -321,19 +331,17 @@ body {
 					<label class="control-label col-sm-2" for="userEmailEdit">Email:
 					</label>
 					<div class="col-sm-10">
-						<input type="email" class="form-control"
-							id="userEmailEdit"
+						<input type="email" class="form-control" id="userEmailEdit"
 							placeholder="Insert an email for the user admin"
 							name="userEmailEdit">
 					</div>
 				</div>
 
 				<div class="form-group">
-					<label class="control-label col-sm-2"
-						for="userPhoneNumberEdit">Phone number: </label>
+					<label class="control-label col-sm-2" for="userPhoneNumberEdit">Phone
+						number: </label>
 					<div class="col-sm-10">
-						<input type="text" class="form-control"
-							id="userPhoneNumberEdit"
+						<input type="text" class="form-control" id="userPhoneNumberEdit"
 							placeholder="Insert a phone number for the user admin"
 							name="userPhoneNumberEdit">
 					</div>
@@ -348,12 +356,10 @@ body {
 			<br>
 		</div>
 	</div>
-	
-	<div id="foundFlights">
-	
-	</div>
 
-	
+	<div id="foundFlights"></div>
+
+
 
 	<script>
 		function openCity(evt, cityName) {
@@ -371,8 +377,8 @@ body {
 			evt.currentTarget.className += " active";
 		}
 	</script>
-	
-	
+
+
 
 </body>
 </html>

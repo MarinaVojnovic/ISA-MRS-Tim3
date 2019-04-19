@@ -1,5 +1,6 @@
 package tim3.spring.project.isamrs.controller;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -35,7 +36,7 @@ public class HotelController {
 		Hotel retVal = hotelService.create(new Hotel(hotelDTO));
 		return new ResponseEntity<>(retVal, HttpStatus.CREATED);
 	}
-	
+
 	@RequestMapping(value = "/findHotel", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Hotel> findRentacar() {
 		Hotel hotel = hotelService.getOne(1);
@@ -61,23 +62,28 @@ public class HotelController {
 		Hotel hotel2 = hotelService.save(h);
 		return new ResponseEntity<>(hotel2, HttpStatus.OK);
 	}
-	@RequestMapping(value="/showHotels/{criteria}", method = RequestMethod.GET)
+
+	@RequestMapping(value = "/showHotels/{criteria}", method = RequestMethod.GET)
 	public ResponseEntity<List<Hotel>> showHotels(@PathVariable String criteria) {
 		System.out.println("Show hotels pozvano");
 		List<Hotel> hotels = hotelService.getAll();
-		/*
-		 * //List<Hotel> hotels = new ArrayList<Hotel>(); Hotel h1=new
-		 * Hotel("AHotelOne", "CAddressOne", "CPromoDesOne",null,null); Hotel h2=new
-		 * Hotel("BHotelTwo", "BAddressTwo", "BPromoDesTwo",null,null); Hotel h3=new
-		 * Hotel("CHotelTwo", "AAddressTwo", "APromoDesTwo",null,null); hotels.add(h1);
-		 * hotels.add(h2); hotels.add(h3);
-		 */
-		
-		if (criteria.equals("sortByName")) {
+		if (criteria.equals("sortByNameHotels")) {
 			Collections.sort(hotels, new HotelsComparatorName());
-		}else if (criteria.equals("sortByAddress")) {
+		} else if (criteria.equals("sortByAddressHotels")) {
 			Collections.sort(hotels, new HotelsComparatorAddress());
 		}
-		return new ResponseEntity<>(hotels, HttpStatus.OK); 
+		return new ResponseEntity<List<Hotel>>(hotels, HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "/findHotels/{field}", method = RequestMethod.GET)
+	public ResponseEntity<List<Hotel>> findHotels(@PathVariable String field) {
+		System.out.println("Find hotels pozvano");
+		List<Hotel> hotels = new ArrayList<Hotel>();
+		hotels = (List<Hotel>) hotelService.findByName(field);
+		if (hotels.size() == 0) {
+			hotels = (List<Hotel>) hotelService.findByAddress(field);
+		}
+
+		return new ResponseEntity<List<Hotel>>(hotels, HttpStatus.OK);
 	}
 }

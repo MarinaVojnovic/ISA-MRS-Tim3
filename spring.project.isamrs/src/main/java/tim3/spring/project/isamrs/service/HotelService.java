@@ -11,4 +11,7 @@ public interface HotelService {
 	public Hotel update(Hotel hotel);
 	public void delete(long id);
 	public Hotel save(Hotel hotel);
+	
+	public List<Hotel> findByName(String name);
+	public List<Hotel> findByAddress(String address);
 }

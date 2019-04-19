@@ -46,4 +46,11 @@ public class HotelServiceImpl implements HotelService {
 	public Hotel save(Hotel hotel) {
 		return hotelRepository.save(hotel);
 	}
+	
+	public List<Hotel> findByName(String name){
+		return hotelRepository.findByName(name);
+	}
+	public List<Hotel> findByAddress(String address){
+		return hotelRepository.findByAddress(address);
+	}
 }
