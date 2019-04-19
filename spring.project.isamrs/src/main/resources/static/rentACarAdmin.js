@@ -216,7 +216,7 @@ function deleteCar(carId){
 
 	urlRoot5 = urlRoot5+"/"+carId;
 	$.ajax({
-		type : 'GET',
+		type : 'DELETE',
 		url : urlRoot5,
 		dataType : "json",
 		headers : createAuthorizationTokenHeader(TOKEN_KEY),

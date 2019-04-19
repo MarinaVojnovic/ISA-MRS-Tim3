@@ -1,6 +1,5 @@
 package tim3.spring.project.isamrs.controller;
 
-import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,10 +82,7 @@ public class UserController {
 
 	@RequestMapping(method = RequestMethod.PUT, value = "/editUser", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<UserTokenState> editUser(@RequestBody UserDTO userEdit) {
-		//User user = (User) this.userDetailsService
-		//		.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
-		User user = (User) this.userDetailsService
-				.loadUserByUsername(userEdit.getUsername());
+		User user = (User) this.userDetailsService.loadUserByUsername(userEdit.getUsername());
 
 		user.setPassword(this.userDetailsService.encodePassword(userEdit.getPassword()));
 		user.setFirstName(userEdit.getFirstName());
@@ -94,14 +90,12 @@ public class UserController {
 		user.setEmail(userEdit.getEmail());
 		user.setPhoneNumber(userEdit.getPhoneNumber());
 		this.userDetailsService.saveUser(user);
-		
+
 		String jwt = tokenUtils.generateToken(user.getUsername());
 		int expiresIn = tokenUtils.getExpiredIn();
 		UserRoleName userType = null;
 
-		//this.userDetailsService.saveUser(user);
 		return new ResponseEntity<UserTokenState>(new UserTokenState(jwt, expiresIn, userType), HttpStatus.OK);
-		//return HttpStatus.OK;
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/user/{userId}")
