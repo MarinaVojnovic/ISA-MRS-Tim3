@@ -14,12 +14,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.view.RedirectView;
 
+import tim3.spring.project.isamrs.dto.CarDTO;
+import tim3.spring.project.isamrs.dto.PasswordDTO;
 import tim3.spring.project.isamrs.dto.UserDTO;
+import tim3.spring.project.isamrs.model.Car;
+import tim3.spring.project.isamrs.model.RentacarAdmin;
 import tim3.spring.project.isamrs.model.User;
 import tim3.spring.project.isamrs.model.UserRoleName;
 import tim3.spring.project.isamrs.model.UserTokenState;
 import tim3.spring.project.isamrs.security.TokenHelper;
+import tim3.spring.project.isamrs.service.CarService;
 import tim3.spring.project.isamrs.service.UserService;
 import tim3.spring.project.isamrs.service.impl.CustomUserDetailsService;
 
@@ -36,19 +42,35 @@ public class UserController {
 	@Autowired
 	private CustomUserDetailsService userDetailsService;
 
+	
 	@RequestMapping(value = "/confirmRegistration/{id}", method = RequestMethod.GET)
-	public ResponseEntity<?> showRentACars(@PathVariable Long id) {
-		System.out.println("Uslo u confirm message registration.");
-		System.out.println("Id: " + id);
+	public RedirectView confirmRegistration(@PathVariable Long id) {
+		System.out.println("USLO U CONFIRM REGISTRATION");
 		User user = (User) userDetailsService.loadUserById(id);
-		System.out.println(user.getFirstName());
-		user.setEnabled(true);
-		userService.save(user);
-		return new ResponseEntity<>(
-				"You have successfully confired your registration. You can now go to login page and use application.",
-				HttpStatus.OK);
-
+		if (user != null) {
+			user.setEnabled(true);
+			userDetailsService.saveUser(user);
+			System.out.println(user.getEnabled());
+			return new RedirectView("http://localhost:8080/confirmedAccount.html");
+		}
+		return null;
 	}
+	
+
+	
+	/*
+	 * @RequestMapping(value = "/confirmRegistration/{id}", method =
+	 * RequestMethod.GET) public ResponseEntity<?> showRentACars(@PathVariable Long
+	 * id) { System.out.println("Uslo u confirm message registration.");
+	 * System.out.println("Id: " + id); User user = (User)
+	 * userDetailsService.loadUserById(id); System.out.println(user.getFirstName());
+	 * user.setEnabled(true); userService.save(user); return new ResponseEntity<>(
+	 * "You have successfully confired your registration. You can now go to login page and use application."
+	 * , HttpStatus.OK);
+	 * 
+	 * }
+	 */
+	 
 
 	@RequestMapping(method = RequestMethod.GET, value = "/getLogged", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<UserDTO> getLogged() {
@@ -99,5 +121,34 @@ public class UserController {
 	public User user(Principal user) {
 		return this.userService.findByUsername(user.getName());
 
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/isFirstTime")
+	public ResponseEntity<Boolean> isFirstTime() {
+		System.out.println("FIRST TIME");
+		User user = (User) this.userDetailsService
+				.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+	    System.out.println(user.getUsername());
+		if (user.getFirstTime()==true) {
+			System.out.println("Uslo u first time true");
+			return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+		}
+		System.out.println("Uslo u first time false");
+		return new ResponseEntity<Boolean>(false, HttpStatus.OK);
+	}
+	
+	@RequestMapping(method = RequestMethod.PUT, value = "/changePasswordFirstTime", consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Boolean> changePasswordFirstTime(@RequestBody PasswordDTO userEdit) {
+		System.out.println("CHANGING PASSWORD FOR THE FIRST TIME");
+		User user = (User) this.userDetailsService
+				.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+		user.setFirstTime(false);
+		user.setPassword(this.userDetailsService.encodePassword(userEdit.getPassword()));
+		
+		
+		if (this.userDetailsService.saveUser(user)) {
+			return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+		}
+		return new ResponseEntity<Boolean>(false, HttpStatus.OK);
 	}
 }

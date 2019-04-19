@@ -1,4 +1,5 @@
 var urlLoginUser = "http://localhost:8080/auth/login"
+
 $(document).ready(function() {
 
 	$("#loginForm").submit(function(event) {
@@ -19,6 +20,8 @@ function login() {
 
 	var username = $("#loginusername").val();
 	var password = $("#loginpassword").val();
+	
+	var next_window;
 
 	$.ajax({
 
@@ -38,6 +41,7 @@ function login() {
 				} else if (data.userRoleName == "ROLE_AIRLINE_ADMIN") {
 					window.location.href = "airlineadmin.html";
 				} else if (data.userRoleName == "ROLE_RENTACAR_ADMIN") {
+					console.log('Role is rentacardmin');
 					window.location.href="rentacaradmin.html"
 				} 
 				else if (data.userRoleName=="ROLE_USER"){
@@ -53,6 +57,8 @@ function login() {
 
 		}
 	});
+	
+	
 }
 function userDtoToJson(username, password) {
 	return JSON.stringify({

@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -68,6 +69,7 @@ public class AuthenticationController {
 		aa.setLastPasswordResetDate(new Timestamp(System.currentTimeMillis()));
 		aa.setPhoneNumber(user.getPhoneNumber());
 		aa.setAirline(null);
+		aa.setFirstTime(true);
 		
 
 		if (this.userDetailsService.saveUser(aa)) {
@@ -98,6 +100,7 @@ public class AuthenticationController {
 		ha.setLastPasswordResetDate(new Timestamp(System.currentTimeMillis()));
 		ha.setPhoneNumber(user.getPhoneNumber());
 		ha.setHotel(null);
+		ha.setFirstTime(true);
 
 		if (this.userDetailsService.saveUser(ha)) {
 			return new ResponseEntity<Boolean>(true, HttpStatus.OK);
@@ -127,6 +130,7 @@ public class AuthenticationController {
 		ra.setLastPasswordResetDate(new Timestamp(System.currentTimeMillis()));
 		ra.setPhoneNumber(user.getPhoneNumber());
 		ra.setRentacar(null);
+		ra.setFirstTime(true);
 
 		if (this.userDetailsService.saveUser(ra)) {
 			return new ResponseEntity<Boolean>(true, HttpStatus.OK);
@@ -155,6 +159,7 @@ public class AuthenticationController {
 		newUser.setLastName(user.getLastName());
 		newUser.setLastPasswordResetDate(new Timestamp(System.currentTimeMillis()));
 		newUser.setPhoneNumber(user.getPhoneNumber());
+		newUser.setFirstTime(true);
 		
 
 		if (this.userDetailsService.saveUser(newUser)) {
@@ -184,6 +189,7 @@ public class AuthenticationController {
 		sa.setLastName(user.getLastName());
 		sa.setLastPasswordResetDate(new Timestamp(System.currentTimeMillis()));
 		sa.setPhoneNumber(user.getPhoneNumber());
+		sa.setFirstTime(true);
 
 		if (this.userDetailsService.saveUser(sa)) {
 			return new ResponseEntity<Boolean>(true, HttpStatus.OK);
@@ -203,14 +209,18 @@ public class AuthenticationController {
 		} catch (BadCredentialsException e) {
 			return new ResponseEntity<MessageDTO>(new MessageDTO("Wrong username or password.", "Error"),
 					HttpStatus.OK);
+		} catch(DisabledException e) {
+			return new ResponseEntity<MessageDTO>(new MessageDTO("Account is not verified. Check your email.", "Error"),HttpStatus.OK); 
 		}
 		User user = (User) authentication.getPrincipal();
 
 		
-	    if (user.isEnabled()==false) { 
-	    	System.out.println("Nije potvrdjen mail"); 
-			return new ResponseEntity<MessageDTO>(new MessageDTO("Account is not verified. Check your email.", "Error"),HttpStatus.OK); 
-	    }
+		/*
+		 * if (user.isEnabled()==false) { System.out.println("Nije potvrdjen mail");
+		 * return new ResponseEntity<MessageDTO>(new
+		 * MessageDTO("Account is not verified. Check your email.",
+		 * "Error"),HttpStatus.OK); }
+		 */
 		 
 		// Ubaci username + password u kontext
 		SecurityContextHolder.getContext().setAuthentication(authentication);

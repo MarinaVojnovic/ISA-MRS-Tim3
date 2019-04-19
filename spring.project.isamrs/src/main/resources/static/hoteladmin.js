@@ -8,7 +8,9 @@ var urlRoot7 = "http://localhost:8080/saveChangesHotel";
 var urlRoot8 = "http://localhost:8080/api/getLogged";
 var urlRoot9 = "http://localhost:8080/api/editUser";
 
+
 var TOKEN_KEY = 'jwtToken';
+
 
 findHotel();
 getLogged();
@@ -18,6 +20,31 @@ $(document).on('click', '#logoutClicked', function(e) {
 	removeJwtToken(TOKEN_KEY);
 	window.location.href = "index.html";
 })
+
+function checkFirstTime(){
+	$
+	.ajax({
+		type : 'GET',
+		url : urlGetFirstTime,
+	    headers: createAuthorizationTokenHeader(TOKEN_KEY),
+	    dataType: "json",
+		success : function(data) {
+			if (data){
+				window.location.href="passwordFirstTime.html"
+			}else{
+				console.log('uslo ovde');
+				
+			}
+			
+		},
+		error : function(jqXHR, textStatus, errorThrown) {
+			alert(jqXHR.status);
+			alert(textStatus);
+			alert(errorThrown);
+		}
+
+	})
+}
 
 function getLogged() {
 	var token = getJwtToken(TOKEN_KEY);

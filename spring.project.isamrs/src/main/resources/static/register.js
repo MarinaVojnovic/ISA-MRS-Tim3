@@ -33,7 +33,7 @@ function fire_submit() {
     console.log('phone: '+phone);
     
     
-    if (name=="" || surname=="" || email=="" || password=="" || username=="" || phone==""){
+    if (name=="" || surname=="" || email=="" || password=="" || passwordTwo=="" || username=="" || phone==""){
     	alert('None of the fields is allowed to be empty');
     }
     
@@ -41,7 +41,7 @@ function fire_submit() {
     	alert('Passwords must match!');
     }
     else{
-    	 $("#register").prop("disabled", true);
+    	
 
     	    $.ajax({
     	        type: "POST",

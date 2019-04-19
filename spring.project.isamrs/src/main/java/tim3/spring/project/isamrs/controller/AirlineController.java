@@ -73,6 +73,7 @@ public class AirlineController {
 	public ResponseEntity<List<Airline>> showAirlines(@PathVariable String criteria) {
 		System.out.println("Show airlines pozvano");
 		List<Airline> airlines=airlineService.getAll();
+		System.out.println("AIRLINES SIZE:"+airlines.size());
 		//List<Hotel> cars = hotelService.getAll();
 		/*
 		 * List<Rentacar> rentACars = new ArrayList<Rentacar>(); Rentacar h1=new

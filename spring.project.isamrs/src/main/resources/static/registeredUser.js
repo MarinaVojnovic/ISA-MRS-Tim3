@@ -467,7 +467,7 @@ $(document)
 											password1, firstName, lastName,
 											email, phoneNumber),
 									success : function(data) {
-											alert("Successful editing, congratulations!");}
+											alert("Successful editing, congratulations!");
 
 									},
 									error : function(jqXHR, textStatus,
@@ -477,7 +477,7 @@ $(document)
 										alert(errorThrown);
 
 									}
-								})
+								});
 					}
 				});
 
