@@ -5,10 +5,13 @@ var urlRoot4 = "http://localhost:8080/getCars";
 var urlRoot5 = "http://localhost:8080/deleteCar";
 var urlRoot6 = "http://localhost:8080/findCar";
 var urlRoot7 = "http://localhost:8080/saveEditedCar";
+
+var TOKEN_KEY = 'jwtToken';
 findRentacar();
 
 $(document).on('click', '#logoutClicked', function(e) {
 	e.preventDefault();
+	removeJwtToken(TOKEN_KEY);
 	window.location.href = "index.html";
 })
 

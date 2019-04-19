@@ -2,6 +2,7 @@
 <html>
 <head>
 <script src="jquery.min.js"></script>
+<script src="auth.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
 * {
@@ -71,49 +72,29 @@ body {
 	</div>
 
 	<div class="tab">
-		<button class="tablinks fastLoginSysAdmin"
-			onclick="openCity(event, 'sysadmin')" id="defaultOpen">Login
-			as a system administrator</button>
-		<button class="tablinks fastLoginAirlineAdmin"
-			onclick="openCity(event, 'airlineAdmin')">Login as an
-			airline administrator</button>
-		<button class="tablinks fastLoginRentACarAdmin"
-			onclick="openCity(event, 'rentACarAdmin')">Login as a
-			rent-a-car administrator</button>
-		<button class="tablinks fastLoginHotelAdmin"
-			onclick="openCity(event, 'hotelAdmin')">Login as a hotel
-			administrator</button>
-		<button class="tablinks fastLoginUser"
-			onclick="openCity(event, 'user')">Login as a user</button>
-		<button class="tablinks fastLogin" onclick="openCity(event, 'login')">Login</button>
+		<button id="defaultOpen" class="tablinks fastLogin"
+			onclick="openCity(event, 'login')">Login</button>
 		<button class="tablinks fastRegister"
 			onclick="openCity(event, 'register')">Register</button>
 	</div>
 
-	<div id="sysadmin" class="tabcontent">
-		<h3>* For this version of project just click on button "Login as
-			a system administrator" to your left and you will be redirected to
-			system administrator page.</h3>
-		<h3>* For this version of project just click on button "Login as
-			an airline administrator" to your left and you will be redirected to
-			airline administrator page.</h3>
-		<h3>* For this version of project just click on button "Login as
-			a rent-a-car administrator" to your left and you will be redirected
-			to rent-a-car administrator page.</h3>
-		<h3>* For this version of project just click on button "Login as
-			a hotel administrator" to your left and you will be redirected to
-			hotel administrator page.</h3>
+	<div id="login" class="tabcontent">
+		<h1>** From now on, you need to login so you can use your
+			functionalities, depending on your role [in 'data.sql' you have
+			predefined users]</h1>
 	</div>
 
-	<div id="rentACarAdmin" class="tabcontent"></div>
+	<div id="register" class="tabcontent">
+		<h1>** From now on, you need to login so you can use your
+			functionalities, depending on your role [in 'data.sql' you have
+			predefined users]</h1>
+	</div>
 
-	<div id="airlineAdmin" class="tabcontent"></div>
-
-	<div id="hotelAdmin" class="tabcontent"></div>
-
-	<div id="user" class="tabcontent"></div>
-
+	<script src="auth.js"></script>
 	<script>
+		var TOKEN_KEY = 'jwtToken';
+		removeJwtToken(TOKEN_KEY);
+
 		function openCity(evt, cityName) {
 			var i, tabcontent, tablinks;
 			tabcontent = document.getElementsByClassName("tabcontent");
@@ -131,31 +112,6 @@ body {
 
 		// Get the element with id="defaultOpen" and click on it
 		document.getElementById("defaultOpen").click();
-
-		$(document).on('click', '.fastLoginSysAdmin', function(e) {
-			e.preventDefault();
-			window.location.href = "sysadmin.html";
-		})
-
-		$(document).on('click', '.fastLoginAirlineAdmin', function(e) {
-			e.preventDefault();
-			window.location.href = "airlineadmin.html";
-		})
-
-		$(document).on('click', '.fastLoginRentACarAdmin', function(e) {
-			e.preventDefault();
-			window.location.href = "rentacaradmin.html";
-		})
-
-		$(document).on('click', '.fastLoginHotelAdmin', function(e) {
-			e.preventDefault();
-			window.location.href = "hoteladmin.html";
-		})
-
-		$(document).on('click', '.fastLoginUser', function(e) {
-			e.preventDefault();
-			window.location.href = "registeredUser.html";
-		})
 
 		$(document).on('click', '.fastLogin', function(e) {
 			e.preventDefault();

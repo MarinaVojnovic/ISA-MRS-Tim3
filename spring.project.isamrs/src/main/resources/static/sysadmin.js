@@ -6,8 +6,11 @@ var urlRoot5 = "http://localhost:8080/auth/registerHotelAdmin";
 var urlRoot6 = "http://localhost:8080/auth/registerRentacarAdmin";
 var urlRoot7 = "http://localhost:8080/auth/registerSystemAdmin";
 
+var TOKEN_KEY = 'jwtToken';
+
 $(document).on('click', '#logoutClicked', function(e) {
 	e.preventDefault();
+	removeJwtToken(TOKEN_KEY);
 	window.location.href = "index.html";
 })
 

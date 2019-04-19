@@ -2,7 +2,6 @@ package tim3.spring.project.comparator;
 
 import java.util.Comparator;
 
-import tim3.spring.project.isamrs.model.Hotel;
 import tim3.spring.project.isamrs.model.Rentacar;
 
 public class RentACarComparatorName implements Comparator<Rentacar>{

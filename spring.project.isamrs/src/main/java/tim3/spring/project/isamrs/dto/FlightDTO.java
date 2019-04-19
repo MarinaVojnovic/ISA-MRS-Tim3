@@ -1,8 +1,4 @@
 package tim3.spring.project.isamrs.dto;
-import tim3.spring.project.isamrs.model.Seat;
-
-import java.util.HashSet;
-import java.util.Set;
 
 public class FlightDTO {
 	String flightNumberRegister;

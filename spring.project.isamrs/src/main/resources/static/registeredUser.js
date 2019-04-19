@@ -17,6 +17,7 @@ getAllDestinations()
 
 $(document).on('click', '#logoutClicked', function(e) {
 	e.preventDefault();
+	removeJwtToken(TOKEN_KEY);
 	window.location.href = "index.html";
 })
 
@@ -466,11 +467,7 @@ $(document)
 											password1, firstName, lastName,
 											email, phoneNumber),
 									success : function(data) {
-										if (data) {
-											alert("Successful editing, congratulations!");
-										} else {
-											alert("Error while editing!");
-										}
+											alert("Successful editing, congratulations!");}
 
 									},
 									error : function(jqXHR, textStatus,
@@ -523,7 +520,7 @@ function rentacarReservation(id){
 }
 $(document).on('click','#hotelsButton',function(e){
 	console.log('hotels button clicked');
-	//e.preventDefault();
+	// e.preventDefault();
 	
 	showHotels("bez");
    
@@ -531,7 +528,7 @@ $(document).on('click','#hotelsButton',function(e){
 
 $(document).on('click','#rentACarButton',function(e){
 	console.log('rent a car button clicked');
-	//e.preventDefault();
+	// e.preventDefault();
 	
 
 
@@ -541,14 +538,14 @@ $(document).on('click','#rentACarButton',function(e){
 
 $(document).on('click','.airlinesButton',function(e){
 	console.log('airlines button clicked');
-	//e.preventDefault();
+	// e.preventDefault();
 	
 	showAirlines("bez");
    
 });
 $(document).on('click','.sortByName',function(e){
 	console.log('sort by name clicked');
-	//e.preventDefault();
+	// e.preventDefault();
 	
 
 
@@ -559,7 +556,7 @@ $(document).on('click','.sortByName',function(e){
 
 $(document).on('click','.sortByNameRentACars',function(e){
 	console.log('sort by name clicked');
-	//e.preventDefault();
+	// e.preventDefault();
 	
 	showRentacars("sortByName");
    
@@ -567,7 +564,7 @@ $(document).on('click','.sortByNameRentACars',function(e){
 
 $(document).on('click','.sortByAddress',function(e){
 	console.log('sort by address clicked');
-	//e.preventDefault();
+	// e.preventDefault();
 	
 
 
@@ -577,7 +574,7 @@ $(document).on('click','.sortByAddress',function(e){
 
 $(document).on('click','.sortByAddressRentACars',function(e){
 	console.log('sort by address clicked');
-	//e.preventDefault();
+	// e.preventDefault();
 	
 
 
@@ -587,7 +584,7 @@ $(document).on('click','.sortByAddressRentACars',function(e){
 
 $(document).on('click','.searchRentACarButton',function(e){
 	console.log('sort by address clicked');
-	//e.preventDefault();
+	// e.preventDefault();
 	
 	findRentacars();
 
@@ -598,7 +595,7 @@ $(document).on('click','.searchRentACarButton',function(e){
 
 $(document).on('click','.searchAirlineButton',function(e){
 	console.log('search airline button clicked');
-	//e.preventDefault();
+	// e.preventDefault();
 	
 	findAirlines();
 
@@ -608,7 +605,7 @@ $(document).on('click','.searchAirlineButton',function(e){
 });
 
 $(document).on('click','.chooseRentacar',function(e){
-	//e.preventDefault();
+	// e.preventDefault();
 	var _this = $(this);
 
     console.log('car number'+ '   '+this.id);
@@ -621,7 +618,7 @@ $(document).on('click','.chooseRentacar',function(e){
 
 $(document).on('click','.sortByAddressAirlines',function(e){
 	console.log('sort by address clicked');
-	//e.preventDefault();
+	// e.preventDefault();
 	
 	showAirlines("sortByAddressAirlines");
    
@@ -629,7 +626,7 @@ $(document).on('click','.sortByAddressAirlines',function(e){
 
 $(document).on('click','.sortByNameAirlines',function(e){
 	console.log('sort by address clicked');
-	//e.preventDefault();
+	// e.preventDefault();
 	showAirlines("sortByNameAirlines");
    
 });

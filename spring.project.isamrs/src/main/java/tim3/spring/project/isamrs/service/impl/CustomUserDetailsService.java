@@ -78,7 +78,6 @@ public class CustomUserDetailsService implements UserDetailsService {
 
 		Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
 		String username = currentUser.getName();
-
 		if (authenticationManager != null) {
 			LOGGER.debug("Re-authenticating user '" + username + "' for password change request.");
 

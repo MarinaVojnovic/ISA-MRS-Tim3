@@ -12,6 +12,7 @@ findAirline();
 
 $(document).on('click', '#logoutClicked', function(e) {
 	e.preventDefault();
+	removeJwtToken(TOKEN_KEY);
 	window.location.href = "index.html";
 })
 

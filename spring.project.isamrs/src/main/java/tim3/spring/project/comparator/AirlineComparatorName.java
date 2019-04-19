@@ -3,7 +3,6 @@ package tim3.spring.project.comparator;
 import java.util.Comparator;
 
 import tim3.spring.project.isamrs.model.Airline;
-import tim3.spring.project.isamrs.model.Hotel;
 
 public class AirlineComparatorName implements Comparator<Airline>{
 	@Override
