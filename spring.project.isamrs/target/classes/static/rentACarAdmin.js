@@ -5,9 +5,129 @@ var urlRoot4 = "http://localhost:8080/getCars";
 var urlRoot5 = "http://localhost:8080/deleteCar";
 var urlRoot6 = "http://localhost:8080/findCar";
 var urlRoot7 = "http://localhost:8080/saveEditedCar";
+var	urlGetFirstTime = "http://localhost:8080/api/isFirstTime"
+var urlChangePassword="http://localhost:8080/api/changePasswordFirstTime";
 
 var TOKEN_KEY = 'jwtToken';
+
 findRentacar();
+window.onload = function(e){ 
+	console.log('window loades');
+	
+	var r;
+	$
+	.ajax({
+		type : 'GET',
+		url : urlGetFirstTime,
+	    headers: createAuthorizationTokenHeader(TOKEN_KEY),
+	    dataType: "json",
+		success : function(data) {
+			if (data){
+				console.log('You have to change your password!');
+				r= 1;
+				console.log('r posle you have to change your password '+r)
+				$('.tab').hide();
+				openCity(e, 'passwordValidation');
+				
+			}else{
+				console.log('You do not have to change your password!');
+				r=0;
+				
+			}
+			
+		},
+		error : function(jqXHR, textStatus, errorThrown) {
+			alert(jqXHR.status);
+			alert(textStatus);
+			alert(errorThrown);
+		}
+
+	})
+	/*console.log('r posle ajax '+r);
+	
+	if (r==1){
+		console.log('uslo u r=1');
+		$('.tab').hide();
+		openCity(e, 'passwordValidation');
+	}else {
+		
+	}*/
+ }
+
+function passwordValidation(){
+	console.log('password validation called');
+	var password1 = document.getElementById("newPasswordOne").value;
+	var password2 = document.getElementById("newPasswordTwo").value;
+	
+	if (password1=="" || password2==""){
+		alert('You have to fill both fields');
+	}
+	else if (password1!=password2){
+		alert('Passwords must match!');
+	}
+	else{
+		$
+		.ajax({
+			type : 'PUT',
+			url : urlChangePassword,
+			headers : createAuthorizationTokenHeader(TOKEN_KEY),
+			contentType : 'application/json',
+			dataType : "json",
+			data : passwordDTOJson(password1),
+			success : function(data) {
+				if (data) {
+					alert("Successful changing password, congratulations!");
+					$('.tab').show();
+					$('#passwordValidation').hide();
+				} else {
+					alert("Error while changing password!");
+				}
+
+			},
+			error : function(jqXHR, textStatus,
+					errorThrown) {
+				alert(jqXHR.status);
+				alert(textStatus);
+				alert(errorThrown);
+
+			}
+		})
+	}
+	
+}
+
+/*function checkFirstTime(){
+	console.log('uslo u check first time');
+	var r;
+	$
+	.ajax({
+		type : 'GET',
+		url : urlGetFirstTime,
+	    headers: createAuthorizationTokenHeader(TOKEN_KEY),
+	    dataType: "json",
+		success : function(data) {
+			if (data){
+				console.log('You have to change your password!');
+				r= 1;
+				console.log('r posle you have to change your password '+r)
+				return r;
+			}else{
+				console.log('You do not have to change your password!');
+				r=0;
+				return r;
+			}
+			
+		},
+		error : function(jqXHR, textStatus, errorThrown) {
+			alert(jqXHR.status);
+			alert(textStatus);
+			alert(errorThrown);
+		}
+
+	})
+	console.log('r posle ajax '+r);
+	
+}*/
 
 $(document).on('click', '#logoutClicked', function(e) {
 	e.preventDefault();
@@ -39,6 +159,7 @@ function saveEditedCar(){
 				contentType : 'application/json',
 				success : function(data) {
 					alert("Car successfully edited, congratulations!");
+					
 
 				},
 				error : function(XMLHttpRequest) {
@@ -46,6 +167,7 @@ function saveEditedCar(){
 				}
 
 			})
+			
 	}
 
 
@@ -73,6 +195,7 @@ function editCar(carId){
 				document.getElementById("carYearEdit").value = data.year;
 			
 				console.log('Car successfully edited.');
+				
 			}
 			
 			urlRoot6 = "http://localhost:8080/findCar";
@@ -83,6 +206,7 @@ function editCar(carId){
 		}
 		
 	})
+	
 	
 }
 
@@ -95,6 +219,7 @@ function deleteCar(carId){
 		type : 'GET',
 		url : urlRoot5,
 		dataType : "json",
+		headers : createAuthorizationTokenHeader(TOKEN_KEY),
 		success : function(data) {
 			if (data==null){
 				console.log('Car not found');
@@ -104,7 +229,8 @@ function deleteCar(carId){
 			}
 			
 			urlRoot5 = "http://localhost:8080/deleteCar";
-			showCars();
+			showCars("forDelete");
+			
 		},
 		error: function(XMLHttpRequest){
 			alert("Error while deleting flight");
@@ -200,6 +326,7 @@ function showCars(type){
 		type : 'GET',
 		url : urlRoot4,
 		dataType : "json",
+		headers : createAuthorizationTokenHeader(TOKEN_KEY),
 		success : function(data) {
 			
 			var response = data;
@@ -293,8 +420,13 @@ $(document).on("submit", "#form2", function(e) {
 			contentType : 'application/json',
 			dataType : "json",
 			data : createCarDTOToJson(name, price, year),
+			headers : createAuthorizationTokenHeader(TOKEN_KEY),
 			success : function(data) {
 				alert("Successful adding car, congratulations!");
+				document.getElementById("addCarName").value="";
+				document.getElementById("addCarPrice").value="";
+				document.getElementById("addCarYear").value="";
+				openCity(e, 'addCar');
 			},
 			error : function(jqXHR, textStatus, errorThrown) {
 				alert(jqXHR.status);
@@ -304,6 +436,11 @@ $(document).on("submit", "#form2", function(e) {
 			}
 		})
 	}
+	
+	
+	
+	
+	
 
 })
 
@@ -345,6 +482,7 @@ $(document).on('click','.deleteCarButton',function(e){
 
     console.log('car number'+ '   '+this.id);
     deleteCar(this.id);
+    
 });
 
 $(document).on('click','.editCarButton',function(e){
@@ -361,5 +499,25 @@ $(document).on('submit','#editCarForm',function(e){
 	e.preventDefault();
 	
     saveEditedCar();
+    openCity(e, 'editCar');
+    showCars('forEdit');
    
 });
+
+$(document).on('submit','#passwordValidationForm',function(e){
+	e.preventDefault();
+	
+    passwordValidation();
+   
+});
+
+
+
+function passwordDTOJson(password1) {
+	return JSON.stringify({
+		"password" : password1
+		
+
+	})
+}
+

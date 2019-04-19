@@ -15,5 +15,6 @@ public interface RentacarRepository extends JpaRepository<Rentacar, Long> {
 	
 	public List<Rentacar> findByAddress(String address);
 
+	
 
 }

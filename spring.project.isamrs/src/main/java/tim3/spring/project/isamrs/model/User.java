@@ -64,7 +64,22 @@ public class User implements UserDetails {
 	@Column(name = "last_password_reset_date")
 	private Timestamp lastPasswordResetDate;
 	
+	@Column (name="first_time")
+	private Boolean firstTime;
+	
 
+
+	public Boolean getFirstTime() {
+		return firstTime;
+	}
+
+	public void setFirstTime(Boolean firstTime) {
+		this.firstTime = firstTime;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
 
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinTable(name = "user_authority", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id"))
@@ -137,8 +152,8 @@ public class User implements UserDetails {
 		this.phoneNumber = phoneNumber;
 	}
 
-	@Override
-	public boolean isEnabled() {
+
+	public boolean getEnabled() {
 		return enabled;
 	}
 
@@ -170,6 +185,12 @@ public class User implements UserDetails {
 	@Override
 	public boolean isCredentialsNonExpired() {
 		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		// TODO Auto-generated method stub
+		return enabled;
 	}
 
 }
