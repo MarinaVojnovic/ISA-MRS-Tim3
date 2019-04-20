@@ -78,3 +78,46 @@ ON DUPLICATE KEY UPDATE name = 'ROLE_RENTACAR_ADMIN';
 INSERT INTO USER_AUTHORITY (user_id, authority_id) 
 VALUES (4, 4)
 ON DUPLICATE KEY UPDATE user_id = 4;
+
+INSERT INTO USERS (dtype, id, username, password, first_name, last_name, email, enabled,
+					last_password_reset_date, phone_number) 
+VALUES ( 'RegularUser', 5, '123', 
+		'$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra',
+		'Nikola', 'Nikolic', 'nikolanikolic@example.com', true, '2019-04-18 20:58:00', 
+		'00381645544333')
+ON DUPLICATE KEY UPDATE username = '123';
+INSERT INTO AUTHORITY (id, name)
+VALUES (5, 'ROLE_USER')
+ON DUPLICATE KEY UPDATE name = 'ROLE_USER';
+INSERT INTO USER_AUTHORITY (user_id, authority_id) 
+VALUES (5, 5)
+ON DUPLICATE KEY UPDATE user_id = 5;
+
+
+INSERT INTO USERS (dtype, id, username, password, first_name, last_name, email, enabled,
+					last_password_reset_date, phone_number) 
+VALUES ( 'RegularUser', 6, '124', 
+		'$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra',
+		'Nikolina', 'Nikolic', 'nikolanikolic@example.com', true, '2019-04-18 20:58:00', 
+		'00381645544333')
+ON DUPLICATE KEY UPDATE username = '124';
+INSERT INTO AUTHORITY (id, name)
+VALUES (6, 'ROLE_USER')
+ON DUPLICATE KEY UPDATE name = 'ROLE_USER';
+INSERT INTO USER_AUTHORITY (user_id, authority_id) 
+VALUES (6, 6)
+ON DUPLICATE KEY UPDATE user_id = 6;
+
+INSERT INTO USERS (dtype, id, username, password, first_name, last_name, email, enabled,
+					last_password_reset_date, phone_number) 
+VALUES ( 'RegularUser', 7, '125', 
+		'$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra',
+		'Ana', 'Nikolic', 'nikolanikolic@example.com', true, '2019-04-18 20:58:00', 
+		'00381645544333')
+ON DUPLICATE KEY UPDATE username = '125';
+INSERT INTO AUTHORITY (id, name)
+VALUES (7, 'ROLE_USER')
+ON DUPLICATE KEY UPDATE name = 'ROLE_USER';
+INSERT INTO USER_AUTHORITY (user_id, authority_id) 
+VALUES (7, 7)
+ON DUPLICATE KEY UPDATE user_id = 7;

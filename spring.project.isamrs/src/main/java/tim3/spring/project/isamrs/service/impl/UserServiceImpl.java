@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import tim3.spring.project.isamrs.model.RegularUser;
 import tim3.spring.project.isamrs.model.User;
 import tim3.spring.project.isamrs.repository.UserRepository;
 import tim3.spring.project.isamrs.service.UserService;
@@ -56,8 +57,7 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public User findById(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		return userRepository.getOne(id);
 	}
 
 	@Override
@@ -70,6 +70,22 @@ public class UserServiceImpl implements UserService{
 	public List<User> findAll() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public List<RegularUser> findByFirstNameAndLastName(String name, String surname) {
+		return userRepository.findByFirstNameAndLastName(name, surname);
+	}
+
+	@Override
+	public List<RegularUser> findByFirstName(String name) {
+		// TODO Auto-generated method stub
+		return userRepository.findByFirstName(name);
+	}
+
+	@Override
+	public List<RegularUser> findByLastName(String surname) {
+		return userRepository.findByLastName(surname);
 	}
 
 }
