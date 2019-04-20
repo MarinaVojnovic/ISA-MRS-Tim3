@@ -135,17 +135,9 @@ body {
 			<br>
 		</div>
 	</div>
-
-	<div id="friends" class="tabcontent">
-		<div class="container">
-			<h2>Friends:</h2>
-
-
-
-			<br>
-		</div>
-	</div>
-
+	
+	
+	
 	<div id="rentacarReservation" class="tabcontent">
 		<div class="container">
 			<h2>Making reservation of rentacar:</h2>
@@ -356,6 +348,69 @@ body {
 			<br>
 		</div>
 	</div>
+	
+	<div id="friends" class="tabcontent">
+		<button class="btn btn-primary"
+			 onclick="openCity(event, 'listOfFriends')" id="listOfFri">List of friends</button>
+		<button class="btn btn-primary"
+			onclick="openCity(event, 'friendRequests')" id="friendR">Friend requests</button>
+		<button class="btn btn-primary"
+			onclick="openCity(event, 'addFriends')" id="addFrie">Add friends</button>
+
+	</div>
+	
+	<div id="friendRequests" class="tabcontent">
+		<div class="container">
+			<h2>Friend requests:</h2>							
+			<table class="table table-hover" id="friendRequestTable">
+				
+  			</table>
+			<br>
+		</div>
+	</div>
+	
+	<div id="listOfFriends" class="tabcontent">
+		<div class="container">
+			<h2>Your friends:</h2>							
+			<table class="table table-hover" id="friendList">
+				
+  			</table>
+			<br>
+		</div>
+	</div>
+	
+	
+	
+	
+	<div id="addFriends" class="tabcontent">
+		<div class="container">
+			<h2>Search for friends (type name or/and surname):</h2>
+			 <h3>
+			 Name: <input type="text" class="form-control"
+							id="friendRequestName"
+							placeholder="Insert name"
+							name="friendRequestName" style="width: 120px;"/>  Surname: <input type="text" class="form-control"
+							id="friendRequestSurname"
+							placeholder="Insert surname"
+							name="friendRequestSurname" style="width: 120px;" />
+			 </h3>
+			 
+						<button type="submit" id="searchFriends" style="float: left;">Search</button>
+					
+				
+			<table class="table table-hover" id="foundFriends">
+				
+  			</table>
+			<br>
+		</div>
+	</div>
+	
+	<div id="foundFlights">
+	
+	</div>
+	
+	
+	
 
 	<div id="foundFlights"></div>
 
