@@ -33,31 +33,31 @@ public class Airline {
 
 	@Column(name = "promotional_description")
 	private String promotionalDescription;
-	
+
 	@OneToOne(mappedBy = "airline")
-    private AirlineAdmin airlineAdmin;
+	private AirlineAdmin airlineAdmin;
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "airline", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
-	private Set<Destination> destinations = new HashSet<Destination>();
+	private Set<Destination> destinations = new HashSet<>();
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "airline", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
-	private Set<Flight> flights = new HashSet<Flight>();
+	private Set<Flight> flights = new HashSet<>();
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "airline", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
 	@Column(name = "quick_booking_tickets")
-	private Set<Ticket> quickBookingTickets = new HashSet<Ticket>();
+	private Set<Ticket> quickBookingTickets = new HashSet<>();
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "airline", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
-	private Set<Airplane> airplanes = new HashSet<Airplane>();
+	private Set<Airplane> airplanes = new HashSet<>();
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "airline", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
 	@Column(name = "airline_customer_service")
-	private Set<AirlineCustomerService> airlineCustomerServices = new HashSet<AirlineCustomerService>();
+	private Set<AirlineCustomerService> airlineCustomerServices = new HashSet<>();
 
 	public Airline() {
 		super();
@@ -170,11 +170,6 @@ public class Airline {
 		this.name = airlineDTO.getAirlineNameRegister();
 		this.address = airlineDTO.getAirlineAddressRegister();
 		this.promotionalDescription = airlineDTO.getAirlinePromotionalDescription();
-		this.destinations = new HashSet<Destination>();
-		this.flights = new HashSet<Flight>();
-		this.quickBookingTickets = new HashSet<Ticket>();
-		this.airplanes = new HashSet<Airplane>();
-		this.airlineCustomerServices = new HashSet<AirlineCustomerService>();
 	}
 
 }

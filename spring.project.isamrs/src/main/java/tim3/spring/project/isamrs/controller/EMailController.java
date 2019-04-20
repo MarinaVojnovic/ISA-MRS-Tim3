@@ -11,8 +11,8 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import tim3.spring.project.isamrs.model.Mail;
@@ -28,7 +28,7 @@ public class EMailController {
 	@Autowired
 	TokenHelper tokenUtils;
 
-	@RequestMapping("/sendEmail")
+	@PostMapping("/sendEmail")
 	public void sendEmail(@RequestBody Mail mail) throws AddressException, MessagingException {
 
 		mailServerProperties = System.getProperties();

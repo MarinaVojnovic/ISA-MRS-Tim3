@@ -39,11 +39,11 @@ public class Hotel {
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "hotel", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
-	private Set<HotelCustomerService> hotelCustomerServices = new HashSet<HotelCustomerService>();
+	private Set<HotelCustomerService> hotelCustomerServices = new HashSet<>();
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "hotel", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
-	private Set<Room> rooms = new HashSet<Room>();
+	private Set<Room> rooms = new HashSet<>();
 
 	public Hotel() {
 		super();
@@ -128,8 +128,6 @@ public class Hotel {
 		this.name = hotelDTO.getHotelNameRegister();
 		this.address = hotelDTO.getHotelAddressRegister();
 		this.promotionalDescription = hotelDTO.getHotelPromotionalDescription();
-		this.hotelCustomerServices = new HashSet<HotelCustomerService>();
-		this.rooms = new HashSet<Room>();
 	}
 
 }

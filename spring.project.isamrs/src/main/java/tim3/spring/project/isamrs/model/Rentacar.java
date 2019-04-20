@@ -38,15 +38,15 @@ public class Rentacar {
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "rentacar", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
-	private Set<RentacarCustomerService> rentacarCustomerServices = new HashSet<RentacarCustomerService>();
+	private Set<RentacarCustomerService> rentacarCustomerServices = new HashSet<>();
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "rentacar", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
-	private Set<Car> cars = new HashSet<Car>();
+	private Set<Car> cars = new HashSet<>();
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "rentacar", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
-	private Set<BranchOffice> branches = new HashSet<BranchOffice>();
+	private Set<BranchOffice> branches = new HashSet<>();
 
 	public Rentacar() {
 		super();
@@ -129,9 +129,6 @@ public class Rentacar {
 		this.name = rentacarDTO.getRentacarNameRegister();
 		this.address = rentacarDTO.getRentacarAddressRegister();
 		this.promotionalDescription = rentacarDTO.getRentacarPromotionalDescription();
-		this.rentacarCustomerServices = new HashSet<RentacarCustomerService>();
-		this.cars = new HashSet<Car>();
-		this.branches = new HashSet<BranchOffice>();
 	}
 
 	public Rentacar(String name, String address, String promotionalDescription,

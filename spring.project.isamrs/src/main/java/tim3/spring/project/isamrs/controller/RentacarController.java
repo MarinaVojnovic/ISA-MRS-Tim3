@@ -1,6 +1,5 @@
 package tim3.spring.project.isamrs.controller;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -8,10 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import tim3.spring.project.isamrs.comparator.RentACarComparatorAddress;
@@ -26,19 +26,19 @@ public class RentacarController {
 	@Autowired
 	RentacarService rentacarService;
 
-	@RequestMapping(value = "/getAllRentacars", method = RequestMethod.GET)
+	@GetMapping(value = "/getAllRentacars")
 	public ResponseEntity<List<Rentacar>> getAllRentacars() {
 		List<Rentacar> rentacars = rentacarService.getAll();
 		return new ResponseEntity<>(rentacars, HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/createRentacar", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value = "/createRentacar", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Rentacar> create(@RequestBody RentacarDTO rentacarDTO) {
 		Rentacar retVal = rentacarService.create(new Rentacar(rentacarDTO));
 		return new ResponseEntity<>(retVal, HttpStatus.CREATED);
 	}
 
-	@RequestMapping(value = "/findRentacar", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/findRentacar", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Rentacar> findRentacar() {
 		Rentacar car = rentacarService.getOne(1);
 		if (car != null) {
@@ -48,7 +48,7 @@ public class RentacarController {
 		}
 	}
 
-	@RequestMapping(value = "/saveChangesRentACar", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PutMapping(value = "/saveChangesRentACar", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Rentacar> saveChangesRentACar(@RequestBody Rentacar rentacar) {
 		Rentacar r = rentacarService.getOne(rentacar.getId());
 		if (r == null) {
@@ -65,9 +65,8 @@ public class RentacarController {
 		return new ResponseEntity<>(rent, HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/showRentACars/{criteria}", method = RequestMethod.GET)
+	@GetMapping(value = "/showRentACars/{criteria}")
 	public ResponseEntity<List<Rentacar>> showRentACars(@PathVariable String criteria) {
-		System.out.println("Show rent a cars pozvano");
 		List<Rentacar> rentACars = rentacarService.getAll();
 		if (criteria.equals("sortByNameRentACars")) {
 			Collections.sort(rentACars, new RentACarComparatorName());
@@ -77,11 +76,9 @@ public class RentacarController {
 		return new ResponseEntity<>(rentACars, HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/findRentacars/{field}", method = RequestMethod.GET)
+	@GetMapping(value = "/findRentacars/{field}")
 	public ResponseEntity<List<Rentacar>> findRentacars(@PathVariable String field) {
-		System.out.println("Show rent a cars pozvano");
-		List<Rentacar> rentACars = new ArrayList<Rentacar>();
-		rentACars = (List<Rentacar>) rentacarService.findByName(field);
+		List<Rentacar> rentACars = (List<Rentacar>) rentacarService.findByName(field);
 		if (rentACars.size() == 0) {
 			rentACars = (List<Rentacar>) rentacarService.findByAddress(field);
 		}

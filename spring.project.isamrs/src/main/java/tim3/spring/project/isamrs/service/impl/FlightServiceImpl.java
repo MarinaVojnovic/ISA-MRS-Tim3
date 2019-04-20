@@ -56,14 +56,6 @@ public class FlightServiceImpl implements FlightService{
 		Destination d2=destinationRepository.getOne((long )finalDestination);
 		return flightRepository.findByStartDestinationAndFinalDestination(d1, d2);
 	}
-
-//	@Override
-//	public List<Flight> findByStartDestinationAndFinalDestinationAndDateOfStartAndDateOfEnd(
-//			Destination startDestination, Destination finalDestination, Date dateOfStart, Date dateOfEnd) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-
 	
 
 }

@@ -10,12 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +24,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.view.RedirectView;
 
-import tim3.spring.project.isamrs.dto.CarDTO;
 import tim3.spring.project.isamrs.dto.PasswordDTO;
 import tim3.spring.project.isamrs.dto.UserDTO;
 import tim3.spring.project.isamrs.model.Car;
@@ -51,9 +51,6 @@ public class UserController {
 	TokenHelper tokenUtils;
 
 	@Autowired
-	private UserService userService;
-
-	@Autowired
 	private CustomUserDetailsService userDetailsService;
 	
 	@Autowired
@@ -62,43 +59,24 @@ public class UserController {
 	@Autowired
 	private FriendRequestService friendRequestService;
 
-	
-	@RequestMapping(value = "/confirmRegistration/{id}", method = RequestMethod.GET)
+	@GetMapping(value = "/confirmRegistration/{id}")
 	public RedirectView confirmRegistration(@PathVariable Long id) {
-		System.out.println("USLO U CONFIRM REGISTRATION");
 		User user = (User) userDetailsService.loadUserById(id);
 		if (user != null) {
 			user.setEnabled(true);
 			userDetailsService.saveUser(user);
-			System.out.println(user.getEnabled());
 			return new RedirectView("http://localhost:8080/confirmedAccount.html");
 		}
 		return null;
 	}
-	
 
-	
-	/*
-	 * @RequestMapping(value = "/confirmRegistration/{id}", method =
-	 * RequestMethod.GET) public ResponseEntity<?> showRentACars(@PathVariable Long
-	 * id) { System.out.println("Uslo u confirm message registration.");
-	 * System.out.println("Id: " + id); User user = (User)
-	 * userDetailsService.loadUserById(id); System.out.println(user.getFirstName());
-	 * user.setEnabled(true); userService.save(user); return new ResponseEntity<>(
-	 * "You have successfully confired your registration. You can now go to login page and use application."
-	 * , HttpStatus.OK);
-	 * 
-	 * }
-	 */
-	 
-
-	@RequestMapping(method = RequestMethod.GET, value = "/getLogged", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/getLogged", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<UserDTO> getLogged() {
 		User user = (User) this.userDetailsService
 				.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
 		UserDTO retVal = new UserDTO(user.getUsername(), "", user.getFirstName(), user.getLastName(), user.getEmail(),
 				user.getPhoneNumber());
-		return new ResponseEntity<UserDTO>(retVal, HttpStatus.OK);
+		return new ResponseEntity<>(retVal, HttpStatus.OK);
 	}
 
 	@RequestMapping(method = RequestMethod.PUT, value = "/editUser", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -116,7 +94,7 @@ public class UserController {
 		int expiresIn = tokenUtils.getExpiredIn();
 		UserRoleName userType = null;
 
-		return new ResponseEntity<UserTokenState>(new UserTokenState(jwt, expiresIn, userType), HttpStatus.OK);
+		return new ResponseEntity<>(new UserTokenState(jwt, expiresIn, userType), HttpStatus.OK);
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/findFriends/{name}/{surname}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -258,34 +236,26 @@ public class UserController {
 	public User user(Principal user) {
 		return this.userService.findByUsername(user.getName());
 
-	}
-	
-	@RequestMapping(method = RequestMethod.GET, value = "/isFirstTime")
+	@GetMapping(value = "/isFirstTime")
 	public ResponseEntity<Boolean> isFirstTime() {
-		System.out.println("FIRST TIME");
 		User user = (User) this.userDetailsService
 				.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
-	    System.out.println(user.getUsername());
-		if (user.getFirstTime()==true) {
-			System.out.println("Uslo u first time true");
-			return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+		if (user.getFirstTime() == true) {
+			return new ResponseEntity<>(true, HttpStatus.OK);
 		}
-		System.out.println("Uslo u first time false");
-		return new ResponseEntity<Boolean>(false, HttpStatus.OK);
+		return new ResponseEntity<>(false, HttpStatus.OK);
 	}
-	
-	@RequestMapping(method = RequestMethod.PUT, value = "/changePasswordFirstTime", consumes = MediaType.APPLICATION_JSON_VALUE)
+
+	@PutMapping(value = "/changePasswordFirstTime", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Boolean> changePasswordFirstTime(@RequestBody PasswordDTO userEdit) {
-		System.out.println("CHANGING PASSWORD FOR THE FIRST TIME");
 		User user = (User) this.userDetailsService
 				.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
 		user.setFirstTime(false);
 		user.setPassword(this.userDetailsService.encodePassword(userEdit.getPassword()));
-		
-		
+
 		if (this.userDetailsService.saveUser(user)) {
-			return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+			return new ResponseEntity<>(true, HttpStatus.OK);
 		}
-		return new ResponseEntity<Boolean>(false, HttpStatus.OK);
+		return new ResponseEntity<>(false, HttpStatus.OK);
 	}
 }
