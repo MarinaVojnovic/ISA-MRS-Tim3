@@ -1,6 +1,5 @@
 package tim3.spring.project.isamrs.controller;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -77,13 +76,12 @@ public class AirlineController {
 		} else if (criteria.equals("sortByAddressAirlines")) {
 			Collections.sort(airlines, new AirlineComparatorAddress());
 		}
-		return new ResponseEntity<List<Airline>>(airlines, HttpStatus.OK);
+		return new ResponseEntity<>(airlines, HttpStatus.OK);
 	}
 
 	@GetMapping(value = "/findAirlines/{field}")
 	public ResponseEntity<List<Airline>> findAirlines(@PathVariable String field) {
-		List<Airline> airlines = new ArrayList<Airline>();
-		airlines = (List<Airline>) airlineService.findByName(field);
+		List<Airline> airlines = (List<Airline>) airlineService.findByName(field);
 		if (airlines.size() == 0) {
 			airlines = (List<Airline>) airlineService.findByAddress(field);
 		}

@@ -20,9 +20,9 @@ public class VerificationToken {
 	@Column(nullable = false, name = "token", unique = false)
 	private String token;
 
-	@OneToOne(targetEntity = RegisteredUser.class, fetch = FetchType.LAZY)
+	@OneToOne(targetEntity = User.class, fetch = FetchType.LAZY)
 	@JoinColumn(nullable = false, name = "user")
-	private RegisteredUser user;
+	private User user;
 
 	public VerificationToken() {
 		super();
@@ -44,11 +44,11 @@ public class VerificationToken {
 		this.token = token;
 	}
 
-	public RegisteredUser getUser() {
+	public User getUser() {
 		return user;
 	}
 
-	public void setUser(RegisteredUser user) {
+	public void setUser(User user) {
 		this.user = user;
 	}
 

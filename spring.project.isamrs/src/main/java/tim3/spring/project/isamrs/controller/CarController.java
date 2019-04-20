@@ -18,9 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import tim3.spring.project.isamrs.dto.CarDTO;
 import tim3.spring.project.isamrs.model.Car;
 import tim3.spring.project.isamrs.model.RentacarAdmin;
-import tim3.spring.project.isamrs.model.User;
 import tim3.spring.project.isamrs.service.CarService;
-import tim3.spring.project.isamrs.service.UserService;
 import tim3.spring.project.isamrs.service.impl.CustomUserDetailsService;
 
 @RestController
@@ -28,36 +26,27 @@ public class CarController {
 
 	@Autowired
 	CarService carService;
-	
-	@Autowired
-	private UserService userService;
-	
+
 	@Autowired
 	private CustomUserDetailsService userDetailsService;
 
 	@PostMapping(value = "/createCar", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Car> create(@RequestBody CarDTO carDTO) {
-		System.out.println("Uslo u create car");
 		RentacarAdmin user = (RentacarAdmin) this.userDetailsService
 				.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
-		System.out.println("HEJ");
-		System.out.println(user.getUsername());
-		Car newCar=new Car(carDTO);
+		Car newCar = new Car(carDTO);
 		newCar.setRentacar(user.getRentacar());
 		Car retVal = carService.create(newCar);
 		user.getRentacar().getCars().add(retVal);
 		return new ResponseEntity<>(retVal, HttpStatus.CREATED);
 	}
-	@RequestMapping(value="/getCars",method = RequestMethod.GET)
+
+	@GetMapping(value = "/getCars")
 	public ResponseEntity<List<Car>> getCars() {
-		System.out.println("Get cars pozvano");
-		//List<Car> cars = carService.getAll();
 		RentacarAdmin ra = (RentacarAdmin) this.userDetailsService
 				.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
-		System.out.println(ra.getUsername());
-		List<Car> cars=carService.findByRentacar(ra.getRentacar());
-		System.out.println("proslo find by rentacar");
-		return new ResponseEntity<>(cars, HttpStatus.OK); 
+		List<Car> cars = carService.findByRentacar(ra.getRentacar());
+		return new ResponseEntity<>(cars, HttpStatus.OK);
 	}
 
 	@DeleteMapping(value = "/deleteCar/{carId}")

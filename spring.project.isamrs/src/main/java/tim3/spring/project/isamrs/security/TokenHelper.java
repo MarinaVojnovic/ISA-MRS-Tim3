@@ -52,7 +52,11 @@ public class TokenHelper {
 		String refreshedToken;
 		try {
 			final Claims claims = this.getAllClaimsFromToken(token);
-			claims.setIssuedAt(timeProvider.now());
+			if (claims == null) {
+				throw new Exception("null");
+			} else {
+				claims.setIssuedAt(timeProvider.now());
+			}
 			refreshedToken = Jwts.builder().setClaims(claims).setExpiration(generateExpirationDate())
 					.signWith(SIGNATURE_ALGORITHM, SECRET).compact();
 		} catch (Exception e) {
@@ -104,7 +108,11 @@ public class TokenHelper {
 		String username;
 		try {
 			final Claims claims = this.getAllClaimsFromToken(token);
-			username = claims.getSubject();
+			if (claims == null) {
+				throw new Exception("null");
+			} else {
+				username = claims.getSubject();
+			}
 		} catch (Exception e) {
 			username = null;
 		}
@@ -115,7 +123,11 @@ public class TokenHelper {
 		Date issueAt;
 		try {
 			final Claims claims = this.getAllClaimsFromToken(token);
-			issueAt = claims.getIssuedAt();
+			if (claims == null) {
+				throw new Exception("null");
+			} else {
+				issueAt = claims.getIssuedAt();
+			}
 		} catch (Exception e) {
 			issueAt = null;
 		}
@@ -126,7 +138,11 @@ public class TokenHelper {
 		String audience;
 		try {
 			final Claims claims = this.getAllClaimsFromToken(token);
-			audience = claims.getAudience();
+			if (claims == null) {
+				throw new Exception("null");
+			} else {
+				audience = claims.getAudience();
+			}
 		} catch (Exception e) {
 			audience = null;
 		}
@@ -137,7 +153,11 @@ public class TokenHelper {
 		Date expiration;
 		try {
 			final Claims claims = this.getAllClaimsFromToken(token);
-			expiration = claims.getExpiration();
+			if (claims == null) {
+				throw new Exception("null");
+			} else {
+				expiration = claims.getExpiration();
+			}
 		} catch (Exception e) {
 			expiration = null;
 		}

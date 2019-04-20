@@ -32,27 +32,22 @@ public class RoomController {
 
 	@GetMapping(value = "/getRooms")
 	public ResponseEntity<List<Room>> getRooms() {
-		System.out.println("Get rooms pozvano");
 		List<Room> rooms = roomService.getAll();
 		return new ResponseEntity<>(rooms, HttpStatus.OK);
 	}
 
 	@DeleteMapping(value = "/deleteRoom/{roomId}")
 	public ResponseEntity<Room> deleteRoom(@PathVariable String roomId) {
-		System.out.println("Uslo u deleting room");
-		System.out.println(Long.parseLong(roomId) + 1);
 		Room room = roomService.getOne(Long.parseLong(roomId));
 		if (room == null) {
-			System.out.println("uslo u null deo");
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 		roomService.delete(Long.parseLong(roomId));
-		return new ResponseEntity<Room>(room, HttpStatus.OK);
+		return new ResponseEntity<>(room, HttpStatus.OK);
 	}
 
 	@GetMapping(value = "/findRoom/{roomId}")
 	public ResponseEntity<Room> findRoom(@PathVariable long roomId) {
-		System.out.println("Uslo u find room");
 		Room room = roomService.getOne(roomId);
 		if (room != null) {
 			return new ResponseEntity<>(room, HttpStatus.OK);

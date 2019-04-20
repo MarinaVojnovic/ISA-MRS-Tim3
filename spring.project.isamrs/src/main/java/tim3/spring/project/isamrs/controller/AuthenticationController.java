@@ -48,8 +48,8 @@ public class AuthenticationController {
 
 	@PostMapping(value = "auth/registerAirlineAdmin")
 	public ResponseEntity<?> registerAirlineAdmin(@RequestBody UserDTO user) {
-		if (this.userDetailsService.usernameTaken(user.getUsername()) == true) {
-			return new ResponseEntity<MessageDTO>(new MessageDTO("Username is already taken.", "Error"), HttpStatus.OK);
+		if (this.userDetailsService.usernameTaken(user.getUsername())) {
+			return new ResponseEntity<>(new MessageDTO("Username is already taken.", "Error"), HttpStatus.OK);
 		}
 
 		AirlineAdmin aa = new AirlineAdmin();
@@ -57,7 +57,7 @@ public class AuthenticationController {
 		aa.setId(null);
 		aa.setEmail(user.getEmail());
 		aa.setPassword(this.userDetailsService.encodePassword(user.getPassword()));
-		List<Authority> authorities = new ArrayList<Authority>();
+		List<Authority> authorities = new ArrayList<>();
 		Authority a = new Authority();
 		a.setName(UserRoleName.ROLE_AIRLINE_ADMIN);
 		authorities.add(a);
@@ -69,18 +69,17 @@ public class AuthenticationController {
 		aa.setPhoneNumber(user.getPhoneNumber());
 		aa.setAirline(null);
 		aa.setFirstTime(true);
-		
 
 		if (this.userDetailsService.saveUser(aa)) {
-			return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+			return new ResponseEntity<>(true, HttpStatus.OK);
 		}
-		return new ResponseEntity<Boolean>(false, HttpStatus.OK);
+		return new ResponseEntity<>(false, HttpStatus.OK);
 	}
 
 	@PostMapping(value = "auth/registerHotelAdmin")
 	public ResponseEntity<?> registerHotelAdmin(@RequestBody UserDTO user) {
 		if (this.userDetailsService.usernameTaken(user.getUsername()) == true) {
-			return new ResponseEntity<MessageDTO>(new MessageDTO("Username is already taken.", "Error"), HttpStatus.OK);
+			return new ResponseEntity<>(new MessageDTO("Username is already taken.", "Error"), HttpStatus.OK);
 		}
 
 		HotelAdmin ha = new HotelAdmin();
@@ -88,7 +87,7 @@ public class AuthenticationController {
 		ha.setId(null);
 		ha.setEmail(user.getEmail());
 		ha.setPassword(this.userDetailsService.encodePassword(user.getPassword()));
-		List<Authority> authorities = new ArrayList<Authority>();
+		List<Authority> authorities = new ArrayList<>();
 		Authority a = new Authority();
 		a.setName(UserRoleName.ROLE_HOTEL_ADMIN);
 		authorities.add(a);
@@ -102,15 +101,15 @@ public class AuthenticationController {
 		ha.setFirstTime(true);
 
 		if (this.userDetailsService.saveUser(ha)) {
-			return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+			return new ResponseEntity<>(true, HttpStatus.OK);
 		}
-		return new ResponseEntity<Boolean>(false, HttpStatus.OK);
+		return new ResponseEntity<>(false, HttpStatus.OK);
 	}
 
 	@PostMapping(value = "auth/registerRentacarAdmin")
 	public ResponseEntity<?> registerRentacarAdmin(@RequestBody UserDTO user) {
 		if (this.userDetailsService.usernameTaken(user.getUsername()) == true) {
-			return new ResponseEntity<MessageDTO>(new MessageDTO("Username is already taken.", "Error"), HttpStatus.OK);
+			return new ResponseEntity<>(new MessageDTO("Username is already taken.", "Error"), HttpStatus.OK);
 		}
 
 		RentacarAdmin ra = new RentacarAdmin();
@@ -118,7 +117,7 @@ public class AuthenticationController {
 		ra.setId(null);
 		ra.setEmail(user.getEmail());
 		ra.setPassword(this.userDetailsService.encodePassword(user.getPassword()));
-		List<Authority> authorities = new ArrayList<Authority>();
+		List<Authority> authorities = new ArrayList<>();
 		Authority a = new Authority();
 		a.setName(UserRoleName.ROLE_RENTACAR_ADMIN);
 		authorities.add(a);
@@ -132,15 +131,15 @@ public class AuthenticationController {
 		ra.setFirstTime(true);
 
 		if (this.userDetailsService.saveUser(ra)) {
-			return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+			return new ResponseEntity<>(true, HttpStatus.OK);
 		}
-		return new ResponseEntity<Boolean>(false, HttpStatus.OK);
+		return new ResponseEntity<>(false, HttpStatus.OK);
 	}
 
 	@PostMapping(value = "auth/registerUser")
 	public ResponseEntity<?> registerUser(@RequestBody UserDTO user) {
 		if (this.userDetailsService.usernameTaken(user.getUsername()) == true) {
-			return new ResponseEntity<MessageDTO>(new MessageDTO("Username is already taken.", "Error"), HttpStatus.OK);
+			return new ResponseEntity<>(new MessageDTO("Username is already taken.", "Error"), HttpStatus.OK);
 		}
 
 		RegularUser newUser = new RegularUser();
@@ -148,7 +147,7 @@ public class AuthenticationController {
 		newUser.setId(null);
 		newUser.setEmail(user.getEmail());
 		newUser.setPassword(this.userDetailsService.encodePassword(user.getPassword()));
-		List<Authority> authorities = new ArrayList<Authority>();
+		List<Authority> authorities = new ArrayList<>();
 		Authority a = new Authority();
 		a.setName(UserRoleName.ROLE_USER);
 		authorities.add(a);
@@ -159,7 +158,6 @@ public class AuthenticationController {
 		newUser.setLastPasswordResetDate(new Timestamp(System.currentTimeMillis()));
 		newUser.setPhoneNumber(user.getPhoneNumber());
 		newUser.setFirstTime(true);
-		
 
 		if (this.userDetailsService.saveUser(newUser)) {
 			return new ResponseEntity<>(newUser, HttpStatus.OK);
@@ -170,7 +168,7 @@ public class AuthenticationController {
 	@PostMapping(value = "auth/registerSystemAdmin")
 	public ResponseEntity<?> registerSystemAdmin(@RequestBody UserDTO user) {
 		if (this.userDetailsService.usernameTaken(user.getUsername()) == true) {
-			return new ResponseEntity<MessageDTO>(new MessageDTO("Username is already taken.", "Error"), HttpStatus.OK);
+			return new ResponseEntity<>(new MessageDTO("Username is already taken.", "Error"), HttpStatus.OK);
 		}
 
 		User sa = new User();
@@ -178,7 +176,7 @@ public class AuthenticationController {
 		sa.setId(null);
 		sa.setEmail(user.getEmail());
 		sa.setPassword(this.userDetailsService.encodePassword(user.getPassword()));
-		List<Authority> authorities = new ArrayList<Authority>();
+		List<Authority> authorities = new ArrayList<>();
 		Authority a = new Authority();
 		a.setName(UserRoleName.ROLE_SYSTEM_ADMIN);
 		authorities.add(a);
@@ -191,9 +189,9 @@ public class AuthenticationController {
 		sa.setFirstTime(true);
 
 		if (this.userDetailsService.saveUser(sa)) {
-			return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+			return new ResponseEntity<>(true, HttpStatus.OK);
 		}
-		return new ResponseEntity<Boolean>(false, HttpStatus.OK);
+		return new ResponseEntity<>(false, HttpStatus.OK);
 	}
 
 	@PostMapping(value = "auth/login")
@@ -205,21 +203,13 @@ public class AuthenticationController {
 			authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
 					authenticationRequest.getUsername(), authenticationRequest.getPassword()));
 		} catch (BadCredentialsException e) {
-			return new ResponseEntity<MessageDTO>(new MessageDTO("Wrong username or password.", "Error"),
+			return new ResponseEntity<>(new MessageDTO("Wrong username or password.", "Error"), HttpStatus.OK);
+		} catch (DisabledException e) {
+			return new ResponseEntity<>(new MessageDTO("Account is not verified. Check your email.", "Error"),
 					HttpStatus.OK);
-		} catch(DisabledException e) {
-			return new ResponseEntity<MessageDTO>(new MessageDTO("Account is not verified. Check your email.", "Error"),HttpStatus.OK); 
 		}
 		User user = (User) authentication.getPrincipal();
 
-		
-		/*
-		 * if (user.isEnabled()==false) { System.out.println("Nije potvrdjen mail");
-		 * return new ResponseEntity<MessageDTO>(new
-		 * MessageDTO("Account is not verified. Check your email.",
-		 * "Error"),HttpStatus.OK); }
-		 */
-		 
 		// Ubaci username + password u kontext
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 
@@ -241,6 +231,6 @@ public class AuthenticationController {
 		}
 
 		// Vrati token kao odgovor na uspesno autentifikaciju
-		return new ResponseEntity<UserTokenState>(new UserTokenState(jwt, expiresIn, userType), HttpStatus.OK);
+		return new ResponseEntity<>(new UserTokenState(jwt, expiresIn, userType), HttpStatus.OK);
 	}
 }

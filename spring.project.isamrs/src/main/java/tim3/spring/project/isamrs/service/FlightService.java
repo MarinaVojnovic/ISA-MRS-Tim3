@@ -9,7 +9,6 @@ public interface FlightService {
 	public List<Flight> getAll();
 	public Flight create(Flight flight);
 	public Flight update(Flight flight);
-	//public List<Flight> findByStartDestinationAndFinalDestinationAndDateOfStartAndDateOfEnd(Destination startDestination,Destination finalDestination, Date dateOfStart,Date dateOfEnd);
 	public void delete(long id);
 	public List<Flight> findByStartDestinationAndFinalDestination(int startDestination, int finalDestination);
 	
