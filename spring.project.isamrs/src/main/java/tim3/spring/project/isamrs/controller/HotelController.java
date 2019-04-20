@@ -1,6 +1,5 @@
 package tim3.spring.project.isamrs.controller;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -8,10 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import tim3.spring.project.isamrs.comparator.HotelsComparatorAddress;
@@ -25,19 +25,19 @@ public class HotelController {
 	@Autowired
 	HotelService hotelService;
 
-	@RequestMapping(value = "/getAllHotels", method = RequestMethod.GET)
+	@GetMapping(value = "/getAllHotels")
 	public ResponseEntity<List<Hotel>> getAllHotels() {
 		List<Hotel> hotels = hotelService.getAll();
 		return new ResponseEntity<>(hotels, HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/createHotel", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value = "/createHotel", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Hotel> create(@RequestBody HotelDTO hotelDTO) {
 		Hotel retVal = hotelService.create(new Hotel(hotelDTO));
 		return new ResponseEntity<>(retVal, HttpStatus.CREATED);
 	}
 
-	@RequestMapping(value = "/findHotel", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/findHotel", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Hotel> findRentacar() {
 		Hotel hotel = hotelService.getOne(1);
 		if (hotel != null) {
@@ -47,7 +47,7 @@ public class HotelController {
 		}
 	}
 
-	@RequestMapping(value = "/saveChangesHotel", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@PutMapping(value = "/saveChangesHotel", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Hotel> saveChangesRentACar(@RequestBody Hotel hotel) {
 		Hotel h = hotelService.getOne(hotel.getId());
 		if (h == null) {
@@ -63,27 +63,24 @@ public class HotelController {
 		return new ResponseEntity<>(hotel2, HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/showHotels/{criteria}", method = RequestMethod.GET)
+	@GetMapping(value = "/showHotels/{criteria}")
 	public ResponseEntity<List<Hotel>> showHotels(@PathVariable String criteria) {
-		System.out.println("Show hotels pozvano");
 		List<Hotel> hotels = hotelService.getAll();
 		if (criteria.equals("sortByNameHotels")) {
 			Collections.sort(hotels, new HotelsComparatorName());
 		} else if (criteria.equals("sortByAddressHotels")) {
 			Collections.sort(hotels, new HotelsComparatorAddress());
 		}
-		return new ResponseEntity<List<Hotel>>(hotels, HttpStatus.OK);
+		return new ResponseEntity<>(hotels, HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/findHotels/{field}", method = RequestMethod.GET)
+	@GetMapping(value = "/findHotels/{field}")
 	public ResponseEntity<List<Hotel>> findHotels(@PathVariable String field) {
-		System.out.println("Find hotels pozvano");
-		List<Hotel> hotels = new ArrayList<Hotel>();
-		hotels = (List<Hotel>) hotelService.findByName(field);
+		List<Hotel> hotels = (List<Hotel>) hotelService.findByName(field);
 		if (hotels.size() == 0) {
 			hotels = (List<Hotel>) hotelService.findByAddress(field);
 		}
 
-		return new ResponseEntity<List<Hotel>>(hotels, HttpStatus.OK);
+		return new ResponseEntity<>(hotels, HttpStatus.OK);
 	}
 }

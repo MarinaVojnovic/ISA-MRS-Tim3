@@ -47,7 +47,6 @@ public class UserServiceImpl implements UserService{
 		try {
 			userRepository.save(userToEdit);
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
 			return "Database error.";
 		}
 
