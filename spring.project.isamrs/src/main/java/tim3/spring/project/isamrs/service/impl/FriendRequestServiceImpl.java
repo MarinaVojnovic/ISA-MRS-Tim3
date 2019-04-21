@@ -1,15 +1,14 @@
 package tim3.spring.project.isamrs.service.impl;
 
-import tim3.spring.project.isamrs.model.FriendRequest;
-import tim3.spring.project.isamrs.model.RegularUser;
-import tim3.spring.project.isamrs.repository.FriendRequestRepository;
-import tim3.spring.project.isamrs.repository.RentacarRepository;
-import tim3.spring.project.isamrs.service.FriendRequestService;
-
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import tim3.spring.project.isamrs.model.FriendRequest;
+import tim3.spring.project.isamrs.model.RegularUser;
+import tim3.spring.project.isamrs.repository.FriendRequestRepository;
+import tim3.spring.project.isamrs.service.FriendRequestService;
 
 @Service
 public class FriendRequestServiceImpl implements FriendRequestService{
