@@ -2,6 +2,7 @@ package tim3.spring.project.isamrs.controller;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.view.RedirectView;
 
+import tim3.spring.project.isamrs.comparator.FriendsComparatorNameSurname;
 import tim3.spring.project.isamrs.dto.FriendRequestDTO;
 import tim3.spring.project.isamrs.dto.PasswordDTO;
 import tim3.spring.project.isamrs.dto.UserDTO;
@@ -185,6 +187,7 @@ public class UserController {
 		for (FriendRequest f : friends2) {
 			regular.add(f.getReceived());
 		}
+		Collections.sort(regular, new FriendsComparatorNameSurname());
 		return new ResponseEntity<List<RegularUser>>(regular, HttpStatus.OK);
 	}
 

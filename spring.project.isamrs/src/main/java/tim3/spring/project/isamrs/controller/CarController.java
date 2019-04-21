@@ -45,7 +45,9 @@ public class CarController {
 	public ResponseEntity<List<Car>> getCars() {
 		RentacarAdmin ra = (RentacarAdmin) this.userDetailsService
 				.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+		System.out.println("Usernameeeee: "+ra.getUsername());
 		List<Car> cars = carService.findByRentacar(ra.getRentacar());
+		System.out.println("Cars size: "+cars.size());
 		return new ResponseEntity<>(cars, HttpStatus.OK);
 	}
 

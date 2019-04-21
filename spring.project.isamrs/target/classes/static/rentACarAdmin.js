@@ -330,6 +330,8 @@ function showCars(type){
 		success : function(data) {
 			
 			var response = data;
+			$(".message").children().remove();
+			
 			$("#tableOfCarsForDelete").find("tr").remove();
 			$("#tableOfCarsForEdit").find("tr").remove();
 			var tabela;
@@ -340,8 +342,9 @@ function showCars(type){
 			}
 			
 			console.log(tabela);
-			
+			var broj=0;
 			for(var counter in response){
+				broj++;
 				console.log('counter: '+counter);
 				var row = tabela.insertRow(counter);
 				console.log(row);
@@ -370,17 +373,23 @@ function showCars(type){
 				
 			
 			}
-			var row = tabela.insertRow(0);
-			var cell1 = row.insertCell(0);
-			var cell2 = row.insertCell(1);
-			var cell3 = row.insertCell(2);
-			var cell4 = row.insertCell(3);
-			var cell5 = row.insertCell(4);
 			
-			cell1.innerHTML = "Id";
-			cell2.innerHTML = "Name";
-			cell3.innerHTML = "Price";
-			cell4.innerHTML = "Year";
+			if (broj!=0){
+				var row = tabela.insertRow(0);
+				var cell1 = row.insertCell(0);
+				var cell2 = row.insertCell(1);
+				var cell3 = row.insertCell(2);
+				var cell4 = row.insertCell(3);
+				var cell5 = row.insertCell(4);
+				
+				cell1.innerHTML = "Id";
+				cell2.innerHTML = "Name";
+				cell3.innerHTML = "Price";
+				cell4.innerHTML = "Year";
+			}else{
+				$(".message").append('<h3>No cars found.</p>')
+			}
+			
 			
 			
 		},
