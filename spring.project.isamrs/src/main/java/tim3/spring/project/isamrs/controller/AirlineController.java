@@ -1,6 +1,7 @@
 package tim3.spring.project.isamrs.controller;
 
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,18 @@ public class AirlineController {
 		return new ResponseEntity<>(airlines, HttpStatus.OK);
 	}
 
+	@GetMapping(value = "/getAirlinesWithoutAdmin")
+	public ResponseEntity<List<Airline>> getAirlinesWithoutAdmin() {
+		List<Airline> retVal = airlineService.getAll();
+		for (Iterator<Airline> iterator = retVal.iterator(); iterator.hasNext();) {
+			Airline airline = iterator.next();
+			if (airline.getAirlineAdmin() != null) {
+				iterator.remove();
+			}
+		}
+		return new ResponseEntity<>(retVal, HttpStatus.OK);
+	}
+
 	@PostMapping(value = "/createAirline", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Airline> create(@RequestBody AirlineDTO airlineDTO) {
 		Airline retVal = airlineService.create(new Airline(airlineDTO));
@@ -61,7 +74,7 @@ public class AirlineController {
 		a.setFlights(airline.getFlights());
 		a.setDestinations(airline.getDestinations());
 		a.setAirplanes(airline.getAirplanes());
-		a.setAirlineServices(airline.getAirlineCustomerServices());
+		a.setAirlineCustomerServices(airline.getAirlineCustomerServices());
 		a.setQuickBookingTickets(airline.getQuickBookingTickets());
 
 		Airline air = airlineService.save(a);

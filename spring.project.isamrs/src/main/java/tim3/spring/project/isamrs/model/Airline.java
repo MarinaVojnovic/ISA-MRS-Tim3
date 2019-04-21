@@ -34,6 +34,7 @@ public class Airline {
 	@Column(name = "promotional_description")
 	private String promotionalDescription;
 
+	@JsonIgnore
 	@OneToOne(mappedBy = "airline")
 	private AirlineAdmin airlineAdmin;
 
@@ -148,10 +149,6 @@ public class Airline {
 		return airlineCustomerServices;
 	}
 
-	public void setAirlineServices(Set<AirlineCustomerService> airlineCustomerServices) {
-		this.airlineCustomerServices = airlineCustomerServices;
-	}
-
 	public Airline(String name, String address, String promotionalDescription, Set<Destination> destinations,
 			Set<Flight> flights, Set<Ticket> quickBookingTickets, Set<Airplane> airplanes,
 			Set<AirlineCustomerService> airlineCustomerServices) {
@@ -170,6 +167,18 @@ public class Airline {
 		this.name = airlineDTO.getAirlineNameRegister();
 		this.address = airlineDTO.getAirlineAddressRegister();
 		this.promotionalDescription = airlineDTO.getAirlinePromotionalDescription();
+	}
+
+	public AirlineAdmin getAirlineAdmin() {
+		return airlineAdmin;
+	}
+
+	public void setAirlineAdmin(AirlineAdmin airlineAdmin) {
+		this.airlineAdmin = airlineAdmin;
+	}
+
+	public void setAirlineCustomerServices(Set<AirlineCustomerService> airlineCustomerServices) {
+		this.airlineCustomerServices = airlineCustomerServices;
 	}
 
 }

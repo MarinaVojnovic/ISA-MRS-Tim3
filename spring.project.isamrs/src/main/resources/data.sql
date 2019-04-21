@@ -34,11 +34,11 @@ ON DUPLICATE KEY UPDATE user_id = 1;
 -- Inserting default airline administrator in database
 -- Encrypted password is '123'
 INSERT INTO USERS (dtype, id, username, password, first_name, last_name, email, enabled,
-					last_password_reset_date, phone_number, first_time) 
+					last_password_reset_date, phone_number, first_time, airline_id) 
 VALUES ( 'AirlineAdmin', 2, 'airlineadmin', 
 		'$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra',
 		'Nikola', 'Nikolic', 'nikolanikolic@example.com', true, '2019-04-18 20:58:00', 
-		'00381645544333', true)
+		'00381645544333', true, 1)
 ON DUPLICATE KEY UPDATE username = 'airlineadmin';
 INSERT INTO AUTHORITY (id, name) 
 VALUES (2, 'ROLE_AIRLINE_ADMIN')
@@ -50,11 +50,11 @@ ON DUPLICATE KEY UPDATE user_id = 2;
 -- Inserting default hotel administrator in database
 -- Encrypted password is '123'
 INSERT INTO USERS (dtype, id, username, password, first_name, last_name, email, enabled,
-					last_password_reset_date, phone_number, first_time) 
+					last_password_reset_date, phone_number, first_time, hotel_id) 
 VALUES ( 'HotelAdmin', 3, 'hoteladmin', 
 		'$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra',
 		'Stefan', 'Stefanovic', 'stefanstefanovic@example.com', true, '2019-04-18 20:58:00', 
-		'00381648877666', true)
+		'00381648877666', true, 1)
 ON DUPLICATE KEY UPDATE username = 'hoteladmin';
 INSERT INTO AUTHORITY (id, name) 
 VALUES (3, 'ROLE_HOTEL_ADMIN')

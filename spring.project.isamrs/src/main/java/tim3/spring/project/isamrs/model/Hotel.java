@@ -24,9 +24,10 @@ public class Hotel {
 	@Id
 	@GeneratedValue
 	private Long id;
-	
+
+	@JsonIgnore
 	@OneToOne(mappedBy = "hotel")
-    private HotelAdmin hotelAdmin;
+	private HotelAdmin hotelAdmin;
 
 	@Column(name = "name")
 	private String name;
@@ -128,6 +129,14 @@ public class Hotel {
 		this.name = hotelDTO.getHotelNameRegister();
 		this.address = hotelDTO.getHotelAddressRegister();
 		this.promotionalDescription = hotelDTO.getHotelPromotionalDescription();
+	}
+
+	public HotelAdmin getHotelAdmin() {
+		return hotelAdmin;
+	}
+
+	public void setHotelAdmin(HotelAdmin hotelAdmin) {
+		this.hotelAdmin = hotelAdmin;
 	}
 
 }
