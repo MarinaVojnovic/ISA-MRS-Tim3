@@ -5,9 +5,12 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class RentacarAdmin extends User {
 
+	@JsonIgnore
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "rentacar_id", referencedColumnName = "id")
 	private Rentacar rentacar;

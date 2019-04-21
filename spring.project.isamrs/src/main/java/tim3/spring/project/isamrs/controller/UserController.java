@@ -70,7 +70,7 @@ public class UserController {
 		User user = (User) this.userDetailsService
 				.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
 		UserDTO retVal = new UserDTO(user.getUsername(), "", user.getFirstName(), user.getLastName(), user.getEmail(),
-				user.getPhoneNumber());
+				user.getPhoneNumber(), "");
 		return new ResponseEntity<>(retVal, HttpStatus.OK);
 	}
 

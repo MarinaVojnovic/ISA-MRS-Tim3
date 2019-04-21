@@ -7,6 +7,7 @@ public class UserDTO {
 	private String lastName;
 	private String email;
 	private String phoneNumber;
+	private String adminId;
 
 	public String getUsername() {
 		return username;
@@ -57,7 +58,7 @@ public class UserDTO {
 	}
 
 	public UserDTO(String username, String password, String firstName, String lastName, String email,
-			String phoneNumber) {
+			String phoneNumber, String adminId) {
 		super();
 		this.username = username;
 		this.password = password;
@@ -65,10 +66,19 @@ public class UserDTO {
 		this.lastName = lastName;
 		this.email = email;
 		this.phoneNumber = phoneNumber;
+		this.adminId = adminId;
 	}
 
 	public UserDTO() {
 		super();
+	}
+
+	public String getAdminId() {
+		return adminId;
+	}
+
+	public void setAdminId(String adminId) {
+		this.adminId = adminId;
 	}
 
 }

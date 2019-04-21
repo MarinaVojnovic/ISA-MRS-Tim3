@@ -23,16 +23,22 @@ import org.springframework.web.bind.annotation.RestController;
 
 import tim3.spring.project.isamrs.dto.MessageDTO;
 import tim3.spring.project.isamrs.dto.UserDTO;
+import tim3.spring.project.isamrs.model.Airline;
 import tim3.spring.project.isamrs.model.AirlineAdmin;
 import tim3.spring.project.isamrs.model.Authority;
+import tim3.spring.project.isamrs.model.Hotel;
 import tim3.spring.project.isamrs.model.HotelAdmin;
 import tim3.spring.project.isamrs.model.RegularUser;
+import tim3.spring.project.isamrs.model.Rentacar;
 import tim3.spring.project.isamrs.model.RentacarAdmin;
 import tim3.spring.project.isamrs.model.User;
 import tim3.spring.project.isamrs.model.UserRoleName;
 import tim3.spring.project.isamrs.model.UserTokenState;
 import tim3.spring.project.isamrs.security.TokenHelper;
 import tim3.spring.project.isamrs.security.auth.JwtAuthenticationRequest;
+import tim3.spring.project.isamrs.service.AirlineService;
+import tim3.spring.project.isamrs.service.HotelService;
+import tim3.spring.project.isamrs.service.RentacarService;
 import tim3.spring.project.isamrs.service.impl.CustomUserDetailsService;
 
 @RestController
@@ -45,6 +51,15 @@ public class AuthenticationController {
 
 	@Autowired
 	private CustomUserDetailsService userDetailsService;
+
+	@Autowired
+	private AirlineService airlineService;
+
+	@Autowired
+	private HotelService hotelService;
+
+	@Autowired
+	private RentacarService rentacarService;
 
 	@PostMapping(value = "auth/registerAirlineAdmin")
 	public ResponseEntity<?> registerAirlineAdmin(@RequestBody UserDTO user) {
@@ -67,8 +82,11 @@ public class AuthenticationController {
 		aa.setLastName(user.getLastName());
 		aa.setLastPasswordResetDate(new Timestamp(System.currentTimeMillis()));
 		aa.setPhoneNumber(user.getPhoneNumber());
-		aa.setAirline(null);
 		aa.setFirstTime(true);
+
+		Airline airline = airlineService.getOne(Long.parseLong(user.getAdminId()));
+		aa.setAirline(airline);
+		airline.setAirlineAdmin(aa);
 
 		if (this.userDetailsService.saveUser(aa)) {
 			return new ResponseEntity<>(true, HttpStatus.OK);
@@ -97,8 +115,11 @@ public class AuthenticationController {
 		ha.setLastName(user.getLastName());
 		ha.setLastPasswordResetDate(new Timestamp(System.currentTimeMillis()));
 		ha.setPhoneNumber(user.getPhoneNumber());
-		ha.setHotel(null);
 		ha.setFirstTime(true);
+
+		Hotel hotel = hotelService.getOne(Long.parseLong(user.getAdminId()));
+		ha.setHotel(hotel);
+		hotel.setHotelAdmin(ha);
 
 		if (this.userDetailsService.saveUser(ha)) {
 			return new ResponseEntity<>(true, HttpStatus.OK);
@@ -127,8 +148,11 @@ public class AuthenticationController {
 		ra.setLastName(user.getLastName());
 		ra.setLastPasswordResetDate(new Timestamp(System.currentTimeMillis()));
 		ra.setPhoneNumber(user.getPhoneNumber());
-		ra.setRentacar(null);
 		ra.setFirstTime(true);
+
+		Rentacar rentacar = rentacarService.getOne(Long.parseLong(user.getAdminId()));
+		ra.setRentacar(rentacar);
+		rentacar.setRentacarAdmin(ra);
 
 		if (this.userDetailsService.saveUser(ra)) {
 			return new ResponseEntity<>(true, HttpStatus.OK);

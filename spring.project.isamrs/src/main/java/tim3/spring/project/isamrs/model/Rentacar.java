@@ -23,9 +23,10 @@ public class Rentacar {
 	@Id
 	@GeneratedValue
 	private Long id;
-	
+
+	@JsonIgnore
 	@OneToOne(mappedBy = "rentacar")
-    private RentacarAdmin rentacarAdmin;
+	private RentacarAdmin rentacarAdmin;
 
 	@Column(name = "name")
 	private String name;
@@ -140,5 +141,13 @@ public class Rentacar {
 		this.rentacarCustomerServices = rentacarCustomerServices;
 		this.cars = cars;
 		this.branches = branches;
+	}
+
+	public RentacarAdmin getRentacarAdmin() {
+		return rentacarAdmin;
+	}
+
+	public void setRentacarAdmin(RentacarAdmin rentacarAdmin) {
+		this.rentacarAdmin = rentacarAdmin;
 	}
 }
