@@ -9,18 +9,17 @@ var urlRoot2 = "http://localhost:8080/searchFlight";
 var urlRoot3 = "http://localhost:8080/getAllDestinations";
 var urlRoot4 = "http://localhost:8080/api/editUser";
 var urlRoot5 = "http://localhost:8080/api/getLogged";
-var urlRoot6="http://localhost:8080/api/findFriends";
-var urlRoot7="http://localhost:8080/api/sendFriendRequest";
-var urlRoot8="http://localhost:8080/api/getFriendRequests";
-var urlRoot9="http://localhost:8080/api/acceptFriend";
-var urlRoot10="http://localhost:8080/api/rejectFriend";
-var urlRoot11="http://localhost:8080/api/getAllFriends";
-var urlRoot12="http://localhost:8080/api/getAllFriendRequests";
-var urlRoot13="http://localhost:8080/api/removeFriend";
+var urlRoot6 = "http://localhost:8080/api/findFriends";
+var urlRoot7 = "http://localhost:8080/api/sendFriendRequest";
+var urlRoot8 = "http://localhost:8080/api/getFriendRequests";
+var urlRoot9 = "http://localhost:8080/api/acceptFriend";
+var urlRoot10 = "http://localhost:8080/api/rejectFriend";
+var urlRoot11 = "http://localhost:8080/api/getAllFriends";
+var urlRoot12 = "http://localhost:8080/api/getAllFriendRequests";
+var urlRoot13 = "http://localhost:8080/api/removeFriend";
 var TOKEN_KEY = 'jwtToken';
 
 getLogged();
-
 
 getAllFlights()
 getAllDestinations()
@@ -45,6 +44,10 @@ function fillTableAirlines(data) {
 		var cell2 = row.insertCell(1);
 		var cell3 = row.insertCell(2);
 		var cell4 = row.insertCell(3);
+		var cell5 = row.insertCell(4);
+
+		var location = "https://maps.google.com/?q="
+				+ response[counter].address;
 
 		cell1.innerHTML = response[counter].name;
 		cell2.innerHTML = response[counter].address;
@@ -52,6 +55,8 @@ function fillTableAirlines(data) {
 		cell4.innerHTML = '<button id=\"'
 				+ response[counter].id
 				+ '\" class=\"chooseAirline\" class="btn btn-primary">Choose</button>';
+		cell5.innerHTML = '<a href=\"' + location
+				+ '\" target=\"_blank\">Show location</a>';
 
 	}
 	var row = tabela.insertRow(0);
@@ -59,11 +64,13 @@ function fillTableAirlines(data) {
 	var cell2 = row.insertCell(1);
 	var cell3 = row.insertCell(2);
 	var cell4 = row.insertCell(3);
+	var cell5 = row.insertCell(4);
 
 	cell1.innerHTML = "Name";
 	cell2.innerHTML = "Address";
 	cell3.innerHTML = "Promotional Description";
 	cell4.innerHTML = "";
+	cell5.innerHTML = "Location";
 
 }
 
@@ -81,6 +88,10 @@ function fillTableHotels(data) {
 		var cell2 = row.insertCell(1);
 		var cell3 = row.insertCell(2);
 		var cell4 = row.insertCell(3);
+		var cell5 = row.insertCell(4);
+
+		var location = "https://maps.google.com/?q="
+				+ response[counter].address;
 
 		cell1.innerHTML = response[counter].name;
 		cell2.innerHTML = response[counter].address;
@@ -88,6 +99,8 @@ function fillTableHotels(data) {
 		cell4.innerHTML = '<button id=\"'
 				+ response[counter].id
 				+ '\" class=\"chooseHotel\" class="btn btn-primary">Choose</button>';
+		cell5.innerHTML = '<a href=\"' + location
+				+ '\" target=\"_blank\">Show location</a>';
 
 	}
 	var row = tabela.insertRow(0);
@@ -95,11 +108,13 @@ function fillTableHotels(data) {
 	var cell2 = row.insertCell(1);
 	var cell3 = row.insertCell(2);
 	var cell4 = row.insertCell(3);
+	var cell5 = row.insertCell(4);
 
 	cell1.innerHTML = "Name";
 	cell2.innerHTML = "Address";
 	cell3.innerHTML = "Promotional Description";
 	cell4.innerHTML = "";
+	cell5.innerHTML = "Location";
 
 }
 
@@ -233,6 +248,10 @@ function fillTableRentacars(data) {
 		var cell3 = row.insertCell(2);
 		var cell4 = row.insertCell(3);
 		var cell5 = row.insertCell(4);
+		var cell6 = row.insertCell(5);
+		
+		var location = "https://maps.google.com/?q="
+			+ response[counter].address;
 
 		cell1.innerHTML = response[counter].name;
 		cell2.innerHTML = response[counter].address;
@@ -241,6 +260,8 @@ function fillTableRentacars(data) {
 		cell5.innerHTML = '<button id=\"'
 				+ response[counter].id
 				+ '\" class=\"chooseRentacar\" class="btn btn-primary">Choose</button>';
+		cell6.innerHTML = '<a href=\"' + location
+		+ '\" target=\"_blank\">Show location</a>';
 
 	}
 	var row = tabela.insertRow(0);
@@ -249,12 +270,14 @@ function fillTableRentacars(data) {
 	var cell3 = row.insertCell(2);
 	var cell4 = row.insertCell(3);
 	var cell5 = row.insertCell(4);
+	var cell6 = row.insertCell(5);
 
 	cell1.innerHTML = "Name";
 	cell2.innerHTML = "Address";
 	cell3.innerHTML = "Promotional Description";
 	cell4.innerHTML = "Grade";
 	cell5.innerHTML = "";
+	cell6.innerHTML = "Location";
 
 }
 
@@ -283,149 +306,168 @@ function findRentacars() {
 
 		})
 	}
+}
 
-function findFriends(){
-	var name=document.getElementById("friendRequestName").value;
-	var surname=document.getElementById("friendRequestSurname").value;
+function findFriends() {
+	var name = document.getElementById("friendRequestName").value;
+	var surname = document.getElementById("friendRequestSurname").value;
 	$("#foundFriends").empty();
-	if(name=="" && surname==""){
+	if (name == "" && surname == "") {
 		alert("Please enter name and/or surname")
-	}else{
-		if(surname==""){
-			surname="no_surname"
+	} else {
+		if (surname == "") {
+			surname = "no_surname"
 		}
-		$.ajax({
-			type : 'GET',
-			url : urlRoot6+"/"+name+"/"+surname,
-			headers : createAuthorizationTokenHeader(TOKEN_KEY),
-			contentType : 'application/json',
-			success : function(data) {
-				
-				$.ajax({
-				type : 'GET',
-				url : urlRoot12,
-				headers : createAuthorizationTokenHeader(TOKEN_KEY),
-				contentType : 'application/json',
-				success: function(data2){
-					var list=data==null?[]: (data instanceof Array? data: [data]);
-					var list2=data2==null?[]: (data2 instanceof Array? data2: [data2]);
-					if(list.length>0){
-					$("#foundFriends").append("<h3>Found friends: </h3>")
-					var tabela=document.getElementById("foundFriends");
-					var count=1
-					for(var friend in list){
-						console.log('counter: '+friend);
-						var row = tabela.insertRow(friend);
-						var cell1 = row.insertCell(0);
-						var cell2 = row.insertCell(1);
-						var cell3 = row.insertCell(2);
-						
-						cell1.innerHTML = list[friend].firstName;
-						cell2.innerHTML = list[friend].lastName;
-						var i=0;
-						
-						if(list2.length>0){
-						for(var fr in list2){
-							if(list[friend].username==list2[fr].received.username && list2[fr].accepted==false){
-								i=1;
-							}
-							if(list[friend].username==list2[fr].received.username && list2[fr].accepted==true){
-								i=2;
-							}
-							if(list[friend].username==list2[fr].sent.username && list2[fr].accepted==true){
-								i=2;
-							}
-								
-						 }
-						}
-						if(i==1){
-							cell3.innerHTML= '<button style="background-color:grey" name=\"'+ list[friend].id+'\" id=\"requestSent\" class="btn btn-primary">Request sent</button>';
-							$("#requestSent").attr('disabled', 'disabled');
-						}else if(i==2){
-							cell3.innerHTML= '<button style="background-color:green" name=\"'+ list[friend].id+'\" id=\"friendsButton\" class="btn btn-primary">Friends</button>';
-							$("#friendsButton").attr('disabled', 'disabled');
-						}
-						else if(i==0){
-							cell3.innerHTML= '<button name=\"'+ list[friend].id+" "+(count)+'\" id=\"addFriend\" class="btn btn-primary">Add friend</button>';
-							
-						}
-						console.log(i);
-						
-						count++;
-						
+		$
+				.ajax({
+					type : 'GET',
+					url : urlRoot6 + "/" + name + "/" + surname,
+					headers : createAuthorizationTokenHeader(TOKEN_KEY),
+					contentType : 'application/json',
+					success : function(data) {
+
+						$
+								.ajax({
+									type : 'GET',
+									url : urlRoot12,
+									headers : createAuthorizationTokenHeader(TOKEN_KEY),
+									contentType : 'application/json',
+									success : function(data2) {
+										var list = data == null ? []
+												: (data instanceof Array ? data
+														: [ data ]);
+										var list2 = data2 == null ? []
+												: (data2 instanceof Array ? data2
+														: [ data2 ]);
+										if (list.length > 0) {
+											$("#foundFriends").append(
+													"<h3>Found friends: </h3>")
+											var tabela = document
+													.getElementById("foundFriends");
+											var count = 1
+											for ( var friend in list) {
+												console.log('counter: '
+														+ friend);
+												var row = tabela
+														.insertRow(friend);
+												var cell1 = row.insertCell(0);
+												var cell2 = row.insertCell(1);
+												var cell3 = row.insertCell(2);
+
+												cell1.innerHTML = list[friend].firstName;
+												cell2.innerHTML = list[friend].lastName;
+												var i = 0;
+
+												if (list2.length > 0) {
+													for ( var fr in list2) {
+														if (list[friend].username == list2[fr].received.username
+																&& list2[fr].accepted == false) {
+															i = 1;
+														}
+														if (list[friend].username == list2[fr].received.username
+																&& list2[fr].accepted == true) {
+															i = 2;
+														}
+														if (list[friend].username == list2[fr].sent.username
+																&& list2[fr].accepted == true) {
+															i = 2;
+														}
+
+													}
+												}
+												if (i == 1) {
+													cell3.innerHTML = '<button style="background-color:grey" name=\"'
+															+ list[friend].id
+															+ '\" id=\"requestSent\" class="btn btn-primary">Request sent</button>';
+													$("#requestSent").attr(
+															'disabled',
+															'disabled');
+												} else if (i == 2) {
+													cell3.innerHTML = '<button style="background-color:green" name=\"'
+															+ list[friend].id
+															+ '\" id=\"friendsButton\" class="btn btn-primary">Friends</button>';
+													$("#friendsButton").attr(
+															'disabled',
+															'disabled');
+												} else if (i == 0) {
+													cell3.innerHTML = '<button name=\"'
+															+ list[friend].id
+															+ " "
+															+ (count)
+															+ '\" id=\"addFriend\" class="btn btn-primary">Add friend</button>';
+
+												}
+												console.log(i);
+
+												count++;
+
+											}
+											var row = tabela.insertRow(0);
+											var cell1 = row.insertCell(0);
+											var cell2 = row.insertCell(1);
+											var cell3 = row.insertCell(2);
+											cell1.innerHTML = "Name";
+											cell2.innerHTML = "Last name";
+											cell3.innerHTML = "";
+
+										}
+
+										else {
+											$("#foundFriends")
+													.append(
+															"<h3>No friends found </h3>");
+										}
+
+									},
+									error : function(jqXHR, textStatus,
+											errorThrown) {
+										alert(jqXHR.status);
+										alert(textStatus);
+										alert(errorThrown);
+									}
+								})
+
+					},
+					error : function(jqXHR, textStatus, errorThrown) {
+						alert(jqXHR.status);
+						alert(textStatus);
+						alert(errorThrown);
 					}
-					var row = tabela.insertRow(0);
-					var cell1 = row.insertCell(0);
-					var cell2 = row.insertCell(1);
-					var cell3 = row.insertCell(2);
-					cell1.innerHTML = "Name";
-					cell2.innerHTML = "Last name";
-					cell3.innerHTML = "";
-					
-				}
-					
-				else{
-					$("#foundFriends").append("<h3>No friends found </h3>");
-				}
-				
-				},
-				error : function(jqXHR, textStatus, errorThrown) {
-					alert(jqXHR.status);
-					alert(textStatus);
-					alert(errorThrown);
-				}
+
 				})
-				
-		
-	},
-	error : function(jqXHR, textStatus, errorThrown) {
-		alert(jqXHR.status);
-		alert(textStatus);
-		alert(errorThrown);
+
 	}
-
-	})
-		
-}
 }
 
-
-
-
-
-
-
-$(document).on('click','#addFriend',function(e){
+$(document).on('click', '#addFriend', function(e) {
 	e.preventDefault();
-	var id=$(this).attr("name").split(" ")[0];
-	var name=$(this).attr("name");
-	console.log("User id"+ id);
+	var id = $(this).attr("name").split(" ")[0];
+	var name = $(this).attr("name");
+	console.log("User id" + id);
 	$.ajax({
 		type : 'POST',
-		url : urlRoot7+"/"+id,
+		url : urlRoot7 + "/" + id,
 		headers : createAuthorizationTokenHeader(TOKEN_KEY),
 		contentType : 'application/json',
 		success : function(data) {
 			alert("Successful sending friend request, congratulations!");
-			$("button[name='"+name+"']").attr('disabled', 'disabled');
-			$("button[name='"+name+"']").text('Request sent');
+			$("button[name='" + name + "']").attr('disabled', 'disabled');
+			$("button[name='" + name + "']").text('Request sent');
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
 			alert(jqXHR.status);
 			alert(textStatus);
 			alert(errorThrown);
 		}
-		
-		
+
 	})
 })
 
-$(document).on('click','#searchFriends',function(e){
+$(document).on('click', '#searchFriends', function(e) {
 	e.preventDefault();
 	console.log("Kliknuo");
 	findFriends();
 })
-
 
 $(document).on('click', '.tablinks', function(e) {
 	e.preventDefault();
@@ -717,125 +759,136 @@ $(document)
 					}
 				});
 
-
-function seeFriendRequests(){
+function seeFriendRequests() {
 	$
-	.ajax({
-		type : 'GET',
-		url : urlRoot8,
-		headers : createAuthorizationTokenHeader(TOKEN_KEY),
-		contentType : 'application/json',
-		success : function(data) {
-			var list=data==null?[]: (data instanceof Array? data: [data]);
-			if(list.length>0){
-			$("#friendRequestTable").append("<h3>Found friends: </h3>")
-			var tabela=document.getElementById("friendRequestTable");
-			var count=1;
-			for(var friend in list){
-				console.log('counter: '+friend);
-				var row = tabela.insertRow(friend);
-				var cell1 = row.insertCell(0);
-				var cell2 = row.insertCell(1);
-				var cell3 = row.insertCell(2);
-				var cell4=row.insertCell(3);
-				
-				cell1.innerHTML = list[friend].sent.firstName;
-				cell2.innerHTML = list[friend].sent.lastName;
-				cell3.innerHTML= '<button style="background-color:green" name=\"'+ list[friend].sent.id+" "+count+'\" id=\"acceptFriend\" class="btn btn-primary">Accept</button>';
-				cell4.innerHTML= '<button style="background-color:red" name=\"'+ list[friend].sent.id+" "+count+'\" id=\"rejectFriend\" class="btn btn-primary">Reject</button>';
-				
-				
-				count++;
-			}
-			var row = tabela.insertRow(0);
-			var cell1 = row.insertCell(0);
-			var cell2 = row.insertCell(1);
-			var cell3 = row.insertCell(2);
-			var cell4 = row.insertCell(3);
-			cell1.innerHTML = "Name";
-			cell2.innerHTML = "Last name";
-			cell3.innerHTML = "";
-			cell4.innerHTML = "";
-		}else{
-			$("#friendRequestTable").append("<h3>No friend requests </h3>")
-		}
-				},
-		error : function(jqXHR, textStatus,
-				errorThrown) {
-			alert(jqXHR.status);
-			alert(textStatus);
-			alert(errorThrown);
+			.ajax({
+				type : 'GET',
+				url : urlRoot8,
+				headers : createAuthorizationTokenHeader(TOKEN_KEY),
+				contentType : 'application/json',
+				success : function(data) {
+					var list = data == null ? []
+							: (data instanceof Array ? data : [ data ]);
+					if (list.length > 0) {
+						$("#friendRequestTable").append(
+								"<h3>Found friends: </h3>")
+						var tabela = document
+								.getElementById("friendRequestTable");
+						var count = 1;
+						for ( var friend in list) {
+							console.log('counter: ' + friend);
+							var row = tabela.insertRow(friend);
+							var cell1 = row.insertCell(0);
+							var cell2 = row.insertCell(1);
+							var cell3 = row.insertCell(2);
+							var cell4 = row.insertCell(3);
 
-		}
-	})
+							cell1.innerHTML = list[friend].sent.firstName;
+							cell2.innerHTML = list[friend].sent.lastName;
+							cell3.innerHTML = '<button style="background-color:green" name=\"'
+									+ list[friend].sent.id
+									+ " "
+									+ count
+									+ '\" id=\"acceptFriend\" class="btn btn-primary">Accept</button>';
+							cell4.innerHTML = '<button style="background-color:red" name=\"'
+									+ list[friend].sent.id
+									+ " "
+									+ count
+									+ '\" id=\"rejectFriend\" class="btn btn-primary">Reject</button>';
+
+							count++;
+						}
+						var row = tabela.insertRow(0);
+						var cell1 = row.insertCell(0);
+						var cell2 = row.insertCell(1);
+						var cell3 = row.insertCell(2);
+						var cell4 = row.insertCell(3);
+						cell1.innerHTML = "Name";
+						cell2.innerHTML = "Last name";
+						cell3.innerHTML = "";
+						cell4.innerHTML = "";
+					} else {
+						$("#friendRequestTable").append(
+								"<h3>No friend requests </h3>")
+					}
+				},
+				error : function(jqXHR, textStatus, errorThrown) {
+					alert(jqXHR.status);
+					alert(textStatus);
+					alert(errorThrown);
+
+				}
+			})
 }
 
-function showAllFriends(){
+function showAllFriends() {
 	$
-	.ajax({
-		type : 'GET',
-		url : urlRoot11,
-		headers : createAuthorizationTokenHeader(TOKEN_KEY),
-		contentType : 'application/json',
-		success : function(data) {
-			var list=data==null?[]: (data instanceof Array? data: [data]);
-			if(list.length>0){
-			$("#friendList").append("<h3>Found friends: </h3>")
-			var tabela=document.getElementById("friendList");
-			var count=1
-			for(var friend in list){
-				console.log('counter: '+friend);
-				var row = tabela.insertRow(friend);
-				var cell1 = row.insertCell(0);
-				var cell2 = row.insertCell(1);
-				var cell3 = row.insertCell(2);
-				
-				cell1.innerHTML = list[friend].firstName;
-				cell2.innerHTML = list[friend].lastName;
-				cell3.innerHTML= '<button name=\"'+ list[friend].id+" "+count+'\" id=\"removeFriend\" class="btn btn-primary">Remove friend</button>';
-				
-				count++;
-				
-			}
-			var row = tabela.insertRow(0);
-			var cell1 = row.insertCell(0);
-			var cell2 = row.insertCell(1);
-			var cell3 = row.insertCell(2);
-			cell1.innerHTML = "Name";
-			cell2.innerHTML = "Last name";
-			cell3.innerHTML = "";
-		}else{
-			$("#friendList").append("<h3>No friends</h3>")
-		}
-				},
-		error : function(jqXHR, textStatus,
-				errorThrown) {
-			alert(jqXHR.status);
-			alert(textStatus);
-			alert(errorThrown);
+			.ajax({
+				type : 'GET',
+				url : urlRoot11,
+				headers : createAuthorizationTokenHeader(TOKEN_KEY),
+				contentType : 'application/json',
+				success : function(data) {
+					var list = data == null ? []
+							: (data instanceof Array ? data : [ data ]);
+					if (list.length > 0) {
+						$("#friendList").append("<h3>Found friends: </h3>")
+						var tabela = document.getElementById("friendList");
+						var count = 1
+						for ( var friend in list) {
+							console.log('counter: ' + friend);
+							var row = tabela.insertRow(friend);
+							var cell1 = row.insertCell(0);
+							var cell2 = row.insertCell(1);
+							var cell3 = row.insertCell(2);
 
-		}
-	})
-	
+							cell1.innerHTML = list[friend].firstName;
+							cell2.innerHTML = list[friend].lastName;
+							cell3.innerHTML = '<button name=\"'
+									+ list[friend].id
+									+ " "
+									+ count
+									+ '\" id=\"removeFriend\" class="btn btn-primary">Remove friend</button>';
+
+							count++;
+
+						}
+						var row = tabela.insertRow(0);
+						var cell1 = row.insertCell(0);
+						var cell2 = row.insertCell(1);
+						var cell3 = row.insertCell(2);
+						cell1.innerHTML = "Name";
+						cell2.innerHTML = "Last name";
+						cell3.innerHTML = "";
+					} else {
+						$("#friendList").append("<h3>No friends</h3>")
+					}
+				},
+				error : function(jqXHR, textStatus, errorThrown) {
+					alert(jqXHR.status);
+					alert(textStatus);
+					alert(errorThrown);
+
+				}
+			})
+
 }
 
-$(document).on('click','#removeFriend',function(e){
+$(document).on('click', '#removeFriend', function(e) {
 	e.preventDefault();
-	var id=$(this).attr('name').split(" ")[0];
-	var num=$(this).attr('name').split(" ")[1];
-	$
-	.ajax({
+	var id = $(this).attr('name').split(" ")[0];
+	var num = $(this).attr('name').split(" ")[1];
+	$.ajax({
 		type : 'DELETE',
-		url : urlRoot13+"/"+id,
+		url : urlRoot13 + "/" + id,
 		headers : createAuthorizationTokenHeader(TOKEN_KEY),
 		contentType : 'application/json',
 		success : function(data) {
 			alert("Successfully removed friend from a friend list");
 			document.getElementById("friendList").deleteRow(num);
-			
+
 		},
-		error : function(jqXHR, textStatus,
-				errorThrown) {
+		error : function(jqXHR, textStatus, errorThrown) {
 			alert(jqXHR.status);
 			alert(textStatus);
 			alert(errorThrown);
@@ -844,78 +897,73 @@ $(document).on('click','#removeFriend',function(e){
 	})
 })
 
-$(document).on('click','#listOfFri',function(e){
+$(document).on('click', '#listOfFri', function(e) {
 	e.preventDefault();
 	$("#friendList").empty();
 	showAllFriends();
 })
 
-$(document).on('click','#acceptFriend',function(e){
+$(document).on('click', '#acceptFriend', function(e) {
 	e.preventDefault();
-	var id=$(this).attr('name').split(" ")[0];
-	var num=$(this).attr('name').split(" ")[1];
+	var id = $(this).attr('name').split(" ")[0];
+	var num = $(this).attr('name').split(" ")[1];
 	$.ajax({
 		type : 'PUT',
-		url : urlRoot9+"/"+id,
+		url : urlRoot9 + "/" + id,
 		headers : createAuthorizationTokenHeader(TOKEN_KEY),
 		contentType : 'application/json',
 		success : function(data) {
 			alert("Successfully accepted friend request.");
 			document.getElementById("friendRequestTable").deleteRow(num);
-				
+
 		},
-		error : function(jqXHR, textStatus,
-				errorThrown) {
+		error : function(jqXHR, textStatus, errorThrown) {
 			alert(jqXHR.status);
 			alert(textStatus);
 			alert(errorThrown);
 
 		}
 	})
-	
+
 })
 
-$(document).on('click','#rejectFriend',function(e){
+$(document).on('click', '#rejectFriend', function(e) {
 	e.preventDefault();
-	var id=$(this).attr('name').split(" ")[0];
-	var num=$(this).attr('name').split(" ")[1];
+	var id = $(this).attr('name').split(" ")[0];
+	var num = $(this).attr('name').split(" ")[1];
 	$.ajax({
 		type : 'DELETE',
-		url : urlRoot10+"/"+id,
+		url : urlRoot10 + "/" + id,
 		headers : createAuthorizationTokenHeader(TOKEN_KEY),
 		contentType : 'application/json',
 		success : function(data) {
 			alert("Successfully rejected friend request.");
 			document.getElementById("friendRequestTable").deleteRow(num);
-				
+
 		},
-		error : function(jqXHR, textStatus,
-				errorThrown) {
+		error : function(jqXHR, textStatus, errorThrown) {
 			alert(jqXHR.status);
 			alert(textStatus);
 			alert(errorThrown);
 
 		}
 	})
-	
+
 })
 
-
-$(document).on('click','#friendR',function(e){
+$(document).on('click', '#friendR', function(e) {
 	e.preventDefault();
 	$("#friendRequestTable").empty();
 	seeFriendRequests();
 })
 
-
-$(document).on('click','#chooseFlightButton',function(e){
+$(document).on('click', '#chooseFlightButton', function(e) {
 	e.preventDefault();
 	console.log($(this).attr('name'));
 })
 
-
-
-function searchToJson(startDestination,finalDestination,dateOfFlight,dateOfArrival,from,to,fromL,toL,name){
+function searchToJson(startDestination, finalDestination, dateOfFlight,
+		dateOfArrival, from, to, fromL, toL, name) {
 	return JSON.stringify({
 		"startDestination" : startDestination,
 		"finalDestination" : finalDestination,
