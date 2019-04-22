@@ -11,7 +11,7 @@
 <script type="text/javascript" src="registeredUser.js"></script>
 <style>
 body {
-	background: pink;
+	background: url('regularUser3.jpg');
 	font-family: Arial;
 }
 
@@ -19,12 +19,13 @@ body {
 .tab {
 	overflow: hidden;
 	border: 1px solid #ccc;
-	background-color: #d8ac1d;
+	background-color: #ff1a75;
 }
 
 /* Style the buttons inside the tab */
 .tab button {
-	background-color: inherit;
+	color: white;
+	background-color: #ff1a75;
 	float: left;
 	border: none;
 	outline: none;
@@ -36,7 +37,7 @@ body {
 
 /* Change background color of buttons on hover */
 .tab button:hover {
-	background-color: #ddd;
+	background-color: #FFC0CB;
 }
 
 /* Create an active/current tablink class */
@@ -78,13 +79,13 @@ body {
 	<div id="airlines" class="tabcontent">
 		<div class="container">
 			<h2>Airlines in the system:</h2>
-			<button class="sortByNameAirlines" class="btn btn-primary">Sort
+			<button style="background: #ff1a75; color: white" class="sortByNameAirlines" class="btn btn-primary">Sort
 				by name</button>
-			<button class="sortByAddressAirlines" class="btn btn-primary">Sort
+			<button style="background: #ff1a75; color: white" class="sortByAddressAirlines" class="btn btn-primary">Sort
 				by address</button>
 			<input type="text" name="" value=""
 				placeholder="Enter name or location" id="nameLocationAirline" />
-			<button class="searchAirlineButton" class="btn btn-primary">Search</button>
+			<button style="background: #ff1a75; color: white" class="searchAirlineButton" class="btn btn-primary">Search</button>
 			<br>
 
 
@@ -100,13 +101,13 @@ body {
 	<div id="hotels" class="tabcontent">
 		<div class="container">
 			<h2>Hotels in the system:</h2>
-			<button class="sortByNameHotels" class="btn btn-primary">Sort by
+			<button style="background: #ff1a75; color: white" class="sortByNameHotels" class="btn btn-primary">Sort by
 				name</button>
-			<button class="sortByAddressHotels" class="btn btn-primary">Sort
+			<button style="background: #ff1a75; color: white" class="sortByAddressHotels" class="btn btn-primary">Sort
 				by address</button>
 			<input type="text" name="" value=""
 				placeholder="Enter name or location" id="nameLocationHotel" />
-			<button class="searchHotelButton" class="btn btn-primary">Search</button>
+			<button style="background: #ff1a75; color: white" class="searchHotelButton" class="btn btn-primary">Search</button>
 			<br>
 			<table class="table table-hover" id="tableOfHotels">
 
@@ -118,13 +119,13 @@ body {
 	<div id="rentACars" class="tabcontent">
 		<div class="container">
 			<h2>Rent a cars:</h2>
-			<button class="sortByNameRentACars" class="btn btn-primary">Sort
+			<button style="background: #ff1a75; color: white" class="sortByNameRentACars" class="btn btn-primary">Sort
 				by name</button>
-			<button class="sortByAddressRentACars" class="btn btn-primary">Sort
+			<button style="background: #ff1a75; color: white" class="sortByAddressRentACars" class="btn btn-primary">Sort
 				by address</button>
 			<input type="text" name="" value=""
 				placeholder="Enter name or location" id="nameLocationRentACar" />
-			<button class="searchRentACarButton" class="btn btn-primary">Search</button>
+			<button style="background: #ff1a75; color: white" class="searchRentACarButton" class="btn btn-primary">Search</button>
 			<br>
 
 
@@ -177,7 +178,7 @@ body {
 				</div>
 				<div class="form-group">
 					<div class="col-sm-offset-2 col-sm-10">
-						<button type="submit" class="btn btn-default" id="button3">Submit</button>
+						<button style="background: #ff1a75; color: white" type="submit" class="btn btn-default" id="button3">Submit</button>
 					</div>
 				</div>
 			</form>
@@ -254,7 +255,7 @@ body {
 				</div>
 				<div class="form-group">
 					<div class="col-sm-offset-2 col-sm-10">
-						<button type="submit" class="btn btn-default"
+						<button style="background: #ff1a75; color: white" type="submit" class="btn btn-default"
 							id="searchFlightButton">Search</button>
 					</div>
 				</div>
@@ -341,7 +342,7 @@ body {
 
 				<div class="form-group">
 					<div class="col-sm-offset-2 col-sm-10">
-						<button type="submit" class="btn btn-default" id="button6">Submit</button>
+						<button style="background: #ff1a75; color: white" type="submit" class="btn btn-default" id="button6">Submit</button>
 					</div>
 				</div>
 			</form>
@@ -352,9 +353,9 @@ body {
 	<div id="friends" class="tabcontent">
 		<button class="btn btn-primary"
 			 onclick="openCity(event, 'listOfFriends')" id="listOfFri">List of friends</button>
-		<button class="btn btn-primary"
+		<button  class="btn btn-primary"
 			onclick="openCity(event, 'friendRequests')" id="friendR">Friend requests</button>
-		<button class="btn btn-primary"
+		<button  class="btn btn-primary"
 			onclick="openCity(event, 'addFriends')" id="addFrie">Add friends</button>
 
 	</div>
