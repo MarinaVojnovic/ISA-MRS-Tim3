@@ -30,6 +30,12 @@ public class CarController {
 	@Autowired
 	private CustomUserDetailsService userDetailsService;
 
+	@GetMapping(value = "/getAllCars", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<Car>> getAllCars() {
+		List<Car> cars = carService.getAll();
+		return new ResponseEntity<>(cars, HttpStatus.OK);
+	}
+
 	@PostMapping(value = "/createCar", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Car> create(@RequestBody CarDTO carDTO) {
 		RentacarAdmin user = (RentacarAdmin) this.userDetailsService
@@ -45,9 +51,9 @@ public class CarController {
 	public ResponseEntity<List<Car>> getCars() {
 		RentacarAdmin ra = (RentacarAdmin) this.userDetailsService
 				.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
-		System.out.println("Usernameeeee: "+ra.getUsername());
+		System.out.println("Usernameeeee: " + ra.getUsername());
 		List<Car> cars = carService.findByRentacar(ra.getRentacar());
-		System.out.println("Cars size: "+cars.size());
+		System.out.println("Cars size: " + cars.size());
 		return new ResponseEntity<>(cars, HttpStatus.OK);
 	}
 

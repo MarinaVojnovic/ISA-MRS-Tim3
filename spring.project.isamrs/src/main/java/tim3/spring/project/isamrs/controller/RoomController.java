@@ -23,6 +23,12 @@ public class RoomController {
 
 	@Autowired
 	RoomService roomService;
+	
+	@GetMapping(value = "/getAllRooms", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<Room>> getAllRooms() {
+		List<Room> rooms = roomService.getAll();
+		return new ResponseEntity<>(rooms, HttpStatus.OK);
+	}
 
 	@PostMapping(value = "/createRoom", consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Room> create(@RequestBody RoomDTO roomDTO) {

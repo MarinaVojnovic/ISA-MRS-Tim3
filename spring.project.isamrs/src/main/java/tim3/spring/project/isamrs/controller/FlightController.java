@@ -39,8 +39,10 @@ public class FlightController {
 		List<Flight> flights = flightService.findByStartDestinationAndFinalDestination(
 				searchFlight.getStartDestination(), searchFlight.getFinalDestination());
 		List<Flight> filtered = new ArrayList<>();
-		double from, to;
-		int fromL, toL;
+		double from;
+		double to;
+		int fromL;
+		int toL;
 		String name;
 		if (!searchFlight.getFrom().equals("")) {
 			from = Double.parseDouble(searchFlight.getFrom());
