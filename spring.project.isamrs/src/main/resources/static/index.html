@@ -20,30 +20,34 @@
 }
 </style>
 </head>
-<body style="background: #e6e6fa">
+<body style="background: #00ffff">
 
 	<div
-		style="width: 7.2%; height: 100%; position: fixed; background: pink"></div>
+		style="width: 7.2%; height: 100%; position: fixed; background-image: url(pozadina.jpg)"></div>
 	<div
-		style="width: 7.2%; height: 100%; margin-left: 92.8%; position: fixed; background: pink"></div>
-	<div class="container" style="background: #e6e6fa">
-		<h1 align="center">Welcome to the application</h1>
-		<ul class="nav nav-tabs">
-			<li class="active"><a data-toggle="tab" href="#home">Home</a></li>
-			<li onclick="showAirlines()"><a data-toggle="tab" href="#menu1">List
+		style="width: 7.2%; height: 100%; margin-left: 92.8%; position: fixed; background-image: url(pozadina.jpg)"></div>
+	<div class="container"  style=" color:#0033cc; background: #00ffff">
+		
+		<ul class="nav nav-tabs" style="float: right; margin-top: 20px; margin-right: 20px">
+		<li onclick="register()"><a data-toggle="tab" href="#" style="background: #002699; color: #ff1a75">REGISTER</a></li>
+		<li onclick="login()"><a data-toggle="tab" href="#" style="background: #002699; color: #ff1a75">LOGIN</a></li>
+		</ul>
+		<h1 align="left" style="margin-left: 80px; color: #ff1a75"  >Welcome to the application</h1>
+		<ul class="nav nav-tabs"  style="margin-left: 15px">
+			<li class="active"><a data-toggle="tab" href="#home" style="background: white; color: #ff1a75">Home</a></li>
+			<li onclick="showAirlines()"><a data-toggle="tab" href="#menu1" style="background: white; color: #ff1a75">List
 					of all airlines</a></li>
-			<li onclick="showHotels()"><a data-toggle="tab" href="#menu2">List
+			<li onclick="showHotels()"><a data-toggle="tab" href="#menu2" style="background: white; color: #ff1a75">List
 					of all hotels</a></li>
-			<li onclick="showRentacars()"><a data-toggle="tab" href="#menu3">List
+			<li onclick="showRentacars()"><a data-toggle="tab" href="#menu3" style="background: white; color: #ff1a75">List
 					of all rent-a-cars</a></li>
-			<li><a data-toggle="tab" href="#menu4">Search for flights</a></li>
-			<li><a data-toggle="tab" href="#menu5">Search for rooms</a></li>
-			<li><a data-toggle="tab" href="#menu6">Search for cars</a></li>
-			<li onclick="register()"><a data-toggle="tab" href="#">REGISTER</a></li>
-			<li onclick="login()"><a data-toggle="tab" href="#">LOGIN</a></li>
+			<li><a data-toggle="tab" href="#menu4" style="background: white; color: #ff1a75">Search for flights</a></li>
+			<li><a data-toggle="tab" href="#menu5" style="background: white; color: #ff1a75">Search for rooms</a></li>
+			<li><a data-toggle="tab" href="#menu6" style="background: white; color: #ff1a75">Search for cars</a></li>
+			
 		</ul>
 
-		<div class="tab-content">
+		<div class="tab-content"  style="background: #00ffff">
 
 			<div id="home" class="tab-pane fade in active">
 				<div class="container">
@@ -88,18 +92,18 @@
 			</div>
 
 			<div id="menu1" class="tab-pane fade">
-				<h3 align="center">All airlines:</h3>
+				<p style=" color:#002699; font-weight: 200%; font-size: 120%"><h3 style=" margin-left:10px" align="left" >All airlines:</h3></p>
 				<table class="table" id="tableAllAirline">
 				</table>
 			</div>
 
 			<div id="menu2" class="tab-pane fade">
-				<h3 align="center">All hotels:</h3>
+				<p style="color:#002699; font-weight: 200%; font-size: 120%"><h3 style=" margin-left:10px" align="left">All hotels:</h3><p>
 				<table class="table" id="tableAllHotel">
 				</table>
 			</div>
 			<div id="menu3" class="tab-pane fade">
-				<h3 align="center">All rent-a-car services:</h3>
+				<p style="color:#002699; font-weight: 200%; font-size: 120%"><h3 style=" margin-left:10px" align="left">All rent-a-car services:</h3></p>
 				<table class="table" id="tableAllRentacar">
 				</table>
 			</div>

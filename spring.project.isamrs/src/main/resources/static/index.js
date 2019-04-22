@@ -105,12 +105,12 @@ function fillTableAirlines(data) {
 	var cell4 = row.insertCell(4);
 	var cell5 = row.insertCell(5);
 
-	cell0.innerHTML = "#";
-	cell1.innerHTML = "Name";
-	cell2.innerHTML = "Address";
-	cell3.innerHTML = "Promotional Description";
-	cell4.innerHTML = "Average grade";
-	cell5.innerHTML = "Location";
+	cell0.innerHTML = '<p style= "color:#002699; font-weight: 200% font-size:150%">#</p>';
+	cell1.innerHTML ='<p style= "color:#002699; font-weight: 200%; font-size:150%">Name</p>';
+	cell2.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Address</p>';
+	cell3.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Description</p>';
+	cell4.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Grade</p>';
+	cell5.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Location</p>';
 
 }
 
@@ -152,12 +152,12 @@ function fillTableHotels(data) {
 	var cell4 = row.insertCell(4);
 	var cell5 = row.insertCell(5);
 
-	cell0.innerHTML = "#";
-	cell1.innerHTML = "Name";
-	cell2.innerHTML = "Address";
-	cell3.innerHTML = "Promotional Description";
-	cell4.innerHTML = "Average grade";
-	cell5.innerHTML = "Location";
+	cell0.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">#</p>';
+	cell1.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Name</p>';
+	cell2.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Address</p>';
+	cell3.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Description</p>';
+	cell4.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Grade</p>';
+	cell5.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Location</p>';
 
 }
 
@@ -199,11 +199,11 @@ function fillTableRentacars(data) {
 	var cell4 = row.insertCell(4);
 	var cell5 = row.insertCell(5);
 
-	cell0.innerHTML = "#";
-	cell1.innerHTML = "Name";
-	cell2.innerHTML = "Address";
-	cell3.innerHTML = "Promotional Description";
-	cell4.innerHTML = "Average grade";
-	cell5.innerHTML = "Location";
+	cell0.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">#</p>';
+	cell1.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Name</p>';
+	cell2.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Address</p';
+	cell3.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%"> Description</p>';
+	cell4.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Grade</p>';
+	cell5.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%>Location</p>';
 
 }
