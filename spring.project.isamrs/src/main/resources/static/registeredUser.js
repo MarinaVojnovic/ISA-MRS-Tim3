@@ -6,7 +6,7 @@ var urlFindAirlines = "http://localhost:8080/findAirlines";
 var urlFindHotels = "http://localhost:8080/findHotels";
 var urlRoot = "http://localhost:8080/getAllFlights";
 var urlRoot2 = "http://localhost:8080/searchFlight";
-var urlRoot3 = "http://localhost:8080/getAllDestinations";
+var urlRoot3 = "http://localhost:8080/getAllAirlines";
 var urlRoot4 = "http://localhost:8080/api/editUser";
 var urlRoot5 = "http://localhost:8080/api/getLogged";
 var urlRoot6 = "http://localhost:8080/api/findFriends";
@@ -20,9 +20,6 @@ var urlRoot13 = "http://localhost:8080/api/removeFriend";
 var TOKEN_KEY = 'jwtToken';
 
 getLogged();
-
-getAllFlights()
-getAllDestinations()
 
 $(document).on('click', '#logoutClicked', function(e) {
 	e.preventDefault();
@@ -52,10 +49,10 @@ function fillTableAirlines(data) {
 		cell1.innerHTML = response[counter].name;
 		cell2.innerHTML = response[counter].address;
 		cell3.innerHTML = response[counter].promotionalDescription;
-		cell4.innerHTML = '<button id=\"'
+		cell5.innerHTML = '<button style="background: #ff1a75; color: white" id=\"'
 				+ response[counter].id
 				+ '\" class=\"chooseAirline\" class="btn btn-primary">Choose</button>';
-		cell5.innerHTML = '<a href=\"' + location
+		cell4.innerHTML = '<a href=\"' + location
 				+ '\" target=\"_blank\">Show location</a>';
 
 	}
@@ -66,11 +63,11 @@ function fillTableAirlines(data) {
 	var cell4 = row.insertCell(3);
 	var cell5 = row.insertCell(4);
 
-	cell1.innerHTML = "Name";
-	cell2.innerHTML = "Address";
-	cell3.innerHTML = "Promotional Description";
-	cell4.innerHTML = "";
-	cell5.innerHTML = "Location";
+	cell1.innerHTML ='<p style= "font-weight: 200%; font-size:150%">Name</p>';
+	cell2.innerHTML ='<p style= "font-weight: 200%; font-size:150%">Address</p>';
+	cell3.innerHTML = '<p style= "font-weight: 200%; font-size:150%">Promotional Description</p>';
+	cell5.innerHTML = '<p style= "font-weight: 200%; font-size:150%"></p>';
+	cell4.innerHTML = '<p style= "font-weight: 200%; font-size:150%">Location</p>';
 
 }
 
@@ -96,10 +93,10 @@ function fillTableHotels(data) {
 		cell1.innerHTML = response[counter].name;
 		cell2.innerHTML = response[counter].address;
 		cell3.innerHTML = response[counter].promotionalDescription;
-		cell4.innerHTML = '<button id=\"'
+		cell5.innerHTML = '<button style="background: #ff1a75; color: white" id=\"'
 				+ response[counter].id
 				+ '\" class=\"chooseHotel\" class="btn btn-primary">Choose</button>';
-		cell5.innerHTML = '<a href=\"' + location
+		cell4.innerHTML = '<a href=\"' + location
 				+ '\" target=\"_blank\">Show location</a>';
 
 	}
@@ -110,11 +107,11 @@ function fillTableHotels(data) {
 	var cell4 = row.insertCell(3);
 	var cell5 = row.insertCell(4);
 
-	cell1.innerHTML = "Name";
-	cell2.innerHTML = "Address";
-	cell3.innerHTML = "Promotional Description";
-	cell4.innerHTML = "";
-	cell5.innerHTML = "Location";
+	cell1.innerHTML ='<p style= "font-weight: 200%; font-size:150%">Name</p>';
+	cell2.innerHTML ='<p style= "font-weight: 200%; font-size:150%">Address</p>';
+	cell3.innerHTML = '<p style= "font-weight: 200%; font-size:150%">Promotional Description</p>';
+	cell5.innerHTML = '<p style= "font-weight: 200%; font-size:150%"></p>';
+	cell4.innerHTML = '<p style= "font-weight: 200%; font-size:150%">Location</p>';
 
 }
 
@@ -249,19 +246,19 @@ function fillTableRentacars(data) {
 		var cell4 = row.insertCell(3);
 		var cell5 = row.insertCell(4);
 		var cell6 = row.insertCell(5);
-		
+
 		var location = "https://maps.google.com/?q="
-			+ response[counter].address;
+				+ response[counter].address;
 
 		cell1.innerHTML = response[counter].name;
 		cell2.innerHTML = response[counter].address;
 		cell3.innerHTML = response[counter].promotionalDescription;
 		cell4.innerHTML = response[counter].grade;
-		cell5.innerHTML = '<button id=\"'
+		cell6.innerHTML = '<button style="background: #ff1a75; color: white" id=\"'
 				+ response[counter].id
 				+ '\" class=\"chooseRentacar\" class="btn btn-primary">Choose</button>';
 		cell6.innerHTML = '<a href=\"' + location
-		+ '\" target=\"_blank\">Show location</a>';
+				+ '\" target=\"_blank\">Show location</a>';
 
 	}
 	var row = tabela.insertRow(0);
@@ -272,12 +269,12 @@ function fillTableRentacars(data) {
 	var cell5 = row.insertCell(4);
 	var cell6 = row.insertCell(5);
 
-	cell1.innerHTML = "Name";
-	cell2.innerHTML = "Address";
-	cell3.innerHTML = "Promotional Description";
-	cell4.innerHTML = "Grade";
-	cell5.innerHTML = "";
-	cell6.innerHTML = "Location";
+	cell1.innerHTML ='<p style= "font-weight: 200%; font-size:150%">Name</p>';
+	cell2.innerHTML ='<p style= "font-weight: 200%; font-size:150%">Address</p>';
+	cell3.innerHTML = '<p style= "font-weight: 200%; font-size:150%">Promotional Description</p>';
+	cell4.innerHTML ='<p style= "font-weight: 200%; font-size:150%">Average Grade</p>';
+	cell6.innerHTML = '<p style= "font-weight: 200%; font-size:150%"></p>';
+	cell5.innerHTML = '<p style= "font-weight: 200%; font-size:150%">Location</p>';
 
 }
 
@@ -474,112 +471,50 @@ $(document).on('click', '.tablinks', function(e) {
 	$("#foundFlights").empty();
 })
 
-function getAllFlights() {
-	$
-			.ajax({
-				type : 'GET',
-				url : urlRoot,
-				dataType : "json",
-				success : function(data) {
-					if (data == null) {
+function searchFlights() {
 
-					} else {
-						$("#foundFlights").empty();
-						var list = data == null ? []
-								: (data instanceof Array ? data : [ data ]);
-						if (list.length > 0) {
-							var tableBody = $('<tbody></tbody>')
-							var i = 0
-							$
-									.each(
-											list,
-											function(index, flight) {
-												var tr = $('<tr></tr>')
-												tr
-														.append('<th scope="row">'
-																+ (++i)
-																+ '</th><td>'
-																+ flight.number
-																+ '</td><td>'
-																+ flight.startDestination.name
-																+ '</td><td>'
-																+ flight.finalDestination.name
-																+ '</td><td>'
-																+ flight.cost
-																+ '</td><td>'
-																+ flight.dateOfStart
-																+ '</td><td>'
-																+ flight.dateOfEnd
-																+ '</td><td>'
-																+ flight.lengthOfFlight
-																+ '</td><td><button id="chooseFlightButton" name="'
-																+ flight.id
-																+ '" align="center">Choose</button></td>')
-												tableBody.append(tr)
-											})
-							$(".table1").append(tableBody)
-						}
-					}
-				},
-				error : function() {
-
-				}
-			})
 }
-
-function getAllDestinations() {
+function searchFilter() {
 	$
 			.ajax({
 				type : 'GET',
 				url : urlRoot3,
-				dataType : "json",
+				contentType : 'application/json',
 				success : function(data) {
 					var list = data == null ? []
 							: (data instanceof Array ? data : [ data ]);
 					if (data == null) {
 
 					} else {
-						$("#foundFlights").empty();
 						var list = data == null ? []
 								: (data instanceof Array ? data : [ data ]);
 						if (list.length > 0) {
 							var i = 0
 							$.each(list, function(index, destination) {
-								var option = $('<option name="'
+								var option = $('<option value="'
 										+ destination.id + '">'
 										+ destination.name + '</option>')
 								$("#startDestination").append(option);
 							})
 							$.each(list, function(index, destination) {
-								var option = $('<option name="'
+								var option = $('<option value="'
 										+ destination.id + '">'
 										+ destination.name + '</option>')
 								$("#finalDestination").append(option);
 							})
+							
 
 						}
-						$('#searchAndFilterFlight').append(
-								"<h2 align='center'>Filter </h2>");
-						$('#searchAndFilterFlight')
-								.append(
-										"<p align='center'><b>Price:</b>   From <input type='text' id='from' style='width: 50px'>  to  <input type='text' id='to' style='width: 50px'></p>");
-						$('#searchAndFilterFlight')
-								.append(
-										"<p align='center'><b>Length:</b>  From <input type='text' id='fromL' style='width: 50px'>  to  <input type='text' id='toL' style='width: 50px'></p>");
-						$('#searchAndFilterFlight')
-								.append(
-										"<p align='center'><b>Airline:</b> Name <input type='text' id='nameL' style='width: 50px'></p>");
 
 					}
 				},
-				error : function() {
+				error : function(jqXHR, textStatus, errorThrown) {
+					alert(jqXHR.status);
+					alert(textStatus);
+					alert(errorThrown);
 
 				}
 			})
-
-}
-
-function searchFlights() {
 
 }
 
@@ -589,35 +524,80 @@ $(document)
 				'#searchFlightButton',
 				function(e) {
 					e.preventDefault();
-					$("#foundFlights").remove();
+					$("#foundFlights").empty();
+
 					var startDestination = document
 							.getElementById("startDestination").value;
 					var finalDestination = document
 							.getElementById("finalDestination").value;
 					var dateOfFlight = document.getElementById("dateOfFlight").value;
 					var dateOfArrival = document.getElementById("dateOfReturn").value;
-					var startID = $('option:selected', "#startDestination")
-							.attr('name');
-					var finalID = $('option:selected', "#finalDestination")
-							.attr('name');
 					var from = document.getElementById("from").value;
 					var to = document.getElementById("to").value;
 					var fromL = document.getElementById("fromL").value;
 					var toL = document.getElementById("toL").value;
 					var name = document.getElementById("nameL").value;
+					var i = 0;
 					if (startDestination == "" || finalDestination == ""
-							|| dateOfFlight == "" || dateOfArrival == "") {
+							|| dateOfFlight == "") {
+						i = 1;
 						alert("All fields must be filled in.")
+					}
+					if (startDestination == finalDestination) {
+						alert("Start and final destination cannot be the same");
+						i = 1;
+					}
+					if(from==""){
+						from="noFrom";
+					}
+					if(to==""){
+						to="noTo";
+					}
+					if(fromL==""){
+						fromL="noFromL";
+					}
+					if(toL==""){
+						toL="noToL";
+					}
+					if(name==""){
+						name="noName";
+					}
+					if (dateOfArrival != "") {
+						if (new Date(dateOfFlight) > new Date(dateOfArrival)) {
+							i = 1;
+							alert("Date of flight cannot be after date of return!");
+						}
+						if (new Date() > new Date(dateOfFlight)
+								|| new Date() > new Date(dateOfArrival)) {
+							i = 1;
+							alert("Dates cannot be in the past");
+						}
+						if (new Date() > new Date(dateOfFlight)
+								&& new Date() > new Date(dateOfArrival)) {
+							i = 1;
+							alert("Dates cannot be in the past");
+						}
 					} else {
+						if (new Date() > new Date(dateOfFlight)) {
+							i = 1;
+							alert("Dates cannot be in the past");
+						}
+					}
+					if (i == 0) {
+						if (dateOfArrival == "") {
+							dateOfArrival = "noDate";
+						}
+
 						$
 								.ajax({
-									type : 'POST',
-									url : urlRoot2,
+									type : 'GET',
+									url : urlRoot2 + "/" + startDestination
+											+ "/" + finalDestination + "/"
+											+ dateOfFlight + "/"
+											+ dateOfArrival + "/" + from + "/"
+											+ to + "/" + fromL + "/" + toL
+											+ "/" + name,
 									contentType : 'application/json',
-									dataType : "json",
-									data : searchToJson(startID, finalID,
-											dateOfFlight, dateOfArrival, from,
-											to, fromL, toL, name),
 									success : function(data) {
 										var list = data == null ? []
 												: (data instanceof Array ? data
@@ -629,41 +609,72 @@ $(document)
 													: (data instanceof Array ? data
 															: [ data ]);
 											if (list.length > 0) {
-												$("#foundFlights").empty();
-												var table = $('<table id="foundFlights" class="table table-hover" border="1" bordercolor="black" font-size></table>');
-												table
-														.append('<tr><td>#</td><td>Flight number</td><td>Start destination</td><td>Final destination</td><td>Cost of flight</td><td>Date of flight</td><td>Date of arrival</td><td>Length</td></tr>')
-												var i = 0
-												$
-														.each(
-																list,
-																function(index,
-																		flight) {
-																	table
-																			.append('<tr><td>'
-																					+ (++i)
-																					+ '</td><td>'
-																					+ flight.number
-																					+ '</td><td>'
-																					+ flight.startDestination.name
-																					+ '</td><td>'
-																					+ flight.finalDestination.name
-																					+ '</td><td>'
-																					+ flight.cost
-																					+ '</td><td>'
-																					+ flight.dateOfStart
-																					+ '</td><td>'
-																					+ flight.dateOfEnd
-																					+ '</td><td>'
-																					+ flight.lengthOfFlight
-																					+ '</td></tr>')
-																})
-												$("#searchAndFilterFlight")
+												$("#foundFlights")
 														.append(
-																'<p align="center" style="font-size:35px;">Found flights:</p>')
-												$("#searchAndFilterFlight")
-														.append(table);
-
+																"<h3>Found flights: </h3>")
+												var tabela = document
+														.getElementById("foundFlights");
+												var count = 1;
+												for ( var flight in list) {
+													console.log('counter: '
+															+ flight);
+													var row = tabela
+															.insertRow(flight);
+													var cell1 = row
+															.insertCell(0);
+													var cell2 = row
+															.insertCell(1);
+													var cell3 = row
+															.insertCell(2);
+													var cell4 = row
+															.insertCell(3);
+													var cell5 = row
+															.insertCell(4);
+													var cell6 = row
+															.insertCell(5);
+													var cell7 = row
+															.insertCell(6);
+													var cell8 = row
+															.insertCell(7);
+													var cell9 = row
+															.insertCell(8);
+													cell1.innerHTML = list[flight].number;
+													cell2.innerHTML = list[flight].startAirline.name;
+													cell3.innerHTML = list[flight].finalAirline.name;
+													cell4.innerHTML = list[flight].cost;
+													cell5.innerHTML = new Date(
+															list[flight].dateOfStart);
+													cell6.innerHTML = new Date(
+															list[flight].dateOfEnd);
+													cell7.innerHTML = list[flight].numOfStops;
+													cell8.innerHTML = list[flight].lengthOfFlight;
+													cell9.innerHTML = '<button name=\"'
+															+ list[flight].id
+															+ '\" id=\"chooseFlight\" class="btn btn-primary">Choose flight</button>';
+												}
+												var row = tabela.insertRow(0);
+												var cell1 = row.insertCell(0);
+												var cell2 = row.insertCell(1);
+												var cell3 = row.insertCell(2);
+												var cell4 = row.insertCell(3);
+												var cell5 = row.insertCell(4);
+												var cell6 = row.insertCell(5);
+												var cell7 = row.insertCell(6);
+												var cell8 = row.insertCell(7);
+												var cell9 = row.insertCell(8);
+												cell1.innerHTML = "Flight number";
+												cell2.innerHTML = "Start destination";
+												cell3.innerHTML = "Final destination";
+												cell4.innerHTML = "Cost";
+												cell5.innerHTML = "Date of flight";
+												cell6.innerHTML = "Date of arrival";
+												cell7.innerHTML = "Number of stops";
+												cell8.innerHTML = "Length of flight";
+												cell9.innerHTML = "";
+											} else {
+												$("#foundFlights")
+														.append(
+																"<h3>No flights found </h3>");
 											}
 										}
 									},
@@ -676,9 +687,11 @@ $(document)
 									}
 								})
 
+					} else {
+
 					}
 
-				})
+				});
 
 function getLogged() {
 	var token = getJwtToken(TOKEN_KEY);
@@ -957,9 +970,9 @@ $(document).on('click', '#friendR', function(e) {
 	seeFriendRequests();
 })
 
-$(document).on('click', '#chooseFlightButton', function(e) {
+$(document).on('click', '#searchFilter', function(e) {
 	e.preventDefault();
-	console.log($(this).attr('name'));
+	searchFilter();
 })
 
 function searchToJson(startDestination, finalDestination, dateOfFlight,

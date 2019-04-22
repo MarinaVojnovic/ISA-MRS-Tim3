@@ -19,7 +19,7 @@ public class Ticket {
 	private String name;
 	
 	@ManyToOne(fetch = FetchType.EAGER) 
-	Airline airline;
+	Airline airlineBooking;
 
 	public Long getId() {
 		return id;
@@ -38,10 +38,10 @@ public class Ticket {
 	}
 
 	public Airline getAirline() {
-		return airline;
+		return airlineBooking;
 	}
 
 	public void setAirline(Airline airline) {
-		this.airline = airline;
+		this.airlineBooking = airline;
 	}
 }

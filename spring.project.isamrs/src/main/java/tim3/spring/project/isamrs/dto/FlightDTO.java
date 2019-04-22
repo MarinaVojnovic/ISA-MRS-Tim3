@@ -9,7 +9,8 @@ public class FlightDTO {
 	String dateOfArrival;
 	int length;
 	int numOfSeats;
-
+	int numOfStops;
+	String stops;
 	public String getFlightNumberRegister() {
 		return flightNumberRegister;
 	}
@@ -49,15 +50,30 @@ public class FlightDTO {
 	public int getLength() {
 		return length;
 	}
-
 	public void setLength(int length) {
 		this.length = length;
 	}
-	public FlightDTO() {
-		super();
+	public int getNumOfSeats() {
+		return numOfSeats;
+	}
+	public void setNumOfSeats(int numOfSeats) {
+		this.numOfSeats = numOfSeats;
+	}
+	public int getNumOfStops() {
+		return numOfStops;
+	}
+	public void setNumOfStops(int numOfStops) {
+		this.numOfStops = numOfStops;
+	}
+	public String getStops() {
+		return stops;
+	}
+	public void setStops(String stops) {
+		this.stops = stops;
 	}
 	public FlightDTO(String flightNumberRegister, String startDestinationRegister, String finalDestinationRegister,
-			double costOfFlight, String dateOfFlight, String dateOfArrival, int length, int numOfSeats) {
+			double costOfFlight, String dateOfFlight, String dateOfArrival, int length, int numOfSeats, int numOfStops,
+			String stops) {
 		super();
 		this.flightNumberRegister = flightNumberRegister;
 		this.startDestinationRegister = startDestinationRegister;
@@ -67,12 +83,13 @@ public class FlightDTO {
 		this.dateOfArrival = dateOfArrival;
 		this.length = length;
 		this.numOfSeats = numOfSeats;
+		this.numOfStops = numOfStops;
+		this.stops = stops;
 	}
-	public int getNumOfSeats() {
-		return numOfSeats;
+	public FlightDTO() {
+		super();
 	}
-	public void setNumOfSeats(int numOfSeats) {
-		this.numOfSeats = numOfSeats;
-	}
+
+	
 	
 }

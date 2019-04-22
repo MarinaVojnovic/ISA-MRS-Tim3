@@ -11,7 +11,7 @@
 <script src="bootstrap.min.js"></script>
 <style>
 body {
-	background: pink;
+	background: url('airline2.jpg');
 	font-family: Arial;
 }
 
@@ -19,12 +19,13 @@ body {
 .tab {
 	overflow: hidden;
 	border: 1px solid #ccc;
-	background-color: #e6e6fa;
+	background: #ff1a75;
 }
 
 /* Style the buttons inside the tab */
 .tab button {
-	background-color: inherit;
+	color: white;
+	background-color: #ff1a75;
 	float: left;
 	border: none;
 	outline: none;
@@ -36,7 +37,7 @@ body {
 
 /* Change background color of buttons on hover */
 .tab button:hover {
-	background-color: #ddd;
+	background-color: #FFC0CB;
 }
 
 /* Create an active/current tablink class */
@@ -60,10 +61,12 @@ body {
 	<div class="tab">
 		<button class="tablinks"
 			onclick="openCity(event, 'editAirline')">Edit an airline</button>
-		<button class="tablinks"
+		<button class="tablinks" id="addFlightButton"
 			onclick="openCity(event, 'addFlight')">Add flight</button>
 		<button class="tablinks" onclick="openCity(event, 'editProfile')">Edit
 			profile</button>
+			
+		<button class="tablinks" onclick="openCity(event, 'addDestination')">Add destination</button>
 		<button id="logoutClicked" class="tablinks"
 			onclick="openCity(event, 'logout')">Logout</button>
 	</div>
@@ -102,7 +105,7 @@ body {
 				<input type="hidden" id="airlineCustomerServicesEdit">
 				<div class="form-group">
 					<div class="col-sm-offset-2 col-sm-10">
-						<button type="submit" class="btn btn-default" id="button1">Submit</button>
+						<button style="background: #ff1a75; color: white" type="submit" class="btn btn-default" id="button1">Submit</button>
 					</div>
 				</div>
 			</form>
@@ -125,15 +128,17 @@ body {
 				<div class="form-group">
 					<label class="control-label col-sm-2" for="startDestinationRegister">Start destination: </label>
 					<div class="col-sm-10">
-						<input type="text" class="form-control" id="startDestinationRegister"
-							placeholder="Insert a start destination for the flight" name="startDestinationRegister">
+						<select class="form-control" id="startDestinationRegister"
+							name="startDestinationRegister">
+						</select>
 					</div>
 				</div>
 				<div class="form-group">
 					<label class="control-label col-sm-2" for="finalDestinationRegister">Final destination: </label>
 					<div class="col-sm-10">
-						<input type="text" class="form-control" id="finalDestinationRegister"
-							placeholder="Insert a final destination for the flight" name="finalDestinationRegister">
+						<select class="form-control" id="finalDestinationRegister"
+							name="finalDestinationRegister">
+						</select>
 					</div>
 				</div>
 				<div class="form-group">
@@ -172,10 +177,24 @@ body {
 					</div>
 				</div>
 				<div class="form-group">
-					<div class="col-sm-offset-2 col-sm-10">
-						<button type="submit" class="btn btn-default" id="button2">Submit</button>
+					<label class="control-label col-sm-2" for="numberOfStops">Number of flight stops: </label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" id="numberOfFlightStops"
+							placeholder="Insert number of flight stops" name="numberOfFlightStops
+							">
+						<p>After clicking on submit you will be offered to insert flight stops! </p>
+						
 					</div>
 				</div>
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10">
+						<button style="background: #ff1a75; color: white" type="submit" class="btn btn-default" id="button2">Submit</button>
+					</div>
+				</div>
+				<div class="form-group" id="divStops">
+				
+				</div>
+				
 			</form>
 			<br>
 		</div>
@@ -265,13 +284,34 @@ body {
 
 				<div class="form-group">
 					<div class="col-sm-offset-2 col-sm-10">
-						<button type="submit" class="btn btn-default" id="button6">Submit</button>
+						<button style="background: #ff1a75; color: white" type="submit" class="btn btn-default" id="button6">Submit</button>
 					</div>
 				</div>
 			</form>
 			<br>
 		</div>
 	</div>
+	
+	<div id="addDestination" class="tabcontent">
+		<div class="container">
+			<h2>Adding Destination to Airline:</h2>
+			<form class="form-horizontal" action="#" method="post" id="form5">
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="chooseDestination">Choose destination: </label>
+					<div class="col-sm-10">
+						<select class="form-control" id="chooseDestination"
+							name="chooseDestination">
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10">
+						<button type="submit" class="btn btn-default" id="addDestinationButton">Add</button>
+					</div>
+					</div>
+				</form>
+				</div>
+				</div>
 	
 	
 	<div id="logout" class="tabcontent">
