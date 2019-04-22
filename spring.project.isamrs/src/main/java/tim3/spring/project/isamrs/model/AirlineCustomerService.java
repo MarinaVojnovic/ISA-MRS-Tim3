@@ -19,7 +19,7 @@ public class AirlineCustomerService {
 	private String name;
 
 	@ManyToOne(fetch = FetchType.EAGER)
-	Airline airline;
+	Airline airlineCustomerService;
 
 	public Long getId() {
 		return id;
@@ -38,10 +38,10 @@ public class AirlineCustomerService {
 	}
 
 	public Airline getAirline() {
-		return airline;
+		return airlineCustomerService;
 	}
 
 	public void setAirline(Airline airline) {
-		this.airline = airline;
+		this.airlineCustomerService = airline;
 	}
 }

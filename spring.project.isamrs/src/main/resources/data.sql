@@ -4,6 +4,16 @@ VALUES (1, 'Aerodrom Beograd 59, 11180 Beograd', 'Aerodrom Nikola Tesla',
 		'Aerodrom da letis i sletis')
 ON DUPLICATE KEY UPDATE id = 1;
 
+INSERT INTO airline (id, address, name, promotional_description) 
+VALUES (2, 'Aerodrom Beograd 59, 11180 Beograd', 'Aerodrom Nikola Teslaa', 
+		'Aerodrom da letis i sletis')
+ON DUPLICATE KEY UPDATE id = 2;
+
+INSERT INTO airline (id, address, name, promotional_description) 
+VALUES (3, 'Aerodrom Beograd 59, 11180 Beograd', 'Aerodrom Nikola Teslaaa', 
+		'Aerodrom da letis i sletis')
+ON DUPLICATE KEY UPDATE id = 3;
+
 -- Inserting default hotels in database
 INSERT INTO hotel (id, address, name, promotional_description) 
 VALUES (1, 'Kneza Milosa 1, Bijeljina 76300', 'Hotel Drina', 'Hotel da spavas i jedes')

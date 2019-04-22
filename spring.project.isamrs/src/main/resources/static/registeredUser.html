@@ -67,9 +67,7 @@ body {
 			onclick="openCity(event, 'friends')">Friends</button>
 		<button id="editProfileButton" class="tablinks"
 			onclick="openCity(event, 'editProfile')">Edit profile</button>
-		<button class="tablinks" onclick="openCity(event, 'chooseFlight')">Choose
-			flight from a list</button>
-		<button class="tablinks"
+		<button class="tablinks" id="searchFilter"
 			onclick="openCity(event, 'searchAndFilterFlight')">Search
 			and filter flight</button>
 		<button id="logoutClicked" class="tablinks"
@@ -188,32 +186,6 @@ body {
 
 
 
-	<div id="chooseFlight" class="tabcontent">
-		<div class="container">
-			<h2>Choosing flight from a list:</h2>
-			<form class="form-horizontal" action="#" method="post" id="form3">
-				<table class="table1" border="1">
-					<thead>
-						<tr>
-							<th scope="col">#</th>
-							<th scope="col">Flight number</th>
-							<th scope="col">Start destination</th>
-							<th scope="col">Final destination</th>
-							<th scope="col">Cost of flight</th>
-							<th scope="col">Date of flight</th>
-							<th scope="col">Date of arrival</th>
-							<th scope="col">Length</th>
-							<th scope="col"></th>
-						</tr>
-					</thead>
-				</table>
-
-
-
-			</form>
-			<br>
-		</div>
-	</div>
 
 	<div id="searchAndFilterFlight" class="tabcontent">
 		<div class="container">
@@ -251,6 +223,43 @@ body {
 					<div class="col-sm-10">
 						<input type="date" class="form-control" id="dateOfReturn"
 							placeholder="Insert date of the return" name="dateOfReturn">
+							<p>This field is optional!</p>
+					</div>
+				</div>
+				<h2>Filter: (optional)</h2>
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="from">Price from: </label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" id="from"
+							placeholder="Insert price from(optional)" name="from">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="to">Price to: </label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" id="to"
+							placeholder="Insert price to(optional)" name="to">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="fromL">Length from: </label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" id="fromL"
+							placeholder="Insert length from(optional)" name="fromL">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="toL">Length to: </label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" id="toL"
+							placeholder="Insert length to(optional)" name="toL">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="nameL">Insert name of airline: </label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" id="nameL"
+							placeholder="Insert name of airline(optional)" name="nameL">
 					</div>
 				</div>
 				<div class="form-group">
@@ -259,6 +268,9 @@ body {
 							id="searchFlightButton">Search</button>
 					</div>
 				</div>
+				<table class="table table-hover" id="foundFlights">
+				
+  			</table>
 			</form>
 			<br>
 		</div>
@@ -406,14 +418,9 @@ body {
 		</div>
 	</div>
 	
-	<div id="foundFlights">
-	
-	</div>
 	
 	
 	
-
-	<div id="foundFlights"></div>
 
 
 

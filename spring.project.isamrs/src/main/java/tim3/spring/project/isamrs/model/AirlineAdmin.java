@@ -18,18 +18,18 @@ public class AirlineAdmin extends User {
 	@JsonIgnore
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "airline_id", referencedColumnName = "id")
-	private Airline airline;
+	private Airline airlineAdmin;
 
 	public AirlineAdmin() {
 		super();
 	}
 
 	public Airline getAirline() {
-		return airline;
+		return airlineAdmin;
 	}
 
 	public void setAirline(Airline airline) {
-		this.airline = airline;
+		this.airlineAdmin = airline;
 	}
 
 	public static long getSerialversionuid() {
