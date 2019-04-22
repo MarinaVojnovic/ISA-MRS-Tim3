@@ -52,10 +52,10 @@ function fillTableAirlines(data) {
 		cell1.innerHTML = response[counter].name;
 		cell2.innerHTML = response[counter].address;
 		cell3.innerHTML = response[counter].promotionalDescription;
-		cell4.innerHTML = '<button id=\"'
+		cell5.innerHTML = '<button style="background: #ff1a75; color: white" id=\"'
 				+ response[counter].id
 				+ '\" class=\"chooseAirline\" class="btn btn-primary">Choose</button>';
-		cell5.innerHTML = '<a href=\"' + location
+		cell4.innerHTML = '<a href=\"' + location
 				+ '\" target=\"_blank\">Show location</a>';
 
 	}
@@ -66,11 +66,11 @@ function fillTableAirlines(data) {
 	var cell4 = row.insertCell(3);
 	var cell5 = row.insertCell(4);
 
-	cell1.innerHTML = "Name";
-	cell2.innerHTML = "Address";
-	cell3.innerHTML = "Promotional Description";
-	cell4.innerHTML = "";
-	cell5.innerHTML = "Location";
+	cell1.innerHTML ='<p style= "font-weight: 200%; font-size:150%">Name</p>';
+	cell2.innerHTML ='<p style= "font-weight: 200%; font-size:150%">Address</p>';
+	cell3.innerHTML = '<p style= "font-weight: 200%; font-size:150%">Promotional Description</p>';
+	cell5.innerHTML = '<p style= "font-weight: 200%; font-size:150%"></p>';
+	cell4.innerHTML = '<p style= "font-weight: 200%; font-size:150%">Location</p>';
 
 }
 
@@ -96,10 +96,10 @@ function fillTableHotels(data) {
 		cell1.innerHTML = response[counter].name;
 		cell2.innerHTML = response[counter].address;
 		cell3.innerHTML = response[counter].promotionalDescription;
-		cell4.innerHTML = '<button id=\"'
+		cell5.innerHTML = '<button style="background: #ff1a75; color: white" id=\"'
 				+ response[counter].id
 				+ '\" class=\"chooseHotel\" class="btn btn-primary">Choose</button>';
-		cell5.innerHTML = '<a href=\"' + location
+		cell4.innerHTML = '<a href=\"' + location
 				+ '\" target=\"_blank\">Show location</a>';
 
 	}
@@ -110,11 +110,11 @@ function fillTableHotels(data) {
 	var cell4 = row.insertCell(3);
 	var cell5 = row.insertCell(4);
 
-	cell1.innerHTML = "Name";
-	cell2.innerHTML = "Address";
-	cell3.innerHTML = "Promotional Description";
-	cell4.innerHTML = "";
-	cell5.innerHTML = "Location";
+	cell1.innerHTML ='<p style= "font-weight: 200%; font-size:150%">Name</p>';
+	cell2.innerHTML ='<p style= "font-weight: 200%; font-size:150%">Address</p>';
+	cell3.innerHTML = '<p style= "font-weight: 200%; font-size:150%">Promotional Description</p>';
+	cell5.innerHTML = '<p style= "font-weight: 200%; font-size:150%"></p>';
+	cell4.innerHTML = '<p style= "font-weight: 200%; font-size:150%">Location</p>';
 
 }
 
@@ -257,10 +257,10 @@ function fillTableRentacars(data) {
 		cell2.innerHTML = response[counter].address;
 		cell3.innerHTML = response[counter].promotionalDescription;
 		cell4.innerHTML = response[counter].grade;
-		cell5.innerHTML = '<button id=\"'
+		cell6.innerHTML = '<button style="background: #ff1a75; color: white" id=\"'
 				+ response[counter].id
 				+ '\" class=\"chooseRentacar\" class="btn btn-primary">Choose</button>';
-		cell6.innerHTML = '<a href=\"' + location
+		cell5.innerHTML = '<a href=\"' + location
 		+ '\" target=\"_blank\">Show location</a>';
 
 	}
@@ -272,12 +272,12 @@ function fillTableRentacars(data) {
 	var cell5 = row.insertCell(4);
 	var cell6 = row.insertCell(5);
 
-	cell1.innerHTML = "Name";
-	cell2.innerHTML = "Address";
-	cell3.innerHTML = "Promotional Description";
-	cell4.innerHTML = "Grade";
-	cell5.innerHTML = "";
-	cell6.innerHTML = "Location";
+	cell1.innerHTML ='<p style= "font-weight: 200%; font-size:150%">Name</p>';
+	cell2.innerHTML ='<p style= "font-weight: 200%; font-size:150%">Address</p>';
+	cell3.innerHTML = '<p style= "font-weight: 200%; font-size:150%">Promotional Description</p>';
+	cell4.innerHTML ='<p style= "font-weight: 200%; font-size:150%">Average Grade</p>';
+	cell6.innerHTML = '<p style= "font-weight: 200%; font-size:150%"></p>';
+	cell5.innerHTML = '<p style= "font-weight: 200%; font-size:150%">Location</p>';
 
 }
 

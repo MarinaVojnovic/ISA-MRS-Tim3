@@ -366,9 +366,9 @@ function showCars(type){
 				cell3.innerHTML = response[counter].price;
 				cell4.innerHTML = response[counter].year;
 				if (type=="forDelete"){
-					cell5.innerHTML = '<button id=\"'+ response[counter].id+'\" class=\"deleteCarButton\" class="btn btn-primary">Delete</button>';
+					cell5.innerHTML = '<button style="background: #ff1a75; color: white"id=\"'+ response[counter].id+'\" class=\"deleteCarButton\" class="btn btn-primary">Delete</button>';
 				}else if(type=="forEdit"){
-					cell5.innerHTML = '<button id=\"'+ response[counter].id+'\" class=\"editCarButton\" class="btn btn-primary" >Edit</button>';
+					cell5.innerHTML = '<button style="background: #ff1a75; color: white" id=\"'+ response[counter].id+'\" class=\"editCarButton\" class="btn btn-primary" >Edit</button>';
 				}
 				
 			
@@ -382,10 +382,10 @@ function showCars(type){
 				var cell4 = row.insertCell(3);
 				var cell5 = row.insertCell(4);
 				
-				cell1.innerHTML = "Id";
-				cell2.innerHTML = "Name";
-				cell3.innerHTML = "Price";
-				cell4.innerHTML = "Year";
+				cell1.innerHTML ='<p style= "font-weight: 200%; font-size:150%">Id</p>';
+				cell2.innerHTML = '<p style= " font-weight: 200%; font-size:150%">Name</p>';;
+				cell3.innerHTML = '<p style= "font-weight: 200%; font-size:150%">Price</p>';;
+				cell4.innerHTML = '<p style= " font-weight: 200%; font-size:150%">Year</p>';;
 			}else{
 				$(".message").append('<h3>No cars found.</p>')
 			}

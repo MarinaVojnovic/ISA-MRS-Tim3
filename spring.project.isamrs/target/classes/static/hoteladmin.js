@@ -354,10 +354,10 @@ function showRooms(type) {
 					var cell4 = row.insertCell(3);
 					var cell5 = row.insertCell(4);
 
-					cell1.innerHTML = "Id";
-					cell2.innerHTML = "Room Number";
-					cell3.innerHTML = "Price";
-					cell4.innerHTML = "Number of people";
+					cell1.innerHTML = '<p style= "font-weight: 200%; font-size:150%">Id</p>';
+					cell2.innerHTML = '<p style= "font-weight: 200%; font-size:150%">Room number</p>';
+					cell3.innerHTML = '<p style= "font-weight: 200%; font-size:150%">Price</p>';
+					cell4.innerHTML = '<p style= "font-weight: 200%; font-size:150%">Number of people</p>';
 
 				},
 				error : function(jqXHR, textStatus, errorThrown) {
