@@ -104,7 +104,7 @@ function mailToJson(emailAddress, id){
 	return JSON.stringify({
 		"emailAddress": emailAddress,
 		"subject": "Register verification",
-		"body": "http://localhost:8080/api/confirmRegistration/"+id
+		"body": "Please click on the following link in order to activate your account:\nhttp://localhost:8080/api/confirmRegistration/"+id
 	})
 }
 
