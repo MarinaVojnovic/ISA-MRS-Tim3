@@ -1,7 +1,7 @@
 package tim3.spring.project.isamrs.model;
 
-import java.util.ArrayList;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -15,13 +15,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import tim3.spring.project.isamrs.dto.AddFlightDTO;
-import tim3.spring.project.isamrs.dto.FlightDTO;
 
 @Entity
 @Table(catalog = "dbtim3", name = "flight")
@@ -35,10 +33,12 @@ public class Flight {
 	@Column(name = "number")
 	private String number;
 
+	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "start_id")
 	Airline startAirline;
 
+	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "final_id")
 	Airline finalAirline;
@@ -48,24 +48,24 @@ public class Flight {
 
 	@Column(name = "dateOfStart")
 	private Date dateOfStart;
-	
+
 	@Column(name = "dateOfEnd")
 	private Date dateOfEnd;
-	
+
 	@Column(name = "numOfStops")
 	private int numOfStops;
-	
-	@Column (name="lengthOfFlight")
+
+	@Column(name = "lengthOfFlight")
 	private int lengthOfFlight;
-	
+
 	@JsonIgnore
-	@OneToMany(mappedBy = "flightStop",fetch = FetchType.LAZY,cascade = CascadeType.REFRESH)
-    private List<FlightStops> flight = new ArrayList<FlightStops>();
-	
-	@JsonIgnore 
+	@OneToMany(mappedBy = "flightStop", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
+	private List<FlightStops> flight = new ArrayList<FlightStops>();
+
+	@JsonIgnore
 	@ManyToOne(fetch = FetchType.EAGER)
 	Airline airline;
-	
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "flight", cascade = CascadeType.ALL)
 	private Set<Seat> seats;
@@ -79,13 +79,13 @@ public class Flight {
 		this.dateOfStart = flightDTO.getDateOfFlight();
 		this.dateOfEnd = flightDTO.getDateOfArrival();
 		this.lengthOfFlight = flightDTO.getLength();
-		this.seats=new HashSet<>();
-		for(int i=0;i<flightDTO.getNumOfSeats();i++) {
-			this.seats.add(new Seat(this,false));
+		this.seats = new HashSet<>();
+		for (int i = 0; i < flightDTO.getNumOfSeats(); i++) {
+			this.seats.add(new Seat(this, false));
 		}
-		this.airline=flightDTO.getFlighAirline();
-		this.numOfStops=flightDTO.getNumOfStops();
-		
+		this.airline = flightDTO.getFlighAirline();
+		this.numOfStops = flightDTO.getNumOfStops();
+
 	}
 
 	public Long getId() {
@@ -128,8 +128,6 @@ public class Flight {
 		this.lengthOfFlight = lengthOfFlight;
 	}
 
-	
-
 	public List<FlightStops> getFlight() {
 		return flight;
 	}
@@ -149,7 +147,6 @@ public class Flight {
 	public Airline getAirline() {
 		return airline;
 	}
-
 
 	public Airline getStartAirline() {
 		return startAirline;
@@ -175,10 +172,8 @@ public class Flight {
 		this.cost = cost;
 	}
 
-
-
 	public Flight() {
-		this.seats=new HashSet<>();
+		this.seats = new HashSet<>();
 	}
 
 	public int getNumOfStops() {
@@ -193,5 +188,4 @@ public class Flight {
 		this.airline = airline;
 	}
 
-	
 }

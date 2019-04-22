@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,15 +17,20 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import tim3.spring.project.isamrs.dto.RoomDTO;
+import tim3.spring.project.isamrs.model.HotelAdmin;
 import tim3.spring.project.isamrs.model.Room;
 import tim3.spring.project.isamrs.service.RoomService;
+import tim3.spring.project.isamrs.service.impl.CustomUserDetailsService;
 
 @RestController
 public class RoomController {
 
 	@Autowired
 	RoomService roomService;
-	
+
+	@Autowired
+	private CustomUserDetailsService userDetailsService;
+
 	@GetMapping(value = "/getAllRooms", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Room>> getAllRooms() {
 		List<Room> rooms = roomService.getAll();
@@ -31,23 +38,35 @@ public class RoomController {
 	}
 
 	@PostMapping(value = "/createRoom", consumes = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_HOTEL_ADMIN')")
 	public ResponseEntity<Room> create(@RequestBody RoomDTO roomDTO) {
-		Room retVal = roomService.create(new Room(roomDTO));
+		HotelAdmin user = (HotelAdmin) this.userDetailsService
+				.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+		Room newRoom = new Room(roomDTO);
+		newRoom.setHotel(user.getHotel());
+		Room retVal = roomService.create(newRoom);
+		user.getHotel().getRooms().add(retVal);
 		return new ResponseEntity<>(retVal, HttpStatus.CREATED);
 	}
 
 	@GetMapping(value = "/getRooms")
 	public ResponseEntity<List<Room>> getRooms() {
-		List<Room> rooms = roomService.getAll();
+		HotelAdmin ha = (HotelAdmin) this.userDetailsService
+				.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+		List<Room> rooms = roomService.findByHotel(ha.getHotel());
 		return new ResponseEntity<>(rooms, HttpStatus.OK);
 	}
 
 	@DeleteMapping(value = "/deleteRoom/{roomId}")
+	@PreAuthorize("hasRole('ROLE_HOTEL_ADMIN')")
 	public ResponseEntity<Room> deleteRoom(@PathVariable String roomId) {
+		HotelAdmin ha = (HotelAdmin) this.userDetailsService
+				.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
 		Room room = roomService.getOne(Long.parseLong(roomId));
 		if (room == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
+		ha.getHotel().getRooms().remove(room);
 		roomService.delete(Long.parseLong(roomId));
 		return new ResponseEntity<>(room, HttpStatus.OK);
 	}
@@ -63,15 +82,16 @@ public class RoomController {
 	}
 
 	@PutMapping(value = "/saveEditedRoom", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Room> saveChangesRoom(@RequestBody Room room) {
+	@PreAuthorize("hasRole('ROLE_HOTEL_ADMIN')")
+	public ResponseEntity<Room> saveChangesRoom(@RequestBody RoomDTO room) {
 		Room r = roomService.getOne(room.getId());
 		if (r == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 		r.setId(room.getId());
-		r.setRoomNumber(room.getRoomNumber());
-		r.setPrice(room.getPrice());
-		r.setNumberPeople(room.getNumberPeople());
+		r.setRoomNumber(room.getRoomNumberRegister());
+		r.setPrice(room.getRoomPriceRegister());
+		r.setNumberPeople(room.getRoomPeopleNumberRegister());
 
 		Room editedRoom = roomService.save(r);
 		return new ResponseEntity<>(editedRoom, HttpStatus.OK);

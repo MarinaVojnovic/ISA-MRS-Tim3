@@ -245,15 +245,18 @@ public class UserController {
 	}
 
 	@PutMapping(value = "/changePasswordFirstTime", consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Boolean> changePasswordFirstTime(@RequestBody PasswordDTO userEdit) {
+	public ResponseEntity<UserTokenState> changePasswordFirstTime(@RequestBody PasswordDTO userEdit) {
 		User user = (User) this.userDetailsService
 				.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
 		user.setFirstTime(false);
 		user.setPassword(this.userDetailsService.encodePassword(userEdit.getPassword()));
 
-		if (this.userDetailsService.saveUser(user)) {
-			return new ResponseEntity<>(true, HttpStatus.OK);
-		}
-		return new ResponseEntity<>(false, HttpStatus.OK);
+		this.userDetailsService.saveUser(user);
+
+		String jwt = tokenUtils.generateToken(user.getUsername());
+		int expiresIn = tokenUtils.getExpiredIn();
+		UserRoleName userType = null;
+
+		return new ResponseEntity<>(new UserTokenState(jwt, expiresIn, userType), HttpStatus.OK);
 	}
 }

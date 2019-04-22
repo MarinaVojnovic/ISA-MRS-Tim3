@@ -7,13 +7,85 @@ var urlRoot6 = "http://localhost:8080/findHotel";
 var urlRoot7 = "http://localhost:8080/saveChangesHotel";
 var urlRoot8 = "http://localhost:8080/api/getLogged";
 var urlRoot9 = "http://localhost:8080/api/editUser";
-
+var urlGetFirstTime = "http://localhost:8080/api/isFirstTime";
+var urlChangePassword = "http://localhost:8080/api/changePasswordFirstTime";
 
 var TOKEN_KEY = 'jwtToken';
 
-
 findHotel();
 getLogged();
+
+window.onload = function(e) {
+	console.log('window loades');
+
+	var r;
+	$.ajax({
+		type : 'GET',
+		url : urlGetFirstTime,
+		headers : createAuthorizationTokenHeader(TOKEN_KEY),
+		dataType : "json",
+		success : function(data) {
+			if (data) {
+				console.log('You have to change your password!');
+				r = 1;
+				console.log('r posle you have to change your password ' + r)
+				$('.tab').hide();
+				openCity(e, 'passwordValidation');
+
+			} else {
+				console.log('You do not have to change your password!');
+				r = 0;
+
+			}
+
+		},
+		error : function(jqXHR, textStatus, errorThrown) {
+			alert(jqXHR.status);
+			alert(textStatus);
+			alert(errorThrown);
+		}
+
+	})
+}
+
+function passwordValidation() {
+	console.log('password validation called');
+	var password1 = document.getElementById("newPasswordOne").value;
+	var password2 = document.getElementById("newPasswordTwo").value;
+
+	if (password1 == "" || password2 == "") {
+		alert('You have to fill both fields');
+	} else if (password1 != password2) {
+		alert('Passwords must match!');
+	} else {
+		$.ajax({
+			type : 'PUT',
+			url : urlChangePassword,
+			headers : createAuthorizationTokenHeader(TOKEN_KEY),
+			contentType : 'application/json',
+			dataType : "json",
+			data : passwordDTOJson(password1),
+			success : function(data) {
+				if (data) {
+					setJwtToken(TOKEN_KEY, data.accessToken);
+					alert("Successful changing password, congratulations!");
+					$('.tab').show();
+					$('#passwordValidation').hide();
+				} else {
+					alert("Error while changing password!");
+				}
+
+			},
+			error : function(jqXHR, textStatus, errorThrown) {
+				alert(jqXHR.status);
+				alert(textStatus);
+				alert(errorThrown);
+
+			}
+		})
+	}
+
+}
 
 $(document).on('click', '#logoutClicked', function(e) {
 	e.preventDefault();
@@ -21,21 +93,20 @@ $(document).on('click', '#logoutClicked', function(e) {
 	window.location.href = "index.html";
 })
 
-function checkFirstTime(){
-	$
-	.ajax({
+function checkFirstTime() {
+	$.ajax({
 		type : 'GET',
 		url : urlGetFirstTime,
-	    headers: createAuthorizationTokenHeader(TOKEN_KEY),
-	    dataType: "json",
+		headers : createAuthorizationTokenHeader(TOKEN_KEY),
+		dataType : "json",
 		success : function(data) {
-			if (data){
-				window.location.href="passwordFirstTime.html"
-			}else{
+			if (data) {
+				window.location.href = "passwordFirstTime.html"
+			} else {
 				console.log('uslo ovde');
-				
+
 			}
-			
+
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
 			alert(jqXHR.status);
@@ -139,12 +210,6 @@ $(document).on(
 			var promotionalDescription = document
 					.getElementById("hotelPromotionalDescriptionEdit").value;
 
-			var hotelCustomerServices = document
-					.getElementById("hotelCustomerServicesEdit").value;
-			var rooms = document.getElementById("hotelRoomsEdit").value;
-
-			var id = document.getElementById("hotelIdEdit").value;
-
 			if (name == "" || address == "" || promotionalDescription == "") {
 				alert('None of the fields is allowed to be empty!');
 			} else {
@@ -152,17 +217,19 @@ $(document).on(
 				$.ajax({
 					type : 'PUT',
 					url : urlRoot7,
-					data : hotelToJson(id, name, address,
-							promotionalDescription, hotelCustomerServices,
-							rooms),
+					headers : createAuthorizationTokenHeader(TOKEN_KEY),
+					data : hotelToJson(name, address, promotionalDescription),
 					dataType : "json",
 					contentType : 'application/json',
 					success : function(data) {
 						alert("Successful editing, congratulations!");
 
 					},
-					error : function(XMLHttpRequest) {
-						alert("Error while changing profile information ");
+					error : function(jqXHR, textStatus, errorThrown) {
+						alert(jqXHR.status);
+						alert(textStatus);
+						alert(errorThrown);
+
 					}
 
 				})
@@ -175,18 +242,16 @@ function findHotel() {
 			.ajax({
 				type : 'GET',
 				url : urlRoot6,
+				headers : createAuthorizationTokenHeader(TOKEN_KEY),
 				dataType : "json",
 				success : function(data) {
 					if (data == null) {
 						console.log('profile not found');
 					} else {
-						document.getElementById("hotelIdEdit").value = data.id;
 						document.getElementById("hotelNameEdit").value = data.name;
 						document.getElementById("hotelAddressEdit").value = data.address;
 						document
 								.getElementById("hotelPromotionalDescriptionEdit").value = data.promotionalDescription;
-						document.getElementById("hotelCustomerServicesEdit").value = data.hotelCustomerServices;
-						document.getElementById("hotelRoomsEdit").value = data.rooms;
 					}
 				},
 				error : function(jqXHR, textStatus, errorThrown) {
@@ -210,11 +275,18 @@ function saveEditedRoom() {
 
 	if (roomNumber == "" || price == "" || numberPeople == "") {
 		alert('None of the fields is allowed to be empty!');
+	} else if (roomNumber <= 0 || roomNumber >= 1000) {
+		alert('Number of room must be in a range [1, 999] !');
+	} else if (price <= 0) {
+		alert('Price must be positive number!');
+	} else if (numberPeople <= 0 || numberPeople >= 6) {
+		alert('Number of people in room must be in a range [1, 5] !');
 	} else {
 
 		$.ajax({
 			type : 'PUT',
 			url : urlRoot5,
+			headers : createAuthorizationTokenHeader(TOKEN_KEY),
 			data : roomToJson(id, roomNumber, price, numberPeople),
 			dataType : "json",
 			contentType : 'application/json',
@@ -222,8 +294,11 @@ function saveEditedRoom() {
 				alert("Room successfully edited, congratulations!");
 
 			},
-			error : function(XMLHttpRequest) {
-				alert("Error while editing room! ");
+			error : function(jqXHR, textStatus, errorThrown) {
+				alert(jqXHR.status);
+				alert(textStatus);
+				alert(errorThrown);
+
 			}
 
 		})
@@ -239,6 +314,7 @@ function editRoom(roomId) {
 			.ajax({
 				type : 'GET',
 				url : urlRoot4,
+				headers : createAuthorizationTokenHeader(TOKEN_KEY),
 				dataType : "json",
 				success : function(data) {
 					if (data == null) {
@@ -254,11 +330,14 @@ function editRoom(roomId) {
 						console.log('Room successfully edited.');
 					}
 
-					urlRoot6 = "http://localhost:8080/findRoom";
+					urlRoot4 = "http://localhost:8080/findRoom";
 					showRooms("forEdit");
 				},
-				error : function(XMLHttpRequest) {
-					alert("Error while eiting room");
+				error : function(jqXHR, textStatus, errorThrown) {
+					alert(jqXHR.status);
+					alert(textStatus);
+					alert(errorThrown);
+
 				}
 
 			})
@@ -272,6 +351,7 @@ function deleteRoom(roomId) {
 	$.ajax({
 		type : 'DELETE',
 		url : urlRoot3,
+		headers : createAuthorizationTokenHeader(TOKEN_KEY),
 		dataType : "json",
 		success : function(data) {
 			if (data == null) {
@@ -300,10 +380,12 @@ function showRooms(type) {
 			.ajax({
 				type : 'GET',
 				url : urlRoot2,
+				headers : createAuthorizationTokenHeader(TOKEN_KEY),
 				dataType : "json",
 				success : function(data) {
 
 					var response = data;
+					$(".message").children().remove();
 					$("#tableOfRoomsForDelete").find("tr").remove();
 					$("#tableOfRoomsForEdit").find("tr").remove();
 					var tabela;
@@ -316,7 +398,9 @@ function showRooms(type) {
 
 					console.log(tabela);
 
+					var broj = 0;
 					for ( var counter in response) {
+						broj++;
 						console.log('counter: ' + counter);
 						var row = tabela.insertRow(counter);
 						console.log(row);
@@ -337,28 +421,31 @@ function showRooms(type) {
 						cell3.innerHTML = response[counter].price;
 						cell4.innerHTML = response[counter].numberPeople;
 						if (type == "forDelete") {
-							cell5.innerHTML = '<button id=\"'
+							cell5.innerHTML = '<button style="background: #ff1a75; color: white" id=\"'
 									+ response[counter].id
 									+ '\" class=\"deleteRoomButton\" class="btn btn-primary">Delete</button>';
 						} else if (type == "forEdit") {
-							cell5.innerHTML = '<button id=\"'
+							cell5.innerHTML = '<button style="background: #ff1a75; color: white" id=\"'
 									+ response[counter].id
 									+ '\" class=\"editRoomButton\" class="btn btn-primary" >Edit</button>';
 						}
 
 					}
-					var row = tabela.insertRow(0);
-					var cell1 = row.insertCell(0);
-					var cell2 = row.insertCell(1);
-					var cell3 = row.insertCell(2);
-					var cell4 = row.insertCell(3);
-					var cell5 = row.insertCell(4);
+					if (broj != 0) {
+						var row = tabela.insertRow(0);
+						var cell1 = row.insertCell(0);
+						var cell2 = row.insertCell(1);
+						var cell3 = row.insertCell(2);
+						var cell4 = row.insertCell(3);
+						var cell5 = row.insertCell(4);
 
-					cell1.innerHTML = '<p style= "font-weight: 200%; font-size:150%">Id</p>';
-					cell2.innerHTML = '<p style= "font-weight: 200%; font-size:150%">Room number</p>';
-					cell3.innerHTML = '<p style= "font-weight: 200%; font-size:150%">Price</p>';
-					cell4.innerHTML = '<p style= "font-weight: 200%; font-size:150%">Number of people</p>';
-
+						cell1.innerHTML = '<p style= "font-weight: 200%; font-size:150%">Id</p>';
+						cell2.innerHTML = '<p style= "font-weight: 200%; font-size:150%">Room number</p>';
+						cell3.innerHTML = '<p style= "font-weight: 200%; font-size:150%">Price</p>';
+						cell4.innerHTML = '<p style= "font-weight: 200%; font-size:150%">Number of people</p>';
+					} else {
+						$(".message").append('<h3>No rooms found.</p>')
+					}
 				},
 				error : function(jqXHR, textStatus, errorThrown) {
 					alert(jqXHR.status);
@@ -395,6 +482,14 @@ $(document)
 							|| roomPeopleNumberRegister == ""
 							|| roomPriceRegister == "") {
 						alert('At least one field is blank, please fill it up with proper information!');
+					} else if (roomNumberRegister <= 0
+							|| roomNumberRegister >= 1000) {
+						alert('Number of room must be in a range [1, 999] !');
+					} else if (roomPriceRegister <= 0) {
+						alert('Price must be positive number!');
+					} else if (roomPeopleNumberRegister <= 0
+							|| roomPeopleNumberRegister >= 6) {
+						alert('Number of people in room must be in a range [1, 5] !');
 					} else {
 						$
 								.ajax({
@@ -402,6 +497,7 @@ $(document)
 									url : urlRoot1,
 									contentType : 'application/json',
 									dataType : "json",
+									headers : createAuthorizationTokenHeader(TOKEN_KEY),
 									data : createRoomToJSON(roomNumberRegister,
 											roomPeopleNumberRegister,
 											roomPriceRegister),
@@ -441,6 +537,8 @@ $(document).on('submit', '#editRoomForm', function(e) {
 	e.preventDefault();
 
 	saveEditedRoom();
+	openCity(e, 'editRoom');
+	showRooms('forEdit');
 
 });
 
@@ -456,21 +554,17 @@ function createRoomToJSON(roomNumberRegister, roomPeopleNumberRegister,
 function roomToJson(id, roomNumber, price, numberPeople) {
 	return JSON.stringify({
 		"id" : id,
-		"roomNumber" : roomNumber,
-		"price" : price,
-		"numberPeople" : numberPeople,
+		"roomNumberRegister" : roomNumber,
+		"roomPriceRegister" : price,
+		"roomPeopleNumberRegister" : numberPeople,
 	})
 }
 
-function hotelToJson(id, name, address, promotionalDescription,
-		hotelCustomerServices, rooms) {
+function hotelToJson(name, address, promotionalDescription) {
 	return JSON.stringify({
-		"id" : id,
-		"name" : name,
-		"address" : address,
-		"promotionalDescription" : promotionalDescription,
-		"hotelCustomerServices" : hotelCustomerServices,
-		"rooms" : rooms,
+		"hotelNameRegister" : name,
+		"hotelAddressRegister" : address,
+		"hotelPromotionalDescription" : promotionalDescription,
 
 	})
 }
@@ -490,5 +584,19 @@ function HotelAdminEditToJSON(username, password1, firstName, lastName, email,
 		"lastName" : lastName,
 		"email" : email,
 		"phoneNumber" : phoneNumber,
+	})
+}
+
+$(document).on('submit', '#passwordValidationForm', function(e) {
+	e.preventDefault();
+
+	passwordValidation();
+
+});
+
+function passwordDTOJson(password1) {
+	return JSON.stringify({
+		"password" : password1
+
 	})
 }

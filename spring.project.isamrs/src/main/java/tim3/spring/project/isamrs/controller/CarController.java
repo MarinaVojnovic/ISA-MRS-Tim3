@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,6 +38,7 @@ public class CarController {
 	}
 
 	@PostMapping(value = "/createCar", consumes = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_RENTACAR_ADMIN')")
 	public ResponseEntity<Car> create(@RequestBody CarDTO carDTO) {
 		RentacarAdmin user = (RentacarAdmin) this.userDetailsService
 				.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
@@ -58,11 +60,15 @@ public class CarController {
 	}
 
 	@DeleteMapping(value = "/deleteCar/{carId}")
+	@PreAuthorize("hasRole('ROLE_RENTACAR_ADMIN')")
 	public ResponseEntity<Car> deleteCar(@PathVariable String carId) {
+		RentacarAdmin ra = (RentacarAdmin) this.userDetailsService
+				.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
 		Car car = carService.getOne(Long.parseLong(carId));
 		if (car == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
+		ra.getRentacar().getCars().remove(car);
 		carService.delete(Long.parseLong(carId));
 		return new ResponseEntity<>(car, HttpStatus.OK);
 	}
@@ -78,7 +84,8 @@ public class CarController {
 	}
 
 	@PutMapping(value = "/saveEditedCar", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Car> saveChangesRentACar(@RequestBody Car car) {
+	@PreAuthorize("hasRole('ROLE_RENTACAR_ADMIN')")
+	public ResponseEntity<Car> saveChangesRentACar(@RequestBody CarDTO car) {
 		Car c = carService.getOne(car.getId());
 		if (c == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);

@@ -52,7 +52,6 @@ body {
 	border: 1px solid #ccc;
 	border-top: none;
 	background: #00defc;
-	
 }
 </style>
 </head>
@@ -73,9 +72,40 @@ body {
 			onclick="openCity(event, 'logout')">Logout</button>
 	</div>
 
+	<div id="passwordValidation" class="tabcontent">
+		<div class="container">
+			<h2>Validate your password:</h2>
+			<form class="form-horizontal" action="#" method="post"
+				id="passwordValidationForm">
+				<div class="form-group">
+
+					<div class="col-sm-10">
+						<input type="password" class="form-control" id="newPasswordOne"
+							placeholder="Insert a new password" name="newPasswordOne">
+					</div>
+				</div>
+				<div class="form-group">
+
+					<div class="col-sm-10">
+						<input type="password" class="form-control" id="newPasswordTwo"
+							placeholder="Repeat new password" name="newPasswordTwo">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10">
+						<button style="background: #ff1a75; color: white" type="submit"
+							class="btn btn-default" id="buttonPassword">Submit</button>
+					</div>
+				</div>
+			</form>
+			<br>
+		</div>
+	</div>
+
 	<div id="editHotel" class="tabcontent">
 		<div class="container">
-			<h2>Editing a rent-a-car service:</h2>
+			<h2>Editing a hotel:</h2>
 			<form class="form-horizontal" action="#" method="post" id="form3">
 				<div class="form-group">
 					<label class="control-label col-sm-2" for="hotelNameEdit">Name:
@@ -105,12 +135,10 @@ body {
 							name="hotelPromotionalDescriptionEdit">
 					</div>
 				</div>
-				<input type="hidden" id="hotelIdEdit"> <input type="hidden"
-					id="hotelCustomerServicesEdit"> <input type="hidden"
-					id="hotelRoomsEdit">
 				<div class="form-group">
 					<div class="col-sm-offset-2 col-sm-10">
-						<button style="background: #ff1a75; color: white" type="submit" class="btn btn-default" id="button2">Submit</button>
+						<button style="background: #ff1a75; color: white" type="submit"
+							class="btn btn-default" id="button2">Submit</button>
 					</div>
 				</div>
 			</form>
@@ -150,7 +178,8 @@ body {
 				</div>
 				<div class="form-group">
 					<div class="col-sm-offset-2 col-sm-10">
-						<button style="background: #ff1a75; color: white" type="submit" class="btn btn-default" id="button1">Submit</button>
+						<button style="background: #ff1a75; color: white" type="submit"
+							class="btn btn-default" id="button1">Submit</button>
 					</div>
 				</div>
 			</form>
@@ -164,6 +193,7 @@ body {
 			<table class="table table-hover" id="tableOfRoomsForDelete">
 
 			</table>
+			<p class="message"></p>
 			<br>
 		</div>
 	</div>
@@ -176,19 +206,21 @@ body {
 			<table class="table table-hover" id="tableOfRoomsForEdit">
 
 			</table>
+			<p class="message"></p>
 			<br>
 		</div>
 	</div>
 
 	<div id="editRoomFormular" class="tabcontent">
 		<div class="container">
+			<h2>Editing room:</h2>
 			<form class="form-horizontal" action="#" method="post"
 				id="editRoomForm">
 				<div class="form-group">
 					<label class="control-label col-sm-2" for="roomNumberEdit">Room
 						number: </label>
 					<div class="col-sm-10">
-						<input type="text" class="form-control" id="roomNumberEdit"
+						<input type="number" class="form-control" id="roomNumberEdit"
 							placeholder="Insert a room number" name="roomNumberEdit">
 					</div>
 				</div>
@@ -196,7 +228,7 @@ body {
 					<label class="control-label col-sm-2" for="roomPriceEdit">Price:
 					</label>
 					<div class="col-sm-10">
-						<input type="text" class="form-control" id="roomPriceEdit"
+						<input type="number" class="form-control" id="roomPriceEdit"
 							placeholder="Insert price of the room" name="roomPriceEdit">
 					</div>
 				</div>
@@ -204,7 +236,7 @@ body {
 					<label class="control-label col-sm-2" for="roomNumberPeopleEdit">Number
 						of people: </label>
 					<div class="col-sm-10">
-						<input type="text" class="form-control" id="roomNumberPeopleEdit"
+						<input type="number" class="form-control" id="roomNumberPeopleEdit"
 							placeholder="Insert number of people for the room"
 							name="roomNumberPeopleEdit">
 					</div>
@@ -227,19 +259,19 @@ body {
 			<form class="form-horizontal" action="#" method="post" id="form4">
 
 				<div class="form-group">
-					<label class="control-label col-sm-2"
-						for="hotelAdminUsernameEdit">Username: </label>
+					<label class="control-label col-sm-2" for="hotelAdminUsernameEdit">Username:
+					</label>
 					<div class="col-sm-10">
 						<input type="text" class="form-control"
 							id="hotelAdminUsernameEdit"
 							placeholder="Insert a username for the hotel admin"
-							name="hotelAdminUsernameEdit"  disabled>
+							name="hotelAdminUsernameEdit" disabled>
 					</div>
 				</div>
 
 				<div class="form-group">
-					<label class="control-label col-sm-2"
-						for="hotelAdminPassword1Edit">New password: </label>
+					<label class="control-label col-sm-2" for="hotelAdminPassword1Edit">New
+						password: </label>
 					<div class="col-sm-10">
 						<input type="password" class="form-control"
 							id="hotelAdminPassword1Edit"
@@ -249,8 +281,8 @@ body {
 				</div>
 
 				<div class="form-group">
-					<label class="control-label col-sm-2"
-						for="hotelAdminPassword2Edit">Repeat new password: </label>
+					<label class="control-label col-sm-2" for="hotelAdminPassword2Edit">Repeat
+						new password: </label>
 					<div class="col-sm-10">
 						<input type="password" class="form-control"
 							id="hotelAdminPassword2Edit"
@@ -260,8 +292,8 @@ body {
 				</div>
 
 				<div class="form-group">
-					<label class="control-label col-sm-2"
-						for="hotelAdminFirstNameEdit">First name: </label>
+					<label class="control-label col-sm-2" for="hotelAdminFirstNameEdit">First
+						name: </label>
 					<div class="col-sm-10">
 						<input type="text" class="form-control"
 							id="hotelAdminFirstNameEdit"
@@ -271,8 +303,8 @@ body {
 				</div>
 
 				<div class="form-group">
-					<label class="control-label col-sm-2"
-						for="hotelAdminLastNameEdit">Last name: </label>
+					<label class="control-label col-sm-2" for="hotelAdminLastNameEdit">Last
+						name: </label>
 					<div class="col-sm-10">
 						<input type="text" class="form-control"
 							id="hotelAdminLastNameEdit"
@@ -285,8 +317,7 @@ body {
 					<label class="control-label col-sm-2" for="hotelAdminEmailEdit">Email:
 					</label>
 					<div class="col-sm-10">
-						<input type="email" class="form-control"
-							id="hotelAdminEmailEdit"
+						<input type="email" class="form-control" id="hotelAdminEmailEdit"
 							placeholder="Insert an email for the hotel admin"
 							name="hotelAdminEmailEdit">
 					</div>
@@ -305,7 +336,8 @@ body {
 
 				<div class="form-group">
 					<div class="col-sm-offset-2 col-sm-10">
-						<button style="background: #ff1a75; color: white" type="submit" class="btn btn-default" id="button6">Submit</button>
+						<button style="background: #ff1a75; color: white" type="submit"
+							class="btn btn-default" id="button6">Submit</button>
 					</div>
 				</div>
 			</form>

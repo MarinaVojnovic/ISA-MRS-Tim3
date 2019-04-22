@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import tim3.spring.project.isamrs.model.Hotel;
 import tim3.spring.project.isamrs.model.Room;
 import tim3.spring.project.isamrs.repository.RoomRepository;
 import tim3.spring.project.isamrs.service.RoomService;
@@ -47,5 +48,10 @@ public class RoomServiceImpl implements RoomService{
 	@Override
 	public Room save(Room room) {
 		return roomRepository.save(room);
+	}
+
+	@Override
+	public List<Room> findByHotel(Hotel h) {
+		return roomRepository.findByHotel(h);
 	}
 }

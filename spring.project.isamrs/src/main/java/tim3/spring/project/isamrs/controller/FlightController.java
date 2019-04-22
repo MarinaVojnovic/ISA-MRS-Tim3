@@ -1,9 +1,8 @@
 package tim3.spring.project.isamrs.controller;
 
+import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.sql.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +16,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import java.text.ParseException;
 
 import tim3.spring.project.isamrs.dto.AddFlightDTO;
 import tim3.spring.project.isamrs.dto.FlightDTO;
-import tim3.spring.project.isamrs.dto.SearchFlightDTO;
 import tim3.spring.project.isamrs.model.Airline;
 import tim3.spring.project.isamrs.model.AirlineAdmin;
 import tim3.spring.project.isamrs.model.Flight;
@@ -36,13 +33,13 @@ import tim3.spring.project.isamrs.service.impl.CustomUserDetailsService;
 public class FlightController {
 	@Autowired
 	FlightService flightService;
-	
+
 	@Autowired
 	AirlineService airlineService;
-	
+
 	@Autowired
 	private CustomUserDetailsService userDetailsService;
-	
+
 	@Autowired
 	private FlightStopService flightStopService;
 
@@ -51,20 +48,30 @@ public class FlightController {
 	public ResponseEntity<Flight> create(@RequestBody FlightDTO flightDTO) {
 		User logged = (User) this.userDetailsService
 				.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
-		Airline air=((AirlineAdmin) logged).getAirline();
+		Airline air = ((AirlineAdmin) logged).getAirline();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
 		@SuppressWarnings("deprecation")
-		Date dateOfFlight=new Date(Integer.parseInt(flightDTO.getDateOfFlight().split("\\-")[0])-1900,Integer.parseInt(flightDTO.getDateOfFlight().split("\\-")[1])-1,Integer.parseInt(flightDTO.getDateOfFlight().split("\\-")[2]));
+		Date dateOfFlight = new Date(Integer.parseInt(flightDTO.getDateOfFlight().split("\\-")[0]) - 1900,
+				Integer.parseInt(flightDTO.getDateOfFlight().split("\\-")[1]) - 1,
+				Integer.parseInt(flightDTO.getDateOfFlight().split("\\-")[2]));
 		@SuppressWarnings("deprecation")
-		Date dateOfArrival=new Date(Integer.parseInt(flightDTO.getDateOfArrival().split("\\-")[0])-1900,Integer.parseInt(flightDTO.getDateOfArrival().split("\\-")[1])-1,Integer.parseInt(flightDTO.getDateOfArrival().split("\\-")[2]));
-		Flight fl=this.flightService.create(new Flight(new AddFlightDTO(flightDTO.getFlightNumberRegister(),this.airlineService.getOne(Long.parseLong(flightDTO.getStartDestinationRegister())),this.airlineService.getOne(Long.parseLong(flightDTO.getFinalDestinationRegister())),air,flightDTO.getCostOfFlight(),dateOfFlight,dateOfArrival,flightDTO.getLength(),flightDTO.getNumOfSeats(),flightDTO.getNumOfStops())));
-		if(flightDTO.getNumOfStops()>0) {
-			String[] stops=flightDTO.getStops().split(" ");
-			for(String s: stops) {
-				FlightStops fs=this.flightStopService.create(new FlightStops(fl,this.airlineService.getOne(Long.parseLong(s))));
+		Date dateOfArrival = new Date(Integer.parseInt(flightDTO.getDateOfArrival().split("\\-")[0]) - 1900,
+				Integer.parseInt(flightDTO.getDateOfArrival().split("\\-")[1]) - 1,
+				Integer.parseInt(flightDTO.getDateOfArrival().split("\\-")[2]));
+		Flight fl = this.flightService.create(new Flight(new AddFlightDTO(flightDTO.getFlightNumberRegister(),
+				this.airlineService.getOne(Long.parseLong(flightDTO.getStartDestinationRegister())),
+				this.airlineService.getOne(Long.parseLong(flightDTO.getFinalDestinationRegister())), air,
+				flightDTO.getCostOfFlight(), dateOfFlight, dateOfArrival, flightDTO.getLength(),
+				flightDTO.getNumOfSeats(), flightDTO.getNumOfStops())));
+		if (flightDTO.getNumOfStops() > 0) {
+			String[] stops = flightDTO.getStops().split(" ");
+			for (String s : stops) {
+				FlightStops fs = this.flightStopService
+						.create(new FlightStops(fl, this.airlineService.getOne(Long.parseLong(s))));
 			}
 		}
-		
+		air.getFlights().add(fl);
+
 		return new ResponseEntity<>(fl, HttpStatus.CREATED);
 	}
 
@@ -76,20 +83,30 @@ public class FlightController {
 
 	@SuppressWarnings("deprecation")
 	@GetMapping(value = "/searchFlight/{startDestination}/{finalDestination}/{dateOfFlight}/{dateOfArrival}/{from}/{to}/{fromL}/{toL}/{name}")
-	public ResponseEntity<List<Flight>> searchFlights(@PathVariable Long startDestination,@PathVariable Long finalDestination, @PathVariable String dateOfFlight,@PathVariable String dateOfArrival,@PathVariable String from,@PathVariable String to, @PathVariable String fromL,@PathVariable String toL,@PathVariable String name) {
-		Date dateOfFl=new Date(Integer.parseInt(dateOfFlight.split("\\-")[0])-1900,Integer.parseInt(dateOfFlight.split("\\-")[1])-1,Integer.parseInt(dateOfFlight.split("\\-")[2]));
-		Date dateOfArr=new Date(0,0,0);
-		if(!dateOfArrival.equals("noDate")) {
-			dateOfArr=new Date(Integer.parseInt(dateOfArrival.split("\\-")[0])-1900,Integer.parseInt(dateOfArrival.split("\\-")[1])-1,Integer.parseInt(dateOfArrival.split("\\-")[2]));
+	public ResponseEntity<List<Flight>> searchFlights(@PathVariable Long startDestination,
+			@PathVariable Long finalDestination, @PathVariable String dateOfFlight, @PathVariable String dateOfArrival,
+			@PathVariable String from, @PathVariable String to, @PathVariable String fromL, @PathVariable String toL,
+			@PathVariable String name) {
+		Date dateOfFl = new Date(Integer.parseInt(dateOfFlight.split("\\-")[0]) - 1900,
+				Integer.parseInt(dateOfFlight.split("\\-")[1]) - 1, Integer.parseInt(dateOfFlight.split("\\-")[2]));
+		Date dateOfArr = new Date(0, 0, 0);
+		if (!dateOfArrival.equals("noDate")) {
+			dateOfArr = new Date(Integer.parseInt(dateOfArrival.split("\\-")[0]) - 1900,
+					Integer.parseInt(dateOfArrival.split("\\-")[1]) - 1,
+					Integer.parseInt(dateOfArrival.split("\\-")[2]));
 		}
-		List<Flight> flights=new ArrayList<Flight>();
-		if(dateOfArrival.equals("noDate")) {
-			flights=this.flightService.findByStartAirlineAndFinalAirlineAndDateOfStart(this.airlineService.getOne(startDestination), this.airlineService.getOne(finalDestination), dateOfFl);
-			
-		}else {
-			flights=this.flightService.findByStartAirlineAndFinalAirlineAndDateOfStartAndDateOfEnd(this.airlineService.getOne(startDestination), this.airlineService.getOne(finalDestination), dateOfFl, dateOfArr);
+		List<Flight> flights = new ArrayList<Flight>();
+		if (dateOfArrival.equals("noDate")) {
+			flights = this.flightService.findByStartAirlineAndFinalAirlineAndDateOfStart(
+					this.airlineService.getOne(startDestination), this.airlineService.getOne(finalDestination),
+					dateOfFl);
+
+		} else {
+			flights = this.flightService.findByStartAirlineAndFinalAirlineAndDateOfStartAndDateOfEnd(
+					this.airlineService.getOne(startDestination), this.airlineService.getOne(finalDestination),
+					dateOfFl, dateOfArr);
 		}
-		List<Flight> filtered=new ArrayList<Flight>();
+		List<Flight> filtered = new ArrayList<Flight>();
 		double fromm, too;
 		int fromLL, toLL;
 		String namee;

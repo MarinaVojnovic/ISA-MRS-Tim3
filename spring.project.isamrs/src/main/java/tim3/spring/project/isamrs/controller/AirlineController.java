@@ -34,10 +34,10 @@ public class AirlineController {
 
 	@Autowired
 	AirlineService airlineService;
-	
+
 	@Autowired
 	AirlineWorkingService airlineWorkingService;
-	
+
 	@Autowired
 	private CustomUserDetailsService userDetailsService;
 
@@ -60,6 +60,7 @@ public class AirlineController {
 	}
 
 	@PostMapping(value = "/createAirline", consumes = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_SYSTEM_ADMIN')")
 	public ResponseEntity<Airline> create(@RequestBody AirlineDTO airlineDTO) {
 		Airline retVal = airlineService.create(new Airline(airlineDTO));
 		return new ResponseEntity<>(retVal, HttpStatus.CREATED);
@@ -67,7 +68,9 @@ public class AirlineController {
 
 	@GetMapping(value = "/findAirline", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Airline> findAirline() {
-		Airline airline = airlineService.getOne(1);
+		AirlineAdmin airlineAdmin = (AirlineAdmin) this.userDetailsService
+				.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+		Airline airline = airlineAdmin.getAirline();
 		if (airline != null) {
 			return new ResponseEntity<>(airline, HttpStatus.OK);
 		} else {
@@ -76,18 +79,19 @@ public class AirlineController {
 	}
 
 	@PutMapping(value = "/saveChangesAirline", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Airline> saveChangesAirline(@RequestBody Airline airline) {
-		Airline a = airlineService.getOne(airline.getId());
+	@PreAuthorize("hasRole('ROLE_AIRLINE_ADMIN')")
+	public ResponseEntity<Airline> saveChangesAirline(@RequestBody AirlineDTO airline) {
+		AirlineAdmin airlineAdmin = (AirlineAdmin) this.userDetailsService
+				.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+		Airline a = airlineAdmin.getAirline();
 		if (a == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-		a.setId(airline.getId());
-		a.setName(airline.getName());
-		a.setAddress(airline.getAddress());
-		a.setPromotionalDescription(airline.getPromotionalDescription());
-		a.setFlights(airline.getFlights());
-		a.setAirlineServices(airline.getAirlineCustomerServices());
-		a.setQuickBookingTickets(airline.getQuickBookingTickets());
+		a.setName(airline.getAirlineNameRegister());
+		a.setAddress(airline.getAirlineAddressRegister());
+		a.setPromotionalDescription(airline.getAirlinePromotionalDescription());
+
+		airlineAdmin.setAirline(a);
 
 		Airline air = airlineService.save(a);
 		return new ResponseEntity<>(air, HttpStatus.OK);
@@ -113,52 +117,52 @@ public class AirlineController {
 
 		return new ResponseEntity<>(airlines, HttpStatus.OK);
 	}
-	
+
 	@GetMapping(value = "/getAllAirlinesExcept")
 	@PreAuthorize("hasRole('ROLE_AIRLINE_ADMIN')")
 	public ResponseEntity<List<Airline>> getAllAirlinesExcept() {
 		User logged = (User) this.userDetailsService
 				.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
-		Airline air=((AirlineAdmin) logged).getAirline();
+		Airline air = ((AirlineAdmin) logged).getAirline();
 		List<Airline> airlines = airlineService.getAll();
-		List<AirlineWorkingDestinations> airlineWorkingDestinations=this.airlineWorkingService.findByAirlineThatWorks(air);
-		List<Airline> back=new ArrayList<>();
-		for(Airline a: airlines) {
-			int i=0;
-			for(AirlineWorkingDestinations awd: airlineWorkingDestinations) {
-				if(awd.getWorksWith().getId()==a.getId()) {
-					i=1;
+		List<AirlineWorkingDestinations> airlineWorkingDestinations = this.airlineWorkingService
+				.findByAirlineThatWorks(air);
+		List<Airline> back = new ArrayList<>();
+		for (Airline a : airlines) {
+			int i = 0;
+			for (AirlineWorkingDestinations awd : airlineWorkingDestinations) {
+				if (awd.getWorksWith().getId() == a.getId()) {
+					i = 1;
 				}
 			}
-			if(i==0) {
+			if (i == 0) {
 				back.add(a);
 			}
-			
+
 		}
-		
-		
+
 		return new ResponseEntity<>(back, HttpStatus.OK);
 	}
-	
+
 	@PostMapping(value = "/addDestination/{id}")
 	@PreAuthorize("hasRole('ROLE_AIRLINE_ADMIN')")
 	public ResponseEntity<AirlineWorkingDestinations> addDestination(@PathVariable Long id) {
 		User logged = (User) this.userDetailsService
 				.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
-		Airline air=((AirlineAdmin) logged).getAirline();
-		Airline work=this.airlineService.getOne(id);
-		AirlineWorkingDestinations awd=this.airlineWorkingService.create(new AirlineWorkingDestinations(air,work));
+		Airline air = ((AirlineAdmin) logged).getAirline();
+		Airline work = this.airlineService.getOne(id);
+		AirlineWorkingDestinations awd = this.airlineWorkingService.create(new AirlineWorkingDestinations(air, work));
 		return new ResponseEntity<>(awd, HttpStatus.CREATED);
 	}
-	
-	
+
 	@GetMapping(value = "/getAirlineWorkingDestinations")
 	@PreAuthorize("hasRole('ROLE_AIRLINE_ADMIN')")
 	public ResponseEntity<List<AirlineWorkingDestinations>> getAllAirlineWorkingDestinations() {
 		User logged = (User) this.userDetailsService
 				.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
-		Airline air=((AirlineAdmin) logged).getAirline();
-		List<AirlineWorkingDestinations> airlineWorkingDestinations=this.airlineWorkingService.findByAirlineThatWorks(air);
+		Airline air = ((AirlineAdmin) logged).getAirline();
+		List<AirlineWorkingDestinations> airlineWorkingDestinations = this.airlineWorkingService
+				.findByAirlineThatWorks(air);
 		return new ResponseEntity<>(airlineWorkingDestinations, HttpStatus.OK);
 	}
 }
