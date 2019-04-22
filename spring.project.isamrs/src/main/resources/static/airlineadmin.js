@@ -3,9 +3,13 @@ var urlRoot2 = "http://localhost:8080/findAirline";
 var urlRoot3 = "http://localhost:8080/saveChangesAirline";
 var urlRoot4 = "http://localhost:8080/api/editUser";
 var urlRoot5 = "http://localhost:8080/api/getLogged";
+var urlRoot6="http://localhost:8080/getAllAirlinesExcept";
+var urlRoot7="http://localhost:8080/addDestination";
+var urlRoot8="http://localhost:8080/getAirlineWorkingDestinations";
 
 var TOKEN_KEY = 'jwtToken';
 getLogged();
+getAllAirlines();
 
 
 findAirline();
@@ -49,54 +53,182 @@ function findAirline() {
 			})
 };
 
+function addFlight(){
+	var flightNumberRegister = document
+	.getElementById("flightNumberRegister").value;
+	var startDestinationRegister = $('option:selected', "#startDestinationRegister")
+	.attr('name');
+	var finalDestinationRegister = $('option:selected', "#finalDestinationRegister")
+	.attr('name');
+	var costOfFlight = document.getElementById("costOfFlight").value;
+	var dateOfFlight = document.getElementById("dateOfFlight").value;
+	var dateOfArrival=document.getElementById("dateOfArrival").value;
+	var length=document.getElementById("lengthOfFlight").value;
+	var numOfSeats=document.getElementById("numberOfSeats").value;
+	var numOfStops=document.getElementById("numberOfFlightStops").value;
+	var stops="";
+	var i=0
+	if(flightNumberRegister=="" || costOfFlight=="" || dateOfFlight=="" || dateOfArrival=="" || length=="" || numOfSeats=="" || numOfStops==""){
+	alert("You must fill in all of the fields");
+	i=1;
+	}
+	if(isNaN(costOfFlight) || costOfFlight<0 || isNaN(length) || length<0 || isNaN(numOfSeats) || numOfSeats<0 || isNaN(numOfStops) || numOfStops<0){
+		alert("You must insert positive number for cost of flight,length,number of seats and stops!");
+		i=1;
+	}
+	if(startDestinationRegister==finalDestinationRegister){
+		alert("Start and final destination of flight cannot be same!");
+		i=1;
+	}
+	if(new Date(dateOfFlight)>new Date(dateOfArrival)){
+		alert("Date of flight cannot be after date of arrival");
+		i=1;
+	}
+	if(new Date()>new Date(dateOfFlight) || new Date()>new Date(dateOfArrival)){
+		alert("You cannot put dates in the past");
+		i=1;
+	}
+	if(new Date()>new Date(dateOfFlight) && new Date()>new Date(dateOfArrival)){
+		alert("You cannot put dates in the past");
+		i=1;
+	}
+	if(i==0){
+	console.log(dateOfFlight);
+	if(numOfStops>0){
+	for(var i=0;i<numOfStops;i++){
+		var s=document.getElementById("flightStop "+i+"").value;
+		console.log(s);
+		stops+=s+" "
+	}
+		stops.substring(0, stops.length - 1);
+	}
+	console.log(stops);
+	$.ajax({
+		type : 'POST',
+		url : urlRoot1,
+		headers : createAuthorizationTokenHeader(TOKEN_KEY),
+		contentType: "application/json",
+		dataType : "json",
+		data : createFlightToJSON(
+				flightNumberRegister,
+				startDestinationRegister,
+				finalDestinationRegister,
+				costOfFlight, dateOfFlight,dateOfArrival,length,numOfSeats,numOfStops,stops),
+		success : function(data) {
+			alert("Successful added flight, congratulations!");
+		},
+		error : function(jqXHR, textStatus,
+				errorThrown) {
+			alert(jqXHR.status);
+			alert(textStatus);
+			alert(errorThrown);
+
+		}
+	})
+	
+	}
+}
+
 $(document)
 .on(
 		"submit",
 		"#form2",
 		function(e) {
 			e.preventDefault();
+			$("#divStops").empty();
 			var flightNumberRegister = document
-					.getElementById("flightNumberRegister").value;
-			var startDestinationRegister = document
-					.getElementById("startDestinationRegister").value;
-			var finalDestinationRegister = document
-					.getElementById("finalDestinationRegister").value;
+			.getElementById("flightNumberRegister").value;
+			var startDestination = $('option:selected', "#startDestinationRegister")
+			.attr('name');
+			var finalDestination = $('option:selected', "#finalDestinationRegister")
+			.attr('name');
 			var costOfFlight = document.getElementById("costOfFlight").value;
 			var dateOfFlight = document.getElementById("dateOfFlight").value;
 			var dateOfArrival=document.getElementById("dateOfArrival").value;
 			var length=document.getElementById("lengthOfFlight").value;
 			var numOfSeats=document.getElementById("numberOfSeats").value;
-			if (flightNumberRegister == ""
-					|| startDestinationRegister == ""
-					|| finalDestinationRegister == ""
-					|| costOfFlight == "" || dateOfFlight == "",dateOfArrival==""
-						|| length=="" || numOfSeats=="" || isNaN(length) || isNaN(numOfSeats) || numOfSeats<=0) {
-				alert('At least one field is blank, please fill it up with proper information!');
-			} else {
+			var numOfStops=document.getElementById("numberOfFlightStops").value;
+			var i=0;
+			if(flightNumberRegister=="" || costOfFlight=="" || dateOfFlight=="" || dateOfArrival=="" || length=="" || numOfSeats=="" || numOfStops==""){
+				alert("You must fill in all of the fields");
+				i=1;
+			}
+			if(isNaN(costOfFlight) || costOfFlight<0 || isNaN(length) || length<0 || isNaN(numOfSeats) || numOfSeats<0 || isNaN(numOfStops) || numOfStops<0){
+				alert("You must insert positive number for cost of flight,length,number of seats and stops!");
+				i=1;
+			}
+			if(startDestination==finalDestination){
+				alert("Start and final destination of flight cannot be same!");
+				i=1;
+			}
+			if(new Date(dateOfFlight)>new Date(dateOfArrival)){
+				alert("Date of flight cannot be after date of arrival");
+				i=1;
+			}
+			if(new Date()>new Date(dateOfFlight) || new Date()>new Date(dateOfArrival)){
+				alert("You cannot put dates in the past");
+				i=1;
+			}
+			if(new Date()>new Date(dateOfFlight) && new Date()>new Date(dateOfArrival)){
+				alert("You cannot put dates in the past");
+				i=1;
+			}
+			if(i==0 && numOfStops>0){
 				$
-						.ajax({
-							type : 'POST',
-							url : urlRoot1,
-							contentType : 'application/json',
-							dataType : "json",
-							data : createFlightToJSON(
-									flightNumberRegister,
-									startDestinationRegister,
-									finalDestinationRegister,
-									costOfFlight, dateOfFlight,dateOfArrival,length,numOfSeats),
-							success : function(data) {
-								alert("Successful registration, congratulations!");
-							},
-							error : function(jqXHR, textStatus,
-									errorThrown) {
-								alert(jqXHR.status);
-								alert(textStatus);
-								alert(errorThrown);
+				.ajax({
+					type : 'GET',
+					url : urlRoot8,
+					headers : createAuthorizationTokenHeader(TOKEN_KEY),
+					dataType : "json",
+					success : function(data) {
+						var list = data == null ? []
+								: (data instanceof Array ? data : [ data ]);
+						if (data == null) {
+
+						} else {
+							var list = data == null ? []
+									: (data instanceof Array ? data : [ data ]);
+							if (list.length > 0) {
+								for(var i=0;i<numOfStops;i++){
+									$("#divStops").append('<label class="control-label col-sm-2" for="stop">Flight stop number '+(i+1)+': </label><div class="col-sm-10">')
+									var select=$('<select class="form-control" id="flightStop '+i+'" name="flightStop '+i+'"></select>')
+									$.each(list,function(index,destination){
+										var option = $('<option value="'
+											+ destination.id + '">'
+											+ destination.worksWith.name + '</option>');
+											select.append(option);
+									})
+									$('#divStops').append(select);
+									$('#divStops').append('</div><br>');
+								}
+								$('#divStops').append('<div class="col-sm-offset-2 col-sm-10"><button type="submit" class="btn btn-default" id="buttonAddFlight">Add flight</button></div>')
+								
 
 							}
-						})
+							
+
+						}
+					},
+					error : function(jqXHR, textStatus,
+							errorThrown) {
+						alert(jqXHR.status);
+						alert(textStatus);
+						alert(errorThrown);
+
+					}
+				})
+			}else if(numOfStops==0){
+				addFlight();
+			}else{
+				
 			}
-		});
+
+})
+
+$(document).on('click','#buttonAddFlight',function(e){
+	e.preventDefault();
+	addFlight();
+})
 
 $(document)
 		.on(
@@ -238,8 +370,113 @@ $(document)
 					}
 				});
 
+function getAllAirlines(){
+	$
+	.ajax({
+		type : 'GET',
+		url : urlRoot6,
+		headers : createAuthorizationTokenHeader(TOKEN_KEY),
+		contentType : 'application/json',
+		dataType : "json",
+		success : function(data) {
+			var list = data == null ? []
+			: (data instanceof Array ? data : [ data ]);
+		if (list.length > 0) {
+			var i = 0
+			$.each(list, function(index, destination) {
+				var option = $('<option name="'
+						+ destination.id + '" value="'+destination.id+'">'
+						+ destination.name + '</option>')
+				$("#chooseDestination").append(option);
+			})
+		}
+		},
+		error : function(jqXHR, textStatus,
+				errorThrown) {
+			alert(jqXHR.status);
+			alert(textStatus);
+			alert(errorThrown);
+
+		}
+	})
+	
+}
+
+$(document).on('click','#addFlightButton',function(e){
+	e.preventDefault();
+	$
+	.ajax({
+		type : 'GET',
+		url : urlRoot8,
+		headers : createAuthorizationTokenHeader(TOKEN_KEY),
+		dataType : "json",
+		success : function(data) {
+			var list = data == null ? []
+					: (data instanceof Array ? data : [ data ]);
+			if (data == null) {
+
+			} else {
+				var list = data == null ? []
+						: (data instanceof Array ? data : [ data ]);
+				if (list.length > 0) {
+					var i = 0
+					$.each(list, function(index, destination) {
+						var option = $('<option name="'
+								+ destination.worksWith.id + '">'
+								+ destination.worksWith.name + '</option>')
+						$("#startDestinationRegister").append(option);
+					})
+					$.each(list, function(index, destination) {
+						var option = $('<option name="'
+								+ destination.worksWith.id + '">'
+								+ destination.worksWith.name + '</option>')
+						$("#finalDestinationRegister").append(option);
+					})
+
+				}
+				
+
+			}
+		},
+		error : function(jqXHR, textStatus,
+				errorThrown) {
+			alert(jqXHR.status);
+			alert(textStatus);
+			alert(errorThrown);
+
+		}
+	})
+})
+
+$(document).on('submit','#form5',function(e){
+	e.preventDefault();
+	var destination = $('option:selected', "#chooseDestination")
+							.attr('name');
+	
+	$
+	.ajax({
+		type : 'POST',
+		url : urlRoot7+"/"+destination,
+		headers : createAuthorizationTokenHeader(TOKEN_KEY),
+		contentType : 'application/json',
+		success : function(data) {
+			alert("Successfully added destination.");
+			$("#chooseDestination option[value='"+destination+"']").remove();
+		},
+		error : function(jqXHR, textStatus,
+				errorThrown) {
+			alert(jqXHR.status);
+			alert(textStatus);
+			alert(errorThrown);
+
+		}
+	})
+	
+	
+})
+
 function createFlightToJSON(flightNumberRegister, startDestinationRegister,
-		finalDestinationRegister, costOfFlight, dateOfFlight,dateOfArrival,length,numOfSeats) {
+		finalDestinationRegister, costOfFlight, dateOfFlight,dateOfArrival,length,numOfSeats,numOfStops,stops) {
 	return JSON.stringify({
 		"flightNumberRegister" : flightNumberRegister,
 		"startDestinationRegister" : startDestinationRegister,
@@ -249,6 +486,8 @@ function createFlightToJSON(flightNumberRegister, startDestinationRegister,
 		"dateOfArrival":dateOfArrival,
 		"length":length,
 		"numOfSeats":numOfSeats,
+		"numOfStops": numOfStops,
+		"stops":stops,
 	})
 }
 

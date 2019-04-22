@@ -4,6 +4,16 @@ VALUES (1, 'Aerodrom Beograd 59, 11180 Beograd', 'Aerodrom Nikola Tesla',
 		'Aerodrom da letis i sletis')
 ON DUPLICATE KEY UPDATE id = 1;
 
+INSERT INTO airline (id, address, name, promotional_description) 
+VALUES (2, 'Aerodrom Beograd 59, 11180 Beograd', 'Aerodrom Nikola Teslaa', 
+		'Aerodrom da letis i sletis')
+ON DUPLICATE KEY UPDATE id = 2;
+
+INSERT INTO airline (id, address, name, promotional_description) 
+VALUES (3, 'Aerodrom Beograd 59, 11180 Beograd', 'Aerodrom Nikola Teslaaa', 
+		'Aerodrom da letis i sletis')
+ON DUPLICATE KEY UPDATE id = 3;
+
 -- Inserting default hotels in database
 INSERT INTO hotel (id, address, name, promotional_description) 
 VALUES (1, 'Kneza Milosa 1, Bijeljina 76300', 'Hotel Drina', 'Hotel da spavas i jedes')
@@ -34,11 +44,11 @@ ON DUPLICATE KEY UPDATE user_id = 1;
 -- Inserting default airline administrator in database
 -- Encrypted password is '123'
 INSERT INTO USERS (dtype, id, username, password, first_name, last_name, email, enabled,
-					last_password_reset_date, phone_number, first_time) 
+					last_password_reset_date, phone_number, first_time, airline_id) 
 VALUES ( 'AirlineAdmin', 2, 'airlineadmin', 
 		'$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra',
 		'Nikola', 'Nikolic', 'nikolanikolic@example.com', true, '2019-04-18 20:58:00', 
-		'00381645544333', true)
+		'00381645544333', true, 1)
 ON DUPLICATE KEY UPDATE username = 'airlineadmin';
 INSERT INTO AUTHORITY (id, name) 
 VALUES (2, 'ROLE_AIRLINE_ADMIN')

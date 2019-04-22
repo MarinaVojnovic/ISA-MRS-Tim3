@@ -1,7 +1,9 @@
 package tim3.spring.project.isamrs.model;
 
-import java.util.Date;
+import java.util.ArrayList;
+import java.sql.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -18,6 +20,7 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import tim3.spring.project.isamrs.dto.AddFlightDTO;
 import tim3.spring.project.isamrs.dto.FlightDTO;
 
 @Entity
@@ -32,13 +35,13 @@ public class Flight {
 	@Column(name = "number")
 	private String number;
 
-	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "start_id")
-	Destination startDestination;
+	Airline startAirline;
 
-	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "final_id")
-	Destination finalDestination;
+	Airline finalAirline;
 
 	@Column(name = "cost")
 	private double cost;
@@ -49,12 +52,15 @@ public class Flight {
 	@Column(name = "dateOfEnd")
 	private Date dateOfEnd;
 	
+	@Column(name = "numOfStops")
+	private int numOfStops;
+	
 	@Column (name="lengthOfFlight")
 	private int lengthOfFlight;
 	
 	@JsonIgnore
-	@OneToMany(cascade=CascadeType.REFRESH,fetch=FetchType.LAZY,mappedBy="flight")
-	private Set<Destination> destinations=new HashSet<>();
+	@OneToMany(mappedBy = "flightStop",fetch = FetchType.LAZY,cascade = CascadeType.REFRESH)
+    private List<FlightStops> flight = new ArrayList<FlightStops>();
 	
 	@JsonIgnore 
 	@ManyToOne(fetch = FetchType.EAGER)
@@ -64,19 +70,21 @@ public class Flight {
 	@OneToMany(mappedBy = "flight", cascade = CascadeType.ALL)
 	private Set<Seat> seats;
 
-	public Flight(FlightDTO flightDTO) {
+	public Flight(AddFlightDTO flightDTO) {
 		super();
 		this.number = flightDTO.getFlightNumberRegister();
-		this.startDestination = new Destination();
-		this.finalDestination = new Destination();
+		this.startAirline = flightDTO.getStartDestinationRegister();
+		this.finalAirline = flightDTO.getFinalDestinationRegister();
 		this.cost = flightDTO.getCostOfFlight();
-		this.dateOfStart = new Date();
-		this.dateOfEnd = new Date();
+		this.dateOfStart = flightDTO.getDateOfFlight();
+		this.dateOfEnd = flightDTO.getDateOfArrival();
 		this.lengthOfFlight = flightDTO.getLength();
 		this.seats=new HashSet<>();
 		for(int i=0;i<flightDTO.getNumOfSeats();i++) {
 			this.seats.add(new Seat(this,false));
 		}
+		this.airline=flightDTO.getFlighAirline();
+		this.numOfStops=flightDTO.getNumOfStops();
 		
 	}
 
@@ -120,32 +128,43 @@ public class Flight {
 		this.lengthOfFlight = lengthOfFlight;
 	}
 
-	public Set<Destination> getDestinations() {
-		return destinations;
+	
+
+	public List<FlightStops> getFlight() {
+		return flight;
 	}
 
-	public void setDestinations(Set<Destination> destinations) {
-		this.destinations = destinations;
+	public void setFlight(List<FlightStops> flight) {
+		this.flight = flight;
+	}
+
+	public Set<Seat> getSeats() {
+		return seats;
+	}
+
+	public void setSeats(Set<Seat> seats) {
+		this.seats = seats;
 	}
 
 	public Airline getAirline() {
 		return airline;
 	}
 
-	public Destination getStartDestination() {
-		return startDestination;
+
+	public Airline getStartAirline() {
+		return startAirline;
 	}
 
-	public void setStartDestination(Destination startDestination) {
-		this.startDestination = startDestination;
+	public void setStartAirline(Airline startAirline) {
+		this.startAirline = startAirline;
 	}
 
-	public Destination getFinalDestination() {
-		return finalDestination;
+	public Airline getFinalAirline() {
+		return finalAirline;
 	}
 
-	public void setFinalDestination(Destination finalDestination) {
-		this.finalDestination = finalDestination;
+	public void setFinalAirline(Airline finalAirline) {
+		this.finalAirline = finalAirline;
 	}
 
 	public double getCost() {
@@ -160,6 +179,14 @@ public class Flight {
 
 	public Flight() {
 		this.seats=new HashSet<>();
+	}
+
+	public int getNumOfStops() {
+		return numOfStops;
+	}
+
+	public void setNumOfStops(int numOfStops) {
+		this.numOfStops = numOfStops;
 	}
 
 	public void setAirline(Airline airline) {

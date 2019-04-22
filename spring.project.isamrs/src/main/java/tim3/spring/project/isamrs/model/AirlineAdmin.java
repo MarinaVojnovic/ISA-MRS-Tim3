@@ -14,18 +14,18 @@ public class AirlineAdmin extends User {
 	private static final long serialVersionUID = -1831516149566167290L;
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "airline_id", referencedColumnName = "id")
-	private Airline airline;
+	private Airline airlineAdmin;
 
 	public AirlineAdmin() {
 		super();
 	}
 
 	public Airline getAirline() {
-		return airline;
+		return airlineAdmin;
 	}
 
 	public void setAirline(Airline airline) {
-		this.airline = airline;
+		this.airlineAdmin = airline;
 	}
 
 	public static long getSerialversionuid() {

@@ -1,6 +1,8 @@
 package tim3.spring.project.isamrs.model;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -34,30 +36,44 @@ public class Airline {
 	@Column(name = "promotional_description")
 	private String promotionalDescription;
 
-	@OneToOne(mappedBy = "airline")
+	@OneToOne(mappedBy = "airlineAdmin")
 	private AirlineAdmin airlineAdmin;
-
-	@JsonIgnore
-	@OneToMany(mappedBy = "airline", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
-	private Set<Destination> destinations = new HashSet<>();
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "airline", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
 	private Set<Flight> flights = new HashSet<>();
 
 	@JsonIgnore
-	@OneToMany(mappedBy = "airline", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
+	@OneToMany(mappedBy = "airlineBooking", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
 	@Column(name = "quick_booking_tickets")
 	private Set<Ticket> quickBookingTickets = new HashSet<>();
+	
+	@OneToMany(mappedBy = "startAirline", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
+	private Set<Flight> startAirline = new HashSet<>();
+
+	@OneToMany(mappedBy = "finalAirline", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
+	private Set<Flight> finalAirline = new HashSet<>();
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "airlineStop",fetch = FetchType.LAZY,cascade = CascadeType.REFRESH)
+    private List<FlightStops> airlineStop = new ArrayList<FlightStops>();
+
+	
 
 	@JsonIgnore
-	@OneToMany(mappedBy = "airline", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
-	private Set<Airplane> airplanes = new HashSet<>();
-
-	@JsonIgnore
-	@OneToMany(mappedBy = "airline", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
+	@OneToMany(mappedBy = "airlineCustomerService", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
 	@Column(name = "airline_customer_service")
 	private Set<AirlineCustomerService> airlineCustomerServices = new HashSet<>();
+	
+	
+
+	@JsonIgnore
+	@OneToMany(mappedBy = "airlineThatWorks",fetch = FetchType.LAZY,cascade = CascadeType.REFRESH)
+    private List<AirlineWorkingDestinations> airline = new ArrayList<AirlineWorkingDestinations>();
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "worksWith",fetch = FetchType.LAZY,cascade = CascadeType.REFRESH)
+	private List<AirlineWorkingDestinations> works= new ArrayList<AirlineWorkingDestinations>();
 
 	public Airline() {
 		super();
@@ -112,13 +128,7 @@ public class Airline {
 		this.promotionalDescription = promotionalDescription;
 	}
 
-	public Set<Destination> getDestinations() {
-		return destinations;
-	}
-
-	public void setDestinations(Set<Destination> destinations) {
-		this.destinations = destinations;
-	}
+	
 
 	public Set<Flight> getFlights() {
 		return flights;
@@ -136,13 +146,7 @@ public class Airline {
 		this.quickBookingTickets = quickBookingTickets;
 	}
 
-	public Set<Airplane> getAirplanes() {
-		return airplanes;
-	}
-
-	public void setAirplanes(Set<Airplane> airplanes) {
-		this.airplanes = airplanes;
-	}
+	
 
 	public Set<AirlineCustomerService> getAirlineCustomerServices() {
 		return airlineCustomerServices;
@@ -152,17 +156,15 @@ public class Airline {
 		this.airlineCustomerServices = airlineCustomerServices;
 	}
 
-	public Airline(String name, String address, String promotionalDescription, Set<Destination> destinations,
-			Set<Flight> flights, Set<Ticket> quickBookingTickets, Set<Airplane> airplanes,
+	public Airline(String name, String address, String promotionalDescription, 
+			Set<Flight> flights, Set<Ticket> quickBookingTickets, 
 			Set<AirlineCustomerService> airlineCustomerServices) {
 		super();
 		this.name = name;
 		this.address = address;
 		this.promotionalDescription = promotionalDescription;
-		this.destinations = destinations;
 		this.flights = flights;
 		this.quickBookingTickets = quickBookingTickets;
-		this.airplanes = airplanes;
 		this.airlineCustomerServices = airlineCustomerServices;
 	}
 
