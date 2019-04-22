@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,13 +21,18 @@ import tim3.spring.project.isamrs.comparator.RentACarComparatorAddress;
 import tim3.spring.project.isamrs.comparator.RentACarComparatorName;
 import tim3.spring.project.isamrs.dto.RentacarDTO;
 import tim3.spring.project.isamrs.model.Rentacar;
+import tim3.spring.project.isamrs.model.RentacarAdmin;
 import tim3.spring.project.isamrs.service.RentacarService;
+import tim3.spring.project.isamrs.service.impl.CustomUserDetailsService;
 
 @RestController
 public class RentacarController {
 
 	@Autowired
 	RentacarService rentacarService;
+
+	@Autowired
+	private CustomUserDetailsService userDetailsService;
 
 	@GetMapping(value = "/getAllRentacars")
 	public ResponseEntity<List<Rentacar>> getAllRentacars() {
@@ -46,6 +53,7 @@ public class RentacarController {
 	}
 
 	@PostMapping(value = "/createRentacar", consumes = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_SYSTEM_ADMIN')")
 	public ResponseEntity<Rentacar> create(@RequestBody RentacarDTO rentacarDTO) {
 		Rentacar retVal = rentacarService.create(new Rentacar(rentacarDTO));
 		return new ResponseEntity<>(retVal, HttpStatus.CREATED);
@@ -53,26 +61,30 @@ public class RentacarController {
 
 	@GetMapping(value = "/findRentacar", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Rentacar> findRentacar() {
-		Rentacar car = rentacarService.getOne(1);
-		if (car != null) {
-			return new ResponseEntity<>(car, HttpStatus.OK);
+		RentacarAdmin rentacarAdmin = (RentacarAdmin) this.userDetailsService
+				.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+		Rentacar rentacar = rentacarAdmin.getRentacar();
+		if (rentacar != null) {
+			return new ResponseEntity<>(rentacar, HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
 
 	@PutMapping(value = "/saveChangesRentACar", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Rentacar> saveChangesRentACar(@RequestBody Rentacar rentacar) {
-		Rentacar r = rentacarService.getOne(rentacar.getId());
+	@PreAuthorize("hasRole('ROLE_RENTACAR_ADMIN')")
+	public ResponseEntity<Rentacar> saveChangesRentACar(@RequestBody RentacarDTO rentacar) {
+		RentacarAdmin rentacarAdmin = (RentacarAdmin) this.userDetailsService
+				.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+		Rentacar r = rentacarAdmin.getRentacar();
 		if (r == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-		r.setId(rentacar.getId());
-		r.setName(rentacar.getName());
-		r.setAddress(rentacar.getAddress());
-		r.setBranches(rentacar.getBranches());
-		r.setPromotionalDescription(rentacar.getPromotionalDescription());
-		r.setRentacarCustomerServices(rentacar.getRentacarCustomerServices());
+		r.setName(rentacar.getRentacarNameRegister());
+		r.setAddress(rentacar.getRentacarAddressRegister());
+		r.setPromotionalDescription(rentacar.getRentacarPromotionalDescription());
+
+		rentacarAdmin.setRentacar(r);
 
 		Rentacar rent = rentacarService.save(r);
 		return new ResponseEntity<>(rent, HttpStatus.OK);

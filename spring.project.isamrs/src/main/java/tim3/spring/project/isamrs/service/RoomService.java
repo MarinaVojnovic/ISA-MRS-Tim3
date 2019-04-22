@@ -2,6 +2,7 @@ package tim3.spring.project.isamrs.service;
 
 import java.util.List;
 
+import tim3.spring.project.isamrs.model.Hotel;
 import tim3.spring.project.isamrs.model.Room;
 
 public interface RoomService {
@@ -11,4 +12,5 @@ public interface RoomService {
 	public Room update(Room room);
 	public void delete(long id);
 	public Room save(Room room);
+	public List<Room> findByHotel(Hotel h);
 }

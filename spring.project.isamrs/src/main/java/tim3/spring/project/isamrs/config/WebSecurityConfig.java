@@ -74,6 +74,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers("/getAllAirlines").permitAll()
 			.antMatchers("/getAllHotels").permitAll()
 			.antMatchers("/getAllRentacars").permitAll()
+			.antMatchers("/getAllCars").permitAll()
+			.antMatchers("/getAllRooms").permitAll()
+			.antMatchers("/getAllFlights").permitAll()
 			.antMatchers("/**").permitAll()
 			
 			// svaki zahtev mora biti autorizovan

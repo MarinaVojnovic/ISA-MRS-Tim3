@@ -26,6 +26,7 @@ function getAirlineWithoutAdmin() {
 	$.ajax({
 		type : 'GET',
 		url : urlRoot8,
+		headers : createAuthorizationTokenHeader(TOKEN_KEY),
 		dataType : "json",
 		success : function(data) {
 			if (data == null) {
@@ -54,6 +55,7 @@ function getHotelWithoutAdmin() {
 	$.ajax({
 		type : 'GET',
 		url : urlRoot9,
+		headers : createAuthorizationTokenHeader(TOKEN_KEY),
 		dataType : "json",
 		success : function(data) {
 			if (data == null) {
@@ -82,6 +84,7 @@ function getRentacarWithoutAdmin() {
 	$.ajax({
 		type : 'GET',
 		url : urlRoot10,
+		headers : createAuthorizationTokenHeader(TOKEN_KEY),
 		dataType : "json",
 		success : function(data) {
 			if (data == null) {
@@ -127,6 +130,7 @@ $(document)
 								.ajax({
 									type : 'POST',
 									url : urlRoot1,
+									headers : createAuthorizationTokenHeader(TOKEN_KEY),
 									contentType : 'application/json',
 									dataType : "json",
 									data : createAirlineToJSON(
@@ -168,6 +172,7 @@ $(document)
 								.ajax({
 									type : 'POST',
 									url : urlRoot2,
+									headers : createAuthorizationTokenHeader(TOKEN_KEY),
 									contentType : 'application/json',
 									dataType : "json",
 									data : createHotelToJSON(hotelNameRegister,
@@ -209,6 +214,7 @@ $(document)
 								.ajax({
 									type : 'POST',
 									url : urlRoot3,
+									headers : createAuthorizationTokenHeader(TOKEN_KEY),
 									contentType : 'application/json',
 									dataType : "json",
 									data : createRentacarToJSON(
@@ -272,6 +278,7 @@ $(document)
 								.ajax({
 									type : 'POST',
 									url : urlRoot4,
+									headers : createAuthorizationTokenHeader(TOKEN_KEY),
 									contentType : 'application/json',
 									dataType : "json",
 									data : createAirlineAdminToJSON(username,
@@ -343,6 +350,7 @@ $(document)
 								.ajax({
 									type : 'POST',
 									url : urlRoot5,
+									headers : createAuthorizationTokenHeader(TOKEN_KEY),
 									contentType : 'application/json',
 									dataType : "json",
 									data : createHotelAdminToJSON(username,
@@ -414,6 +422,7 @@ $(document)
 								.ajax({
 									type : 'POST',
 									url : urlRoot6,
+									headers : createAuthorizationTokenHeader(TOKEN_KEY),
 									contentType : 'application/json',
 									dataType : "json",
 									data : createRentacarAdminToJSON(username,
@@ -474,6 +483,7 @@ $(document)
 								.ajax({
 									type : 'POST',
 									url : urlRoot7,
+									headers : createAuthorizationTokenHeader(TOKEN_KEY),
 									contentType : 'application/json',
 									dataType : "json",
 									data : createSystemAdminToJSON(username,

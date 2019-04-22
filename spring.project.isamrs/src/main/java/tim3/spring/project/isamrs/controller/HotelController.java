@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,12 +21,17 @@ import tim3.spring.project.isamrs.comparator.HotelsComparatorAddress;
 import tim3.spring.project.isamrs.comparator.HotelsComparatorName;
 import tim3.spring.project.isamrs.dto.HotelDTO;
 import tim3.spring.project.isamrs.model.Hotel;
+import tim3.spring.project.isamrs.model.HotelAdmin;
 import tim3.spring.project.isamrs.service.HotelService;
+import tim3.spring.project.isamrs.service.impl.CustomUserDetailsService;
 
 @RestController
 public class HotelController {
 	@Autowired
 	HotelService hotelService;
+
+	@Autowired
+	private CustomUserDetailsService userDetailsService;
 
 	@GetMapping(value = "/getAllHotels")
 	public ResponseEntity<List<Hotel>> getAllHotels() {
@@ -45,14 +52,17 @@ public class HotelController {
 	}
 
 	@PostMapping(value = "/createHotel", consumes = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_SYSTEM_ADMIN')")
 	public ResponseEntity<Hotel> create(@RequestBody HotelDTO hotelDTO) {
 		Hotel retVal = hotelService.create(new Hotel(hotelDTO));
 		return new ResponseEntity<>(retVal, HttpStatus.CREATED);
 	}
 
 	@GetMapping(value = "/findHotel", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Hotel> findRentacar() {
-		Hotel hotel = hotelService.getOne(1);
+	public ResponseEntity<Hotel> findHotel() {
+		HotelAdmin hotelAdmin = (HotelAdmin) this.userDetailsService
+				.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+		Hotel hotel = hotelAdmin.getHotel();
 		if (hotel != null) {
 			return new ResponseEntity<>(hotel, HttpStatus.OK);
 		} else {
@@ -61,16 +71,19 @@ public class HotelController {
 	}
 
 	@PutMapping(value = "/saveChangesHotel", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Hotel> saveChangesRentACar(@RequestBody Hotel hotel) {
-		Hotel h = hotelService.getOne(hotel.getId());
+	@PreAuthorize("hasRole('ROLE_HOTEL_ADMIN')")
+	public ResponseEntity<Hotel> saveChangesHotel(@RequestBody HotelDTO hotel) {
+		HotelAdmin hotelAdmin = (HotelAdmin) this.userDetailsService
+				.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+		Hotel h = hotelAdmin.getHotel();
 		if (h == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-		h.setId(hotel.getId());
-		h.setName(hotel.getName());
-		h.setAddress(hotel.getAddress());
-		h.setPromotionalDescription(hotel.getPromotionalDescription());
-		h.setHotelCustomerServices(hotel.getHotelCustomerServices());
+		h.setName(hotel.getHotelNameRegister());
+		h.setAddress(hotel.getHotelAddressRegister());
+		h.setPromotionalDescription(hotel.getHotelPromotionalDescription());
+
+		hotelAdmin.setHotel(h);
 
 		Hotel hotel2 = hotelService.save(h);
 		return new ResponseEntity<>(hotel2, HttpStatus.OK);

@@ -24,7 +24,7 @@ body {
 
 /* Style the buttons inside the tab */
 .tab button {
-    color: white;
+	color: white;
 	background-color: #ff1a75;
 	float: left;
 	border: none;
@@ -53,47 +53,47 @@ body {
 	border-top: none;
 	background: #00defc;
 }
-
 </style>
 </head>
 <body>
 
 	<div class="tab">
-		<button class="tablinks"
-			onclick="openCity(event, 'editRentacar')">Edit a rent-a-car</button>
-		<button id = "addCarsButton" class="tablinks"
+		<button class="tablinks" onclick="openCity(event, 'editRentacar')">Edit
+			a rent-a-car</button>
+		<button id="addCarsButton" class="tablinks"
 			onclick="openCity(event, 'addCar')">Add car</button>
-		<button id = "removeCarsButton" class="tablinks"
+		<button id="removeCarsButton" class="tablinks"
 			onclick="openCity(event, 'deleteCar')">Delete car</button>
-		<button id = "editCarsButton" class="tablinks"
+		<button id="editCarsButton" class="tablinks"
 			onclick="openCity(event, 'editCar')">Edit car</button>
 		<button id="logoutClicked" class="tablinks"
 			onclick="openCity(event, 'logout')">Logout</button>
 	</div>
-	
+
 	<div id="passwordValidation" class="tabcontent">
 		<div class="container">
 			<h2>Validate your password:</h2>
-			<form class="form-horizontal" action="#" method="post" id="passwordValidationForm">
+			<form class="form-horizontal" action="#" method="post"
+				id="passwordValidationForm">
 				<div class="form-group">
-					
+
 					<div class="col-sm-10">
 						<input type="password" class="form-control" id="newPasswordOne"
-							placeholder="Insert a new password"
-							name="newPasswordOne">
+							placeholder="Insert a new password" name="newPasswordOne">
 					</div>
 				</div>
 				<div class="form-group">
-					
+
 					<div class="col-sm-10">
 						<input type="password" class="form-control" id="newPasswordTwo"
 							placeholder="Repeat new password" name="newPasswordTwo">
 					</div>
 				</div>
-				
+
 				<div class="form-group">
 					<div class="col-sm-offset-2 col-sm-10">
-						<button style="background: #ff1a75; color: white" type="submit" class="btn btn-default" id="buttonPassword">Submit</button>
+						<button style="background: #ff1a75; color: white" type="submit"
+							class="btn btn-default" id="buttonPassword">Submit</button>
 					</div>
 				</div>
 			</form>
@@ -107,7 +107,8 @@ body {
 			<h2>Editing a rent-a-car service:</h2>
 			<form class="form-horizontal" action="#" method="post" id="form1">
 				<div class="form-group">
-					<label class="control-label col-sm-2" for="rentacarNameEdit">Name: </label>
+					<label class="control-label col-sm-2" for="rentacarNameEdit">Name:
+					</label>
 					<div class="col-sm-10">
 						<input type="text" class="form-control" id="rentacarNameEdit"
 							placeholder="Insert a name for the rent-a-car"
@@ -115,26 +116,29 @@ body {
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="control-label col-sm-2" for="rentacarAddressEdit">Address: </label>
+					<label class="control-label col-sm-2" for="rentacarAddressEdit">Address:
+					</label>
 					<div class="col-sm-10">
 						<input type="text" class="form-control" id="rentacarAddressEdit"
-							placeholder="Insert an address for the rent-a-car" name="rentacarAddressEdit">
+							placeholder="Insert an address for the rent-a-car"
+							name="rentacarAddressEdit">
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="control-label col-sm-2" for="rentacarPromotionalDescriptionEdit">Promotional description: </label>
+					<label class="control-label col-sm-2"
+						for="rentacarPromotionalDescriptionEdit">Promotional
+						description: </label>
 					<div class="col-sm-10">
-						<input type="text" class="form-control" id="rentacarPromotionalDescriptionEdit"
-							placeholder="Insert a promotional description for the rent-a-car" name="rentacarPromotionalDescriptionEdit">
+						<input type="text" class="form-control"
+							id="rentacarPromotionalDescriptionEdit"
+							placeholder="Insert a promotional description for the rent-a-car"
+							name="rentacarPromotionalDescriptionEdit">
 					</div>
 				</div>
-				<input type="hidden" id="rentacarIdEdit">
-				<input type="hidden" id="rentacarCustomerServicesEdit">
-				<input type="hidden" id="rentacarCarsEdit">
-				<input type="hidden" id="rentacarBranchesEdit">
 				<div class="form-group">
 					<div class="col-sm-offset-2 col-sm-10">
-						<button style="background: #ff1a75; color: white" type="submit" class="btn btn-default" id="button2">Submit</button>
+						<button style="background: #ff1a75; color: white" type="submit"
+							class="btn btn-default" id="button2">Submit</button>
 					</div>
 				</div>
 			</form>
@@ -147,22 +151,24 @@ body {
 			<h2>Adding a car:</h2>
 			<form class="form-horizontal" action="#" method="post" id="form2">
 				<div class="form-group">
-					<label class="control-label col-sm-2" for="addCarName">Name: </label>
+					<label class="control-label col-sm-2" for="addCarName">Name:
+					</label>
 					<div class="col-sm-10">
 						<input type="text" class="form-control" id="addCarName"
-							placeholder="Insert a name for a new car"
-							name="addCarName">
+							placeholder="Insert a name for a new car" name="addCarName">
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="control-label col-sm-2" for="addCarPrice">Price: </label>
+					<label class="control-label col-sm-2" for="addCarPrice">Price:
+					</label>
 					<div class="col-sm-10">
 						<input type="number" class="form-control" id="addCarPrice"
 							placeholder="Insert a price for a new car" name="addCarPrice">
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="control-label col-sm-2" for="addCarYear">Year: </label>
+					<label class="control-label col-sm-2" for="addCarYear">Year:
+					</label>
 					<div class="col-sm-10">
 						<input type="number" class="form-control" id="addCarYear"
 							placeholder="Insert a year for a new car" name="addCarYear">
@@ -170,67 +176,73 @@ body {
 				</div>
 				<div class="form-group">
 					<div class="col-sm-offset-2 col-sm-10">
-						<button style="background: #ff1a75; color: white" type="submit" class="btn btn-default" id="button3">Submit</button>
+						<button style="background: #ff1a75; color: white" type="submit"
+							class="btn btn-default" id="button3">Submit</button>
 					</div>
 				</div>
 			</form>
 			<br>
 		</div>
 	</div>
-	
+
 	<div id="deleteCar" class="tabcontent">
 		<div class="container">
 			<h2>List of car in service:</h2>
 			<table class="table table-hover" id="tableOfCarsForDelete">
-				
-  			</table>
-  			<p class="message"></p>
+
+			</table>
+			<p class="message"></p>
 			<br>
 		</div>
 	</div>
-	
+
 	<div id="editCar" class="tabcontent">
-		<div  class="container">
+		<div class="container">
 			<h2>List of cars in service:</h2>
-	
-			
+
+
 			<table class="table table-hover" id="tableOfCarsForEdit">
-				
-  			</table>
-  			<p class="message"></p>
-  			<br>
+
+			</table>
+			<p class="message"></p>
+			<br>
 		</div>
 	</div>
-	
-	<div id = "editCarFormular" class="tabcontent">
-		<div class = "container">
-			<form class="form-horizontal" action="#" method="post" id="editCarForm">
+
+	<div id="editCarFormular" class="tabcontent">
+		<div class="container">
+			<h2>Editing car:</h2>
+			<form class="form-horizontal" action="#" method="post"
+				id="editCarForm">
 				<div class="form-group">
-					<label class="control-label col-sm-2" for="carNameEdit">Name: </label>
+					<label class="control-label col-sm-2" for="carNameEdit">Name:
+					</label>
 					<div class="col-sm-10">
 						<input type="text" class="form-control" id="carNameEdit"
-							placeholder="Insert a name for the rent-a-car"
-							name="carNameEdit">
+							placeholder="Insert a name for the rent-a-car" name="carNameEdit">
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="control-label col-sm-2" for="carPriceEdit">Price: </label>
+					<label class="control-label col-sm-2" for="carPriceEdit">Price:
+					</label>
 					<div class="col-sm-10">
-						<input type="text" class="form-control" id="carPriceEdit"
+						<input type="number" class="form-control" id="carPriceEdit"
 							placeholder="Insert price of the car" name="carPriceEdit">
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="control-label col-sm-2" for="carYearEdit">Year: </label>
+					<label class="control-label col-sm-2" for="carYearEdit">Year:
+					</label>
 					<div class="col-sm-10">
-						<input type="text" class="form-control" id="carYearEdit"
+						<input type="number" class="form-control" id="carYearEdit"
 							placeholder="Insert year of the car" name="carYearEdit">
 					</div>
 				</div>
-			
+
 				<div class="form-group">
 					<div class="col-sm-offset-2 col-sm-10">
-						<button style="background: #ff1a75; color: white"  type="submit" class="btn btn-default" id="buttonSubmitEditCar">Submit</button>
+						<button style="background: #ff1a75; color: white" type="submit"
+							class="btn btn-default" id="buttonSubmitEditCar">Submit</button>
 					</div>
 				</div>
 				<input type="hidden" id="carIdEdit">
@@ -260,8 +272,8 @@ body {
 	<div id="logout" class="tabcontent">
 		<h1>Soon</h1>
 	</div>
-	
-	
+
+
 
 	<script>
 		function openCity(evt, cityName) {
@@ -279,8 +291,8 @@ body {
 			evt.currentTarget.className += " active";
 		}
 	</script>
-	
-	
+
+
 
 </body>
 </html>
