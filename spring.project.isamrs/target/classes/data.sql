@@ -48,7 +48,7 @@ INSERT INTO USERS (dtype, id, username, password, first_name, last_name, email, 
 VALUES ( 'AirlineAdmin', 2, 'airlineadmin', 
 		'$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra',
 		'Nikola', 'Nikolic', 'nikolanikolic@example.com', true, '2019-04-18 20:58:00', 
-		'00381645544333', true, 1)
+		'00381645544333', true, 2)
 ON DUPLICATE KEY UPDATE username = 'airlineadmin';
 INSERT INTO AUTHORITY (id, name) 
 VALUES (2, 'ROLE_AIRLINE_ADMIN')
