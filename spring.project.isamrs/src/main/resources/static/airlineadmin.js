@@ -6,12 +6,87 @@ var urlRoot5 = "http://localhost:8080/api/getLogged";
 var urlRoot6 = "http://localhost:8080/getAllAirlinesExcept";
 var urlRoot7 = "http://localhost:8080/addDestination";
 var urlRoot8 = "http://localhost:8080/getAirlineWorkingDestinations";
+var urlGetFirstTime = "http://localhost:8080/api/isFirstTime"
+var urlChangePassword = "http://localhost:8080/api/changePasswordFirstTime";
 
 var TOKEN_KEY = 'jwtToken';
 getLogged();
 getAllAirlines();
 
 findAirline();
+
+
+window.onload = function(e) {
+	console.log('window loades');
+
+	var r;
+	$.ajax({
+		type : 'GET',
+		url : urlGetFirstTime,
+		headers : createAuthorizationTokenHeader(TOKEN_KEY),
+		dataType : "json",
+		success : function(data) {
+			if (data) {
+				console.log('You have to change your password!');
+				r = 1;
+				console.log('r posle you have to change your password ' + r)
+				$('.tab').hide();
+				openCity(e, 'passwordValidation');
+
+			} else {
+				console.log('You do not have to change your password!');
+				r = 0;
+
+			}
+
+		},
+		error : function(jqXHR, textStatus, errorThrown) {
+			alert(jqXHR.status);
+			alert(textStatus);
+			alert(errorThrown);
+		}
+
+	})
+}
+
+function passwordValidation() {
+	console.log('password validation called');
+	var password1 = document.getElementById("newPasswordOne").value;
+	var password2 = document.getElementById("newPasswordTwo").value;
+
+	if (password1 == "" || password2 == "") {
+		alert('You have to fill both fields');
+	} else if (password1 != password2) {
+		alert('Passwords must match!');
+	} else {
+		$.ajax({
+			type : 'PUT',
+			url : urlChangePassword,
+			headers : createAuthorizationTokenHeader(TOKEN_KEY),
+			contentType : 'application/json',
+			dataType : "json",
+			data : passwordDTOJson(password1),
+			success : function(data) {
+				if (data) {
+					setJwtToken(TOKEN_KEY, data.accessToken);
+					alert("Successful changing password, congratulations!");
+					$('.tab').show();
+					$('#passwordValidation').hide();
+				} else {
+					alert("Error while changing password!");
+				}
+
+			},
+			error : function(jqXHR, textStatus, errorThrown) {
+				alert(jqXHR.status);
+				alert(textStatus);
+				alert(errorThrown);
+
+			}
+		})
+	}
+
+}
 
 $(document).on('click', '#logoutClicked', function(e) {
 	e.preventDefault();
@@ -496,6 +571,20 @@ $(document).on(
 				})
 			}
 		})
+		
+$(document).on('submit', '#passwordValidationForm', function(e) {
+	e.preventDefault();
+
+	passwordValidation();
+
+});
+
+function passwordDTOJson(password1) {
+	return JSON.stringify({
+		"password" : password1
+
+	})
+}
 
 function createFlightToJSON(flightNumberRegister, startDestinationRegister,
 		finalDestinationRegister, costOfFlight, dateOfFlight, dateOfArrival,
