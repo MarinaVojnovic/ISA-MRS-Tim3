@@ -33,6 +33,12 @@ public class RentacarController {
 
 	@Autowired
 	private CustomUserDetailsService userDetailsService;
+	
+	@GetMapping(value = "/findConcreteRentacar/{id}")
+	public ResponseEntity<Rentacar> findConcreteRentacar(@PathVariable String id) {
+		Rentacar retVal = rentacarService.getOne(Long.parseLong(id));
+		return new ResponseEntity<>(retVal, HttpStatus.OK);
+	}
 
 	@GetMapping(value = "/getAllRentacars")
 	public ResponseEntity<List<Rentacar>> getAllRentacars() {

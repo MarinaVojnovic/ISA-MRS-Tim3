@@ -37,13 +37,13 @@
 	padding: 20px;
 }
 
-table#poseban3 {
+table.poseban3 {
 	table-layout: fixed;
 	width: 100%;
 	height: 100%;
 }
 
-table#poseban3 td {
+table.poseban3 td {
 	white-space: normal;
 	word-wrap: break-word;
 }
@@ -175,14 +175,16 @@ table#poseban3 td {
 
 			<div id="airlineProfile" class="poseban2" style="display: none">
 
-				<div align="right"><button id="airlineBack" style="background: red">X</button></div>
+				<div align="right">
+					<button id="airlineBack" style="background: red">X</button>
+				</div>
 
 				<h3
 					style="margin-left: 10px; color: #002699; font-weight: 200%; font-size: 120%"
 					align="left">Airline profile:</h3>
 
 				<div class="poseban" style="display: inline-block">
-					<table id="poseban3">
+					<table class="poseban3">
 						<tr>
 							<td>Name:</td>
 							<td id="airlineProfileName">X</td>
@@ -212,6 +214,98 @@ table#poseban3 td {
 						style="margin-left: 10px; color: #002699; font-weight: 200%; font-size: 120%"
 						align="left">All of flights from this airline:</h3>
 					<table class="table" id="tableAllFlight2">
+					</table>
+				</div>
+
+			</div>
+
+			<div id="hotelProfile" class="poseban2" style="display: none">
+
+				<div align="right">
+					<button id="hotelBack" style="background: red">X</button>
+				</div>
+
+				<h3
+					style="margin-left: 10px; color: #002699; font-weight: 200%; font-size: 120%"
+					align="left">Hotel profile:</h3>
+
+				<div class="poseban" style="display: inline-block">
+					<table class="poseban3">
+						<tr>
+							<td>Name:</td>
+							<td id="hotelProfileName">X</td>
+						</tr>
+						<tr>
+							<td>Address:</td>
+							<td id="hotelProfileAddress">X</td>
+						</tr>
+						<tr>
+							<td>Promo description:</td>
+							<td id="hotelProfilePromoDescription">X</td>
+						</tr>
+						<tr>
+							<td>Average grade:</td>
+							<td>X</td>
+						</tr>
+					</table>
+				</div>
+
+				<div id="hotelLocation" class="poseban"
+					style="display: inline-block;">
+					<img src="location.jpg" style="max-width: 100%; max-height: 100%">
+				</div>
+
+				<div class="poseban" style="display: block; width: 100%">
+					<h3
+						style="margin-left: 10px; color: #002699; font-weight: 200%; font-size: 120%"
+						align="left">All of rooms from this hotel:</h3>
+					<table class="table" id="tableAllRoom2">
+					</table>
+				</div>
+
+			</div>
+
+			<div id="rentacarProfile" class="poseban2" style="display: none">
+
+				<div align="right">
+					<button id="rentacarBack" style="background: red">X</button>
+				</div>
+
+				<h3
+					style="margin-left: 10px; color: #002699; font-weight: 200%; font-size: 120%"
+					align="left">Rentacar profile:</h3>
+
+				<div class="poseban" style="display: inline-block">
+					<table class="poseban3">
+						<tr>
+							<td>Name:</td>
+							<td id="rentacarProfileName">X</td>
+						</tr>
+						<tr>
+							<td>Address:</td>
+							<td id="rentacarProfileAddress">X</td>
+						</tr>
+						<tr>
+							<td>Promo description:</td>
+							<td id="rentacarProfilePromoDescription">X</td>
+						</tr>
+						<tr>
+							<td>Average grade:</td>
+							<td>X</td>
+						</tr>
+					</table>
+				</div>
+
+				<div id="rentacarLocation" class="poseban"
+					style="display: inline-block;">
+					<img src="location.jpg" style="max-width: 100%; max-height: 100%">
+				</div>
+
+				<div class="poseban" style="display: block; width: 100%">
+					<h3
+						style="margin-left: 10px; color: #002699; font-weight: 200%; font-size: 120%"
+						align="left">All of cars from this rentacar:</h3>
+					<table class="table" id="tableAllCar2">
 					</table>
 				</div>
 

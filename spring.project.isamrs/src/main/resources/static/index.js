@@ -13,16 +13,22 @@ var urlRoot12 = "http://localhost:8080/findConcreteCars";
 
 function register() {
 	$("#airlineProfile").hide();
+	$("#hotelProfile").hide();
+	$("#rentacarProfile").hide();
 	window.location.href = "register.html";
 }
 
 function login() {
 	$("#airlineProfile").hide();
+	$("#hotelProfile").hide();
+	$("#rentacarProfile").hide();
 	window.location.href = "login.html";
 }
 
 function showAirlines() {
 	$("#airlineProfile").hide();
+	$("#hotelProfile").hide();
+	$("#rentacarProfile").hide();
 	$(".tab-pane").hide();
 	$("#menu1").show();
 	$.ajax({
@@ -45,6 +51,8 @@ function showAirlines() {
 
 function showHotels() {
 	$("#airlineProfile").hide();
+	$("#hotelProfile").hide();
+	$("#rentacarProfile").hide();
 	$(".tab-pane").hide();
 	$("#menu2").show();
 	$.ajax({
@@ -67,6 +75,8 @@ function showHotels() {
 
 function showRentacars() {
 	$("#airlineProfile").hide();
+	$("#hotelProfile").hide();
+	$("#rentacarProfile").hide();
 	$(".tab-pane").hide();
 	$("#menu3").show();
 	$.ajax({
@@ -89,6 +99,8 @@ function showRentacars() {
 
 function showFlights() {
 	$("#airlineProfile").hide();
+	$("#hotelProfile").hide();
+	$("#rentacarProfile").hide();
 	$(".tab-pane").hide();
 	$("#menu4").show();
 	$.ajax({
@@ -111,6 +123,8 @@ function showFlights() {
 
 function showRooms() {
 	$("#airlineProfile").hide();
+	$("#hotelProfile").hide();
+	$("#rentacarProfile").hide();
 	$(".tab-pane").hide();
 	$("#menu5").show();
 	$.ajax({
@@ -133,6 +147,8 @@ function showRooms() {
 
 function showCars() {
 	$("#airlineProfile").hide();
+	$("#hotelProfile").hide();
+	$("#rentacarProfile").hide();
 	$(".tab-pane").hide();
 	$("#menu6").show();
 	$.ajax({
@@ -470,15 +486,101 @@ $(document).on(
 			})
 		});
 
-$(document).on("click", ".showHotelProfile", function(e) {
-	e.preventDefault();
-	// alert(this.id);
-});
+$(document).on(
+		"click",
+		".showHotelProfile",
+		function(e) {
+			e.preventDefault();
+			// alert(this.id);
+			var ID = this.id;
+			$(".tab-pane").hide();
+			$("#hotelProfile").show();
+			var finalPath = urlRoot8 + "/" + ID;
+			$.ajax({
+				type : 'GET',
+				url : finalPath,
+				dataType : "json",
+				success : function(data) {
+					if (data) {
+						var finalPath2 = urlRoot11 + "/" + ID;
+						$.ajax({
+							type : 'GET',
+							url : finalPath2,
+							dataType : "json",
+							success : function(data) {
+								if (data) {
+									fillTableRooms(data, "tableAllRoom2");
+								}
+							},
+							error : function(jqXHR, textStatus, errorThrown) {
+								alert(jqXHR.status);
+								alert(textStatus);
+								alert(errorThrown);
+							}
 
-$(document).on("click", ".showRentacarProfile", function(e) {
-	e.preventDefault();
-	// alert(this.id);
-});
+						})
+						$("#hotelProfileName").html(data.name);
+						$("#hotelProfileAddress").html(data.address);
+						$("#hotelProfilePromoDescription").html(
+								data.promotionalDescription);
+					}
+				},
+				error : function(jqXHR, textStatus, errorThrown) {
+					alert(jqXHR.status);
+					alert(textStatus);
+					alert(errorThrown);
+				}
+
+			})
+		});
+
+$(document).on(
+		"click",
+		".showRentacarProfile",
+		function(e) {
+			e.preventDefault();
+			// alert(this.id);
+			var ID = this.id;
+			$(".tab-pane").hide();
+			$("#rentacarProfile").show();
+			var finalPath = urlRoot9 + "/" + ID;
+			$.ajax({
+				type : 'GET',
+				url : finalPath,
+				dataType : "json",
+				success : function(data) {
+					if (data) {
+						var finalPath2 = urlRoot12 + "/" + ID;
+						$.ajax({
+							type : 'GET',
+							url : finalPath2,
+							dataType : "json",
+							success : function(data) {
+								if (data) {
+									fillTableCars(data, "tableAllCar2");
+								}
+							},
+							error : function(jqXHR, textStatus, errorThrown) {
+								alert(jqXHR.status);
+								alert(textStatus);
+								alert(errorThrown);
+							}
+
+						})
+						$("#rentacarProfileName").html(data.name);
+						$("#rentacarProfileAddress").html(data.address);
+						$("#rentacarProfilePromoDescription").html(
+								data.promotionalDescription);
+					}
+				},
+				error : function(jqXHR, textStatus, errorThrown) {
+					alert(jqXHR.status);
+					alert(textStatus);
+					alert(errorThrown);
+				}
+
+			})
+		});
 
 $(document).on("click", "#airlineBack", function(e) {
 	e.preventDefault();
@@ -489,10 +591,14 @@ $(document).on("click", "#airlineBack", function(e) {
 
 $(document).on("click", "#hotelBack", function(e) {
 	e.preventDefault();
-	// alert(this.id);
+	$("#hotelProfile").hide();
+	$(".tab-pane").hide();
+	$("#menu2").show();
 });
 
 $(document).on("click", "#rentacarBack", function(e) {
 	e.preventDefault();
-	// alert(this.id);
+	$("#rentacarProfile").hide();
+	$(".tab-pane").hide();
+	$("#menu3").show();
 });

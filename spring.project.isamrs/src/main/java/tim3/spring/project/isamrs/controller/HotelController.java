@@ -32,6 +32,12 @@ public class HotelController {
 
 	@Autowired
 	private CustomUserDetailsService userDetailsService;
+	
+	@GetMapping(value = "/findConcreteHotel/{id}")
+	public ResponseEntity<Hotel> findConcreteHotel(@PathVariable String id) {
+		Hotel retVal = hotelService.getOne(Long.parseLong(id));
+		return new ResponseEntity<>(retVal, HttpStatus.OK);
+	}
 
 	@GetMapping(value = "/getAllHotels")
 	public ResponseEntity<List<Hotel>> getAllHotels() {
