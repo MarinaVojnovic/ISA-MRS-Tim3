@@ -18,6 +18,35 @@
 	align: center;
 	margin-top: 60%;
 }
+
+.poseban {
+	vertical-align: top;
+	white-space: normal;
+	box-sizing: border-box;
+	display: inline-block;
+	height: 250px;
+	padding: 10px;
+	text-align: center;
+	width: 50%;
+	margin-top: 0px;
+}
+
+.poseban2 {
+	white-space: nowrap;
+	box-sizing: border-box;
+	padding: 20px;
+}
+
+table#poseban3 {
+	table-layout: fixed;
+	width: 100%;
+	height: 100%;
+}
+
+table#poseban3 td {
+	white-space: normal;
+	word-wrap: break-word;
+}
 </style>
 </head>
 <body style="background: #00ffff">
@@ -143,6 +172,51 @@
 				<table class="table" id="tableAllCar">
 				</table>
 			</div>
+
+			<div id="airlineProfile" class="poseban2" style="display: none">
+
+				<div align="right"><button id="airlineBack" style="background: red">X</button></div>
+
+				<h3
+					style="margin-left: 10px; color: #002699; font-weight: 200%; font-size: 120%"
+					align="left">Airline profile:</h3>
+
+				<div class="poseban" style="display: inline-block">
+					<table id="poseban3">
+						<tr>
+							<td>Name:</td>
+							<td id="airlineProfileName">X</td>
+						</tr>
+						<tr>
+							<td>Address:</td>
+							<td id="airlineProfileAddress">X</td>
+						</tr>
+						<tr>
+							<td>Promo description:</td>
+							<td id="airlineProfilePromoDescription">X</td>
+						</tr>
+						<tr>
+							<td>Average grade:</td>
+							<td>X</td>
+						</tr>
+					</table>
+				</div>
+
+				<div id="airlineLocation" class="poseban"
+					style="display: inline-block;">
+					<img src="location.jpg" style="max-width: 100%; max-height: 100%">
+				</div>
+
+				<div class="poseban" style="display: block; width: 100%">
+					<h3
+						style="margin-left: 10px; color: #002699; font-weight: 200%; font-size: 120%"
+						align="left">All of flights from this airline:</h3>
+					<table class="table" id="tableAllFlight2">
+					</table>
+				</div>
+
+			</div>
+
 		</div>
 
 	</div>

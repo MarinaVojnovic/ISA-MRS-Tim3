@@ -4,16 +4,27 @@ var urlRoot3 = "http://localhost:8080/getAllRentacars";
 var urlRoot4 = "http://localhost:8080/getAllFlights";
 var urlRoot5 = "http://localhost:8080/getAllRooms";
 var urlRoot6 = "http://localhost:8080/getAllCars";
+var urlRoot7 = "http://localhost:8080/findConcreteAirline";
+var urlRoot8 = "http://localhost:8080/findConcreteHotel";
+var urlRoot9 = "http://localhost:8080/findConcreteRentacar";
+var urlRoot10 = "http://localhost:8080/findConcreteFlights";
+var urlRoot11 = "http://localhost:8080/findConcreteRooms";
+var urlRoot12 = "http://localhost:8080/findConcreteCars";
 
 function register() {
+	$("#airlineProfile").hide();
 	window.location.href = "register.html";
 }
 
 function login() {
+	$("#airlineProfile").hide();
 	window.location.href = "login.html";
 }
 
 function showAirlines() {
+	$("#airlineProfile").hide();
+	$(".tab-pane").hide();
+	$("#menu1").show();
 	$.ajax({
 		type : 'GET',
 		url : urlRoot1,
@@ -33,6 +44,9 @@ function showAirlines() {
 }
 
 function showHotels() {
+	$("#airlineProfile").hide();
+	$(".tab-pane").hide();
+	$("#menu2").show();
 	$.ajax({
 		type : 'GET',
 		url : urlRoot2,
@@ -52,6 +66,9 @@ function showHotels() {
 }
 
 function showRentacars() {
+	$("#airlineProfile").hide();
+	$(".tab-pane").hide();
+	$("#menu3").show();
 	$.ajax({
 		type : 'GET',
 		url : urlRoot3,
@@ -71,13 +88,16 @@ function showRentacars() {
 }
 
 function showFlights() {
+	$("#airlineProfile").hide();
+	$(".tab-pane").hide();
+	$("#menu4").show();
 	$.ajax({
 		type : 'GET',
 		url : urlRoot4,
 		dataType : "json",
 		success : function(data) {
 			console.log('uslo u success');
-			fillTableFlights(data);
+			fillTableFlights(data, "tableAllFlight");
 
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
@@ -90,13 +110,16 @@ function showFlights() {
 }
 
 function showRooms() {
+	$("#airlineProfile").hide();
+	$(".tab-pane").hide();
+	$("#menu5").show();
 	$.ajax({
 		type : 'GET',
 		url : urlRoot5,
 		dataType : "json",
 		success : function(data) {
 			console.log('uslo u success');
-			fillTableRooms(data);
+			fillTableRooms(data, "tableAllRoom");
 
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
@@ -109,13 +132,16 @@ function showRooms() {
 }
 
 function showCars() {
+	$("#airlineProfile").hide();
+	$(".tab-pane").hide();
+	$("#menu6").show();
 	$.ajax({
 		type : 'GET',
 		url : urlRoot6,
 		dataType : "json",
 		success : function(data) {
 			console.log('uslo u success');
-			fillTableCars(data);
+			fillTableCars(data, "tableAllCar");
 
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
@@ -145,16 +171,14 @@ function fillTableAirlines(data) {
 		var cell4 = row.insertCell(4);
 		var cell5 = row.insertCell(5);
 
-		var location = "https://maps.google.com/?q="
-				+ response[counter].address;
-
 		cell0.innerHTML = ++index;
 		cell1.innerHTML = response[counter].name;
 		cell2.innerHTML = response[counter].address;
 		cell3.innerHTML = response[counter].promotionalDescription;
 		cell4.innerHTML = "X";
-		cell5.innerHTML = '<a href=\"' + location
-				+ '\" target=\"_blank\">Show location</a>';
+		cell5.innerHTML = '<button id=\"'
+				+ response[counter].id
+				+ '\" class=\" showAirlineProfile\" value=\"Show profile\">Show profile</button>';
 
 	}
 	var row = tabela.insertRow(0);
@@ -170,7 +194,7 @@ function fillTableAirlines(data) {
 	cell2.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Address</p>';
 	cell3.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Description</p>';
 	cell4.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Grade</p>';
-	cell5.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Location</p>';
+	cell5.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%"></p>';
 
 }
 
@@ -192,16 +216,14 @@ function fillTableHotels(data) {
 		var cell4 = row.insertCell(4);
 		var cell5 = row.insertCell(5);
 
-		var location = "https://maps.google.com/?q="
-				+ response[counter].address;
-
 		cell0.innerHTML = ++index;
 		cell1.innerHTML = response[counter].name;
 		cell2.innerHTML = response[counter].address;
 		cell3.innerHTML = response[counter].promotionalDescription;
 		cell4.innerHTML = "X";
-		cell5.innerHTML = '<a href=\"' + location
-				+ '\" target=\"_blank\">Show location</a>';
+		cell5.innerHTML = '<button id=\"'
+				+ response[counter].id
+				+ '\" class=\" showHotelProfile\" value=\"Show profile\">Show profile</button>';
 
 	}
 	var row = tabela.insertRow(0);
@@ -217,7 +239,7 @@ function fillTableHotels(data) {
 	cell2.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Address</p>';
 	cell3.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Description</p>';
 	cell4.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Grade</p>';
-	cell5.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Location</p>';
+	cell5.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%"></p>';
 
 }
 
@@ -239,16 +261,14 @@ function fillTableRentacars(data) {
 		var cell4 = row.insertCell(4);
 		var cell5 = row.insertCell(5);
 
-		var location = "https://maps.google.com/?q="
-				+ response[counter].address;
-
 		cell0.innerHTML = ++index;
 		cell1.innerHTML = response[counter].name;
 		cell2.innerHTML = response[counter].address;
 		cell3.innerHTML = response[counter].promotionalDescription;
 		cell4.innerHTML = "X";
-		cell5.innerHTML = '<a href=\"' + location
-				+ '\" target=\"_blank\">Show location</a>';
+		cell5.innerHTML = '<button id=\"'
+				+ response[counter].id
+				+ '\" class=\" showRentacarProfile\" value=\"Show profile\">Show profile</button>';
 
 	}
 	var row = tabela.insertRow(0);
@@ -264,17 +284,16 @@ function fillTableRentacars(data) {
 	cell2.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Address</p';
 	cell3.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%"> Description</p>';
 	cell4.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Grade</p>';
-	cell5.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%>Location</p>';
+	cell5.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%></p>';
 
 }
 
-function fillTableFlights(data) {
+function fillTableFlights(data, table) {
 	console.log('fill table flights called');
 	var response = data;
-	$("#tableAllFlight").find("tr").remove();
-	var tabela = document.getElementById("tableAllFlight");
+	$("#" + table).find("tr").remove();
+	var tabela = document.getElementById(table);
 	console.log(tabela);
-
 	var index = 0;
 	for ( var counter in response) {
 		console.log('counter: ' + counter);
@@ -291,13 +310,10 @@ function fillTableFlights(data) {
 		var cell9 = row.insertCell(9);
 
 		cell0.innerHTML = ++index;
-		//cell1.innerHTML = response[counter].airline.name;
-		cell1.innerHTML = "X";
+		cell1.innerHTML = response[counter].airline.name;
 		cell2.innerHTML = response[counter].number;
-		//cell3.innerHTML = response[counter].startAirline.name;
-		cell3.innerHTML = "X";
-		//cell4.innerHTML = response[counter].finalAirline.name;
-		cell4.innerHTML = "X";
+		cell3.innerHTML = response[counter].startAirline.name;
+		cell4.innerHTML = response[counter].finalAirline.name;
 		cell5.innerHTML = response[counter].cost;
 		cell6.innerHTML = response[counter].dateOfStart;
 		cell7.innerHTML = response[counter].dateOfEnd;
@@ -329,11 +345,11 @@ function fillTableFlights(data) {
 	cell9.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Length of flights</p>';
 }
 
-function fillTableRooms(data) {
+function fillTableRooms(data, table) {
 	console.log('fill table rooms called');
 	var response = data;
-	$("#tableAllRoom").find("tr").remove();
-	var tabela = document.getElementById("tableAllRoom");
+	$("#" + table).find("tr").remove();
+	var tabela = document.getElementById(table);
 	console.log(tabela);
 
 	var index = 0;
@@ -367,11 +383,11 @@ function fillTableRooms(data) {
 	cell4.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Number of people for room</p>';
 }
 
-function fillTableCars(data) {
+function fillTableCars(data, table) {
 	console.log('fill table cars called');
 	var response = data;
-	$("#tableAllCar").find("tr").remove();
-	var tabela = document.getElementById("tableAllCar");
+	$("#" + table).find("tr").remove();
+	var tabela = document.getElementById(table);
 	console.log(tabela);
 
 	var index = 0;
@@ -404,3 +420,79 @@ function fillTableCars(data) {
 	cell3.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Price</p>';
 	cell4.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Car year</p>';
 }
+
+$(document).on(
+		"click",
+		".showAirlineProfile",
+		function(e) {
+			e.preventDefault();
+			// alert(this.id);
+			var ID = this.id;
+			$(".tab-pane").hide();
+			$("#airlineProfile").show();
+			var finalPath = urlRoot7 + "/" + ID;
+			$.ajax({
+				type : 'GET',
+				url : finalPath,
+				dataType : "json",
+				success : function(data) {
+					if (data) {
+						// fillTableFlights(data.flights, "tableAllFlight2");
+						var finalPath2 = urlRoot10 + "/" + ID;
+						$.ajax({
+							type : 'GET',
+							url : finalPath2,
+							dataType : "json",
+							success : function(data) {
+								if (data) {
+									fillTableFlights(data, "tableAllFlight2");
+								}
+							},
+							error : function(jqXHR, textStatus, errorThrown) {
+								alert(jqXHR.status);
+								alert(textStatus);
+								alert(errorThrown);
+							}
+
+						})
+						$("#airlineProfileName").html(data.name);
+						$("#airlineProfileAddress").html(data.address);
+						$("#airlineProfilePromoDescription").html(
+								data.promotionalDescription);
+					}
+				},
+				error : function(jqXHR, textStatus, errorThrown) {
+					alert(jqXHR.status);
+					alert(textStatus);
+					alert(errorThrown);
+				}
+
+			})
+		});
+
+$(document).on("click", ".showHotelProfile", function(e) {
+	e.preventDefault();
+	// alert(this.id);
+});
+
+$(document).on("click", ".showRentacarProfile", function(e) {
+	e.preventDefault();
+	// alert(this.id);
+});
+
+$(document).on("click", "#airlineBack", function(e) {
+	e.preventDefault();
+	$("#airlineProfile").hide();
+	$(".tab-pane").hide();
+	$("#menu1").show();
+});
+
+$(document).on("click", "#hotelBack", function(e) {
+	e.preventDefault();
+	// alert(this.id);
+});
+
+$(document).on("click", "#rentacarBack", function(e) {
+	e.preventDefault();
+	// alert(this.id);
+});
