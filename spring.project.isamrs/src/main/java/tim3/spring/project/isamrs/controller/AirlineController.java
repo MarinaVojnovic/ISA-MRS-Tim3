@@ -40,6 +40,12 @@ public class AirlineController {
 
 	@Autowired
 	private CustomUserDetailsService userDetailsService;
+	
+	@GetMapping(value = "/findConcreteAirline/{id}")
+	public ResponseEntity<Airline> findConcreteAirline(@PathVariable String id) {
+		Airline retVal = airlineService.getOne(Long.parseLong(id));
+		return new ResponseEntity<>(retVal, HttpStatus.OK);
+	}
 
 	@GetMapping(value = "/getAllAirlines")
 	public ResponseEntity<List<Airline>> getAllAirlines() {

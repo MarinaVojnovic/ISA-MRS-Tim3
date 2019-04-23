@@ -33,12 +33,10 @@ public class Flight {
 	@Column(name = "number")
 	private String number;
 
-	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "start_id")
 	Airline startAirline;
 
-	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "final_id")
 	Airline finalAirline;
@@ -62,7 +60,6 @@ public class Flight {
 	@OneToMany(mappedBy = "flightStop", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
 	private List<FlightStops> flight = new ArrayList<FlightStops>();
 
-	@JsonIgnore
 	@ManyToOne(fetch = FetchType.EAGER)
 	Airline airline;
 

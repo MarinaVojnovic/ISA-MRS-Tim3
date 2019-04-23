@@ -1,6 +1,7 @@
 package tim3.spring.project.isamrs.controller;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,8 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import tim3.spring.project.isamrs.dto.CarDTO;
 import tim3.spring.project.isamrs.model.Car;
+import tim3.spring.project.isamrs.model.Rentacar;
 import tim3.spring.project.isamrs.model.RentacarAdmin;
 import tim3.spring.project.isamrs.service.CarService;
+import tim3.spring.project.isamrs.service.RentacarService;
 import tim3.spring.project.isamrs.service.impl.CustomUserDetailsService;
 
 @RestController
@@ -29,7 +32,16 @@ public class CarController {
 	CarService carService;
 
 	@Autowired
+	RentacarService rentacarService;
+
+	@Autowired
 	private CustomUserDetailsService userDetailsService;
+
+	@GetMapping(value = "/findConcreteCars/{rentacarId}")
+	public ResponseEntity<Set<Car>> findConcreteCars(@PathVariable String rentacarId) {
+		Rentacar retVal = rentacarService.getOne(Long.parseLong(rentacarId));
+		return new ResponseEntity<>(retVal.getCars(), HttpStatus.OK);
+	}
 
 	@GetMapping(value = "/getAllCars", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Car>> getAllCars() {

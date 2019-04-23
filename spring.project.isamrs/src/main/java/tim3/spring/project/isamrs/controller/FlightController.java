@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -42,6 +43,12 @@ public class FlightController {
 
 	@Autowired
 	private FlightStopService flightStopService;
+	
+	@GetMapping(value = "/findConcreteFlights/{airlineId}")
+	public ResponseEntity<Set<Flight>> findConcreteFlights(@PathVariable String airlineId) {
+		Airline retVal = airlineService.getOne(Long.parseLong(airlineId));
+		return new ResponseEntity<>(retVal.getFlights(), HttpStatus.OK);
+	}
 
 	@PostMapping(value = "/createFlight")
 	@PreAuthorize("hasRole('ROLE_AIRLINE_ADMIN')")

@@ -1,6 +1,7 @@
 package tim3.spring.project.isamrs.controller;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,8 +18,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import tim3.spring.project.isamrs.dto.RoomDTO;
+import tim3.spring.project.isamrs.model.Hotel;
 import tim3.spring.project.isamrs.model.HotelAdmin;
 import tim3.spring.project.isamrs.model.Room;
+import tim3.spring.project.isamrs.service.HotelService;
 import tim3.spring.project.isamrs.service.RoomService;
 import tim3.spring.project.isamrs.service.impl.CustomUserDetailsService;
 
@@ -30,6 +33,15 @@ public class RoomController {
 
 	@Autowired
 	private CustomUserDetailsService userDetailsService;
+	
+	@Autowired
+	HotelService hotelService;
+	
+	@GetMapping(value = "/findConcreteRooms/{hotelId}")
+	public ResponseEntity<Set<Room>> findConcreteRooms(@PathVariable String hotelId) {
+		Hotel retVal = hotelService.getOne(Long.parseLong(hotelId));
+		return new ResponseEntity<>(retVal.getRooms(), HttpStatus.OK);
+	}
 
 	@GetMapping(value = "/getAllRooms", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Room>> getAllRooms() {
