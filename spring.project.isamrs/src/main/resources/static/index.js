@@ -12,6 +12,7 @@ var urlRoot11 = "http://localhost:8080/findConcreteRooms";
 var urlRoot12 = "http://localhost:8080/findConcreteCars";
 
 function register() {
+	$(".lokacija").html("");
 	$("#airlineProfile").hide();
 	$("#hotelProfile").hide();
 	$("#rentacarProfile").hide();
@@ -19,13 +20,24 @@ function register() {
 }
 
 function login() {
+	$(".lokacija").html("");
 	$("#airlineProfile").hide();
 	$("#hotelProfile").hide();
 	$("#rentacarProfile").hide();
 	window.location.href = "login.html";
 }
 
+function showHome() {
+	$(".lokacija").html("");
+	$("#airlineProfile").hide();
+	$("#hotelProfile").hide();
+	$("#rentacarProfile").hide();
+	$(".tab-pane").hide();
+	$("#home").show();
+}
+
 function showAirlines() {
+	$(".lokacija").html("");
 	$("#airlineProfile").hide();
 	$("#hotelProfile").hide();
 	$("#rentacarProfile").hide();
@@ -50,6 +62,7 @@ function showAirlines() {
 }
 
 function showHotels() {
+	$(".lokacija").html("");
 	$("#airlineProfile").hide();
 	$("#hotelProfile").hide();
 	$("#rentacarProfile").hide();
@@ -74,6 +87,7 @@ function showHotels() {
 }
 
 function showRentacars() {
+	$(".lokacija").html("");
 	$("#airlineProfile").hide();
 	$("#hotelProfile").hide();
 	$("#rentacarProfile").hide();
@@ -98,6 +112,7 @@ function showRentacars() {
 }
 
 function showFlights() {
+	$(".lokacija").html("");
 	$("#airlineProfile").hide();
 	$("#hotelProfile").hide();
 	$("#rentacarProfile").hide();
@@ -122,6 +137,7 @@ function showFlights() {
 }
 
 function showRooms() {
+	$(".lokacija").html("");
 	$("#airlineProfile").hide();
 	$("#hotelProfile").hide();
 	$("#rentacarProfile").hide();
@@ -146,6 +162,7 @@ function showRooms() {
 }
 
 function showCars() {
+	$(".lokacija").html("");
 	$("#airlineProfile").hide();
 	$("#hotelProfile").hide();
 	$("#rentacarProfile").hide();
@@ -471,6 +488,7 @@ $(document).on(
 							}
 
 						})
+						ymaps.ready(init(data.address,"airlineLocation"));
 						$("#airlineProfileName").html(data.name);
 						$("#airlineProfileAddress").html(data.address);
 						$("#airlineProfilePromoDescription").html(
@@ -519,6 +537,7 @@ $(document).on(
 							}
 
 						})
+						ymaps.ready(init(data.address,"hotelLocation"));
 						$("#hotelProfileName").html(data.name);
 						$("#hotelProfileAddress").html(data.address);
 						$("#hotelProfilePromoDescription").html(
@@ -567,6 +586,7 @@ $(document).on(
 							}
 
 						})
+						ymaps.ready(init(data.address, "rentacarLocation"));
 						$("#rentacarProfileName").html(data.name);
 						$("#rentacarProfileAddress").html(data.address);
 						$("#rentacarProfilePromoDescription").html(
@@ -584,6 +604,7 @@ $(document).on(
 
 $(document).on("click", "#airlineBack", function(e) {
 	e.preventDefault();
+	$(".lokacija").html("");
 	$("#airlineProfile").hide();
 	$(".tab-pane").hide();
 	$("#menu1").show();
@@ -591,6 +612,7 @@ $(document).on("click", "#airlineBack", function(e) {
 
 $(document).on("click", "#hotelBack", function(e) {
 	e.preventDefault();
+	$(".lokacija").html("");
 	$("#hotelProfile").hide();
 	$(".tab-pane").hide();
 	$("#menu2").show();
@@ -598,6 +620,7 @@ $(document).on("click", "#hotelBack", function(e) {
 
 $(document).on("click", "#rentacarBack", function(e) {
 	e.preventDefault();
+	$(".lokacija").html("");
 	$("#rentacarProfile").hide();
 	$(".tab-pane").hide();
 	$("#menu3").show();

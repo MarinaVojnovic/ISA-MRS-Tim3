@@ -11,6 +11,61 @@
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 <script src="index.js"></script>
+
+<script type="text/javascript"
+	src="http://maps.google.com/maps/api/js?sensor=false"></script>
+<script
+	src="https://api-maps.yandex.ru/2.1/?apikey=18116907-79b6-47b3-97aa-0db7c335b7e0&lang=en_US"
+	type="text/javascript"></script>
+<script type="text/javascript">
+	//ymaps.ready(init);
+	var myMap, myPlacemark, pos;
+
+	function generateCoordinates(address) {
+		$
+				.ajax({
+					type : 'GET',
+					url : "https://geocode-maps.yandex.ru/1.x/?apikey=18116907-79b6-47b3-97aa-0db7c335b7e0&format=json&geocode="
+							+ address + "&lang=en_US",
+					dataType : "json",
+					async : false,
+					success : function(data) {
+						var pronadjeni = data.response.GeoObjectCollection.featureMember;
+						if (pronadjeni.length != 0) {
+							pos = pronadjeni[0].GeoObject.Point.pos.split(" ");
+						} else {
+							pos = [ 37.64, 55.76 ]; // from Russia with love
+						}
+
+					},
+					error : function(jqXHR, textStatus, errorThrown) {
+						alert(jqXHR.status);
+						alert(textStatus);
+						alert(errorThrown);
+					}
+
+				})
+	}
+
+	function init(address, profile) {
+
+		generateCoordinates(address)
+		var pos1 = pos[1];
+		var pos2 = pos[0];
+		myMap = new ymaps.Map(profile, {
+			center : [ pos1, pos2 ],
+			zoom : 7
+		});
+
+		myPlacemark = new ymaps.Placemark([ pos1, pos2 ], {
+			hintContent : 'Moscow!',
+			balloonContent : 'Capital of Russia'
+		});
+
+		myMap.geoObjects.add(myPlacemark);
+	}
+</script>
+
 <style type="text/css">
 .carouselItem {
 	position: absolute;
@@ -67,7 +122,7 @@ table.poseban3 td {
 		<h1 align="left" style="margin-left: 80px; color: #ff1a75">Welcome
 			to the application</h1>
 		<ul class="nav nav-tabs" style="margin-left: 15px">
-			<li class="active"><a data-toggle="tab" href="#home"
+			<li class="active" onclick="showHome()"><a data-toggle="tab" href="#home"
 				style="background: white; color: #ff1a75">Home</a></li>
 			<li onclick="showAirlines()"><a data-toggle="tab" href="#menu1"
 				style="background: white; color: #ff1a75">List of all airlines</a></li>
@@ -204,9 +259,8 @@ table.poseban3 td {
 					</table>
 				</div>
 
-				<div id="airlineLocation" class="poseban"
+				<div id="airlineLocation" class="poseban lokacija"
 					style="display: inline-block;">
-					<img src="location.jpg" style="max-width: 100%; max-height: 100%">
 				</div>
 
 				<div class="poseban" style="display: block; width: 100%">
@@ -250,9 +304,8 @@ table.poseban3 td {
 					</table>
 				</div>
 
-				<div id="hotelLocation" class="poseban"
+				<div id="hotelLocation" class="poseban lokacija"
 					style="display: inline-block;">
-					<img src="location.jpg" style="max-width: 100%; max-height: 100%">
 				</div>
 
 				<div class="poseban" style="display: block; width: 100%">
@@ -296,9 +349,8 @@ table.poseban3 td {
 					</table>
 				</div>
 
-				<div id="rentacarLocation" class="poseban"
+				<div id="rentacarLocation" class="poseban lokacija"
 					style="display: inline-block;">
-					<img src="location.jpg" style="max-width: 100%; max-height: 100%">
 				</div>
 
 				<div class="poseban" style="display: block; width: 100%">
