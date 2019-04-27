@@ -1,12 +1,20 @@
 package tim3.spring.project.isamrs.model;
 
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import tim3.spring.project.isamrs.dto.CarDTO;
 
@@ -19,7 +27,13 @@ public class Car {
 
 	@Column(name = "name")
 	private String name;
+	
+	@Column(name = "on_fast_res")
+	private Boolean onFastRes;
 
+	@Column(name = "fast_res_price")
+	private Double fastResPrice;
+	
 	@Column(name = "price")
 	private Double price;
 
@@ -28,15 +42,145 @@ public class Car {
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	Rentacar rentacar;
+	
+	@Column(name="fast_res_start_date")
+	private Date fastResStartDate;
+	
+	@Column(name="fast_res_end_date")
+	private Date fastResEndDate;
+	
+	public Date getFastResStartDate() {
+		return fastResStartDate;
+	}
+
+	public void setFastResStartDate(Date fastResStartDate) {
+		this.fastResStartDate = fastResStartDate;
+	}
+
+	public Date getFastResEndDate() {
+		return fastResEndDate;
+	}
+
+	public void setFastResEndDate(Date fastResEndDate) {
+		this.fastResEndDate = fastResEndDate;
+	}
+
+	public Double getScore() {
+		return score;
+	}
+
+	public void setScore(Double score) {
+		this.score = score;
+	}
+
+	public Integer getNumber() {
+		return number;
+	}
+
+	public Boolean getOnFastRes() {
+		return onFastRes;
+	}
+
+	public void setOnFastRes(Boolean onFastRes) {
+		this.onFastRes = onFastRes;
+	}
+
+	public Double getFastResPrice() {
+		return fastResPrice;
+	}
+
+	public void setFastResPrice(Double fastResPrice) {
+		this.fastResPrice = fastResPrice;
+	}
+
+	public void setNumber(Integer number) {
+		this.number = number;
+	}
+
+	@Column(name="car_type")
+	String carType;
+	
+	@Column(name="brand")
+	String brand;
+	
+	@Column(name="model")
+	String model;
+	
+	@Column(name="seats")
+	Integer seats;
+	
+	@Column(name="score")
+	Double score;
+	
+	@Column(name="number")
+	Integer number;
+	
+	
+	
+
+	@JsonIgnore
+	@OneToMany(mappedBy = "car", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
+	private Set<CarReservation> reservations = new HashSet<>();
+	
+	
+	
+	public String getBrand() {
+		return brand;
+	}
+
+	public void setBrand(String brand) {
+		this.brand = brand;
+	}
+
+	public String getModel() {
+		return model;
+	}
+
+	public void setModel(String model) {
+		this.model = model;
+	}
+
+	public Integer getSeats() {
+		return seats;
+	}
+
+	public void setSeats(Integer seats) {
+		this.seats = seats;
+	}
+
+	public Set<CarReservation> getReservations() {
+		return reservations;
+	}
+
+	public void setReservations(Set<CarReservation> reservations) {
+		this.reservations = reservations;
+	}
+
+
+	public String getCarType() {
+		return carType;
+	}
+
+	public void setCarType(String carType) {
+		this.carType = carType;
+	}
 
 	public Car() {
 
 	}
 
 	public Car(CarDTO carDto) {
+		System.out.println("CAR DT: "+carDto.getCarType());
 		this.name = carDto.getName();
 		this.price = carDto.getPrice();
 		this.year = carDto.getYear();
+		this.carType=carDto.getCarType();
+		this.brand=carDto.getBrand();
+		this.model=carDto.getModel();
+		this.seats=carDto.getSeats();
+		this.onFastRes=false;
+		this.fastResPrice=0.0;
+		
 	}
 
 	public Long getId() {

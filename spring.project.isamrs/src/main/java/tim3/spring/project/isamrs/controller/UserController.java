@@ -26,12 +26,14 @@ import tim3.spring.project.isamrs.comparator.FriendsComparatorNameSurname;
 import tim3.spring.project.isamrs.dto.FriendRequestDTO;
 import tim3.spring.project.isamrs.dto.PasswordDTO;
 import tim3.spring.project.isamrs.dto.UserDTO;
+import tim3.spring.project.isamrs.model.CarReservation;
 import tim3.spring.project.isamrs.model.FriendRequest;
 import tim3.spring.project.isamrs.model.RegularUser;
 import tim3.spring.project.isamrs.model.User;
 import tim3.spring.project.isamrs.model.UserRoleName;
 import tim3.spring.project.isamrs.model.UserTokenState;
 import tim3.spring.project.isamrs.security.TokenHelper;
+import tim3.spring.project.isamrs.service.CarReservationService;
 import tim3.spring.project.isamrs.service.FriendRequestService;
 import tim3.spring.project.isamrs.service.RegularUserService;
 import tim3.spring.project.isamrs.service.UserService;
@@ -41,6 +43,9 @@ import tim3.spring.project.isamrs.service.impl.CustomUserDetailsService;
 @RequestMapping(value = "/api", produces = MediaType.APPLICATION_JSON_VALUE)
 public class UserController {
 
+	@Autowired
+	CarReservationService carReservationService;
+	
 	@Autowired
 	TokenHelper tokenUtils;
 
@@ -189,6 +194,17 @@ public class UserController {
 		}
 		Collections.sort(regular, new FriendsComparatorNameSurname());
 		return new ResponseEntity<List<RegularUser>>(regular, HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/getMyResCars")
+	@PreAuthorize("hasRole('ROLE_USER')")
+	public ResponseEntity<List<CarReservation>> getMyResCars() {
+		System.out.println("Uslo u get my reservations cars");
+		RegularUser logged = (RegularUser) this.userDetailsService
+				.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+		List<CarReservation> res=new ArrayList<CarReservation>();
+		res = carReservationService.findByRegularUser(logged);
+		return new ResponseEntity<List<CarReservation>>(res, HttpStatus.OK);
 	}
 
 	@GetMapping(value = "/getAllFriendRequests")
