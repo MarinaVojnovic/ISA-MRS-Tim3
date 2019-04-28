@@ -8,6 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import tim3.spring.project.isamrs.dto.BranchDTO;
+
 @Entity
 @Table(catalog = "dbtim3", name = "branch_office")
 public class BranchOffice {
@@ -15,11 +17,24 @@ public class BranchOffice {
 	@GeneratedValue
 	private Long id;
 
-	@Column(name = "name")
-	private String name;
+	@Column(name = "city")
+	private String city;
 
+	@Column(name = "address")
+	private String address;
+	
 	@ManyToOne(fetch = FetchType.EAGER)
 	Rentacar rentacar;
+	
+	
+	public BranchOffice() {
+		
+	}
+	
+	public BranchOffice(BranchDTO dto) {
+		this.city=dto.getCity();
+		this.address=dto.getAddress();
+	}
 
 	public Long getId() {
 		return id;
@@ -29,12 +44,21 @@ public class BranchOffice {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	
+	public String getCity() {
+		return city;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
 	}
 
 	public Rentacar getRentacar() {

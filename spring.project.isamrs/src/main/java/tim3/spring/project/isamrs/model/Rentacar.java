@@ -33,6 +33,28 @@ public class Rentacar {
 
 	@Column(name = "address")
 	private String address;
+	
+	@Column(name = "score")
+	private Double score;
+	
+	@Column(name = "number")
+	private Integer number;
+
+	public Double getScore() {
+		return score;
+	}
+
+	public void setScore(Double score) {
+		this.score = score;
+	}
+
+	public Integer getNumber() {
+		return number;
+	}
+
+	public void setNumber(Integer number) {
+		this.number = number;
+	}
 
 	@Column(name = "promotional_description")
 	private String promotionalDescription;
@@ -44,6 +66,19 @@ public class Rentacar {
 	@JsonIgnore
 	@OneToMany(mappedBy = "rentacar", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
 	private Set<Car> cars = new HashSet<>();
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "rentacarRes", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
+	private Set<CarReservation> carReservations = new HashSet<>();
+	
+
+	public Set<CarReservation> getCarReservations() {
+		return carReservations;
+	}
+
+	public void setCarReservations(Set<CarReservation> carReservations) {
+		this.carReservations = carReservations;
+	}
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "rentacar", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
@@ -130,10 +165,12 @@ public class Rentacar {
 		this.name = rentacarDTO.getRentacarNameRegister();
 		this.address = rentacarDTO.getRentacarAddressRegister();
 		this.promotionalDescription = rentacarDTO.getRentacarPromotionalDescription();
+		this.score=0.0;
+		this.number=0;
 	}
 
 	public Rentacar(String name, String address, String promotionalDescription,
-			Set<RentacarCustomerService> rentacarCustomerServices, Set<Car> cars, Set<BranchOffice> branches) {
+			Set<RentacarCustomerService> rentacarCustomerServices, Set<Car> cars, Set<BranchOffice> branches, Double score, Integer number) {
 		super();
 		this.name = name;
 		this.address = address;
@@ -141,6 +178,8 @@ public class Rentacar {
 		this.rentacarCustomerServices = rentacarCustomerServices;
 		this.cars = cars;
 		this.branches = branches;
+		this.score=score;
+		this.number=number;
 	}
 
 	public RentacarAdmin getRentacarAdmin() {

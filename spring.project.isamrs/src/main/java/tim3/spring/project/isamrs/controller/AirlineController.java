@@ -24,6 +24,7 @@ import tim3.spring.project.isamrs.dto.AirlineDTO;
 import tim3.spring.project.isamrs.model.Airline;
 import tim3.spring.project.isamrs.model.AirlineAdmin;
 import tim3.spring.project.isamrs.model.AirlineWorkingDestinations;
+import tim3.spring.project.isamrs.model.Flight;
 import tim3.spring.project.isamrs.model.User;
 import tim3.spring.project.isamrs.service.AirlineService;
 import tim3.spring.project.isamrs.service.AirlineWorkingService;
@@ -170,5 +171,12 @@ public class AirlineController {
 		List<AirlineWorkingDestinations> airlineWorkingDestinations = this.airlineWorkingService
 				.findByAirlineThatWorks(air);
 		return new ResponseEntity<>(airlineWorkingDestinations, HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/findDest/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Airline> searchFlights(@PathVariable Long id) {
+		System.out.println("Uslo u search flights");
+		Airline a = airlineService.getOne(id);
+		return new ResponseEntity<>(a, HttpStatus.OK);
 	}
 }

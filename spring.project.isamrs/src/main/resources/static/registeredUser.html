@@ -70,10 +70,51 @@ body {
 		<button class="tablinks" id="searchFilter"
 			onclick="openCity(event, 'searchAndFilterFlight')">Search
 			and filter flight</button>
+		<button class="tablinks" id="allReservationsButtton"
+			onclick="openCity(event, 'allReservations')">My
+			reservations</button>
 		<button id="logoutClicked" class="tablinks"
 			onclick="openCity(event, 'logout')">Logout</button>
 	</div>
 
+	<div id="allReservations" class="tabcontent">
+		<div class="container">
+			<h2>Flights:</h2>
+			<table class="table table-hover" id="tableOfFlightsRes">
+
+			</table>
+			<br>
+			<h2>Hotels:</h2>
+			<table class="table table-hover" id="tableOfHotelsRes">
+
+			</table>
+			<br>
+			<h2>Rent-a-cars</h2>
+			<table class="table table-hover" id="tableOfRentacarsRes">
+
+			</table>
+		</div>
+	</div>
+	
+	
+	<div id="gradeRentacar" class="tabcontent">
+		<div class="container">
+		<input type="hidden" id = "rentacarId" value="">
+		<input type="hidden" id = "carId" value="">
+		<table>
+			
+			<tr><td id="rentacarGradeName"></td></tr>
+			<tr><td><input type="number" name="" value=""
+				placeholder="Enter grade from 1 to 5" id="rentacarGrade" /></td></tr>
+			<tr><td id="carGradeName"></td></tr>
+			<tr><td><input type="number" name="" value=""
+				placeholder="Enter grade from 1 to 5" id="carGrade" /></td></tr>
+			
+		</table>
+			<button style="background: #ff1a75; color: white" id="submitRentacarGrade" class="btn btn-primary">Submit</button>
+		
+		</div>
+	</div>
 	<div id="airlines" class="tabcontent">
 		<div class="container">
 			<h2>Airlines in the system:</h2>
@@ -134,14 +175,61 @@ body {
 			<br>
 		</div>
 	</div>
-	
+	<div id="fastResDateDiv" class="tabcontent">
+		<div class="container">
+			<input type="hidden" id="mainStartDate">
+			<input type="hidden" id="mainEndDate">
+			<input type="hidden" id="carId">
+			<div class="form-group">
+					<label class="control-label col-sm-2" for="pickupDateFast">Pickup
+						date: </label>
+					<div class="col-sm-10">
+						<input type="date" class="form-control" id="pickupDateFast"
+							placeholder="Insert pickup date" name="pickupDateFast">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="endDateFast">End
+						date: </label>
+					<div class="col-sm-10">
+						<input type="date" class="form-control" id="endDateFast"
+							placeholder="Insert end date" name="endDateFast">
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10">
+						<button style="background: #ff1a75; color: white" type="submit" class="btn btn-default" id="buttonDateFast">Submit</button>
+					</div>
+				</div>
+			<br>
+		</div>
+	</div>
 	
 	
 	<div id="rentacarReservation" class="tabcontent">
 		<div class="container">
-			<h2>Making reservation of rentacar:</h2>
-			<form class="form-horizontal" action="#" method="post"
+			<input type="hidden" id="mainStartDate3">
+			<input type="hidden" id="mainEndDate3">
+			<input type="hidden" id="rentacarId">
+			<h2>Fast reservation of rentacar</h2>
+			<button style="background: #ff1a75; color: white" type="submit" class="btn btn-default" id="fastReservationButton">Choose</button>
+			
+			
+			
+			<div id="fastReservationDiv" class="container">
+				<br>
+				<table class="table table-hover" id="tableOfCarsOnFastRes">
+	
+				</table>
+				<p class="messageSuitableCarsFast"></p>
+				<br>
+			</div>
+		
+			
+			<h2>Regular reservation of rentacar:</h2>
+			<form class="form-horizontal"  
 				id="carReservationForm">
+				
 				<div class="form-group">
 					<label class="control-label col-sm-2" for="pickupDateCar">Pickup
 						date: </label>
@@ -162,7 +250,7 @@ body {
 					<label class="control-label col-sm-2" for="pickupCity">Pickup
 						city: </label>
 					<div class="col-sm-10">
-						<input type="number" class="form-control" id="pickupCity"
+						<input type="text" class="form-control" id="pickupCity"
 							placeholder="Insert pickup city" name="pickupCity">
 					</div>
 				</div>
@@ -170,10 +258,49 @@ body {
 					<label class="control-label col-sm-2" for="endCity">End
 						city: </label>
 					<div class="col-sm-10">
-						<input type="number" class="form-control" id="endCity"
+						<input type="text" class="form-control" id="endCity"
 							placeholder="Insert end city" name="endCity">
 					</div>
 				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="carType">Car type:
+					</label>
+					<div class="col-sm-10">
+						<select id = "carType">
+							<option value="Family">Family</option>
+							<option value="Sports">Sports</option>
+							<option value="Van">Van</option>
+						</select>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="passengers">Number of passengers: </label>
+					<div class="col-sm-10">
+						<input type="number" class="form-control" id="passengers"
+							placeholder="Insert number of passengers" name="passengers">
+					</div>
+				</div>
+				<br>
+				<h2>Price range(optional):</h2>
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="fromPrice">From: </label>
+					<div class="col-sm-10">
+						<input type="number" class="form-control" id="fromPrice"
+							placeholder="Insert start price" name="fromPrice">
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="toPrice">To: </label>
+					<div class="col-sm-10">
+						<input type="number" class="form-control" id="toPrice"
+							placeholder="Insert maximum price" name="toPrice">
+					</div>
+				</div>
+				
+				
 				<div class="form-group">
 					<div class="col-sm-offset-2 col-sm-10">
 						<button style="background: #ff1a75; color: white" type="submit" class="btn btn-default" id="button3">Submit</button>
@@ -181,8 +308,13 @@ body {
 				</div>
 			</form>
 			<br>
+			
+			<table class="table table-hover" id="showSuitableCars">
+			</table>
+			<p class="messageSuitableCars"></p>
 		</div>
 	</div>
+	
 
 
 
@@ -417,6 +549,40 @@ body {
 			<br>
 		</div>
 	</div>
+	
+	<div id="flightReservation" class="tabcontent">
+		<div class="container">
+			<h2>Ovde lela radi rezervaciju leta:</h2>
+			<input type="hidden" id="destinationId">
+			<input type="hidden" id="startDateId">
+			<input type="hidden" id="endDateId">
+							
+				
+			<button type="submit" style="background: #ff1a75; color: white" id="offerRentacarsButton" style="float: left;">Rentacars</button>
+			<br><br>
+			<button type="submit" style="background: #ff1a75; color: white" id="offerHottelsButton" style="float: left;">Hotels</button>
+			<br>
+		</div>
+	</div>
+	
+	<div id="showRentacarsInDest" class="tabcontent">
+		<div class="container">
+			<h2>Showing rentacars in destination:</h2>
+			
+			<input type="hidden" id="mainStartDate2">
+			<input type="hidden" id="mainEndDate2">
+			
+			<table class="table table-hover" id="tableOfRentacarsDest">
+
+			</table>
+							
+				
+			
+		</div>
+	</div>
+	
+	
+	
 	
 	
 	

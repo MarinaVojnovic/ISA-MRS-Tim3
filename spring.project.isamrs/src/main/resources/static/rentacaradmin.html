@@ -66,10 +66,114 @@ body {
 			onclick="openCity(event, 'deleteCar')">Delete car</button>
 		<button id="editCarsButton" class="tablinks"
 			onclick="openCity(event, 'editCar')">Edit car</button>
+		<button id="addBranchButton" class="tablinks"
+			onclick="openCity(event, 'addBranch')">Add branch</button>
+		<button id="removeBranchesButton" class="tablinks"
+			onclick="openCity(event, 'deleteBranch')">Delete branch</button>
+		<button id="editBranchesButton" class="tablinks"
+			onclick="openCity(event, 'editBranch')">Edit branch</button>
+		<button id="fastResButton" class="tablinks"
+			onclick="openCity(event, 'fastRes')">Put car on fast reservation</button>
+		<button id="reportsButton" class="tablinks"
+			onclick="openCity(event, 'reports')">Reports</button>
 		<button id="logoutClicked" class="tablinks"
 			onclick="openCity(event, 'logout')">Logout</button>
+		
 	</div>
 
+	<div id="fastResFormular" class="tabcontent">
+		<div class="container">
+		<input type="hidden" id="carId">
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="startDateFast">Start date:
+			</label>
+			<div class="col-sm-10">
+				<input type="date" class="form-control" id="startDateFast"
+					placeholder="Insert start date" name="startDateFast">
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="endDateFast">Start date:
+			</label>
+			<div class="col-sm-10">
+				<input type="date" class="form-control" id="endDateFast"
+					placeholder="Insert end date" name="endDateFast">
+			</div>
+		</div>
+				
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="priceFast">Price per day:
+			</label>
+			<div class="col-sm-10">
+				<input type="number" class="form-control" id="priceFast"
+					placeholder="Insert price per day" name="priceFast">
+			</div>
+		</div>
+		
+		<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10">
+						<button style="background: #ff1a75; color: white" type="submit"
+							class="btn btn-default" id="submitFastFormular">Save</button>
+					</div>
+				</div>
+		
+		</div>
+	</div>
+	<div id="fastRes" class="tabcontent">
+		<div class="container">
+		
+			<h2>Cars</h2>
+			<table  class="table table-hover"  id = "tableOfCarsForFastRes">
+				
+			</table>
+			<p class="message"></p>
+		</div>
+	</div>
+	<div id="reports" class="tabcontent">
+		<div class="container">
+			<table>
+				<tr><td id = "globalScore"></td></tr>
+			</table>
+			<br>
+			<h2>Grades of cars</h2>
+			<table  class="table table-hover"  id = "carsGradesTable">
+				
+			</table>
+			<p id="messageCarsGrades"></p>
+		</div>
+	</div>
+	
+	<div id="passwordValidation" class="tabcontent">
+		<div class="container">
+			<h2>Validate your password:</h2>
+			<form class="form-horizontal" action="#" method="post"
+				id="passwordValidationForm">
+				<div class="form-group">
+
+					<div class="col-sm-10">
+						<input type="password" class="form-control" id="newPasswordOne"
+							placeholder="Insert a new password" name="newPasswordOne">
+					</div>
+				</div>
+				<div class="form-group">
+
+					<div class="col-sm-10">
+						<input type="password" class="form-control" id="newPasswordTwo"
+							placeholder="Repeat new password" name="newPasswordTwo">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10">
+						<button style="background: #ff1a75; color: white" type="submit"
+							class="btn btn-default" id="buttonPassword">Submit</button>
+					</div>
+				</div>
+			</form>
+			<br>
+		</div>
+	</div>
+	
 	<div id="passwordValidation" class="tabcontent">
 		<div class="container">
 			<h2>Validate your password:</h2>
@@ -175,6 +279,75 @@ body {
 					</div>
 				</div>
 				<div class="form-group">
+					<label class="control-label col-sm-2" for="addCarType">Car type:
+					</label>
+					<div class="col-sm-10">
+						<select id = "addCarType">
+							<option value="Family">Family</option>
+							<option value="Sports">Sports</option>
+							<option value="Van">Van</option>
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="addCarBrand">Brand:
+					</label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" id="addCarBrand"
+							placeholder="Insert a brand of the car" name="addCarBrand">
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="addCarModel">Model:
+					</label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" id="addCarModel"
+							placeholder="Insert model of car" name="addCarModel">
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="addCarSeats">Seats:
+					</label>
+					<div class="col-sm-10">
+						<input type="number" class="form-control" id="addCarSeats"
+							placeholder="Insert number of seats of car" name="addCarSeats">
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10">
+						<button style="background: #ff1a75; color: white" type="submit"
+							class="btn btn-default" id="button323">Submit</button>
+					</div>
+				</div>
+			</form>
+			<br>
+		</div>
+	</div>
+
+	<div id="addBranch" class="tabcontent">
+		<div class="container">
+			<h2>Adding branch:</h2>
+			<form class="form-horizontal" action="#" method="post" id="addBranchForm">
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="branchCity">City:
+					</label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" id="branchCity"
+							placeholder="Insert a city" name="branchCity">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="branchAddress">Address:
+					</label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" id="branchAddress"
+							placeholder="Insert address" name="branchAddress">
+					</div>
+				</div>
+			
+				<div class="form-group">
 					<div class="col-sm-offset-2 col-sm-10">
 						<button style="background: #ff1a75; color: white" type="submit"
 							class="btn btn-default" id="button3">Submit</button>
@@ -184,7 +357,6 @@ body {
 			<br>
 		</div>
 	</div>
-
 	<div id="deleteCar" class="tabcontent">
 		<div class="container">
 			<h2>List of car in service:</h2>
@@ -192,6 +364,17 @@ body {
 
 			</table>
 			<p class="message"></p>
+			<br>
+		</div>
+	</div>
+	
+	<div id="deleteBranch" class="tabcontent">
+		<div class="container">
+			<h2>List of branches in service:</h2>
+			<table class="table table-hover" id="tableOfBranchesForDelete">
+
+			</table>
+			<p class="messageBranchesDelete"></p>
 			<br>
 		</div>
 	</div>
@@ -205,6 +388,19 @@ body {
 
 			</table>
 			<p class="message"></p>
+			<br>
+		</div>
+	</div>
+	
+	<div id="editBranch" class="tabcontent">
+		<div class="container">
+			<h2>List of branches in service:</h2>
+
+
+			<table class="table table-hover" id="tableOfBranchesForEdit">
+
+			</table>
+			<p class="messageBranchesDelete"></p>
 			<br>
 		</div>
 	</div>
@@ -238,7 +434,45 @@ body {
 							placeholder="Insert year of the car" name="carYearEdit">
 					</div>
 				</div>
-
+				
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="editCarType">Car type:
+					</label>
+					<div class="col-sm-10">
+						<select id = "editCarType">
+							<option value="Family">Family</option>
+							<option value="Sports">Sports</option>
+							<option value="Van">Van</option>
+						</select>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="carBrandEdit">Brand:
+					</label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" id="carBrandEdit"
+							placeholder="Insert a brand of the car" name="carBrandEdit">
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="carModelEdit">Model:
+					</label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" id="carModelEdit"
+							placeholder="Insert model of car" name="carModelEdit">
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="carSeatsEdit">Seats:
+					</label>
+					<div class="col-sm-10">
+						<input type="number" class="form-control" id="carSeatsEdit"
+							placeholder="Insert number of seats of car" name="carSeatsEdit">
+					</div>
+				</div>
 				<div class="form-group">
 					<div class="col-sm-offset-2 col-sm-10">
 						<button style="background: #ff1a75; color: white" type="submit"
@@ -249,6 +483,43 @@ body {
 			</form>
 		</div>
 	</div>
+	
+	<div id="editBranchFormular" class="tabcontent">
+		<div class="container">
+			<h2>Editing branch:</h2>
+			<form class="form-horizontal"
+				id="editBranchForm">
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="branchCityEdit">City:
+					</label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" id="branchCityEdit"
+							placeholder="Insert new city" name="branchCityEdit">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="branchAddressEdit">Address:
+					</label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" id="branchAddressEdit"
+							placeholder="Insert new address" name="branchAddressEdit">
+					</div>
+				</div>
+				<input type="hidden" value="" id="branchIdEdit">
+				
+				
+				
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10">
+						<button style="background: #ff1a75; color: white" type="submit"
+							class="btn btn-default" id="buttonSubmitEditBranch">Submit</button>
+					</div>
+				</div>
+				
+			</form>
+		</div>
+	</div>
+	
 	<div id="registerAirlineAdmin" class="tabcontent">
 		<h1>Soon</h1>
 	</div>

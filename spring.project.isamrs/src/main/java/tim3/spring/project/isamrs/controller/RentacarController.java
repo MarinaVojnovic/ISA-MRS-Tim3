@@ -1,5 +1,6 @@
 package tim3.spring.project.isamrs.controller;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import tim3.spring.project.isamrs.comparator.RentACarComparatorAddress;
 import tim3.spring.project.isamrs.comparator.RentACarComparatorName;
 import tim3.spring.project.isamrs.dto.RentacarDTO;
+import tim3.spring.project.isamrs.model.Airline;
 import tim3.spring.project.isamrs.model.Rentacar;
 import tim3.spring.project.isamrs.model.RentacarAdmin;
 import tim3.spring.project.isamrs.service.RentacarService;
@@ -64,6 +66,24 @@ public class RentacarController {
 		Rentacar retVal = rentacarService.create(new Rentacar(rentacarDTO));
 		return new ResponseEntity<>(retVal, HttpStatus.CREATED);
 	}
+	
+	@GetMapping(value = "/gradeRentacar/{id}/{grade}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_USER')")
+	public ResponseEntity<Rentacar> create(@PathVariable Long id, @PathVariable Integer grade) {
+		System.out.println("Uslo u grade rentacar     "+id);
+		Rentacar rentacar = rentacarService.getOne(id);
+		System.out.println(rentacar.getName());
+		System.out.println("A");
+		rentacar.setScore(rentacar.getScore()+grade);
+		System.out.println("B");
+		rentacar.setNumber(rentacar.getNumber()+1);
+		System.out.println("C");
+		rentacarService.save(rentacar);
+		System.out.println("D");
+		return new ResponseEntity<>(rentacar, HttpStatus.CREATED);
+	}
+	
+	
 
 	@GetMapping(value = "/findRentacar", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Rentacar> findRentacar() {
@@ -115,5 +135,21 @@ public class RentacarController {
 		}
 
 		return new ResponseEntity<>(rentACars, HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/findRentacar/{address}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<Rentacar>> searchFlights(@PathVariable String address) {
+		System.out.println("Uslo u find rentacar address");
+		List<Rentacar> allRentacars = rentacarService.getAll();
+		List<Rentacar> rentacars=new ArrayList<Rentacar>();
+		String grad = address.split(", ")[1].split(" ")[1];
+		System.out.println(grad);
+		for (Rentacar rent : allRentacars) {
+			if (rent.getAddress().contains(grad)) {
+				rentacars.add(rent);
+			}
+		}
+		
+		return new ResponseEntity<>(rentacars, HttpStatus.OK);
 	}
 }
