@@ -12,7 +12,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -27,6 +26,12 @@ public class Airline {
 	@GeneratedValue
 	private Long id;
 
+	@Column(name = "score")
+	private Double score;
+
+	@Column(name = "grade_number")
+	private Integer gradeNumber;
+
 	@Column(name = "name")
 	private String name;
 
@@ -37,8 +42,8 @@ public class Airline {
 	private String promotionalDescription;
 
 	@JsonIgnore
-	@OneToOne(mappedBy = "airlineAdmin")
-	private AirlineAdmin airlineAdmin;
+	@OneToMany(mappedBy = "airlineAdmin", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
+	private Set<AirlineAdmin> airlineAdmins = new HashSet<>();
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "airline", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
@@ -48,33 +53,31 @@ public class Airline {
 	@OneToMany(mappedBy = "airlineBooking", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
 	@Column(name = "quick_booking_tickets")
 	private Set<Ticket> quickBookingTickets = new HashSet<>();
-	
+
+	@JsonIgnore
 	@OneToMany(mappedBy = "startAirline", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
 	private Set<Flight> startAirline = new HashSet<>();
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "finalAirline", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
 	private Set<Flight> finalAirline = new HashSet<>();
-	
-	@JsonIgnore
-	@OneToMany(mappedBy = "airlineStop",fetch = FetchType.LAZY,cascade = CascadeType.REFRESH)
-    private List<FlightStops> airlineStop = new ArrayList<FlightStops>();
 
-	
+	@JsonIgnore
+	@OneToMany(mappedBy = "airlineStop", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
+	private List<FlightStops> airlineStop = new ArrayList<FlightStops>();
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "airlineCustomerService", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
 	@Column(name = "airline_customer_service")
 	private Set<AirlineCustomerService> airlineCustomerServices = new HashSet<>();
-	
-	
 
 	@JsonIgnore
-	@OneToMany(mappedBy = "airlineThatWorks",fetch = FetchType.LAZY,cascade = CascadeType.REFRESH)
-    private List<AirlineWorkingDestinations> airline = new ArrayList<AirlineWorkingDestinations>();
-	
+	@OneToMany(mappedBy = "airlineThatWorks", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
+	private List<AirlineWorkingDestinations> airline = new ArrayList<AirlineWorkingDestinations>();
+
 	@JsonIgnore
-	@OneToMany(mappedBy = "worksWith",fetch = FetchType.LAZY,cascade = CascadeType.REFRESH)
-	private List<AirlineWorkingDestinations> works= new ArrayList<AirlineWorkingDestinations>();
+	@OneToMany(mappedBy = "worksWith", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
+	private List<AirlineWorkingDestinations> works = new ArrayList<AirlineWorkingDestinations>();
 
 	public Airline() {
 		super();
@@ -129,8 +132,6 @@ public class Airline {
 		this.promotionalDescription = promotionalDescription;
 	}
 
-	
-
 	public Set<Flight> getFlights() {
 		return flights;
 	}
@@ -147,8 +148,6 @@ public class Airline {
 		this.quickBookingTickets = quickBookingTickets;
 	}
 
-	
-
 	public Set<AirlineCustomerService> getAirlineCustomerServices() {
 		return airlineCustomerServices;
 	}
@@ -157,9 +156,9 @@ public class Airline {
 		this.airlineCustomerServices = airlineCustomerServices;
 	}
 
-	public Airline(String name, String address, String promotionalDescription, 
-			Set<Flight> flights, Set<Ticket> quickBookingTickets, 
-			Set<AirlineCustomerService> airlineCustomerServices) {
+	public Airline(String name, String address, String promotionalDescription, Set<Flight> flights,
+			Set<Ticket> quickBookingTickets, Set<AirlineCustomerService> airlineCustomerServices, Integer number,
+			Double score) {
 		super();
 		this.name = name;
 		this.address = address;
@@ -167,24 +166,84 @@ public class Airline {
 		this.flights = flights;
 		this.quickBookingTickets = quickBookingTickets;
 		this.airlineCustomerServices = airlineCustomerServices;
+		this.gradeNumber = number;
+		this.score = score;
 	}
 
 	public Airline(AirlineDTO airlineDTO) {
 		this.name = airlineDTO.getAirlineNameRegister();
 		this.address = airlineDTO.getAirlineAddressRegister();
 		this.promotionalDescription = airlineDTO.getAirlinePromotionalDescription();
-	}
-
-	public AirlineAdmin getAirlineAdmin() {
-		return airlineAdmin;
-	}
-
-	public void setAirlineAdmin(AirlineAdmin airlineAdmin) {
-		this.airlineAdmin = airlineAdmin;
+		this.gradeNumber = 0;
+		this.score = 0.0;
 	}
 
 	public void setAirlineCustomerServices(Set<AirlineCustomerService> airlineCustomerServices) {
 		this.airlineCustomerServices = airlineCustomerServices;
+	}
+
+	public Set<AirlineAdmin> getAirlineAdmins() {
+		return airlineAdmins;
+	}
+
+	public void setAirlineAdmins(Set<AirlineAdmin> airlineAdmins) {
+		this.airlineAdmins = airlineAdmins;
+	}
+
+	public Set<Flight> getStartAirline() {
+		return startAirline;
+	}
+
+	public void setStartAirline(Set<Flight> startAirline) {
+		this.startAirline = startAirline;
+	}
+
+	public Set<Flight> getFinalAirline() {
+		return finalAirline;
+	}
+
+	public void setFinalAirline(Set<Flight> finalAirline) {
+		this.finalAirline = finalAirline;
+	}
+
+	public List<FlightStops> getAirlineStop() {
+		return airlineStop;
+	}
+
+	public void setAirlineStop(List<FlightStops> airlineStop) {
+		this.airlineStop = airlineStop;
+	}
+
+	public List<AirlineWorkingDestinations> getAirline() {
+		return airline;
+	}
+
+	public void setAirline(List<AirlineWorkingDestinations> airline) {
+		this.airline = airline;
+	}
+
+	public List<AirlineWorkingDestinations> getWorks() {
+		return works;
+	}
+
+	public void setWorks(List<AirlineWorkingDestinations> works) {
+		this.works = works;
+	}
+
+	public Double getScore() {
+		return score;
+	}
+
+	public void setScore(Double score) {
+		this.score = score;
+	}
+
+	public Integer getGradeNumber() {
+		return gradeNumber;
+	}
+
+	public void setGradeNumber(Integer gradeNumber) {
+		this.gradeNumber = gradeNumber;
 	}
 
 }

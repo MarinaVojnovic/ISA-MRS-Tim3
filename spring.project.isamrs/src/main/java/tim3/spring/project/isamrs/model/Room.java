@@ -17,6 +17,12 @@ public class Room {
 	@GeneratedValue
 	private Long id;
 
+	@Column(name = "score")
+	private Double score;
+
+	@Column(name = "grade_number")
+	private Integer gradeNumber;
+
 	@Column(name = "room_number")
 	private Integer roomNumber;
 
@@ -77,6 +83,8 @@ public class Room {
 		this.roomNumber = roomDTO.getRoomNumberRegister();
 		this.numberPeople = roomDTO.getRoomNumberRegister();
 		this.price = roomDTO.getRoomPriceRegister();
+		this.score = 0.0;
+		this.gradeNumber = 0;
 	}
 
 	@Override
@@ -126,5 +134,21 @@ public class Room {
 		} else if (!roomNumber.equals(other.roomNumber))
 			return false;
 		return true;
+	}
+
+	public Double getScore() {
+		return score;
+	}
+
+	public void setScore(Double score) {
+		this.score = score;
+	}
+
+	public Integer getGradeNumber() {
+		return gradeNumber;
+	}
+
+	public void setGradeNumber(Integer gradeNumber) {
+		this.gradeNumber = gradeNumber;
 	}
 }

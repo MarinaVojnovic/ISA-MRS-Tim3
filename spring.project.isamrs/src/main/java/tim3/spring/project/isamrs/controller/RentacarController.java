@@ -2,7 +2,6 @@ package tim3.spring.project.isamrs.controller;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 import tim3.spring.project.isamrs.comparator.RentACarComparatorAddress;
 import tim3.spring.project.isamrs.comparator.RentACarComparatorName;
 import tim3.spring.project.isamrs.dto.RentacarDTO;
-import tim3.spring.project.isamrs.model.Airline;
 import tim3.spring.project.isamrs.model.Rentacar;
 import tim3.spring.project.isamrs.model.RentacarAdmin;
 import tim3.spring.project.isamrs.service.RentacarService;
@@ -46,18 +44,6 @@ public class RentacarController {
 	public ResponseEntity<List<Rentacar>> getAllRentacars() {
 		List<Rentacar> rentacars = rentacarService.getAll();
 		return new ResponseEntity<>(rentacars, HttpStatus.OK);
-	}
-
-	@GetMapping(value = "/getRentacarsWithoutAdmin")
-	public ResponseEntity<List<Rentacar>> getRentacarsWithoutAdmin() {
-		List<Rentacar> retVal = rentacarService.getAll();
-		for (Iterator<Rentacar> iterator = retVal.iterator(); iterator.hasNext();) {
-			Rentacar rentacar = iterator.next();
-			if (rentacar.getRentacarAdmin() != null) {
-				iterator.remove();
-			}
-		}
-		return new ResponseEntity<>(retVal, HttpStatus.OK);
 	}
 
 	@PostMapping(value = "/createRentacar", consumes = MediaType.APPLICATION_JSON_VALUE)

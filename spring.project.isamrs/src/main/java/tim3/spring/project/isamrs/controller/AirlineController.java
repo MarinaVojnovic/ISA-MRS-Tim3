@@ -2,7 +2,6 @@ package tim3.spring.project.isamrs.controller;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +23,6 @@ import tim3.spring.project.isamrs.dto.AirlineDTO;
 import tim3.spring.project.isamrs.model.Airline;
 import tim3.spring.project.isamrs.model.AirlineAdmin;
 import tim3.spring.project.isamrs.model.AirlineWorkingDestinations;
-import tim3.spring.project.isamrs.model.Flight;
 import tim3.spring.project.isamrs.model.User;
 import tim3.spring.project.isamrs.service.AirlineService;
 import tim3.spring.project.isamrs.service.AirlineWorkingService;
@@ -41,7 +39,7 @@ public class AirlineController {
 
 	@Autowired
 	private CustomUserDetailsService userDetailsService;
-	
+
 	@GetMapping(value = "/findConcreteAirline/{id}")
 	public ResponseEntity<Airline> findConcreteAirline(@PathVariable String id) {
 		Airline retVal = airlineService.getOne(Long.parseLong(id));
@@ -52,18 +50,6 @@ public class AirlineController {
 	public ResponseEntity<List<Airline>> getAllAirlines() {
 		List<Airline> airlines = airlineService.getAll();
 		return new ResponseEntity<>(airlines, HttpStatus.OK);
-	}
-
-	@GetMapping(value = "/getAirlinesWithoutAdmin")
-	public ResponseEntity<List<Airline>> getAirlinesWithoutAdmin() {
-		List<Airline> retVal = airlineService.getAll();
-		for (Iterator<Airline> iterator = retVal.iterator(); iterator.hasNext();) {
-			Airline airline = iterator.next();
-			if (airline.getAirlineAdmin() != null) {
-				iterator.remove();
-			}
-		}
-		return new ResponseEntity<>(retVal, HttpStatus.OK);
 	}
 
 	@PostMapping(value = "/createAirline", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -172,7 +158,16 @@ public class AirlineController {
 				.findByAirlineThatWorks(air);
 		return new ResponseEntity<>(airlineWorkingDestinations, HttpStatus.OK);
 	}
-	
+
+	@GetMapping(value = "/getConcreteDestinations/{airlineId}")
+	public ResponseEntity<List<AirlineWorkingDestinations>> getConcreteAirlineWorkingDestinations(
+			@PathVariable Long airlineId) {
+		Airline air = airlineService.getOne(airlineId);
+		List<AirlineWorkingDestinations> airlineWorkingDestinations = this.airlineWorkingService
+				.findByAirlineThatWorks(air);
+		return new ResponseEntity<>(airlineWorkingDestinations, HttpStatus.OK);
+	}
+
 	@GetMapping(value = "/findDest/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Airline> searchFlights(@PathVariable Long id) {
 		System.out.println("Uslo u search flights");

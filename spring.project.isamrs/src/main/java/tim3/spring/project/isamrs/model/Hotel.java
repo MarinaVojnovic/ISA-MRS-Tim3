@@ -10,7 +10,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -25,9 +24,15 @@ public class Hotel {
 	@GeneratedValue
 	private Long id;
 
+	@Column(name = "score")
+	private Double score;
+
+	@Column(name = "grade_number")
+	private Integer gradeNumber;
+
 	@JsonIgnore
-	@OneToOne(mappedBy = "hotel")
-	private HotelAdmin hotelAdmin;
+	@OneToMany(mappedBy = "hotelAdmin", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
+	private Set<HotelAdmin> hotelAdmins = new HashSet<>();
 
 	@Column(name = "name")
 	private String name;
@@ -116,27 +121,47 @@ public class Hotel {
 	}
 
 	public Hotel(String name, String address, String promotionalDescription,
-			Set<HotelCustomerService> hotelCustomerServices, Set<Room> rooms) {
+			Set<HotelCustomerService> hotelCustomerServices, Set<Room> rooms, int gradeNumber, double score) {
 		super();
 		this.name = name;
 		this.address = address;
 		this.promotionalDescription = promotionalDescription;
 		this.hotelCustomerServices = hotelCustomerServices;
 		this.rooms = rooms;
+		this.gradeNumber = gradeNumber;
+		this.score = score;
 	}
 
 	public Hotel(HotelDTO hotelDTO) {
 		this.name = hotelDTO.getHotelNameRegister();
 		this.address = hotelDTO.getHotelAddressRegister();
 		this.promotionalDescription = hotelDTO.getHotelPromotionalDescription();
+		this.score = 0.0;
+		this.gradeNumber = 0;
 	}
 
-	public HotelAdmin getHotelAdmin() {
-		return hotelAdmin;
+	public Set<HotelAdmin> getHotelAdmins() {
+		return hotelAdmins;
 	}
 
-	public void setHotelAdmin(HotelAdmin hotelAdmin) {
-		this.hotelAdmin = hotelAdmin;
+	public void setHotelAdmins(Set<HotelAdmin> hotelAdmins) {
+		this.hotelAdmins = hotelAdmins;
+	}
+
+	public Double getScore() {
+		return score;
+	}
+
+	public void setScore(Double score) {
+		this.score = score;
+	}
+
+	public Integer getGradeNumber() {
+		return gradeNumber;
+	}
+
+	public void setGradeNumber(Integer gradeNumber) {
+		this.gradeNumber = gradeNumber;
 	}
 
 }

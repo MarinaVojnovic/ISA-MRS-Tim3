@@ -68,6 +68,8 @@ body {
 			onclick="openCity(event, 'editRoom')">Edit room</button>
 		<button class="tablinks" onclick="openCity(event, 'editProfile')">Edit
 			profile</button>
+		<button id="reportHotelButton" class="tablinks"
+			onclick="openCity(event, 'report')">Reports</button>
 		<button id="logoutClicked" class="tablinks"
 			onclick="openCity(event, 'logout')">Logout</button>
 	</div>
@@ -236,7 +238,8 @@ body {
 					<label class="control-label col-sm-2" for="roomNumberPeopleEdit">Number
 						of people: </label>
 					<div class="col-sm-10">
-						<input type="number" class="form-control" id="roomNumberPeopleEdit"
+						<input type="number" class="form-control"
+							id="roomNumberPeopleEdit"
 							placeholder="Insert number of people for the room"
 							name="roomNumberPeopleEdit">
 					</div>
@@ -347,6 +350,38 @@ body {
 
 	<div id="logout" class="tabcontent">
 		<h1>Soon</h1>
+	</div>
+
+	<div id="report" class="tabcontent">
+		<div class="container">
+			<h2>Reports:</h2>
+
+			<div class="container">
+				<table>
+					<tr>
+						<td>
+							<h3>1) Average grade for this hotel -> </h3>
+						</td>
+						<td><h3 id="reportHotelAverageGrade">X</h3></td>
+					</tr>
+				</table>
+			</div>
+			<br>
+			<div class="container">
+				<h3>2) Average grade for each room of this hotel:</h3>
+				<table class="table" id="reportHotelEachRoom">
+				</table>
+			</div>
+			<br>
+			<div class="container">
+				<h3>3) Graphic show of atendence in this hotel:</h3>
+			</div>
+			<br>
+			<div class="container">
+				<h3>4) Amounts of this hotel in concrete period:</h3>
+			</div>
+		</div>
+
 	</div>
 
 	<script>

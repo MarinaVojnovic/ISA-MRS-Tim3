@@ -17,20 +17,22 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import tim3.spring.project.isamrs.dto.BranchDTO;
-import tim3.spring.project.isamrs.dto.CarDTO;
 import tim3.spring.project.isamrs.model.BranchOffice;
-import tim3.spring.project.isamrs.model.Car;
+import tim3.spring.project.isamrs.model.Rentacar;
 import tim3.spring.project.isamrs.model.RentacarAdmin;
 import tim3.spring.project.isamrs.service.BranchService;
-import tim3.spring.project.isamrs.service.CarService;
+import tim3.spring.project.isamrs.service.RentacarService;
 import tim3.spring.project.isamrs.service.impl.CustomUserDetailsService;
 
 @RestController
 public class BranchController {
-	
+
+	@Autowired
+	RentacarService rentacarService;
+
 	@Autowired
 	BranchService branchService;
-	
+
 	@Autowired
 	private CustomUserDetailsService userDetailsService;
 
@@ -44,26 +46,36 @@ public class BranchController {
 				.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
 		BranchOffice newBranch = new BranchOffice(branchDTO);
 		newBranch.setRentacar(user.getRentacar());
-	
+
 		BranchOffice retVal = branchService.create(newBranch);
 		user.getRentacar().getBranches().add(retVal);
 		return new ResponseEntity<>(retVal, HttpStatus.CREATED);
 	}
-	
 
 	@GetMapping(value = "/getBranches", consumes = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ROLE_RENTACAR_ADMIN')")
 	public ResponseEntity<List<BranchOffice>> getBranches() {
 		System.out.println("Creating branch office called");
-	
+
 		RentacarAdmin user = (RentacarAdmin) this.userDetailsService
 				.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
-	
+
 		List<BranchOffice> retVal = branchService.findByRentacar(user.getRentacar());
-		
+
 		return new ResponseEntity<>(retVal, HttpStatus.CREATED);
 	}
-	
+
+	@GetMapping(value = "/getConcreteBranches/{rentacarId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<BranchOffice>> getConcreteBranches(@PathVariable Long rentacarId) {
+
+		System.out.println("aaaaa");
+		Rentacar rentacar = rentacarService.getOne(rentacarId);
+
+		List<BranchOffice> retVal = branchService.findByRentacar(rentacar);
+
+		return new ResponseEntity<>(retVal, HttpStatus.CREATED);
+	}
+
 	@DeleteMapping(value = "/deleteBranch/{id}")
 	@PreAuthorize("hasRole('ROLE_RENTACAR_ADMIN')")
 	public ResponseEntity<BranchOffice> deleteBranch(@PathVariable String id) {
@@ -77,7 +89,7 @@ public class BranchController {
 		branchService.delete(Long.parseLong(id));
 		return new ResponseEntity<>(b, HttpStatus.OK);
 	}
-	
+
 	@PutMapping(value = "/saveEditedBranch", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ROLE_RENTACAR_ADMIN')")
 	public ResponseEntity<BranchOffice> saveEditedBranch(@RequestBody BranchDTO branch) {
@@ -85,16 +97,15 @@ public class BranchController {
 		if (b == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-		
+
 		b.setId(branch.getId());
 		b.setCity(branch.getCity());
 		b.setAddress(branch.getAddress());
-		
 
 		BranchOffice editedBranch = branchService.save(b);
 		return new ResponseEntity<>(editedBranch, HttpStatus.OK);
 	}
-	
+
 	@GetMapping(value = "/findBranch/{id}")
 	public ResponseEntity<BranchOffice> findCar(@PathVariable long id) {
 		BranchOffice b = branchService.getOne(id);

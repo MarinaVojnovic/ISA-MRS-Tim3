@@ -86,7 +86,7 @@ public class AuthenticationController {
 
 		Airline airline = airlineService.getOne(Long.parseLong(user.getAdminId()));
 		aa.setAirline(airline);
-		airline.setAirlineAdmin(aa);
+		airline.getAirlineAdmins().add(aa);
 
 		if (this.userDetailsService.saveUser(aa)) {
 			return new ResponseEntity<>(true, HttpStatus.OK);
@@ -119,7 +119,7 @@ public class AuthenticationController {
 
 		Hotel hotel = hotelService.getOne(Long.parseLong(user.getAdminId()));
 		ha.setHotel(hotel);
-		hotel.setHotelAdmin(ha);
+		hotel.getHotelAdmins().add(ha);
 
 		if (this.userDetailsService.saveUser(ha)) {
 			return new ResponseEntity<>(true, HttpStatus.OK);
@@ -152,7 +152,7 @@ public class AuthenticationController {
 
 		Rentacar rentacar = rentacarService.getOne(Long.parseLong(user.getAdminId()));
 		ra.setRentacar(rentacar);
-		rentacar.setRentacarAdmin(ra);
+		rentacar.getRentacarAdmins().add(ra);
 
 		if (this.userDetailsService.saveUser(ra)) {
 			return new ResponseEntity<>(true, HttpStatus.OK);

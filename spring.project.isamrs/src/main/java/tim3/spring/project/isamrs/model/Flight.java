@@ -29,6 +29,12 @@ public class Flight {
 	@Id
 	@GeneratedValue
 	private Long id;
+	
+	@Column(name="score")
+	private Double score;
+	
+	@Column(name="grade_number")
+	private Integer gradeNumber;
 
 	@Column(name = "number")
 	private String number;
@@ -82,6 +88,8 @@ public class Flight {
 		}
 		this.airline = flightDTO.getFlighAirline();
 		this.numOfStops = flightDTO.getNumOfStops();
+		this.score = 0.0;
+		this.gradeNumber = 0;
 
 	}
 
@@ -183,6 +191,22 @@ public class Flight {
 
 	public void setAirline(Airline airline) {
 		this.airline = airline;
+	}
+
+	public Double getScore() {
+		return score;
+	}
+
+	public void setScore(Double score) {
+		this.score = score;
+	}
+
+	public Integer getGradeNumber() {
+		return gradeNumber;
+	}
+
+	public void setGradeNumber(Integer gradeNumber) {
+		this.gradeNumber = gradeNumber;
 	}
 
 }

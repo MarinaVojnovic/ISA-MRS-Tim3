@@ -2,8 +2,9 @@ package tim3.spring.project.isamrs.model;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -16,8 +17,8 @@ public class AirlineAdmin extends User {
 	private static final long serialVersionUID = -1831516149566167290L;
 	
 	@JsonIgnore
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "airline_id", referencedColumnName = "id")
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "airline_id")
 	private Airline airlineAdmin;
 
 	public AirlineAdmin() {

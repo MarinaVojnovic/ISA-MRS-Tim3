@@ -48,6 +48,83 @@ window.onload = function(e) {
 	})
 }
 
+function fillDatas() {
+	$.ajax({
+		type : 'GET',
+		url : urlRoot6,
+		headers : createAuthorizationTokenHeader(TOKEN_KEY),
+		dataType : "json",
+		success : function(data) {
+			if (data) {
+				$.ajax({
+					type : 'GET',
+					url : urlRoot2,
+					headers : createAuthorizationTokenHeader(TOKEN_KEY),
+					dataType : "json",
+					success : function(data) {
+						if (data) {
+							fillTableRooms(data, "reportHotelEachRoom");
+						}
+					},
+					error : function(jqXHR, textStatus, errorThrown) {
+						alert(jqXHR.status);
+						alert(textStatus);
+						alert(errorThrown);
+					}
+
+				})
+				$("#reportHotelAverageGrade").html(data.score);
+
+			}
+		},
+		error : function(jqXHR, textStatus, errorThrown) {
+			alert(jqXHR.status);
+			alert(textStatus);
+			alert(errorThrown);
+		}
+
+	})
+}
+
+function fillTableRooms(data, table) {
+	var response = data;
+	$("#" + table).find("tr").remove();
+	var tabela = document.getElementById(table);
+
+	var index = 0;
+	for ( var counter in response) {
+		var row = tabela.insertRow(counter);
+		var cell0 = row.insertCell(0);
+		var cell1 = row.insertCell(1);
+		var cell2 = row.insertCell(2);
+		var cell3 = row.insertCell(3);
+		var cell4 = row.insertCell(4);
+		var cell5 = row.insertCell(5);
+
+		cell0.innerHTML = ++index;
+		cell1.innerHTML = response[counter].hotel.name;
+		cell2.innerHTML = response[counter].roomNumber;
+		cell3.innerHTML = response[counter].price;
+		cell4.innerHTML = response[counter].numberPeople;
+		cell5.innerHTML = response[counter].score;
+
+	}
+	var row = tabela.insertRow(0);
+	var cell0 = row.insertCell(0);
+	var cell1 = row.insertCell(1);
+	var cell2 = row.insertCell(2);
+	var cell3 = row.insertCell(3);
+	var cell4 = row.insertCell(4);
+	var cell5 = row.insertCell(5);
+
+	cell0.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">#</p>';
+	cell1.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Hotel it belongs to</p>';
+	cell2.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Number of room</p';
+	cell3.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Price</p>';
+	cell4.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Number of people for room</p>';
+	cell5.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Grade</p>';
+}
+
 function passwordValidation() {
 	console.log('password validation called');
 	var password1 = document.getElementById("newPasswordOne").value;
@@ -291,8 +368,8 @@ function saveEditedRoom() {
 			dataType : "json",
 			contentType : 'application/json',
 			success : function(data) {
-				alert("Room successfully edited, congratulations!");
-
+				showRooms("forEdit");
+				alert(data.message);
 			},
 			error : function(jqXHR, textStatus, errorThrown) {
 				alert(jqXHR.status);
@@ -502,7 +579,7 @@ $(document)
 											roomPeopleNumberRegister,
 											roomPriceRegister),
 									success : function(data) {
-										alert("Successful adding room, congratulations!");
+										alert(data.message);
 									},
 									error : function(jqXHR, textStatus,
 											errorThrown) {
@@ -521,6 +598,11 @@ $(document).on('click', '.deleteRoomButton', function(e) {
 
 	console.log('room number' + '   ' + this.id);
 	deleteRoom(this.id);
+});
+
+$(document).on('click', '#reportHotelButton', function(e) {
+	// e.preventDefault();
+	fillDatas();
 });
 
 $(document).on('click', '.editRoomButton', function(e) {
