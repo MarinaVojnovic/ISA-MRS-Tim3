@@ -1,12 +1,19 @@
 package tim3.spring.project.isamrs.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import tim3.spring.project.isamrs.dto.RoomDTO;
 
@@ -31,6 +38,10 @@ public class Room {
 
 	@Column(name = "number_people")
 	private Integer numberPeople;
+
+	@JsonIgnore
+	@OneToMany(mappedBy = "room", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
+	private Set<RoomFastReservation> roomFastReservation = new HashSet<>();
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	Hotel hotel;

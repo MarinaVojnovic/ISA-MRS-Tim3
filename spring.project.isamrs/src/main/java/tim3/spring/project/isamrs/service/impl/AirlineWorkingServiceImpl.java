@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import tim3.spring.project.isamrs.model.Airline;
 import tim3.spring.project.isamrs.model.AirlineWorkingDestinations;
 import tim3.spring.project.isamrs.repository.AirlineWorkingRepository;
-import tim3.spring.project.isamrs.service.AirlineService;
 import tim3.spring.project.isamrs.service.AirlineWorkingService;
 
 @Service

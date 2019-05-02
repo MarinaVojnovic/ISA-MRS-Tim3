@@ -70,6 +70,17 @@ body {
 			profile</button>
 		<button id="reportHotelButton" class="tablinks"
 			onclick="openCity(event, 'report')">Reports</button>
+		<button id="addHotelCustomerServiceButton" class="tablinks"
+			onclick="openCity(event, 'addHotelCustomerService')">Add
+			extra services</button>
+		<button id="addRoomFastReservationButton" class="tablinks"
+			onclick="openCity(event, 'addRoomFastReservation')">Add room
+			on fast reservation</button>
+		<button id="deleteRoomFastReservationButton" class="tablinks"
+			onclick="openCity(event, 'deleteRoomFastReservation')">Delete
+			fast reservation</button>
+		<button id="defineDiscountButton" class="tablinks"
+			onclick="openCity(event, 'defineDiscount')">Define discount</button>
 		<button id="logoutClicked" class="tablinks"
 			onclick="openCity(event, 'logout')">Logout</button>
 	</div>
@@ -352,6 +363,133 @@ body {
 		<h1>Soon</h1>
 	</div>
 
+	<div id="addRoomFastReservation" class="tabcontent">
+		<div class="container">
+			<h2>Adding room fast reservation:</h2>
+			<form class="form-horizontal" action="#" method="post"
+				id="addRoomFastReservationForm">
+
+				<div class="form-group">
+					<label class="control-label col-sm-2"
+						for="roomFastReservationRoomTable">Room: </label>
+					<div class="col-sm-10">
+						<table class="table table-hover"
+							id="roomFastReservationRoomTable"></table>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="control-label col-sm-2"
+						for="roomFastReservationStartDate">Start date: </label>
+					<div class="col-sm-10">
+						<input type="date" class="form-control"
+							id="roomFastReservationStartDate"
+							placeholder="Insert start date for the room fast reservation"
+							name="roomFastReservationStartDate">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="control-label col-sm-2"
+						for="roomFastReservationEndDate">End date: </label>
+					<div class="col-sm-10">
+						<input type="date" class="form-control"
+							id="roomFastReservationEndDate"
+							placeholder="Insert end date for the room fast reservation"
+							name="roomFastReservationEndDate">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="control-label col-sm-2"
+						for="roomFastReservationDiscount">Discount: </label>
+					<div class="col-sm-10">
+						<input type="number" class="form-control"
+							id="roomFastReservationDiscount"
+							placeholder="Insert a discount for the hotel admin, must be between 20 and 70!"
+							name="roomFastReservationDiscount">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="control-label col-sm-2"
+						for="roomFastReservationHcsTable">Hotel Customer Services:
+					</label>
+					<div class="col-sm-10">
+						<table class=" table table-hover"
+							id="roomFastReservationHcsTable"></table>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10">
+						<button style="background: #ff1a75; color: white" type="submit"
+							class="btn btn-default" id="button7">Submit</button>
+					</div>
+				</div>
+			</form>
+			<br>
+		</div>
+	</div>
+
+	<div id="deleteRoomFastReservation" class="tabcontent">
+		<div class="container">
+			<h2>Delete fast reservation:</h2>
+			<table class="table table-hover" id="tableDeleteRoomFastReservation">
+
+			</table>
+		</div>
+	</div>
+
+	<div id="defineDiscount" class="tabcontent">
+		<h1>Soon</h1>
+	</div>
+
+	<div id="addHotelCustomerService" class="tabcontent">
+		<div class="container">
+			<h2>Adding extra services:</h2>
+			<form class="form-horizontal" action="#" method="post"
+				id="hotelCustomerServiceForm">
+
+				<div class="form-group">
+					<label class="control-label col-sm-2"
+						for="hotelCustomerServiceName">Name: </label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control"
+							id="hotelCustomerServiceName"
+							placeholder="Insert a hotel customer service name"
+							name="hotelCustomerServiceName">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="control-label col-sm-2"
+						for="hotelCustomerServicePrice">Price: </label>
+					<div class="col-sm-10">
+						<input type="number" class="form-control"
+							id="hotelCustomerServicePrice"
+							placeholder="Insert price of the hotel customer service"
+							name="hotelCustomerServicePrice">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10">
+						<button type="submit" class="btn btn-default"
+							id="buttonSubmitHotelCustomerService">Submit</button>
+					</div>
+				</div>
+
+			</form>
+		</div>
+		<br>
+		<div class="container">
+			<h3>All of extra services for this hotel:</h3>
+			<table class="table" id="tableHotelCustomerServices">
+			</table>
+		</div>
+	</div>
+
 	<div id="report" class="tabcontent">
 		<div class="container">
 			<h2>Reports:</h2>
@@ -360,7 +498,7 @@ body {
 				<table>
 					<tr>
 						<td>
-							<h3>1) Average grade for this hotel -> </h3>
+							<h3>1) Average grade for this hotel -></h3>
 						</td>
 						<td><h3 id="reportHotelAverageGrade">X</h3></td>
 					</tr>

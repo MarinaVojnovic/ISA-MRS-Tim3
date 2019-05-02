@@ -1,12 +1,18 @@
 package tim3.spring.project.isamrs.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import tim3.spring.project.isamrs.dto.HotelCustomerServiceDTO;
 
@@ -25,6 +31,10 @@ public class HotelCustomerService {
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	Hotel hotel;
+	
+	@JsonIgnore
+	@ManyToMany(mappedBy = "hotelCustomerServices")
+	private Set<RoomFastReservation> roomFastReservations = new HashSet<>();
 
 	public HotelCustomerService() {
 
@@ -71,8 +81,15 @@ public class HotelCustomerService {
 
 	public HotelCustomerService(HotelCustomerServiceDTO hcsDTO) {
 		super();
-		this.id = hcsDTO.getId();
 		this.name = hcsDTO.getName();
 		this.price = hcsDTO.getPrice();
+	}
+
+	public Set<RoomFastReservation> getRoomFastReservations() {
+		return roomFastReservations;
+	}
+
+	public void setRoomFastReservations(Set<RoomFastReservation> roomFastReservations) {
+		this.roomFastReservations = roomFastReservations;
 	}
 }
