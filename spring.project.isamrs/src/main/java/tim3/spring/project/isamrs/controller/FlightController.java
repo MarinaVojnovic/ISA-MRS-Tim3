@@ -59,11 +59,8 @@ public class FlightController {
 				.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
 		Airline air = ((AirlineAdmin) logged).getAirline();
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-		Date dateOfFlight = (Date) df.parse(flightDTO.getDateOfFlight());
-		@SuppressWarnings("deprecation")
-		Date dateOfArrival = new Date(Integer.parseInt(flightDTO.getDateOfArrival().split("\\-")[0]) - 1900,
-				Integer.parseInt(flightDTO.getDateOfArrival().split("\\-")[1]) - 1,
-				Integer.parseInt(flightDTO.getDateOfArrival().split("\\-")[2]));
+		Date dateOfFlight = new Date(df.parse(flightDTO.getDateOfFlight()).getTime());
+		Date dateOfArrival = new Date(df.parse(flightDTO.getDateOfArrival()).getTime());
 		Flight fl = this.flightService.create(new Flight(new AddFlightDTO(flightDTO.getFlightNumberRegister(),
 				this.airlineService.getOne(Long.parseLong(flightDTO.getStartDestinationRegister())),
 				this.airlineService.getOne(Long.parseLong(flightDTO.getFinalDestinationRegister())), air,

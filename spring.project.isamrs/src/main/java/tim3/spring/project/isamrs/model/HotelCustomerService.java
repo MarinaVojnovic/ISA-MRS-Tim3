@@ -35,6 +35,10 @@ public class HotelCustomerService {
 	@JsonIgnore
 	@ManyToMany(mappedBy = "hotelCustomerServices")
 	private Set<RoomFastReservation> roomFastReservations = new HashSet<>();
+	
+	@JsonIgnore
+	@ManyToMany(mappedBy = "hotelCustomerServices")
+	private Set<RoomReservation> roomReservations = new HashSet<>();
 
 	public HotelCustomerService() {
 
@@ -91,5 +95,13 @@ public class HotelCustomerService {
 
 	public void setRoomFastReservations(Set<RoomFastReservation> roomFastReservations) {
 		this.roomFastReservations = roomFastReservations;
+	}
+
+	public Set<RoomReservation> getRoomReservations() {
+		return roomReservations;
+	}
+
+	public void setRoomReservations(Set<RoomReservation> roomReservations) {
+		this.roomReservations = roomReservations;
 	}
 }

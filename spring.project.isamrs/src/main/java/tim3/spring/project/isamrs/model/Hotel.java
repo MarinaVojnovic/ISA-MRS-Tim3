@@ -34,6 +34,10 @@ public class Hotel {
 	@OneToMany(mappedBy = "hotelAdmin", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
 	private Set<HotelAdmin> hotelAdmins = new HashSet<>();
 
+	@JsonIgnore
+	@OneToMany(mappedBy = "hotel", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
+	private Set<RoomReservation> roomReservations = new HashSet<>();
+
 	@Column(name = "name")
 	private String name;
 
@@ -162,6 +166,14 @@ public class Hotel {
 
 	public void setGradeNumber(Integer gradeNumber) {
 		this.gradeNumber = gradeNumber;
+	}
+
+	public Set<RoomReservation> getRoomReservations() {
+		return roomReservations;
+	}
+
+	public void setRoomReservations(Set<RoomReservation> roomReservations) {
+		this.roomReservations = roomReservations;
 	}
 
 }

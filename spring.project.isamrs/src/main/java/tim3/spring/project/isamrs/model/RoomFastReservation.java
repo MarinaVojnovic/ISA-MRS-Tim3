@@ -1,6 +1,5 @@
 package tim3.spring.project.isamrs.model;
 
-import java.sql.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -29,10 +28,13 @@ public class RoomFastReservation {
 	private Room room;
 
 	@Column(name = "start_date")
-	private Date startDate;
+	private String startDate;
 
 	@Column(name = "end_date")
-	private Date endDate;
+	private String endDate;
+
+	@Column(name = "reserved")
+	private Boolean reserved;
 
 	@Column(name = "original_price")
 	private Double originalPrice;
@@ -62,22 +64,6 @@ public class RoomFastReservation {
 
 	public void setRoom(Room room) {
 		this.room = room;
-	}
-
-	public Date getStartDate() {
-		return startDate;
-	}
-
-	public void setStartDate(Date startDate) {
-		this.startDate = startDate;
-	}
-
-	public Date getEndDate() {
-		return endDate;
-	}
-
-	public void setEndDate(Date endDate) {
-		this.endDate = endDate;
 	}
 
 	public Double getOriginalPrice() {
@@ -112,21 +98,46 @@ public class RoomFastReservation {
 		this.hotelCustomerServices = hotelCustomerServices;
 	}
 
-	public RoomFastReservation(Long id, Room room, Date startDate, Date endDate, Double originalPrice, Double discount,
-			Double newPrice, Set<HotelCustomerService> hotelCustomerServices) {
+	public RoomFastReservation() {
+		super();
+	}
+
+	public String getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+
+	public String getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
+	}
+
+	public Boolean getReserved() {
+		return reserved;
+	}
+
+	public void setReserved(Boolean reserved) {
+		this.reserved = reserved;
+	}
+
+	public RoomFastReservation(Long id, Room room, String startDate, String endDate, Boolean reserved,
+			Double originalPrice, Double discount, Double newPrice, Set<HotelCustomerService> hotelCustomerServices) {
 		super();
 		this.id = id;
 		this.room = room;
 		this.startDate = startDate;
 		this.endDate = endDate;
+		this.reserved = reserved;
 		this.originalPrice = originalPrice;
 		this.discount = discount;
 		this.newPrice = newPrice;
 		this.hotelCustomerServices = hotelCustomerServices;
-	}
-
-	public RoomFastReservation() {
-		super();
 	}
 
 }

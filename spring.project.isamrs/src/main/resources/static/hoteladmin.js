@@ -219,7 +219,7 @@ function fillTableRoomFastReservations(data, table) {
 		cell0.innerHTML = response[counter].room.hotel.name;
 		cell1.innerHTML = response[counter].room.roomNumber;
 		cell2.innerHTML = response[counter].room.numberPeople;
-		cell3.innerHTML = response[counter].startDate
+		cell3.innerHTML = response[counter].startDate;
 		cell4.innerHTML = response[counter].endDate;
 		cell5.innerHTML = response[counter].originalPrice;
 		cell6.innerHTML = response[counter].discount + "%";
@@ -837,6 +837,8 @@ $(document)
 							.getElementById("roomFastReservationEndDate").value;
 					var discount = document
 							.getElementById("roomFastReservationDiscount").value;
+					startDate = startDate.replace("T", " ");
+					endDate = endDate.replace("T", " ");
 					var hcsIds = "";
 					$("input:checkbox[name='hcsPick']:checked").each(
 							function() {
@@ -850,6 +852,10 @@ $(document)
 						alert('At least one field is blank, please fill it up with proper information!');
 					} else if (discount < 20 || discount > 70) {
 						alert('Discount must be in a range [20, 70] !');
+					} else if (new Date() > new Date(startDate)) {
+						alert('You cannot put for fast reserving in past!');
+					} else if (new Date(startDate) > new Date(endDate)) {
+						alert('End date cant be before start date!');
 					} else {
 						$
 								.ajax({

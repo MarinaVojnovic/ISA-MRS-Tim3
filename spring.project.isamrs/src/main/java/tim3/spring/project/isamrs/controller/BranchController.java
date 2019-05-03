@@ -68,7 +68,6 @@ public class BranchController {
 	@GetMapping(value = "/getConcreteBranches/{rentacarId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<BranchOffice>> getConcreteBranches(@PathVariable Long rentacarId) {
 
-		System.out.println("aaaaa");
 		Rentacar rentacar = rentacarService.getOne(rentacarId);
 
 		List<BranchOffice> retVal = branchService.findByRentacar(rentacar);

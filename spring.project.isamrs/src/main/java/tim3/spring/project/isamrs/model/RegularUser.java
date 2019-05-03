@@ -1,7 +1,9 @@
 package tim3.spring.project.isamrs.model;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -32,6 +34,10 @@ public class RegularUser extends User{
 	@JsonIgnore
 	@OneToMany(mappedBy = "regularUser", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
 	private List<CarReservation> carReservations = new ArrayList<CarReservation>();
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "regularUser", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
+	private Set<RoomReservation> roomReservations = new HashSet<>();
 
 	public List<FriendRequest> getReceived() {
 		return received;

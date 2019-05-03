@@ -133,10 +133,10 @@ public class CarController {
 			@PathVariable Double toPrice)
 
 	{
-		List<Car> theFinalList = new ArrayList<Car>();
-		List<Car> finalList = new ArrayList<Car>();
-		List<Car> lista1 = new ArrayList<Car>();
-		List<Car> lista2 = new ArrayList<Car>();
+		List<Car> theFinalList = new ArrayList<>();
+		List<Car> finalList = new ArrayList<>();
+		List<Car> lista1 = new ArrayList<>();
+		List<Car> lista2 = new ArrayList<>();
 		Date startDatee = new Date(Integer.parseInt(startDate.split("\\-")[0]) - 1900,
 				Integer.parseInt(startDate.split("\\-")[1]) - 1, Integer.parseInt(startDate.split("\\-")[2]));
 		Date endDatee = new Date(Integer.parseInt(endDate.split("\\-")[0]) - 1900,

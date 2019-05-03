@@ -3,7 +3,7 @@ package tim3.spring.project.isamrs.controller;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,14 +44,24 @@ public class RoomFastReservationController {
 			throws ParseException {
 		Room room = roomService.getOne(roomFastReservationDTO.getRoomId());
 		List<RoomFastReservation> reservations = roomFastReservationService.findByRoom(room);
-		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-		Date startDate = (Date) df.parse(roomFastReservationDTO.getStartDate());
-		Date endDate = (Date) df.parse(roomFastReservationDTO.getEndDate());
+		Boolean correctDate = true;
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		Date startDate = new Date();
+		Date endDate = new Date();
+		try {
+			startDate = df.parse(roomFastReservationDTO.getStartDate());
+			endDate = df.parse(roomFastReservationDTO.getEndDate());
+		} catch (Exception e) {
+			correctDate = false;
+		}
+		if (!correctDate) {
+			return new ResponseEntity<>(new MessageDTO("Bad format of dates!", "Error"), HttpStatus.OK);
+		}
 		for (RoomFastReservation roomFastReservation : reservations) {
-			if (!(startDate.getTime() < roomFastReservation.getStartDate().getTime()
-					&& endDate.getTime() < roomFastReservation.getStartDate().getTime())
-					&& !(startDate.getTime() > roomFastReservation.getEndDate().getTime()
-							&& endDate.getTime() > roomFastReservation.getEndDate().getTime())) {
+			Date startDate2 = df.parse(roomFastReservation.getStartDate());
+			Date endDate2 = df.parse(roomFastReservation.getEndDate());
+			if (!(startDate.getTime() < startDate2.getTime() && endDate.getTime() < startDate2.getTime())
+					&& !(startDate.getTime() > endDate2.getTime() && endDate.getTime() > endDate2.getTime())) {
 				return new ResponseEntity<>(new MessageDTO(
 						"This room already have been fast reserved by this period, pick some other dates!", "Error"),
 						HttpStatus.OK);
@@ -59,8 +69,9 @@ public class RoomFastReservationController {
 		}
 		RoomFastReservation retVal = new RoomFastReservation();
 		retVal.setRoom(room);
-		retVal.setStartDate(startDate);
-		retVal.setEndDate(endDate);
+		retVal.setReserved(false);
+		retVal.setStartDate(roomFastReservationDTO.getStartDate());
+		retVal.setEndDate(roomFastReservationDTO.getEndDate());
 		retVal.setDiscount(roomFastReservationDTO.getDiscount());
 		double price = room.getPrice();
 		System.out.println("Upsjelo");
