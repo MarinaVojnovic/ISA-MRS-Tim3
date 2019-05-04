@@ -23,19 +23,28 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.view.RedirectView;
 
 import tim3.spring.project.isamrs.comparator.FriendsComparatorNameSurname;
+import tim3.spring.project.isamrs.dto.FlightReservationDTO;
 import tim3.spring.project.isamrs.dto.FriendRequestDTO;
+import tim3.spring.project.isamrs.dto.InvitedFriendDTO;
 import tim3.spring.project.isamrs.dto.PasswordDTO;
 import tim3.spring.project.isamrs.dto.UserDTO;
 import tim3.spring.project.isamrs.model.CarReservation;
+import tim3.spring.project.isamrs.model.Flight;
+import tim3.spring.project.isamrs.model.FlightReservation;
 import tim3.spring.project.isamrs.model.FriendRequest;
 import tim3.spring.project.isamrs.model.RegularUser;
+import tim3.spring.project.isamrs.model.Seat;
 import tim3.spring.project.isamrs.model.User;
 import tim3.spring.project.isamrs.model.UserRoleName;
 import tim3.spring.project.isamrs.model.UserTokenState;
+import tim3.spring.project.isamrs.repository.SeatRepository;
 import tim3.spring.project.isamrs.security.TokenHelper;
 import tim3.spring.project.isamrs.service.CarReservationService;
+import tim3.spring.project.isamrs.service.FlightReservationService;
+import tim3.spring.project.isamrs.service.FlightService;
 import tim3.spring.project.isamrs.service.FriendRequestService;
 import tim3.spring.project.isamrs.service.RegularUserService;
+import tim3.spring.project.isamrs.service.SeatService;
 import tim3.spring.project.isamrs.service.UserService;
 import tim3.spring.project.isamrs.service.impl.CustomUserDetailsService;
 
@@ -60,6 +69,15 @@ public class UserController {
 
 	@Autowired
 	private FriendRequestService friendRequestService;
+	
+	@Autowired
+	private FlightReservationService flightReservationService;
+	
+	@Autowired
+	private SeatService seatService;
+	
+	@Autowired
+	private FlightService flightService;
 
 	@GetMapping(value = "/confirmRegistration/{id}")
 	public RedirectView confirmRegistration(@PathVariable Long id) {
@@ -274,5 +292,67 @@ public class UserController {
 		UserRoleName userType = null;
 
 		return new ResponseEntity<>(new UserTokenState(jwt, expiresIn, userType), HttpStatus.OK);
+	}
+	
+	
+	@PostMapping(value = "/makeReservation")
+	@PreAuthorize("hasRole('ROLE_USER')")
+	public ResponseEntity<List<InvitedFriendDTO>> makeReservation(@RequestBody FlightReservationDTO flightReservation) {
+		int brPasosa=Integer.parseInt(flightReservation.getPassportNum());
+		String idjeviPutnika=flightReservation.getUsers();
+		String sedista=flightReservation.getSeats();
+		Long let=Long.valueOf(flightReservation.getFlight());
+		User logged = (User) this.userDetailsService
+				.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+		Flight fl=this.flightService.getOne(let);
+		List<FlightReservation> flightReservations=new ArrayList<>();
+		List<InvitedFriendDTO> invited=new ArrayList<>();
+		FlightReservation fr=this.flightReservationService.create(new FlightReservation(fl.getCost(),(RegularUser)logged,fl,this.seatService.getOne(Long.parseLong(sedista.split(" ")[0])),true,brPasosa,logged.getFirstName(),logged.getLastName()));
+		
+		flightReservations.add(fr);
+		String idjevi[]=idjeviPutnika.split(" ");
+		String sed[]=sedista.split(" ");
+		Seat s=this.seatService.getOne(Long.parseLong(sed[0]));
+		s.setTaken(true);
+		this.seatService.save(s);
+		if(!idjeviPutnika.equals("")) {
+		for(int i=0;i<idjevi.length;i++) {
+			FlightReservation fri=this.flightReservationService.create(new FlightReservation(fl.getCost(),this.regularUserService.findById(Long.parseLong(idjevi[i])),fl,this.seatService.getOne(Long.parseLong(sed[i+1])),false,0,this.regularUserService.findById(Long.parseLong(idjevi[i])).getFirstName(),this.regularUserService.findById(Long.parseLong(idjevi[i])).getLastName()));
+			flightReservations.add(fr);
+			Seat friendSeat=this.seatService.getOne(Long.parseLong(sed[i+1]));
+			friendSeat.setTaken(true);
+			this.seatService.save(friendSeat);
+			InvitedFriendDTO inv=new InvitedFriendDTO((this.regularUserService.findById(Long.parseLong(idjevi[i]))).getEmail(),fri.getId());
+			invited.add(inv);
+			
+		}
+		}
+		return new ResponseEntity<List<InvitedFriendDTO>>(invited, HttpStatus.CREATED);
+
+	}
+	
+	@GetMapping(value = "/acceptFlightReservation/{id}")
+	public RedirectView acceptFlightReservation(@PathVariable Long id) {
+		FlightReservation res = this.flightReservationService.getOne(id);
+		
+		if (res != null) {
+			res.setConfirmed(true);
+			this.flightReservationService.save(res);
+			return new RedirectView("http://localhost:8080/acceptedReservation.html");
+		}
+		return null;
+	}
+	
+	@GetMapping(value = "/rejectFlightReservation/{id}")
+	public RedirectView rejectFlightReservation(@PathVariable Long id) {
+		FlightReservation res = this.flightReservationService.getOne(id);
+		if (res != null) {
+			Seat s=this.seatService.getOne(res.getSeat().getId());
+			s.setTaken(false);
+			this.seatService.save(s);
+			this.flightReservationService.delete(res);
+			return new RedirectView("http://localhost:8080/rejectedReservation.html");
+		}
+		return null;
 	}
 }

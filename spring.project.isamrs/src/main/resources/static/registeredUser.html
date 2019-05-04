@@ -22,6 +22,12 @@ body {
 	background-color: #ff1a75;
 }
 
+.wrapper {
+    text-align: center;
+}
+
+
+
 /* Style the buttons inside the tab */
 .tab button {
 	color: white;
@@ -53,6 +59,58 @@ body {
 	border-top: none;
 	background: #00defc;
 }
+
+#a {
+	border: 1px solid rgba(0, 0, 0, .2);
+}
+
+#aa {
+	border: 1px solid rgba(0, 0, 0, .2);
+}
+
+.foo {
+  float: left;
+  width: 40px;
+  height: 40px;
+  
+}
+
+.inline-block {
+   display: inline-block;
+   width: 60px;
+  height: 60px;
+}
+
+.blue {
+
+  background: #13b4ff;
+}
+
+.cyan {
+
+  background: #00defc;
+}
+
+.purple {
+  background: #ab3fdd;
+}
+
+.wine {
+  background: #ae163e;
+}
+
+.green {
+  background: #00e600;
+}
+
+.red {
+  background: #ff0000
+}
+.grey {
+  background: #c2c2a3
+}
+
+
 </style>
 </head>
 <body>
@@ -403,6 +461,9 @@ body {
 				<table class="table table-hover" id="foundFlights">
 				
   			</table>
+  			<table class="table table-hover" id="foundFlightsReturn">
+				
+  			</table>
 			</form>
 			<br>
 		</div>
@@ -524,6 +585,16 @@ body {
 		</div>
 	</div>
 	
+	<div id="reserveFlightInfo" class="tabcontent">
+		<div class="container">
+			<h2 align="center">Reservation info:</h2>							
+			<br>
+		</div>
+		<div id="reserveFlightInfoDiv">
+		</div>
+	</div>
+	
+
 	
 	
 	
@@ -552,7 +623,33 @@ body {
 	
 	<div id="flightReservation" class="tabcontent">
 		<div class="container">
-			<h2>Ovde lela radi rezervaciju leta:</h2>
+			<div id="seats" align="center">
+			    <div class="inline-block">
+			    	<p>First</p>
+			        <div class="foo blue" id="aa"></div>
+			    </div>
+			
+			    <div class="inline-block">
+			        <p>Economy</p>
+			        <div class="foo purple" id="aa"></div>
+			    </div>
+			
+			    <div class="inline-block">
+			        <p>Business</p>
+			        <div class="foo green" id="aa"></div>
+			    </div>
+			    <div class="inline-block">
+			        <p>Taken</p>
+			        <div class="foo red" id="aa"></div>
+			    </div>
+			    <div class="inline-block">
+			        <p>Chosen</p>
+			        <div class="foo grey" id="aa"></div>
+			    </div>
+			    <div id="seatsFlight">
+			    
+			    </div>
+			 </div>
 			<input type="hidden" id="destinationId">
 			<input type="hidden" id="startDateId">
 			<input type="hidden" id="endDateId">

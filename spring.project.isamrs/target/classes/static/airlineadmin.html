@@ -54,6 +54,10 @@ body {
 	background: #00defc;
 }
 
+#a input{
+	width: 100px !important;
+}
+
 </style>
 </head>
 <body>
@@ -163,11 +167,26 @@ body {
 							placeholder="Insert length of the flight" name="lengthOfFlight">
 					</div>
 				</div>
-				<div class="form-group">
-					<label class="control-label col-sm-2" for="numberOfSeats">Number of seats: </label>
+				<div class="form-group" id="a">
+					<label class="control-label col-sm-2" for="numberOfSeatsEconomy">Number of seats economy class: </label>
 					<div class="col-sm-10">
-						<input type="text" class="form-control" id="numberOfSeats"
-							placeholder="Insert number of seats" name="numberOfSeats">
+						<input type="text" class="form-control" id="numberOfSeatsEconomy"
+							placeholder="" name="numberOfSeatsEconomy">
+					</div>
+					
+				</div>
+				<div class="form-group" id="a">
+					<label class="control-label col-sm-2" for="numberOfSeatsBusiness">Number of seats business class: </label>
+					<div class="col-sm-10">
+						<input type="text" size="5" class="form-control" id="numberOfSeatsBusiness"
+							placeholder="" name="numberOfSeatsBusiness"> 
+					</div>
+				</div>
+				<div class="form-group" id="a">
+					<label class="control-label col-sm-2" for="numberOfSeatsFirst">Number of seats first class: </label>
+					<div class="col-sm-10">
+						<input type="text" size="5" class="form-control" id="numberOfSeatsFirst"
+							placeholder="" name="numberOfSeatsFirst" >
 					</div>
 				</div>
 				<div class="form-group">

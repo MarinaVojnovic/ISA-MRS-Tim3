@@ -60,6 +60,15 @@ public class Flight {
 	@OneToMany(mappedBy = "flightStop", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
 	private List<FlightStops> flight = new ArrayList<FlightStops>();
 
+//	@JsonIgnore
+//	@OneToMany(mappedBy = "flightReservation", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
+//	private List<FlightReservation> flightReservation = new ArrayList<FlightReservation>();
+
+	@JsonIgnore
+	@OneToMany(mappedBy = "flightReservation", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+	private List<FlightReservation> flightReservation = new ArrayList<FlightReservation>();
+	
+	
 	@ManyToOne(fetch = FetchType.EAGER)
 	Airline airline;
 
@@ -77,8 +86,17 @@ public class Flight {
 		this.dateOfEnd = flightDTO.getDateOfArrival();
 		this.lengthOfFlight = flightDTO.getLength();
 		this.seats = new HashSet<>();
-		for (int i = 0; i < flightDTO.getNumOfSeats(); i++) {
-			this.seats.add(new Seat(this, false));
+		for (int i = 0; i < flightDTO.getNumOfSeatsEconomy(); i++) {
+			this.seats.add(new Seat(this, false,FlightClass.ECONOMY));
+			System.out.println("Ekonomska");
+		}
+		for (int i = 0; i < flightDTO.getNumOfSeatsBusiness(); i++) {
+			this.seats.add(new Seat(this, false,FlightClass.BUSINESS));
+			System.out.println("Biznis");
+		}
+		for (int i = 0; i < flightDTO.getNumOfSeatsFirst(); i++) {
+			this.seats.add(new Seat(this, false,FlightClass.FIRST));
+			System.out.println("First");
 		}
 		this.airline = flightDTO.getFlighAirline();
 		this.numOfStops = flightDTO.getNumOfStops();
@@ -133,13 +151,9 @@ public class Flight {
 		this.flight = flight;
 	}
 
-	public Set<Seat> getSeats() {
-		return seats;
-	}
+	
 
-	public void setSeats(Set<Seat> seats) {
-		this.seats = seats;
-	}
+	
 
 	public Airline getAirline() {
 		return airline;
@@ -169,6 +183,14 @@ public class Flight {
 		this.cost = cost;
 	}
 
+	public Set<Seat> getSeats() {
+		return seats;
+	}
+
+	public void setSeats(Set<Seat> seats) {
+		this.seats = seats;
+	}
+
 	public Flight() {
 		this.seats = new HashSet<>();
 	}
@@ -183,6 +205,14 @@ public class Flight {
 
 	public void setAirline(Airline airline) {
 		this.airline = airline;
+	}
+
+	public List<FlightReservation> getFlightReservation() {
+		return flightReservation;
+	}
+
+	public void setFlightReservation(List<FlightReservation> flightReservation) {
+		this.flightReservation = flightReservation;
 	}
 
 }

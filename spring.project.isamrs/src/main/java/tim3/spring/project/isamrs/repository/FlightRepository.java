@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import tim3.spring.project.isamrs.model.Airline;
 import tim3.spring.project.isamrs.model.Flight;
+import tim3.spring.project.isamrs.model.Seat;
 
 @Repository
 public interface FlightRepository extends JpaRepository<Flight, Long> {

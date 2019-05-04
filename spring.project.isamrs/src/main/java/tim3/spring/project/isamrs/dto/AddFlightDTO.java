@@ -13,21 +13,27 @@ public class AddFlightDTO {
 	Date dateOfFlight;
 	Date dateOfArrival;
 	int length;
-	int numOfSeats;
+	int numOfSeatsEconomy;
+	int numOfSeatsBusiness;
+	int numOfSeatsFirst;
 	int numOfStops;
-	public AddFlightDTO(String flightNumberRegister, Airline startDestinationRegister, Airline finalDestinationRegister, Airline flightAirline,
-			double costOfFlight, Date dateOfFlight, Date dateOfArrival, int length, int numOfSeats,int numOfStops) {
+	
+	public AddFlightDTO(String flightNumberRegister, Airline startDestinationRegister, Airline finalDestinationRegister,
+			Airline flighAirline, double costOfFlight, Date dateOfFlight, Date dateOfArrival, int length,
+			int numOfSeatsEconomy, int numOfSeatsBusiness, int numOfSeatsFirst, int numOfStops) {
 		super();
 		this.flightNumberRegister = flightNumberRegister;
 		this.startDestinationRegister = startDestinationRegister;
 		this.finalDestinationRegister = finalDestinationRegister;
-		this.flighAirline=flightAirline;
+		this.flighAirline = flighAirline;
 		this.costOfFlight = costOfFlight;
 		this.dateOfFlight = dateOfFlight;
 		this.dateOfArrival = dateOfArrival;
 		this.length = length;
-		this.numOfSeats = numOfSeats;
-		this.numOfStops=numOfStops;
+		this.numOfSeatsEconomy = numOfSeatsEconomy;
+		this.numOfSeatsBusiness = numOfSeatsBusiness;
+		this.numOfSeatsFirst = numOfSeatsFirst;
+		this.numOfStops = numOfStops;
 	}
 	public AddFlightDTO() {
 		super();
@@ -74,11 +80,24 @@ public class AddFlightDTO {
 	public void setLength(int length) {
 		this.length = length;
 	}
-	public int getNumOfSeats() {
-		return numOfSeats;
+	
+	public int getNumOfSeatsEconomy() {
+		return numOfSeatsEconomy;
 	}
-	public void setNumOfSeats(int numOfSeats) {
-		this.numOfSeats = numOfSeats;
+	public void setNumOfSeatsEconomy(int numOfSeatsEconomy) {
+		this.numOfSeatsEconomy = numOfSeatsEconomy;
+	}
+	public int getNumOfSeatsBusiness() {
+		return numOfSeatsBusiness;
+	}
+	public void setNumOfSeatsBusiness(int numOfSeatsBusiness) {
+		this.numOfSeatsBusiness = numOfSeatsBusiness;
+	}
+	public int getNumOfSeatsFirst() {
+		return numOfSeatsFirst;
+	}
+	public void setNumOfSeatsFirst(int numOfSeatsFirst) {
+		this.numOfSeatsFirst = numOfSeatsFirst;
 	}
 	public Airline getFlighAirline() {
 		return flighAirline;

@@ -35,6 +35,22 @@ public class RegularUser extends User{
 	@OneToMany(mappedBy = "regularUser", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
 	private List<CarReservation> carReservations = new ArrayList<CarReservation>();
 
+//	@JsonIgnore
+//	@OneToMany(mappedBy = "regularUserFlightReservation", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
+//	private List<FlightReservation> flightReservations = new ArrayList<FlightReservation>();
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "regularUserFlightReservation", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+	private List<FlightReservation> flightReservations = new ArrayList<FlightReservation>();
+	
+	public List<FlightReservation> getFlightReservations() {
+		return flightReservations;
+	}
+
+	public void setFlightReservations(List<FlightReservation> flightReservations) {
+		this.flightReservations = flightReservations;
+	}
+
 	public List<FriendRequest> getReceived() {
 		return received;
 	}

@@ -131,18 +131,21 @@ function addFlight() {
 	var dateOfFlight = document.getElementById("dateOfFlight").value;
 	var dateOfArrival = document.getElementById("dateOfArrival").value;
 	var length = document.getElementById("lengthOfFlight").value;
-	var numOfSeats = document.getElementById("numberOfSeats").value;
+	var numOfSeatsEconomy = document.getElementById("numberOfSeatsEconomy").value;
+	var numOfSeatsBusiness = document.getElementById("numberOfSeatsBusiness").value;
+	var numOfSeatsFirst = document.getElementById("numberOfSeatsFirst").value;
 	var numOfStops = document.getElementById("numberOfFlightStops").value;
 	var stops = "";
 	var i = 0
 	if (flightNumberRegister == "" || costOfFlight == "" || dateOfFlight == ""
-			|| dateOfArrival == "" || length == "" || numOfSeats == ""
-			|| numOfStops == "") {
+			|| dateOfArrival == "" || length == "" || numOfSeatsEconomy == ""
+			|| numOfSeatsBusiness=="" || numOfSeatsFirst=="" || numOfStops == "") {
 		alert("You must fill in all of the fields");
 		i = 1;
 	}
 	if (isNaN(costOfFlight) || costOfFlight < 0 || isNaN(length) || length < 0
-			|| isNaN(numOfSeats) || numOfSeats < 0 || isNaN(numOfStops)
+			|| isNaN(numOfSeatsEconomy) || numOfSeatsEconomy < 0 || isNaN(numOfSeatsBusiness) || numOfSeatsBusiness < 0 ||
+			isNaN(numOfSeatsFirst) || numOfSeatsFirst < 0 || isNaN(numOfStops)
 			|| numOfStops < 0) {
 		alert("You must insert positive number for cost of flight,length,number of seats and stops!");
 		i = 1;
@@ -185,7 +188,7 @@ function addFlight() {
 			data : createFlightToJSON(flightNumberRegister,
 					startDestinationRegister, finalDestinationRegister,
 					costOfFlight, dateOfFlight, dateOfArrival, length,
-					numOfSeats, numOfStops, stops),
+					numOfSeatsEconomy,numOfSeatsBusiness,numOfSeatsFirst, numOfStops, stops),
 			success : function(data) {
 				alert("Successful added flight, congratulations!");
 			},
@@ -218,20 +221,20 @@ $(document)
 					var dateOfArrival = document
 							.getElementById("dateOfArrival").value;
 					var length = document.getElementById("lengthOfFlight").value;
-					var numOfSeats = document.getElementById("numberOfSeats").value;
-					var numOfStops = document
-							.getElementById("numberOfFlightStops").value;
-					var i = 0;
-					if (flightNumberRegister == "" || costOfFlight == ""
-							|| dateOfFlight == "" || dateOfArrival == ""
-							|| length == "" || numOfSeats == ""
-							|| numOfStops == "") {
+					var numOfSeatsEconomy = document.getElementById("numberOfSeatsEconomy").value;
+					var numOfSeatsBusiness = document.getElementById("numberOfSeatsBusiness").value;
+					var numOfSeatsFirst = document.getElementById("numberOfSeatsFirst").value;
+					var numOfStops = document.getElementById("numberOfFlightStops").value;
+					var i = 0
+					if (flightNumberRegister == "" || costOfFlight == "" || dateOfFlight == ""
+							|| dateOfArrival == "" || length == "" || numOfSeatsEconomy == ""
+							|| numOfSeatsBusiness=="" || numOfSeatsFirst=="" || numOfStops == "") {
 						alert("You must fill in all of the fields");
 						i = 1;
 					}
-					if (isNaN(costOfFlight) || costOfFlight < 0
-							|| isNaN(length) || length < 0 || isNaN(numOfSeats)
-							|| numOfSeats < 0 || isNaN(numOfStops)
+					if (isNaN(costOfFlight) || costOfFlight < 0 || isNaN(length) || length < 0
+							|| isNaN(numOfSeatsEconomy) || numOfSeatsEconomy < 0 || isNaN(numOfSeatsBusiness) || numOfSeatsBusiness < 0 ||
+							isNaN(numOfSeatsFirst) || numOfSeatsFirst < 0 || isNaN(numOfStops)
 							|| numOfStops < 0) {
 						alert("You must insert positive number for cost of flight,length,number of seats and stops!");
 						i = 1;
@@ -588,7 +591,7 @@ function passwordDTOJson(password1) {
 
 function createFlightToJSON(flightNumberRegister, startDestinationRegister,
 		finalDestinationRegister, costOfFlight, dateOfFlight, dateOfArrival,
-		length, numOfSeats, numOfStops, stops) {
+		length, numOfSeatsEconomy,numOfSeatsBusiness,numOfSeatsFirst,  numOfStops, stops) {
 	return JSON.stringify({
 		"flightNumberRegister" : flightNumberRegister,
 		"startDestinationRegister" : startDestinationRegister,
@@ -597,7 +600,9 @@ function createFlightToJSON(flightNumberRegister, startDestinationRegister,
 		"dateOfFlight" : dateOfFlight,
 		"dateOfArrival" : dateOfArrival,
 		"length" : length,
-		"numOfSeats" : numOfSeats,
+		"numOfSeatsEconomy" : numOfSeatsEconomy,
+		"numOfSeatsBusiness" : numOfSeatsBusiness,
+		"numOfSeatsFirst" : numOfSeatsFirst,
 		"numOfStops" : numOfStops,
 		"stops" : stops,
 	})
