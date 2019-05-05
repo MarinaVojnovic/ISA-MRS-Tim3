@@ -30,6 +30,10 @@ var urlRootGradeRentacar="http://localhost:8080/gradeRentacar";
 var urlRootGradeCar="http://localhost:8080/gradeCar"
 var urlRootFindSuitCarsFast="http://localhost:8080/findSuitCarsFast";
 var urlRootCreateCarResFast="http://localhost:8080/createCarReservationFast";
+var urlRoot14="http://localhost:8080/getFlight";
+var urlRoot15="http://localhost:8080/getSeat";
+var urlRoot16="http://localhost:8080/api/makeReservation"
+var urlRootSendMail="http://localhost:8080/sendEmail";
 var TOKEN_KEY = 'jwtToken';
 
 getLogged();
@@ -40,9 +44,14 @@ $(document).on('click', '#logoutClicked', function(e) {
 	window.location.href = "index.html";
 })
 
+//window.onbeforeunload = function() {
+//  sessionStorage.removeItem("choosenSeats"); 
+//  return '';
+//};
+
 function takeCarFast(id){
 	console.log('take car fast called');
-	
+	sessionStorage.removeItem("choosenSeats");
 	
 	var mainStartDate = document.getElementById("mainStartDate").value;
 	var mainEndDate = document.getElementById("mainEndDate").value;
@@ -99,6 +108,7 @@ function takeCarFast(id){
 	
 }
 function showCarsForFastRes(){
+	sessionStorage.removeItem("choosenSeats");
 	console.log('show cars for fast res called');
 	var rentacarId = document.getElementById("rentacarId").value;
 	var startDate = document.getElementById("mainStartDate3").value;
@@ -227,6 +237,7 @@ function showCarsForFastRes(){
 }
 function saveGradedRentacar(){
 	console.log('save graded rentacar called');
+	sessionStorage.removeItem("choosenSeats");
 	var rentacarId = document.getElementById("rentacarId").value;
 	var carId = document.getElementById("carId").value
 	var rentacarGrade = document.getElementById("rentacarGrade").value;
@@ -288,7 +299,7 @@ function saveGradedRentacar(){
 }
 function fillGradeRentacarForm(id){
 	console.log('fill grade rentacar form');
-	
+	sessionStorage.removeItem("choosenSeats");
 	var rentacarName;
 	var carName;
 	$
@@ -343,7 +354,7 @@ function cancelCarReservation(id){
 	console.log('cancel car resrvation called');
 	console.log(id);
 	
-	
+	sessionStorage.removeItem("choosenSeats");
 	$.ajax({
 		type : 'DELETE',
 		url : urlRootCancelCarRes+"/"+id,
@@ -367,6 +378,7 @@ function cancelCarReservation(id){
 }
 function showMyReservationsCars(){
 	console.log('show my reservations cars called');
+	sessionStorage.removeItem("choosenSeats");
 	$
 	.ajax({
 		type : 'GET',
@@ -448,6 +460,7 @@ function showMyReservationsCars(){
 
 function fillTableAirlines(data) {
 	console.log('fill table airlines called');
+	sessionStorage.removeItem("choosenSeats");
 	var response = data;
 	$("#tableOfAirlines").find("tr").remove();
 	var tabela = document.getElementById("tableOfAirlines");
@@ -491,6 +504,7 @@ function fillTableAirlines(data) {
 }
 
 function fillTableHotels(data) {
+	sessionStorage.removeItem("choosenSeats");
 	console.log('fill table hotels called');
 	var response = data;
 	$("#tableOfHotels").find("tr").remove();
@@ -536,7 +550,7 @@ function fillTableHotels(data) {
 
 function findAirlines() {
 	console.log('Find airlines called!');
-
+	sessionStorage.removeItem("choosenSeats");
 	var field = document.getElementById("nameLocationAirline").value;
 	console.log('Field: ' + field);
 	if (field == "") {
@@ -564,7 +578,7 @@ function findAirlines() {
 
 function findHotels() {
 	console.log('Find hotels called!');
-
+	sessionStorage.removeItem("choosenSeats");
 	var field = document.getElementById("nameLocationHotel").value;
 	console.log('Field: ' + field);
 	if (field == "") {
@@ -592,6 +606,7 @@ function findHotels() {
 
 function showAirlines(criteria) {
 	console.log('showing airlines');
+	sessionStorage.removeItem("choosenSeats");
 	$.ajax({
 		type : 'GET',
 		url : urlShowAirlines + "/" + criteria,
@@ -611,7 +626,7 @@ function showAirlines(criteria) {
 
 function showHotels(criteria) {
 	console.log('showing hotels');
-
+	sessionStorage.removeItem("choosenSeats");
 	$.ajax({
 		type : 'GET',
 		url : urlShowHotels + "/" + criteria,
@@ -632,7 +647,7 @@ function showHotels(criteria) {
 
 function showRentacars(criteria) {
 	console.log('showing rentacars');
-
+	sessionStorage.removeItem("choosenSeats");
 	$.ajax({
 		type : 'GET',
 		url : urlShowRentacars + "/" + criteria,
@@ -652,6 +667,7 @@ function showRentacars(criteria) {
 
 function fillTableRentacars(data) {
 	var response = data;
+	sessionStorage.removeItem("choosenSeats");
 	$("#tableOfRentacars").find("tr").remove();
 	var tabela = document.getElementById("tableOfRentacars");
 	console.log(tabela);
@@ -699,6 +715,7 @@ function fillTableRentacars(data) {
 
 function findRentacars() {
 	console.log('find rent a car called');
+	sessionStorage.removeItem("choosenSeats");
 	var field = document.getElementById("nameLocationRentACar").value;
 	console.log('Field: ' + field);
 	if (field == "") {
@@ -725,6 +742,7 @@ function findRentacars() {
 }
 
 function findFriends() {
+	sessionStorage.removeItem("choosenSeats");
 	var name = document.getElementById("friendRequestName").value;
 	var surname = document.getElementById("friendRequestSurname").value;
 	$("#foundFriends").empty();
@@ -857,6 +875,7 @@ function findFriends() {
 
 $(document).on('click', '#addFriend', function(e) {
 	e.preventDefault();
+	sessionStorage.removeItem("choosenSeats");
 	var id = $(this).attr("name").split(" ")[0];
 	var name = $(this).attr("name");
 	console.log("User id" + id);
@@ -881,12 +900,14 @@ $(document).on('click', '#addFriend', function(e) {
 
 $(document).on('click', '#searchFriends', function(e) {
 	e.preventDefault();
+	sessionStorage.removeItem("choosenSeats");
 	console.log("Kliknuo");
 	findFriends();
 })
 
 $(document).on('click', '.tablinks', function(e) {
 	e.preventDefault();
+	sessionStorage.removeItem("choosenSeats");
 	$("#foundFlights").empty();
 })
 
@@ -894,6 +915,7 @@ function searchFlights() {
 
 }
 function searchFilter() {
+	sessionStorage.removeItem("choosenSeats");
 	$
 			.ajax({
 				type : 'GET',
@@ -905,9 +927,12 @@ function searchFilter() {
 					if (data == null) {
 
 					} else {
+						$("#startDestination").empty();
+						$("#finalDestination").empty();
 						var list = data == null ? []
 								: (data instanceof Array ? data : [ data ]);
 						if (list.length > 0) {
+							
 							var i = 0
 							$.each(list, function(index, destination) {
 								var option = $('<option value="'
@@ -943,8 +968,9 @@ $(document)
 		'#searchFlightButton',
 		function(e) {
 			e.preventDefault();
+			sessionStorage.removeItem("choosenSeats");
 			$("#foundFlights").empty();
-
+			$("#foundFlightsReturn").empty();
 			var startDestination = document
 					.getElementById("startDestination").value;
 			var finalDestination = document
@@ -1018,15 +1044,16 @@ $(document)
 									+ "/" + name,
 							contentType : 'application/json',
 							success : function(data) {
-								var list = data == null ? []
-										: (data instanceof Array ? data
-												: [ data ]);
 								if (data == null) {
 
 								} else {
-									var list = data == null ? []
-											: (data instanceof Array ? data
-													: [ data ]);
+									var list = data.flightsGo == null ? []
+											: (data.flightsGo instanceof Array ? data.flightsGo
+													: [ data.flightsGo ]);
+									var list2 = data.flightReturn == null ? []
+									: (data.flightReturn instanceof Array ? data.flightReturn
+											: [ data.flightReturn ]);
+									
 									if (list.length > 0) {
 										$("#foundFlights")
 												.append(
@@ -1095,8 +1122,77 @@ $(document)
 												.append(
 														"<h3>No flights found </h3>");
 									}
-								}
-							},
+									if (list2.length > 0) {
+									
+									$("#foundFlightsReturn")
+									.append(
+											"<h3>Found flights return: </h3>")
+							var tabela = document
+									.getElementById("foundFlightsReturn");
+							var count = 1;
+							for ( var flight in list2) {
+								console.log('counter: '
+										+ flight);
+								var row = tabela
+										.insertRow(flight);
+								var cell1 = row
+										.insertCell(0);
+								var cell2 = row
+										.insertCell(1);
+								var cell3 = row
+										.insertCell(2);
+								var cell4 = row
+										.insertCell(3);
+								var cell5 = row
+										.insertCell(4);
+								var cell6 = row
+										.insertCell(5);
+								var cell7 = row
+										.insertCell(6);
+								var cell8 = row
+										.insertCell(7);
+								var cell9 = row
+										.insertCell(8);
+								cell1.innerHTML = list2[flight].number;
+								cell2.innerHTML = list2[flight].startAirline.name;
+								cell3.innerHTML = list2[flight].finalAirline.name;
+								cell4.innerHTML = list2[flight].cost;
+								cell5.innerHTML = new Date(
+										list2[flight].dateOfStart);
+								cell6.innerHTML = new Date(
+										list2[flight].dateOfEnd);
+								cell7.innerHTML = list2[flight].numOfStops;
+								cell8.innerHTML = list2[flight].lengthOfFlight;
+								cell9.innerHTML = '<button name=\"'
+										+ list2[flight].id
+										+ '\" class=\"chooseFlight\" class="btn btn-primary">Choose flight</button>';
+							}
+							var row = tabela.insertRow(0);
+							var cell1 = row.insertCell(0);
+							var cell2 = row.insertCell(1);
+							var cell3 = row.insertCell(2);
+							var cell4 = row.insertCell(3);
+							var cell5 = row.insertCell(4);
+							var cell6 = row.insertCell(5);
+							var cell7 = row.insertCell(6);
+							var cell8 = row.insertCell(7);
+							var cell9 = row.insertCell(8);
+							cell1.innerHTML = "Flight number";
+							cell2.innerHTML = "Start destination";
+							cell3.innerHTML = "Final destination";
+							cell4.innerHTML = "Cost";
+							cell5.innerHTML = "Date of flight";
+							cell6.innerHTML = "Date of arrival";
+							cell7.innerHTML = "Number of stops";
+							cell8.innerHTML = "Length of flight";
+							cell9.innerHTML = "";
+						} else {
+							$("#foundFlightsReturn")
+									.append(
+											"<h3>No flights found </h3>");
+						}
+					}
+								},
 							error : function(jqXHR, textStatus,
 									errorThrown) {
 								alert(jqXHR.status);
@@ -1113,6 +1209,7 @@ $(document)
 		});
 function getLogged() {
 	var token = getJwtToken(TOKEN_KEY);
+	sessionStorage.removeItem("choosenSeats");
 	if (token) {
 		$
 				.ajax({
@@ -1147,6 +1244,7 @@ $(document)
 				"#form4",
 				function(e) {
 					e.preventDefault();
+					sessionStorage.removeItem("choosenSeats");
 					var username = document.getElementById("userUsernameEdit").value;
 					var password1 = document
 							.getElementById("userPassword1Edit").value;
@@ -1191,6 +1289,7 @@ $(document)
 				});
 
 function seeFriendRequests() {
+	sessionStorage.removeItem("choosenSeats");
 	$
 			.ajax({
 				type : 'GET',
@@ -1253,6 +1352,7 @@ function seeFriendRequests() {
 }
 
 function showAllFriends() {
+	sessionStorage.removeItem("choosenSeats");
 	$
 			.ajax({
 				type : 'GET',
@@ -1307,6 +1407,7 @@ function showAllFriends() {
 
 $(document).on('click', '#removeFriend', function(e) {
 	e.preventDefault();
+	sessionStorage.removeItem("choosenSeats");
 	var id = $(this).attr('name').split(" ")[0];
 	var num = $(this).attr('name').split(" ")[1];
 	$.ajax({
@@ -1330,12 +1431,14 @@ $(document).on('click', '#removeFriend', function(e) {
 
 $(document).on('click', '#listOfFri', function(e) {
 	e.preventDefault();
+	sessionStorage.removeItem("choosenSeats");
 	$("#friendList").empty();
 	showAllFriends();
 })
 
 $(document).on('click', '#acceptFriend', function(e) {
 	e.preventDefault();
+	sessionStorage.removeItem("choosenSeats");
 	var id = $(this).attr('name').split(" ")[0];
 	var num = $(this).attr('name').split(" ")[1];
 	$.ajax({
@@ -1360,6 +1463,7 @@ $(document).on('click', '#acceptFriend', function(e) {
 
 $(document).on('click', '#rejectFriend', function(e) {
 	e.preventDefault();
+	sessionStorage.removeItem("choosenSeats");
 	var id = $(this).attr('name').split(" ")[0];
 	var num = $(this).attr('name').split(" ")[1];
 	$.ajax({
@@ -1384,12 +1488,14 @@ $(document).on('click', '#rejectFriend', function(e) {
 
 $(document).on('click', '#friendR', function(e) {
 	e.preventDefault();
+	sessionStorage.removeItem("choosenSeats");
 	$("#friendRequestTable").empty();
 	seeFriendRequests();
 })
 
 $(document).on('click', '#searchFilter', function(e) {
 	e.preventDefault();
+	sessionStorage.removeItem("choosenSeats");
 	searchFilter();
 })
 
@@ -1433,6 +1539,7 @@ function  createCarReservationCriteriums(startDate,endDate,startCity,endCity,car
 }
 function searchForCars(rentacarId){
 	console.log('search for cars called');
+	sessionStorage.removeItem("choosenSeats");
 	console.log('MAIN START DATE');
 	console.log(document.getElementById("mainStartDate3").value);
 	console.log('MAIN END DATE');
@@ -1640,6 +1747,7 @@ function searchForCars(rentacarId){
 }
 
 function takeCar(id, startDate,endDate,passengers){
+	sessionStorage.removeItem("choosenSeats");
 	console.log('take car called');
 	console.log("Id: "+id);
 	console.log("Start date: "+startDate);
@@ -1668,11 +1776,12 @@ function takeCar(id, startDate,endDate,passengers){
 
 function rentacarReservation(id) {
 	console.log('Rentacar reservation called.');
+	sessionStorage.removeItem("choosenSeats");
 }
 $(document).on('click', '#hotelsButton', function(e) {
 	console.log('hotels button clicked');
 	// e.preventDefault();
-
+	sessionStorage.removeItem("choosenSeats");
 	showHotels("bez");
 
 });
@@ -1681,7 +1790,7 @@ $(document).on('click', '#hotelsButton', function(e) {
 $(document).on('submit', '#carReservationForm', function(e) {
 	console.log('car reservation form submitted');
 	e.preventDefault();
-
+	sessionStorage.removeItem("choosenSeats");
 	searchForCars();
 
 });
@@ -1689,7 +1798,7 @@ $(document).on('submit', '#carReservationForm', function(e) {
 $(document).on('click', '#rentACarButton', function(e) {
 	console.log('rent a car button clicked');
 	// e.preventDefault();
-
+	sessionStorage.removeItem("choosenSeats");
 	showRentacars("bez");
 
 });
@@ -1697,14 +1806,14 @@ $(document).on('click', '#rentACarButton', function(e) {
 $(document).on('click', '.airlinesButton', function(e) {
 	console.log('airlines button clicked');
 	// e.preventDefault();
-
+	sessionStorage.removeItem("choosenSeats");
 	showAirlines("bez");
 
 });
 $(document).on('click', '.sortByNameHotels', function(e) {
 	console.log('sort by name clicked');
 	// e.preventDefault();
-
+	sessionStorage.removeItem("choosenSeats");
 	showHotels("sortByNameHotels");
 
 });
@@ -1712,7 +1821,7 @@ $(document).on('click', '.sortByNameHotels', function(e) {
 $(document).on('click', '.sortByNameRentACars', function(e) {
 	console.log('sort by name clicked');
 	// e.preventDefault();
-
+	sessionStorage.removeItem("choosenSeats");
 	showRentacars("sortByNameRentACars");
 
 });
@@ -1720,7 +1829,7 @@ $(document).on('click', '.sortByNameRentACars', function(e) {
 $(document).on('click', '.sortByAddressHotels', function(e) {
 	console.log('sort by address clicked');
 	// e.preventDefault();
-
+	sessionStorage.removeItem("choosenSeats");
 	showHotels("sortByAddressHotels");
 
 });
@@ -1728,7 +1837,7 @@ $(document).on('click', '.sortByAddressHotels', function(e) {
 $(document).on('click', '.sortByAddressRentACars', function(e) {
 	console.log('sort by address clicked');
 	// e.preventDefault();
-
+	sessionStorage.removeItem("choosenSeats");
 	showRentacars("sortByAddressRentACars");
 
 });
@@ -1738,7 +1847,7 @@ $(document).on('click', '.searchRentACarButton', function(e) {
 	// e.preventDefault();
 
 	findRentacars();
-
+	sessionStorage.removeItem("choosenSeats");
 	$(".sortByNameRentACars").hide();
 	$(".sortByAddressRentACars").hide();
 
@@ -1749,7 +1858,7 @@ $(document).on('click', '.searchAirlineButton', function(e) {
 	// e.preventDefault();
 
 	findAirlines();
-
+	sessionStorage.removeItem("choosenSeats");
 	$(".sortByNameAirlines").hide();
 	$(".sortByAddressAirlines").hide();
 
@@ -1760,7 +1869,7 @@ $(document).on('click', '.searchHotelButton', function(e) {
 	// e.preventDefault();
 
 	findHotels();
-
+	sessionStorage.removeItem("choosenSeats");
 	$(".sortByNameHotels").hide();
 	$(".sortByAddressHotels").hide();
 
@@ -1769,7 +1878,7 @@ $(document).on('click', '.searchHotelButton', function(e) {
 $(document).on('click', '.chooseRentacar', function(e) {
 	// e.preventDefault();
 	var _this = $(this);
-
+	sessionStorage.removeItem("choosenSeats");
 	console.log('car number' + '   ' + this.id);
 	var mainStartDate3=document.getElementById("mainStartDate2").value;
 	var mainEndDate3=document.getElementById("mainEndDate2").value;
@@ -1785,7 +1894,7 @@ $(document).on('click', '.chooseRentacar', function(e) {
 $(document).on('click', '.sortByAddressAirlines', function(e) {
 	console.log('sort by address clicked');
 	// e.preventDefault();
-
+	sessionStorage.removeItem("choosenSeats");
 	showAirlines("sortByAddressAirlines");
 
 });
@@ -1793,6 +1902,7 @@ $(document).on('click', '.sortByAddressAirlines', function(e) {
 $(document).on('click', '.sortByNameAirlines', function(e) {
 	console.log('sort by address clicked');
 	// e.preventDefault();
+	sessionStorage.removeItem("choosenSeats");
 	showAirlines("sortByNameAirlines");
 
 });
@@ -1806,6 +1916,7 @@ $(document).on('click', '.takeCarButtonFast', function(e) {
 	var mainStartDate = $("#mainStartDate3").val();
 	var mainEndDate = $("#mainEndDate3").val();
 	var carId=this.id;
+	sessionStorage.removeItem("choosenSeats");
 	openCity(e, 'fastResDateDiv');
 	document.getElementById("mainStartDate").value=mainStartDate;
 	document.getElementById("mainEndDate").value=mainEndDate;
@@ -1816,14 +1927,14 @@ $(document).on('click', '.takeCarButtonFast', function(e) {
 $(document).on('click', '#buttonDateFast', function(e) {
 	console.log('button date fast clicked');
 	// e.preventDefault();
-
+	sessionStorage.removeItem("choosenSeats");
 	takeCarFast();
 });
 
 $(document).on('click', '.takeCarButton', function(e) {
 	console.log('take car button  clicked');
 	// e.preventDefault();
-
+	sessionStorage.removeItem("choosenSeats");
 	var startDate = document.getElementById("pickupDateCar").value;
 	var endDate = document.getElementById("endDateCar").value;
 	var passengers = document.getElementById("passengers").value;
@@ -1835,6 +1946,114 @@ $(document).on('click', '.takeCarButton', function(e) {
 $(document).on('click', '.chooseFlight', function(e) {
 	console.log('choose flight clicked');
 	e.preventDefault();
+	sessionStorage.removeItem("choosenSeats");
+	var id=$(this).attr('name');
+	sessionStorage.setItem("flightId", JSON.stringify(id));
+	$("#seatsFlight").empty();
+	$("#seatsFlight").append("<h3>Click on seats you want to reserve</h3>")
+	$("#seatsFlight").append("<h3>If you want to cancel seat click again on it</h3>")
+	$.ajax({
+		type : 'GET',
+		dataType: 'json',
+		url : urlRoot14 + "/" + id,
+		headers : createAuthorizationTokenHeader(TOKEN_KEY),
+		success : function(data) {
+			var table=$('<table align="center"></table>')
+			var list = data.firstClass == null ? []
+			: (data.firstClass instanceof Array ? data.firstClass : [ data.firstClass ]);
+			var list2 = data.businessClass == null ? []
+			: (data.businessClass instanceof Array ? data.businessClass : [ data.businessClass ]);
+			var list3 = data.economyClass == null ? []
+			: (data.economyClass instanceof Array ? data.economyClass : [ data.economyClass ]);
+			var i=1;
+			var j=1;
+			
+			var tr;
+			for(var fr in list){
+				if(j%6==1){
+					if(j!=1){
+						table.append(tr);
+					}
+					tr=$('<tr></tr>');
+					j=1;
+				}
+				console.log(list[fr].taken);
+				
+				if(j%4==0){
+					tr.append('<td><div class="foo cyan"></div></td>');
+
+				}
+				if(list[fr].taken==true){
+					tr.append('<td><div class="foo red" id="'+list[fr].id+'">'+i+'</div></td>');
+				}else{
+					tr.append('<td id="a"><div class="foo blue" id="'+list[fr].id+'">'+i+'</div></td>');
+				}
+				i++;
+				j++;
+				
+			}
+			table.append(tr);
+			j=1;
+			for(var fr in list2){
+				if(j%6==1){
+					if(j!=1){
+						table.append(tr);
+					}
+					tr=$('<tr></tr>');
+					j=1;
+				}
+				
+				if(j%4==0){
+					tr.append('<td><div class="foo cyan"></div></td>');
+				}
+				if(list2[fr].taken==true){
+					tr.append('<td><div class="foo red" id="'+list2[fr].id+'">'+i+'</div></td>');
+				}else{
+					tr.append('<td id="a"><div class="foo green" id="'+list2[fr].id+'">'+i+'</div></td>');
+				}
+				i++;
+				j++;
+				
+			}
+			table.append(tr);
+			j=1;
+			for(var fr in list3){
+				if(j%6==1){
+					if(j!=1){
+						table.append(tr);
+					}
+					tr=$('<tr></tr>');
+					j=1;
+				}
+				
+				if(j%4==0){
+					tr.append('<td><div class="foo cyan"></div></td>');
+				}
+				if(list3[fr].taken==true){
+					tr.append('<td><div class="foo red" id="'+list3[fr].id+'">'+i+'</div></td>');
+				}else{
+					tr.append('<td id="a"><div class="foo purple" id="'+list3[fr].id+'">'+i+'</div></td>');
+				}
+				i++;
+				j++;
+				
+			}
+			table.append(tr);
+			$("#seatsFlight").append('<br><br>')
+			$("#seatsFlight").append(table);
+			$("#seatsFlight").append('<br><br>')
+			$("#seatsFlight").append('<button id="reserveFlight" class="btn btn-primary">Reserve</button>');
+			
+
+		},
+		error : function(jqXHR, textStatus, errorThrown) {
+			alert(jqXHR.status);
+			alert(textStatus);
+			alert(errorThrown);
+
+		}
+	})
+	
 	//datum
 	//mesto
 	var to = document.getElementById("to").value;
@@ -1852,7 +2071,186 @@ $(document).on('click', '.chooseFlight', function(e) {
 
 });
 
+$(document).on('click','#reserveFlight',function(e){
+	e.preventDefault();
+	openCity(e, 'reserveFlightInfo');
+	$("#reserveFlightInfoDiv").empty();
+	var tabela=$('<table align="center"></table>');
+	var i=1;
+	var choosenSeats = JSON.parse(sessionStorage["choosenSeats"]);
+	var tr=$('<tr></tr>');
+	tr.append('<td><p>Insert your passport number: </p></td><td></td>');
+	tr.append('<td><input type="text" id="passportNumber"></td>');
+	tabela.append(tr);
+	var j=choosenSeats.length;
+	for(var k=0;k<j-1;k++){
+		var tr=$('<tr></tr>');
+		tr.append('<td><p>Choose friend number '+i+': </p></td><td></td>')
+		var td=$('<td></td>');
+		var select=$('<select id="reservation'+i+'" style="width=400px"></select>');
+		$
+		.ajax({
+			type : 'GET',
+			url : urlRoot11,
+			headers : createAuthorizationTokenHeader(TOKEN_KEY),
+			contentType : 'application/json',
+			async: false,
+			success : function(data) {
+				var list = data == null ? []
+						: (data instanceof Array ? data : [ data ]);
+				if (list.length > 0) {
+					for(var friend in list){
+						var option=$('<option value="'+ list[friend].id + '">'+ list[friend].firstName+" "+list[friend].lastName+ '</option>');
+						select.append(option);
+					}
+				}
+			},
+			error : function(jqXHR, textStatus, errorThrown) {
+				alert(jqXHR.status);
+				alert(textStatus);
+				alert(errorThrown);
+
+			}
+		})
+		td.append(select);
+		tr.append(td);
+		tabela.append(tr);
+		i++;
+		
+	}
+	$("#reserveFlightInfoDiv").append(tabela);
+	$("#reserveFlightInfoDiv").append('<br><br>');
+	$("#reserveFlightInfoDiv").append('<div class="wrapper"><button align="center" type="submit" id="confirmReserveFlight" style="background-color: #ff1a75">Reserve</button></div>');
+	
+	
+	
+})
+
+$(document).on('click',"#confirmReserveFlight",function(e){
+	e.preventDefault();
+	var choosenSeats = JSON.parse(sessionStorage["choosenSeats"]);
+	var size=choosenSeats.length;
+	var brojPasosa=document.getElementById("passportNumber").value;
+	var idjeviPutnika="";
+	var sed="";
+	var l=JSON.parse(sessionStorage["flightId"])
+	for(var i=1;i<size;i++){
+		var s=document.getElementById("reservation"+i+"").value;
+		idjeviPutnika+=s+" ";
+		
+	}
+	idjeviPutnika.substring(0, idjeviPutnika.length - 1);
+	var sedista=JSON.parse(sessionStorage["choosenSeats"]);
+	for(var s in sedista){
+		sed+=sedista[s]+" ";
+		
+	}
+	sed.substring(0, sed.length - 1);
+	sessionStorage.removeItem("choosenSeats");
+	$.ajax({
+		type : 'POST',
+		url : urlRoot16,
+		headers : createAuthorizationTokenHeader(TOKEN_KEY),
+		contentType : 'application/json',
+		dataType : "json",
+		data : createReservationToJSON(sed,
+				idjeviPutnika, l,
+				brojPasosa),
+		success : function(data) {
+			var list = data == null ? []
+			: (data instanceof Array ? data : [ data ]);
+			if(list!=[]){
+				sendEmail(list);
+			}
+			alert("Successful reservation of a flight, congratulations!");
+			
+		},
+		error : function(jqXHR, textStatus, errorThrown) {
+			alert(jqXHR.status);
+			alert(textStatus);
+			alert(errorThrown);
+
+		}
+	})
+	
+})
+
+function sendEmail(list){
+	for(var f in list){
+		$.ajax({
+			type : 'POST',
+			url : urlRootSendMail,
+			contentType : 'application/json',
+			
+			data : mailToJson(list[f].email, list[f].reservationId),
+			success : function(data) {
+				
+			},
+			error : function(jqXHR, textStatus, errorThrown) {
+				alert(jqXHR.status);
+				alert(textStatus);
+				alert(errorThrown);
+
+			}
+		})
+	}
+}
+
+$(document).on('click','#a',function(e){
+	e.preventDefault();
+	var id=$(this).find('div').attr('id');
+	if(sessionStorage["choosenSeats"]){
+
+	}else{
+		var choosenSeats=[];
+	    sessionStorage.setItem("choosenSeats", JSON.stringify(choosenSeats));
+	}
+	var choosenSeats = JSON.parse(sessionStorage["choosenSeats"]);
+	var i=0;
+	for(var s in choosenSeats){
+		console.log(s);
+		if(choosenSeats[s]==id){
+			i=1;
+			$.ajax({
+				type : 'GET',
+				url : urlRoot15+"/"+id,
+				headers : createAuthorizationTokenHeader(TOKEN_KEY),
+				dataType: "json",
+				success : function(data) {
+					console.log((data.fc).toString())
+					if((data.fc).toString()=="ECONOMY"){
+						$("#"+id+"").removeClass();
+						$("#"+id+"").addClass("foo purple");
+					}else if((data.fc).toString()=="BUSINESS"){
+						$("#"+id+"").removeClass();
+						$("#"+id+"").addClass("foo green");
+					}else{
+						$("#"+id+"").removeClass();
+						$("#"+id+"").addClass("foo blue");
+					}
+					choosenSeats.splice(s, 1);
+					sessionStorage.setItem("choosenSeats", JSON.stringify(choosenSeats));
+					
+				},
+				error : function(jqXHR, textStatus, errorThrown) {
+					alert(jqXHR.status);
+					alert(textStatus);
+					alert(errorThrown);
+				}
+
+			})
+			break;
+		}
+	}
+	if(i==0){
+		choosenSeats.push(id);
+		sessionStorage.setItem("choosenSeats", JSON.stringify(choosenSeats));
+		$(this).find('div').removeClass($(this).find('div').attr('class')).addClass("foo grey");
+	}
+	})
+
 function showRentacarsDest(data, startDate, endDate) {
+	sessionStorage.removeItem("choosenSeats");
 	var mainStartDate=startDate;
 	var mainEndDate=endDate;
 	document.getElementById("mainStartDate2").value=mainStartDate;
@@ -1908,6 +2306,7 @@ function showRentacarsDest(data, startDate, endDate) {
 $(document).on('click', '#allReservationsButtton', function(e) {
 	console.log('all reservations button clicked');
 	e.preventDefault();
+	sessionStorage.removeItem("choosenSeats");
 	showMyReservationsCars();;
 });
 
@@ -1915,6 +2314,7 @@ $(document).on('click', '#allReservationsButtton', function(e) {
 $(document).on('click', '.gradeCarResButton', function(e) {
 	console.log('grade car res button clicked');
 	e.preventDefault();
+	sessionStorage.removeItem("choosenSeats");
 	openCity(e, 'gradeRentacar');
 	fillGradeRentacarForm(this.id);
 	
@@ -1922,6 +2322,7 @@ $(document).on('click', '.gradeCarResButton', function(e) {
 $(document).on('click', '.cancelCarResButton', function(e) {
 	console.log('cancel car reservation button clicked');
 	e.preventDefault();
+	sessionStorage.removeItem("choosenSeats");
 	cancelCarReservation(this.id);
 });
 
@@ -1929,13 +2330,14 @@ $(document).on('click', '.cancelCarResButton', function(e) {
 $(document).on('click', '#submitRentacarGrade', function(e) {
 	console.log('submit rentacar grade clicked');
 	e.preventDefault();
+	sessionStorage.removeItem("choosenSeats");
 	saveGradedRentacar();
 });
 
 $(document).on('click', '#fastReservationButton', function(e) {
 	console.log('fast reservation button clicked');
 	e.preventDefault();
-	
+	sessionStorage.removeItem("choosenSeats");
 	showCarsForFastRes();
 });
 
@@ -1943,7 +2345,7 @@ $(document).on('click', '#fastReservationButton', function(e) {
 $(document).on('click', '#offerRentacarsButton', function(e) {
 	console.log('offer rentacars clicked');
 	e.preventDefault();
-
+	sessionStorage.removeItem("choosenSeats");
 	var destination = document.getElementById("destinationId").value;
 	var startDate=document.getElementById("startDateId").value;
 	var endDate = document.getElementById("endDateId").value;
@@ -2023,5 +2425,25 @@ function createCarResDTO(id, startDate, endDate, passengers) {
 	
 	})
 }
+
+function createReservationToJSON(sed,idjeviPutnik, l,brojPasosa){
+	return JSON.stringify({
+		"seats":sed,
+		"users":idjeviPutnik,
+		"flight": l,
+		"passportNum":brojPasosa,
+	})
+}
+
+function mailToJson(emailAddress, id){
+	return JSON.stringify({
+		"emailAddress": emailAddress,
+		"subject": "Register verification",
+		"body": "A friend invited you to a flight accept here:\nhttp://localhost:8080/api/acceptFlightReservation/"+id+" \nreject here \nhttp://localhost:8080/api/rejectFlightReservation/"+id
+	})
+}
+
+
+
 
 

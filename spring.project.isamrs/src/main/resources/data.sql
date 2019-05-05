@@ -93,7 +93,7 @@ INSERT INTO USERS (dtype, id, username, password, first_name, last_name, email, 
 					last_password_reset_date, phone_number) 
 VALUES ( 'RegularUser', 5, '123', 
 		'$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra',
-		'Nikola', 'Nikolic', 'nikolanikolic@example.com', true, '2019-04-18 20:58:00', 
+		'Nikola', 'Nikolic', 'leona.nedeljkovic@gmail.com', true, '2019-04-18 20:58:00', 
 		'00381645544333')
 ON DUPLICATE KEY UPDATE username = '123';
 INSERT INTO AUTHORITY (id, name)
@@ -108,7 +108,7 @@ INSERT INTO USERS (dtype, id, username, password, first_name, last_name, email, 
 					last_password_reset_date, phone_number) 
 VALUES ( 'RegularUser', 6, '124', 
 		'$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra',
-		'Nikolina', 'Nikolic', 'nikolanikolic@example.com', true, '2019-04-18 20:58:00', 
+		'Nikolina', 'Nikolic', 'leona.nedeljkovic@gmail.com', true, '2019-04-18 20:58:00', 
 		'00381645544333')
 ON DUPLICATE KEY UPDATE username = '124';
 INSERT INTO AUTHORITY (id, name)
@@ -122,7 +122,7 @@ INSERT INTO USERS (dtype, id, username, password, first_name, last_name, email, 
 					last_password_reset_date, phone_number) 
 VALUES ( 'RegularUser', 7, '125', 
 		'$2a$04$Vbug2lwwJGrvUXTj6z7ff.97IzVBkrJ1XfApfGNl.Z695zqcnPYra',
-		'Ana', 'Nikolic', 'nikolanikolic@example.com', true, '2019-04-18 20:58:00', 
+		'Ana', 'Nikolic', 'leona.nedeljkovic@gmail.com', true, '2019-04-18 20:58:00', 
 		'00381645544333')
 ON DUPLICATE KEY UPDATE username = '125';
 INSERT INTO AUTHORITY (id, name)

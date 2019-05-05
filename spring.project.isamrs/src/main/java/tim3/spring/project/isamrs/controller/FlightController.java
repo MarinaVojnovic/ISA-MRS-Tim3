@@ -20,14 +20,19 @@ import org.springframework.web.bind.annotation.RestController;
 
 import tim3.spring.project.isamrs.dto.AddFlightDTO;
 import tim3.spring.project.isamrs.dto.FlightDTO;
+import tim3.spring.project.isamrs.dto.FoundFlightsDTO;
+import tim3.spring.project.isamrs.dto.SeatsDTO;
 import tim3.spring.project.isamrs.model.Airline;
 import tim3.spring.project.isamrs.model.AirlineAdmin;
 import tim3.spring.project.isamrs.model.Flight;
+import tim3.spring.project.isamrs.model.FlightClass;
 import tim3.spring.project.isamrs.model.FlightStops;
+import tim3.spring.project.isamrs.model.Seat;
 import tim3.spring.project.isamrs.model.User;
 import tim3.spring.project.isamrs.service.AirlineService;
 import tim3.spring.project.isamrs.service.FlightService;
 import tim3.spring.project.isamrs.service.FlightStopService;
+import tim3.spring.project.isamrs.service.SeatService;
 import tim3.spring.project.isamrs.service.impl.CustomUserDetailsService;
 
 @RestController
@@ -43,6 +48,9 @@ public class FlightController {
 
 	@Autowired
 	private FlightStopService flightStopService;
+	
+	@Autowired
+	private SeatService seatService;
 	
 	@GetMapping(value = "/findConcreteFlights/{airlineId}")
 	public ResponseEntity<Set<Flight>> findConcreteFlights(@PathVariable String airlineId) {
@@ -69,7 +77,7 @@ public class FlightController {
 				this.airlineService.getOne(Long.parseLong(flightDTO.getStartDestinationRegister())),
 				this.airlineService.getOne(Long.parseLong(flightDTO.getFinalDestinationRegister())), air,
 				flightDTO.getCostOfFlight(), dateOfFlight, dateOfArrival, flightDTO.getLength(),
-				flightDTO.getNumOfSeats(), flightDTO.getNumOfStops())));
+				flightDTO.getNumOfSeatsEconomy(),flightDTO.getNumOfSeatsBusiness(),flightDTO.getNumOfSeatsFirst(), flightDTO.getNumOfStops())));
 		if (flightDTO.getNumOfStops() > 0) {
 			String[] stops = flightDTO.getStops().split(" ");
 			for (String s : stops) {
@@ -90,7 +98,7 @@ public class FlightController {
 
 	@SuppressWarnings("deprecation")
 	@GetMapping(value = "/searchFlight/{startDestination}/{finalDestination}/{dateOfFlight}/{dateOfArrival}/{from}/{to}/{fromL}/{toL}/{name}")
-	public ResponseEntity<List<Flight>> searchFlights(@PathVariable Long startDestination,
+	public ResponseEntity<FoundFlightsDTO> searchFlights(@PathVariable Long startDestination,
 			@PathVariable Long finalDestination, @PathVariable String dateOfFlight, @PathVariable String dateOfArrival,
 			@PathVariable String from, @PathVariable String to, @PathVariable String fromL, @PathVariable String toL,
 			@PathVariable String name) {
@@ -103,17 +111,17 @@ public class FlightController {
 					Integer.parseInt(dateOfArrival.split("\\-")[2]));
 		}
 		List<Flight> flights = new ArrayList<Flight>();
-		if (dateOfArrival.equals("noDate")) {
-			flights = this.flightService.findByStartAirlineAndFinalAirlineAndDateOfStart(
+		List<Flight> returnFlights=new ArrayList<Flight>();
+		flights = this.flightService.findByStartAirlineAndFinalAirlineAndDateOfStart(
 					this.airlineService.getOne(startDestination), this.airlineService.getOne(finalDestination),
 					dateOfFl);
+		returnFlights=this.flightService.findByStartAirlineAndFinalAirlineAndDateOfStart(
+				this.airlineService.getOne(finalDestination), this.airlineService.getOne(startDestination),
+				dateOfArr);
+		System.out.println("founfffffff "+returnFlights.size());
 
-		} else {
-			flights = this.flightService.findByStartAirlineAndFinalAirlineAndDateOfStartAndDateOfEnd(
-					this.airlineService.getOne(startDestination), this.airlineService.getOne(finalDestination),
-					dateOfFl, dateOfArr);
-		}
 		List<Flight> filtered = new ArrayList<Flight>();
+		List<Flight> filteredReturn = new ArrayList<Flight>();
 		double fromm, too;
 		int fromLL, toLL;
 		String namee;
@@ -155,8 +163,40 @@ public class FlightController {
 			}
 
 		}
+		
+		for (Flight f : returnFlights) {
+			if (f.getCost() > fromm && f.getCost() < too && f.getLengthOfFlight() > fromLL
+					&& f.getLengthOfFlight() < toLL) {
+				if (!namee.equals("")) {
+					if (f.getAirline().getName().equalsIgnoreCase(namee)) {
+						filteredReturn.add(f);
+					}
+				} else {
+					filteredReturn.add(f);
+				}
+			}
 
-		return new ResponseEntity<>(filtered, HttpStatus.OK);
+		}
+		FoundFlightsDTO ff=new FoundFlightsDTO(filtered,filteredReturn);
+
+		return new ResponseEntity<>(ff, HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/getFlight/{id}")
+	public ResponseEntity<SeatsDTO> getFlight(@PathVariable Long id) {
+		Flight fl=this.flightService.getOne(id);
+		
+		List<Seat> seatsFirst=this.seatService.findByFlightAndFc(fl, FlightClass.FIRST);
+		List<Seat> seatsBusiness=this.seatService.findByFlightAndFc(fl, FlightClass.BUSINESS);
+		List<Seat> seatsEconomy=this.seatService.findByFlightAndFc(fl, FlightClass.ECONOMY);
+		SeatsDTO seats=new SeatsDTO(seatsFirst,seatsBusiness,seatsEconomy);
+		return new ResponseEntity<SeatsDTO>(seats, HttpStatus.OK);
+	}
+	
+	@GetMapping(value = "/getSeat/{id}")
+	public ResponseEntity<Seat> getSeat(@PathVariable Long id) {
+		Seat s=this.seatService.getOne(id);
+		return new ResponseEntity<Seat>(s, HttpStatus.OK);
 	}
 	
 	

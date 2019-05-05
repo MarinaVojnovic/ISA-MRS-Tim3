@@ -48,4 +48,5 @@ public class EMailController {
 		transport.sendMessage(generateMailMessage, generateMailMessage.getAllRecipients());
 		transport.close();
 	}
+	
 }

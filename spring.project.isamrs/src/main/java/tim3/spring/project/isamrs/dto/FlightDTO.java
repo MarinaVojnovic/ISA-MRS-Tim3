@@ -8,7 +8,10 @@ public class FlightDTO {
 	String dateOfFlight;
 	String dateOfArrival;
 	int length;
-	int numOfSeats;
+	int numOfSeatsEconomy;
+	int numOfSeatsBusiness;
+	int numOfSeatsFirst;
+	
 	int numOfStops;
 	String stops;
 	public String getFlightNumberRegister() {
@@ -53,12 +56,8 @@ public class FlightDTO {
 	public void setLength(int length) {
 		this.length = length;
 	}
-	public int getNumOfSeats() {
-		return numOfSeats;
-	}
-	public void setNumOfSeats(int numOfSeats) {
-		this.numOfSeats = numOfSeats;
-	}
+	
+	
 	public int getNumOfStops() {
 		return numOfStops;
 	}
@@ -71,9 +70,28 @@ public class FlightDTO {
 	public void setStops(String stops) {
 		this.stops = stops;
 	}
+
+	public int getNumOfSeatsEconomy() {
+		return numOfSeatsEconomy;
+	}
+	public void setNumOfSeatsEconomy(int numOfSeatsEconomy) {
+		this.numOfSeatsEconomy = numOfSeatsEconomy;
+	}
+	public int getNumOfSeatsBusiness() {
+		return numOfSeatsBusiness;
+	}
+	public void setNumOfSeatsBusiness(int numOfSeatsBusiness) {
+		this.numOfSeatsBusiness = numOfSeatsBusiness;
+	}
+	public int getNumOfSeatsFirst() {
+		return numOfSeatsFirst;
+	}
+	public void setNumOfSeatsFirst(int numOfSeatsFirst) {
+		this.numOfSeatsFirst = numOfSeatsFirst;
+	}
 	public FlightDTO(String flightNumberRegister, String startDestinationRegister, String finalDestinationRegister,
-			double costOfFlight, String dateOfFlight, String dateOfArrival, int length, int numOfSeats, int numOfStops,
-			String stops) {
+			double costOfFlight, String dateOfFlight, String dateOfArrival, int length, int numOfSeatsEconomy,
+			int numOfSeatsBusiness, int numOfSeatsFirst, int numOfStops, String stops) {
 		super();
 		this.flightNumberRegister = flightNumberRegister;
 		this.startDestinationRegister = startDestinationRegister;
@@ -82,7 +100,9 @@ public class FlightDTO {
 		this.dateOfFlight = dateOfFlight;
 		this.dateOfArrival = dateOfArrival;
 		this.length = length;
-		this.numOfSeats = numOfSeats;
+		this.numOfSeatsEconomy = numOfSeatsEconomy;
+		this.numOfSeatsBusiness = numOfSeatsBusiness;
+		this.numOfSeatsFirst = numOfSeatsFirst;
 		this.numOfStops = numOfStops;
 		this.stops = stops;
 	}
