@@ -1,9 +1,5 @@
 package tim3.spring.project.isamrs.dto;
 
-import javax.persistence.Column;
-
-import tim3.spring.project.isamrs.model.CarType;
-
 public class CarDTO {
 
 	private long id;

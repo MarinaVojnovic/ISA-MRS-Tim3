@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import tim3.spring.project.isamrs.model.FlightStops;
-import tim3.spring.project.isamrs.repository.FlightRepository;
 import tim3.spring.project.isamrs.repository.FlightStopRepository;
 import tim3.spring.project.isamrs.service.FlightStopService;
 

@@ -10,7 +10,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -25,8 +24,8 @@ public class Rentacar {
 	private Long id;
 
 	@JsonIgnore
-	@OneToOne(mappedBy = "rentacar")
-	private RentacarAdmin rentacarAdmin;
+	@OneToMany(mappedBy = "rentacarAdmin", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
+	private Set<RentacarAdmin> rentacarAdmins = new HashSet<>();
 
 	@Column(name = "name")
 	private String name;
@@ -182,11 +181,11 @@ public class Rentacar {
 		this.number=number;
 	}
 
-	public RentacarAdmin getRentacarAdmin() {
-		return rentacarAdmin;
+	public Set<RentacarAdmin> getRentacarAdmins() {
+		return rentacarAdmins;
 	}
 
-	public void setRentacarAdmin(RentacarAdmin rentacarAdmin) {
-		this.rentacarAdmin = rentacarAdmin;
+	public void setRentacarAdmins(Set<RentacarAdmin> rentacarAdmins) {
+		this.rentacarAdmins = rentacarAdmins;
 	}
 }

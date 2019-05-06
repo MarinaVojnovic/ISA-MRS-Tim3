@@ -7,6 +7,11 @@ var urlRoot6 = "http://localhost:8080/findHotel";
 var urlRoot7 = "http://localhost:8080/saveChangesHotel";
 var urlRoot8 = "http://localhost:8080/api/getLogged";
 var urlRoot9 = "http://localhost:8080/api/editUser";
+var urlRoot10 = "http://localhost:8080/getHotelCustomerServices";
+var urlRoot11 = "http://localhost:8080/createHotelCustomerService";
+var urlRoot12 = "http://localhost:8080/getRoomFastReservations";
+var urlRoot13 = "http://localhost:8080/deleteRoomFastReservation";
+var urlRoot14 = "http://localhost:8080/createRoomFastReservation";
 var urlGetFirstTime = "http://localhost:8080/api/isFirstTime";
 var urlChangePassword = "http://localhost:8080/api/changePasswordFirstTime";
 
@@ -46,6 +51,310 @@ window.onload = function(e) {
 		}
 
 	})
+}
+
+function fillDatasAddRoomFastReservation() {
+	$.ajax({
+		type : 'GET',
+		url : urlRoot2,
+		headers : createAuthorizationTokenHeader(TOKEN_KEY),
+		dataType : "json",
+		success : function(data) {
+			if (data) {
+				fillTableRoomPick(data, "roomFastReservationRoomTable");
+			}
+		},
+		error : function(jqXHR, textStatus, errorThrown) {
+			alert(jqXHR.status);
+			alert(textStatus);
+			alert(errorThrown);
+		}
+
+	})
+	$.ajax({
+		type : 'GET',
+		url : urlRoot10,
+		headers : createAuthorizationTokenHeader(TOKEN_KEY),
+		dataType : "json",
+		success : function(data) {
+			if (data) {
+				fillTableHotelCustomerServicesPick(data,
+						"roomFastReservationHcsTable");
+			}
+		},
+		error : function(jqXHR, textStatus, errorThrown) {
+			alert(jqXHR.status);
+			alert(textStatus);
+			alert(errorThrown);
+		}
+
+	})
+}
+
+function fillDatasDeleteRoomFastReservation() {
+	$.ajax({
+		type : 'GET',
+		url : urlRoot12,
+		headers : createAuthorizationTokenHeader(TOKEN_KEY),
+		dataType : "json",
+		success : function(data) {
+			if (data) {
+				fillTableRoomFastReservations(data,
+						"tableDeleteRoomFastReservation");
+			}
+		},
+		error : function(jqXHR, textStatus, errorThrown) {
+			alert(jqXHR.status);
+			alert(textStatus);
+			alert(errorThrown);
+		}
+
+	})
+}
+
+function fillHotelCustomerServices() {
+	$.ajax({
+		type : 'GET',
+		url : urlRoot10,
+		headers : createAuthorizationTokenHeader(TOKEN_KEY),
+		dataType : "json",
+		success : function(data) {
+			if (data) {
+				fillTableHotelCustomerServices(data,
+						"tableHotelCustomerServices");
+			}
+		},
+		error : function(jqXHR, textStatus, errorThrown) {
+			alert(jqXHR.status);
+			alert(textStatus);
+			alert(errorThrown);
+		}
+
+	})
+}
+
+function fillDatas() {
+	$.ajax({
+		type : 'GET',
+		url : urlRoot6,
+		headers : createAuthorizationTokenHeader(TOKEN_KEY),
+		dataType : "json",
+		success : function(data) {
+			if (data) {
+				$.ajax({
+					type : 'GET',
+					url : urlRoot2,
+					headers : createAuthorizationTokenHeader(TOKEN_KEY),
+					dataType : "json",
+					success : function(data) {
+						if (data) {
+							fillTableRooms(data, "reportHotelEachRoom");
+						}
+					},
+					error : function(jqXHR, textStatus, errorThrown) {
+						alert(jqXHR.status);
+						alert(textStatus);
+						alert(errorThrown);
+					}
+
+				})
+				$("#reportHotelAverageGrade").html(data.score);
+
+			}
+		},
+		error : function(jqXHR, textStatus, errorThrown) {
+			alert(jqXHR.status);
+			alert(textStatus);
+			alert(errorThrown);
+		}
+
+	})
+}
+
+function fillTableHotelCustomerServices(data, table) {
+	var response = data;
+	$("#" + table).find("tr").remove();
+	var tabela = document.getElementById(table);
+
+	var index = 0;
+	for ( var counter in response) {
+		var row = tabela.insertRow(counter);
+		var cell0 = row.insertCell(0)
+		var cell1 = row.insertCell(1);
+		var cell2 = row.insertCell(2);
+
+		cell0.innerHTML = ++index;
+		cell1.innerHTML = response[counter].name;
+		cell2.innerHTML = response[counter].price;
+
+	}
+	var row = tabela.insertRow(0);
+	var cell0 = row.insertCell(0);
+	var cell1 = row.insertCell(1);
+	var cell2 = row.insertCell(2);
+
+	cell0.innerHTML = '<p style= "color:#002699; font-weight: 200% font-size:150%">#</p>';
+	cell1.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Name</p>';
+	cell2.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Price</p>';
+
+}
+
+function fillTableRoomFastReservations(data, table) {
+	var response = data;
+	$("#" + table).find("tr").remove();
+	var tabela = document.getElementById(table);
+
+	for ( var counter in response) {
+		var row = tabela.insertRow(counter);
+		var cell0 = row.insertCell(0)
+		var cell1 = row.insertCell(1);
+		var cell2 = row.insertCell(2);
+		var cell3 = row.insertCell(3);
+		var cell4 = row.insertCell(4);
+		var cell5 = row.insertCell(5);
+		var cell6 = row.insertCell(6);
+		var cell7 = row.insertCell(7);
+		var cell8 = row.insertCell(8);
+
+		cell0.innerHTML = response[counter].room.hotel.name;
+		cell1.innerHTML = response[counter].room.roomNumber;
+		cell2.innerHTML = response[counter].room.numberPeople;
+		cell3.innerHTML = response[counter].startDate;
+		cell4.innerHTML = response[counter].endDate;
+		cell5.innerHTML = response[counter].originalPrice;
+		cell6.innerHTML = response[counter].discount + "%";
+		cell7.innerHTML = response[counter].newPrice;
+		cell8.innerHTML = "<button class=\"deleteRFR\" id=\""
+				+ response[counter].id + "\">Delete</button>"
+
+	}
+	var row = tabela.insertRow(0);
+	var cell0 = row.insertCell(0);
+	var cell1 = row.insertCell(1);
+	var cell2 = row.insertCell(2);
+	var cell3 = row.insertCell(3);
+	var cell4 = row.insertCell(4);
+	var cell5 = row.insertCell(5);
+	var cell6 = row.insertCell(6);
+	var cell7 = row.insertCell(7);
+	var cell8 = row.insertCell(8);
+
+	cell0.innerHTML = '<p style= "color:#002699; font-weight: 200% font-size:150%">Hotel</p>';
+	cell1.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Room number</p>';
+	cell2.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Number of people in room</p>';
+	cell3.innerHTML = '<p style= "color:#002699; font-weight: 200% font-size:150%">Start date</p>';
+	cell4.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">End date</p>';
+	cell5.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Original price</p>';
+	cell6.innerHTML = '<p style= "color:#002699; font-weight: 200% font-size:150%">Discount</p>';
+	cell7.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">New price</p>';
+	cell8.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%"></p>';
+
+}
+
+function fillTableHotelCustomerServicesPick(data, table) {
+	var response = data;
+	$("#" + table).find("tr").remove();
+	var tabela = document.getElementById(table);
+
+	for ( var counter in response) {
+		var row = tabela.insertRow(counter);
+		var cell0 = row.insertCell(0)
+		var cell1 = row.insertCell(1);
+		var cell2 = row.insertCell(2);
+
+		cell0.innerHTML = "<input type=\"checkbox\" name=\"hcsPick\" value=\""
+				+ response[counter].id + "\">"
+		cell1.innerHTML = response[counter].name;
+		cell2.innerHTML = response[counter].price;
+
+	}
+	var row = tabela.insertRow(0);
+	var cell0 = row.insertCell(0);
+	var cell1 = row.insertCell(1);
+	var cell2 = row.insertCell(2);
+
+	cell0.innerHTML = '<p style= "color:#002699; font-weight: 200% font-size:150%">Pick extra services</p>';
+	cell1.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Name</p>';
+	cell2.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Price</p>';
+
+}
+
+function fillTableRooms(data, table) {
+	var response = data;
+	$("#" + table).find("tr").remove();
+	var tabela = document.getElementById(table);
+
+	var index = 0;
+	for ( var counter in response) {
+		var row = tabela.insertRow(counter);
+		var cell0 = row.insertCell(0);
+		var cell1 = row.insertCell(1);
+		var cell2 = row.insertCell(2);
+		var cell3 = row.insertCell(3);
+		var cell4 = row.insertCell(4);
+		var cell5 = row.insertCell(5);
+
+		cell0.innerHTML = ++index;
+		cell1.innerHTML = response[counter].hotel.name;
+		cell2.innerHTML = response[counter].roomNumber;
+		cell3.innerHTML = response[counter].price;
+		cell4.innerHTML = response[counter].numberPeople;
+		cell5.innerHTML = response[counter].score;
+
+	}
+	var row = tabela.insertRow(0);
+	var cell0 = row.insertCell(0);
+	var cell1 = row.insertCell(1);
+	var cell2 = row.insertCell(2);
+	var cell3 = row.insertCell(3);
+	var cell4 = row.insertCell(4);
+	var cell5 = row.insertCell(5);
+
+	cell0.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">#</p>';
+	cell1.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Hotel it belongs to</p>';
+	cell2.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Number of room</p';
+	cell3.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Price</p>';
+	cell4.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Number of people for room</p>';
+	cell5.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Grade</p>';
+}
+
+function fillTableRoomPick(data, table) {
+	var response = data;
+	$("#" + table).find("tr").remove();
+	var tabela = document.getElementById(table);
+
+	for ( var counter in response) {
+		var row = tabela.insertRow(counter);
+		var cell0 = row.insertCell(0);
+		var cell1 = row.insertCell(1);
+		var cell2 = row.insertCell(2);
+		var cell3 = row.insertCell(3);
+		var cell4 = row.insertCell(4);
+		var cell5 = row.insertCell(5);
+
+		cell0.innerHTML = "<input type=\"radio\" name=\"roomPick\" value=\""
+				+ response[counter].id + "\">"
+		cell1.innerHTML = response[counter].hotel.name;
+		cell2.innerHTML = response[counter].roomNumber;
+		cell3.innerHTML = response[counter].price;
+		cell4.innerHTML = response[counter].numberPeople;
+		cell5.innerHTML = response[counter].score;
+
+	}
+	var row = tabela.insertRow(0);
+	var cell0 = row.insertCell(0);
+	var cell1 = row.insertCell(1);
+	var cell2 = row.insertCell(2);
+	var cell3 = row.insertCell(3);
+	var cell4 = row.insertCell(4);
+	var cell5 = row.insertCell(5);
+
+	cell0.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Pick one room</p>';
+	cell1.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Hotel it belongs to</p>';
+	cell2.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Number of room</p';
+	cell3.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Price</p>';
+	cell4.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Number of people for room</p>';
+	cell5.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Grade</p>';
 }
 
 function passwordValidation() {
@@ -291,8 +600,8 @@ function saveEditedRoom() {
 			dataType : "json",
 			contentType : 'application/json',
 			success : function(data) {
-				alert("Room successfully edited, congratulations!");
-
+				showRooms("forEdit");
+				alert(data.message);
 			},
 			error : function(jqXHR, textStatus, errorThrown) {
 				alert(jqXHR.status);
@@ -502,7 +811,103 @@ $(document)
 											roomPeopleNumberRegister,
 											roomPriceRegister),
 									success : function(data) {
-										alert("Successful adding room, congratulations!");
+										alert(data.message);
+									},
+									error : function(jqXHR, textStatus,
+											errorThrown) {
+										alert(jqXHR.status);
+										alert(textStatus);
+										alert(errorThrown);
+
+									}
+								})
+					}
+				});
+
+$(document)
+		.on(
+				"submit",
+				"#addRoomFastReservationForm",
+				function(e) {
+					e.preventDefault();
+					var roomId = $('input[name="roomPick"]:checked').val();
+					var startDate = document
+							.getElementById("roomFastReservationStartDate").value;
+					var endDate = document
+							.getElementById("roomFastReservationEndDate").value;
+					var discount = document
+							.getElementById("roomFastReservationDiscount").value;
+					startDate = startDate.replace("T", " ");
+					endDate = endDate.replace("T", " ");
+					var hcsIds = "";
+					$("input:checkbox[name='hcsPick']:checked").each(
+							function() {
+								hcsIds += $(this).val() + " ";
+							});
+					if (hcsIds != "") {
+						hcsIds.substring(0, hcsIds.length - 1);
+					}
+					if (roomId == undefined || startDate == "" || endDate == ""
+							|| discount == "") {
+						alert('At least one field is blank, please fill it up with proper information!');
+					} else if (discount < 20 || discount > 70) {
+						alert('Discount must be in a range [20, 70] !');
+					} else if (new Date() > new Date(startDate)) {
+						alert('You cannot put for fast reserving in past!');
+					} else if (new Date(startDate) > new Date(endDate)) {
+						alert('End date cant be before start date!');
+					} else {
+						$
+								.ajax({
+									type : 'POST',
+									url : urlRoot14,
+									contentType : 'application/json',
+									dataType : "json",
+									headers : createAuthorizationTokenHeader(TOKEN_KEY),
+									data : createRoomFastReservationToJSON(
+											roomId, startDate, endDate,
+											discount, hcsIds),
+									success : function(data) {
+										alert(data.message);
+									},
+									error : function(jqXHR, textStatus,
+											errorThrown) {
+										alert(jqXHR.status);
+										alert(textStatus);
+										alert(errorThrown);
+
+									}
+								})
+					}
+				});
+
+$(document)
+		.on(
+				"submit",
+				"#hotelCustomerServiceForm",
+				function(e) {
+					e.preventDefault();
+					var name = document
+							.getElementById("hotelCustomerServiceName").value;
+					var price = document
+							.getElementById("hotelCustomerServicePrice").value;
+					if (name == "" || price == "") {
+						alert('At least one field is blank, please fill it up with proper information!');
+					} else if (price <= 0) {
+						alert('Price must be positive number!');
+					} else {
+						$
+								.ajax({
+									type : 'POST',
+									url : urlRoot11,
+									contentType : 'application/json',
+									dataType : "json",
+									headers : createAuthorizationTokenHeader(TOKEN_KEY),
+									data : createHotelCustomerServiceToJSON(
+											name, price),
+									success : function(data) {
+										alert("Succesfully added new extra service!");
+										fillHotelCustomerServices();
 									},
 									error : function(jqXHR, textStatus,
 											errorThrown) {
@@ -523,6 +928,26 @@ $(document).on('click', '.deleteRoomButton', function(e) {
 	deleteRoom(this.id);
 });
 
+$(document).on('click', '#reportHotelButton', function(e) {
+	// e.preventDefault();
+	fillDatas();
+});
+
+$(document).on('click', '#addHotelCustomerServiceButton', function(e) {
+	// e.preventDefault();
+	fillHotelCustomerServices();
+});
+
+$(document).on('click', '#addRoomFastReservationButton', function(e) {
+	// e.preventDefault();
+	fillDatasAddRoomFastReservation();
+});
+
+$(document).on('click', '#deleteRoomFastReservationButton', function(e) {
+	// e.preventDefault();
+	fillDatasDeleteRoomFastReservation();
+});
+
 $(document).on('click', '.editRoomButton', function(e) {
 	// e.preventDefault();
 	var _this = $(this);
@@ -540,6 +965,28 @@ $(document).on('submit', '#editRoomForm', function(e) {
 	openCity(e, 'editRoom');
 	showRooms('forEdit');
 
+});
+
+$(document).on('click', '.deleteRFR', function(e) {
+	e.preventDefault();
+	var ID = this.id;
+	var finalPath = urlRoot13 + "/" + ID;
+	$.ajax({
+		type : 'DELETE',
+		url : finalPath,
+		headers : createAuthorizationTokenHeader(TOKEN_KEY),
+		dataType : "json",
+		success : function(data) {
+			alert("Succesfully deleted room fast reservation!")
+			fillDatasDeleteRoomFastReservation();
+		},
+		error : function(jqXHR, textStatus, errorThrown) {
+			alert(jqXHR.status);
+			alert(textStatus);
+			alert(errorThrown);
+		}
+
+	})
 });
 
 function createRoomToJSON(roomNumberRegister, roomPeopleNumberRegister,
@@ -598,5 +1045,23 @@ function passwordDTOJson(password1) {
 	return JSON.stringify({
 		"password" : password1
 
+	})
+}
+
+function createHotelCustomerServiceToJSON(name, price) {
+	return JSON.stringify({
+		"name" : name,
+		"price" : price,
+	})
+}
+
+function createRoomFastReservationToJSON(roomId, startDate, endDate, discount,
+		hcsIds) {
+	return JSON.stringify({
+		"roomId" : roomId,
+		"startDate" : startDate,
+		"endDate" : endDate,
+		"discount" : discount,
+		"hotelCustomerServices" : hcsIds,
 	})
 }

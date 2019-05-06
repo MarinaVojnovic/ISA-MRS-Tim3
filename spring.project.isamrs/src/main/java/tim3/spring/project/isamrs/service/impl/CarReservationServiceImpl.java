@@ -9,7 +9,6 @@ import tim3.spring.project.isamrs.model.Car;
 import tim3.spring.project.isamrs.model.CarReservation;
 import tim3.spring.project.isamrs.model.RegularUser;
 import tim3.spring.project.isamrs.model.Rentacar;
-import tim3.spring.project.isamrs.repository.CarRepository;
 import tim3.spring.project.isamrs.repository.CarReservationRepository;
 import tim3.spring.project.isamrs.service.CarReservationService;
 

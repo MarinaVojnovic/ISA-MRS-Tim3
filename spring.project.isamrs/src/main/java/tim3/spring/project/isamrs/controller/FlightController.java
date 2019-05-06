@@ -1,6 +1,8 @@
 package tim3.spring.project.isamrs.controller;
 
 import java.sql.Date;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -60,19 +62,13 @@ public class FlightController {
 
 	@PostMapping(value = "/createFlight")
 	@PreAuthorize("hasRole('ROLE_AIRLINE_ADMIN')")
-	public ResponseEntity<Flight> create(@RequestBody FlightDTO flightDTO) {
+	public ResponseEntity<Flight> create(@RequestBody FlightDTO flightDTO) throws ParseException {
 		User logged = (User) this.userDetailsService
 				.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
 		Airline air = ((AirlineAdmin) logged).getAirline();
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
-		@SuppressWarnings("deprecation")
-		Date dateOfFlight = new Date(Integer.parseInt(flightDTO.getDateOfFlight().split("\\-")[0]) - 1900,
-				Integer.parseInt(flightDTO.getDateOfFlight().split("\\-")[1]) - 1,
-				Integer.parseInt(flightDTO.getDateOfFlight().split("\\-")[2]));
-		@SuppressWarnings("deprecation")
-		Date dateOfArrival = new Date(Integer.parseInt(flightDTO.getDateOfArrival().split("\\-")[0]) - 1900,
-				Integer.parseInt(flightDTO.getDateOfArrival().split("\\-")[1]) - 1,
-				Integer.parseInt(flightDTO.getDateOfArrival().split("\\-")[2]));
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+		Date dateOfFlight = new Date(df.parse(flightDTO.getDateOfFlight()).getTime());
+		Date dateOfArrival = new Date(df.parse(flightDTO.getDateOfArrival()).getTime());
 		Flight fl = this.flightService.create(new Flight(new AddFlightDTO(flightDTO.getFlightNumberRegister(),
 				this.airlineService.getOne(Long.parseLong(flightDTO.getStartDestinationRegister())),
 				this.airlineService.getOne(Long.parseLong(flightDTO.getFinalDestinationRegister())), air,
@@ -81,8 +77,7 @@ public class FlightController {
 		if (flightDTO.getNumOfStops() > 0) {
 			String[] stops = flightDTO.getStops().split(" ");
 			for (String s : stops) {
-				FlightStops fs = this.flightStopService
-						.create(new FlightStops(fl, this.airlineService.getOne(Long.parseLong(s))));
+				this.flightStopService.create(new FlightStops(fl, this.airlineService.getOne(Long.parseLong(s))));
 			}
 		}
 		air.getFlights().add(fl);
@@ -94,6 +89,42 @@ public class FlightController {
 	public ResponseEntity<List<Flight>> getAllFlights() {
 		List<Flight> flights = flightService.getAll();
 		return new ResponseEntity<>(flights, HttpStatus.OK);
+	}
+
+	@GetMapping(value = "/searchFlightUnregistered/{startDate}/{endDate}/{startDestination}/{endDestination}")
+	public ResponseEntity<List<Flight>> searchFlightUnregistered(@PathVariable String startDate,
+			@PathVariable String endDate, @PathVariable Long startDestination, @PathVariable Long endDestination) {
+		List<Flight> allFlights = flightService.getAll();
+		List<Flight> retVal = new ArrayList<>();
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+		String startDatee = "";
+		String endDatee = "";
+		for (Flight flight : allFlights) {
+			startDatee = df.format(flight.getDateOfStart());
+			if (!startDate.equals("0000-00-00")) {
+				if (!startDate.equals(startDatee)) {
+					continue;
+				}
+			}
+			endDatee = df.format(flight.getDateOfEnd());
+			if (!endDate.equals("0000-00-00")) {
+				if (!endDate.equals(endDatee)) {
+					continue;
+				}
+			}
+			if (startDestination != 0) {
+				if (startDestination != flight.getStartAirline().getId()) {
+					continue;
+				}
+			}
+			if (endDestination != 0) {
+				if (endDestination != flight.getFinalAirline().getId()) {
+					continue;
+				}
+			}
+			retVal.add(flight);
+		}
+		return new ResponseEntity<>(retVal, HttpStatus.OK);
 	}
 
 	@SuppressWarnings("deprecation")
@@ -198,8 +229,5 @@ public class FlightController {
 		Seat s=this.seatService.getOne(id);
 		return new ResponseEntity<Seat>(s, HttpStatus.OK);
 	}
-	
-	
-	
 
 }

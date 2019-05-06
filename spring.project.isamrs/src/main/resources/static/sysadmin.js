@@ -5,9 +5,9 @@ var urlRoot4 = "http://localhost:8080/auth/registerAirlineAdmin";
 var urlRoot5 = "http://localhost:8080/auth/registerHotelAdmin";
 var urlRoot6 = "http://localhost:8080/auth/registerRentacarAdmin";
 var urlRoot7 = "http://localhost:8080/auth/registerSystemAdmin";
-var urlRoot8 = "http://localhost:8080/getAirlinesWithoutAdmin";
-var urlRoot9 = "http://localhost:8080/getHotelsWithoutAdmin";
-var urlRoot10 = "http://localhost:8080/getRentacarsWithoutAdmin";
+var urlRoot8 = "http://localhost:8080/getAllAirlines";
+var urlRoot9 = "http://localhost:8080/getAllHotels";
+var urlRoot10 = "http://localhost:8080/getAllRentacars";
 
 var TOKEN_KEY = 'jwtToken';
 

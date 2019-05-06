@@ -1,7 +1,6 @@
 package tim3.spring.project.isamrs.controller;
 
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,18 +44,6 @@ public class HotelController {
 		return new ResponseEntity<>(hotels, HttpStatus.OK);
 	}
 
-	@GetMapping(value = "/getHotelsWithoutAdmin")
-	public ResponseEntity<List<Hotel>> getHotelsWithoutAdmin() {
-		List<Hotel> retVal = hotelService.getAll();
-		for (Iterator<Hotel> iterator = retVal.iterator(); iterator.hasNext();) {
-			Hotel hotel = iterator.next();
-			if (hotel.getHotelAdmin() != null) {
-				iterator.remove();
-			}
-		}
-		return new ResponseEntity<>(retVal, HttpStatus.OK);
-	}
-
 	@PostMapping(value = "/createHotel", consumes = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ROLE_SYSTEM_ADMIN')")
 	public ResponseEntity<Hotel> create(@RequestBody HotelDTO hotelDTO) {
@@ -65,6 +52,7 @@ public class HotelController {
 	}
 
 	@GetMapping(value = "/findHotel", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_HOTEL_ADMIN')")
 	public ResponseEntity<Hotel> findHotel() {
 		HotelAdmin hotelAdmin = (HotelAdmin) this.userDetailsService
 				.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());

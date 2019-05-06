@@ -34,6 +34,10 @@ public class RegularUser extends User{
 	@JsonIgnore
 	@OneToMany(mappedBy = "regularUser", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
 	private List<CarReservation> carReservations = new ArrayList<CarReservation>();
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "regularUser", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
+	private Set<RoomReservation> roomReservations = new HashSet<>();
 
 //	@JsonIgnore
 //	@OneToMany(mappedBy = "regularUserFlightReservation", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
