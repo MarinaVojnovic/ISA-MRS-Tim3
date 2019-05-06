@@ -44,7 +44,7 @@ public class RegularUser extends User{
 //	private List<FlightReservation> flightReservations = new ArrayList<FlightReservation>();
 	
 	@JsonIgnore
-	@OneToMany(mappedBy = "regularUserFlightReservation", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "regularUserFlightReservation", fetch = FetchType.LAZY,cascade = CascadeType.REFRESH)
 	private List<FlightReservation> flightReservations = new ArrayList<FlightReservation>();
 	
 	public List<FlightReservation> getFlightReservations() {

@@ -38,8 +38,8 @@ public class FlightReservationServiceImpl implements FlightReservationService{
 		}
 
 		@Override
-		public void delete(FlightReservation res) {
-			this.flightRepository.delete(res);
+		public void delete(long id) {
+			this.flightRepository.delete(id);
 			
 		}
 

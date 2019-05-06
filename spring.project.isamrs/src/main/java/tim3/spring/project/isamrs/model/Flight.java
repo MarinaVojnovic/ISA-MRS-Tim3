@@ -71,7 +71,7 @@ public class Flight {
 //	private List<FlightReservation> flightReservation = new ArrayList<FlightReservation>();
 
 	@JsonIgnore
-	@OneToMany(mappedBy = "flightReservation", fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "flightReservation", fetch = FetchType.LAZY,cascade = CascadeType.REFRESH)
 	private List<FlightReservation> flightReservation = new ArrayList<FlightReservation>();
 	
 	
@@ -221,6 +221,8 @@ public class Flight {
 
 	public void setFlightReservation(List<FlightReservation> flightReservation) {
 		this.flightReservation = flightReservation;
+				
+	}
 	public Double getScore() {
 		return score;
 	}

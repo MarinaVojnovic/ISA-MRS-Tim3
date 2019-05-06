@@ -2130,6 +2130,12 @@ $(document).on('click',"#confirmReserveFlight",function(e){
 	e.preventDefault();
 	var choosenSeats = JSON.parse(sessionStorage["choosenSeats"]);
 	var size=choosenSeats.length;
+	if(sessionStorage["lengthSeats"]){
+
+	}else{
+	    sessionStorage.setItem("lengthSeats", JSON.stringify(size));
+	}
+	
 	var brojPasosa=document.getElementById("passportNumber").value;
 	var idjeviPutnika="";
 	var sed="";

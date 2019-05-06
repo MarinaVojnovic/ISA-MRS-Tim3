@@ -10,6 +10,6 @@ public interface FlightReservationService {
 	public List<FlightReservation> getAll();
 	public FlightReservation create(FlightReservation flight);
 	public FlightReservation update(FlightReservation flight);
-	public void delete(FlightReservation res);
+	public void delete(long id);
 	void save(FlightReservation fr);
 }

@@ -350,7 +350,7 @@ public class UserController {
 			Seat s=this.seatService.getOne(res.getSeat().getId());
 			s.setTaken(false);
 			this.seatService.save(s);
-			this.flightReservationService.delete(res);
+			this.flightReservationService.delete(res.getId());
 			return new RedirectView("http://localhost:8080/rejectedReservation.html");
 		}
 		return null;
