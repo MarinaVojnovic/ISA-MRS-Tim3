@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import tim3.spring.project.isamrs.model.FlightReservation;
+import tim3.spring.project.isamrs.model.RegularUser;
 import tim3.spring.project.isamrs.model.User;
 import tim3.spring.project.isamrs.repository.FlightRepository;
 import tim3.spring.project.isamrs.repository.FlightReservationRepository;
@@ -47,6 +48,10 @@ public class FlightReservationServiceImpl implements FlightReservationService{
 		public void save(FlightReservation fr) {
 			this.flightRepository.save(fr);
 			
+		}
+		@Override
+		public List<FlightReservation> findByNameAndLastName(String name, String lastName){
+			return this.flightRepository.findByNameAndLastName(name,lastName);
 		}
 	 	
 

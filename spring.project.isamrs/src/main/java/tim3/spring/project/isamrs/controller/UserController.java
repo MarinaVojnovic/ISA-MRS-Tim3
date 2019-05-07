@@ -225,6 +225,24 @@ public class UserController {
 		return new ResponseEntity<List<CarReservation>>(res, HttpStatus.OK);
 	}
 
+
+	@GetMapping(value = "/getMyResFlights")
+	@PreAuthorize("hasRole('ROLE_USER')")
+	public ResponseEntity<List<FlightReservation>> getMyResFlights() {
+		System.out.println("Uslo u GET MY RESERVATION FLIGHTS");
+		RegularUser logged = (RegularUser) this.userDetailsService
+				 .loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().
+				  getName());
+		System.out.println(logged.getFirstName());
+		
+		  List<FlightReservation> res=new ArrayList<FlightReservation>();
+		 res = flightReservationService.findByNameAndLastName(logged.getFirstName(),
+		 logged.getLastName()); 
+		 return new ResponseEntity<List<FlightReservation>>(res, HttpStatus.OK);
+		 
+		
+	}
+
 	@GetMapping(value = "/getAllFriendRequests")
 	@PreAuthorize("hasRole('ROLE_USER')")
 	public ResponseEntity<List<FriendRequest>> getAllFriendRequests() {
