@@ -23,10 +23,8 @@ body {
 }
 
 .wrapper {
-    text-align: center;
+	text-align: center;
 }
-
-
 
 /* Style the buttons inside the tab */
 .tab button {
@@ -69,48 +67,44 @@ body {
 }
 
 .foo {
-  float: left;
-  width: 40px;
-  height: 40px;
-  
+	float: left;
+	width: 40px;
+	height: 40px;
 }
 
 .inline-block {
-   display: inline-block;
-   width: 60px;
-  height: 60px;
+	display: inline-block;
+	width: 60px;
+	height: 60px;
 }
 
 .blue {
-
-  background: #13b4ff;
+	background: #13b4ff;
 }
 
 .cyan {
-
-  background: #00defc;
+	background: #00defc;
 }
 
 .purple {
-  background: #ab3fdd;
+	background: #ab3fdd;
 }
 
 .wine {
-  background: #ae163e;
+	background: #ae163e;
 }
 
 .green {
-  background: #00e600;
+	background: #00e600;
 }
 
 .red {
-  background: #ff0000
+	background: #ff0000
 }
+
 .grey {
-  background: #c2c2a3
+	background: #c2c2a3
 }
-
-
 </style>
 </head>
 <body>
@@ -129,8 +123,7 @@ body {
 			onclick="openCity(event, 'searchAndFilterFlight')">Search
 			and filter flight</button>
 		<button class="tablinks" id="allReservationsButtton"
-			onclick="openCity(event, 'allReservations')">My
-			reservations</button>
+			onclick="openCity(event, 'allReservations')">My reservations</button>
 		<button id="logoutClicked" class="tablinks"
 			onclick="openCity(event, 'logout')">Logout</button>
 	</div>
@@ -153,36 +146,48 @@ body {
 			</table>
 		</div>
 	</div>
-	
-	
+
+
 	<div id="gradeRentacar" class="tabcontent">
 		<div class="container">
-		<input type="hidden" id = "rentacarId" value="">
-		<input type="hidden" id = "carId" value="">
-		<table>
-			
-			<tr><td id="rentacarGradeName"></td></tr>
-			<tr><td><input type="number" name="" value=""
-				placeholder="Enter grade from 1 to 5" id="rentacarGrade" /></td></tr>
-			<tr><td id="carGradeName"></td></tr>
-			<tr><td><input type="number" name="" value=""
-				placeholder="Enter grade from 1 to 5" id="carGrade" /></td></tr>
-			
-		</table>
-			<button style="background: #ff1a75; color: white" id="submitRentacarGrade" class="btn btn-primary">Submit</button>
-		
+			<input type="hidden" id="rentacarId" value=""> <input
+				type="hidden" id="carId" value="">
+			<table>
+
+				<tr>
+					<td id="rentacarGradeName"></td>
+				</tr>
+				<tr>
+					<td><input type="number" name="" value=""
+						placeholder="Enter grade from 1 to 5" id="rentacarGrade" /></td>
+				</tr>
+				<tr>
+					<td id="carGradeName"></td>
+				</tr>
+				<tr>
+					<td><input type="number" name="" value=""
+						placeholder="Enter grade from 1 to 5" id="carGrade" /></td>
+				</tr>
+
+			</table>
+			<button style="background: #ff1a75; color: white"
+				id="submitRentacarGrade" class="btn btn-primary">Submit</button>
+
 		</div>
 	</div>
 	<div id="airlines" class="tabcontent">
 		<div class="container">
 			<h2>Airlines in the system:</h2>
-			<button style="background: #ff1a75; color: white" class="sortByNameAirlines" class="btn btn-primary">Sort
-				by name</button>
-			<button style="background: #ff1a75; color: white" class="sortByAddressAirlines" class="btn btn-primary">Sort
+			<button style="background: #ff1a75; color: white"
+				class="sortByNameAirlines" class="btn btn-primary">Sort by
+				name</button>
+			<button style="background: #ff1a75; color: white"
+				class="sortByAddressAirlines" class="btn btn-primary">Sort
 				by address</button>
 			<input type="text" name="" value=""
 				placeholder="Enter name or location" id="nameLocationAirline" />
-			<button style="background: #ff1a75; color: white" class="searchAirlineButton" class="btn btn-primary">Search</button>
+			<button style="background: #ff1a75; color: white"
+				class="searchAirlineButton" class="btn btn-primary">Search</button>
 			<br>
 
 
@@ -198,13 +203,16 @@ body {
 	<div id="hotels" class="tabcontent">
 		<div class="container">
 			<h2>Hotels in the system:</h2>
-			<button style="background: #ff1a75; color: white" class="sortByNameHotels" class="btn btn-primary">Sort by
+			<button style="background: #ff1a75; color: white"
+				class="sortByNameHotels" class="btn btn-primary">Sort by
 				name</button>
-			<button style="background: #ff1a75; color: white" class="sortByAddressHotels" class="btn btn-primary">Sort
-				by address</button>
+			<button style="background: #ff1a75; color: white"
+				class="sortByAddressHotels" class="btn btn-primary">Sort by
+				address</button>
 			<input type="text" name="" value=""
 				placeholder="Enter name or location" id="nameLocationHotel" />
-			<button style="background: #ff1a75; color: white" class="searchHotelButton" class="btn btn-primary">Search</button>
+			<button style="background: #ff1a75; color: white"
+				class="searchHotelButton" class="btn btn-primary">Search</button>
 			<br>
 			<table class="table table-hover" id="tableOfHotels">
 
@@ -216,13 +224,16 @@ body {
 	<div id="rentACars" class="tabcontent">
 		<div class="container">
 			<h2>Rent a cars:</h2>
-			<button style="background: #ff1a75; color: white" class="sortByNameRentACars" class="btn btn-primary">Sort
-				by name</button>
-			<button style="background: #ff1a75; color: white" class="sortByAddressRentACars" class="btn btn-primary">Sort
+			<button style="background: #ff1a75; color: white"
+				class="sortByNameRentACars" class="btn btn-primary">Sort by
+				name</button>
+			<button style="background: #ff1a75; color: white"
+				class="sortByAddressRentACars" class="btn btn-primary">Sort
 				by address</button>
 			<input type="text" name="" value=""
 				placeholder="Enter name or location" id="nameLocationRentACar" />
-			<button style="background: #ff1a75; color: white" class="searchRentACarButton" class="btn btn-primary">Search</button>
+			<button style="background: #ff1a75; color: white"
+				class="searchRentACarButton" class="btn btn-primary">Search</button>
 			<br>
 
 
@@ -235,59 +246,59 @@ body {
 	</div>
 	<div id="fastResDateDiv" class="tabcontent">
 		<div class="container">
-			<input type="hidden" id="mainStartDate">
-			<input type="hidden" id="mainEndDate">
-			<input type="hidden" id="carId">
+			<input type="hidden" id="mainStartDate"> <input type="hidden"
+				id="mainEndDate"> <input type="hidden" id="carId">
 			<div class="form-group">
-					<label class="control-label col-sm-2" for="pickupDateFast">Pickup
-						date: </label>
-					<div class="col-sm-10">
-						<input type="date" class="form-control" id="pickupDateFast"
-							placeholder="Insert pickup date" name="pickupDateFast">
-					</div>
+				<label class="control-label col-sm-2" for="pickupDateFast">Pickup
+					date: </label>
+				<div class="col-sm-10">
+					<input type="date" class="form-control" id="pickupDateFast"
+						placeholder="Insert pickup date" name="pickupDateFast">
 				</div>
-				<div class="form-group">
-					<label class="control-label col-sm-2" for="endDateFast">End
-						date: </label>
-					<div class="col-sm-10">
-						<input type="date" class="form-control" id="endDateFast"
-							placeholder="Insert end date" name="endDateFast">
-					</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-sm-2" for="endDateFast">End
+					date: </label>
+				<div class="col-sm-10">
+					<input type="date" class="form-control" id="endDateFast"
+						placeholder="Insert end date" name="endDateFast">
 				</div>
-				<div class="form-group">
-					<div class="col-sm-offset-2 col-sm-10">
-						<button style="background: #ff1a75; color: white" type="submit" class="btn btn-default" id="buttonDateFast">Submit</button>
-					</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-offset-2 col-sm-10">
+					<button style="background: #ff1a75; color: white" type="submit"
+						class="btn btn-default" id="buttonDateFast">Submit</button>
 				</div>
+			</div>
 			<br>
 		</div>
 	</div>
-	
-	
+
+
 	<div id="rentacarReservation" class="tabcontent">
 		<div class="container">
-			<input type="hidden" id="mainStartDate3">
-			<input type="hidden" id="mainEndDate3">
-			<input type="hidden" id="rentacarId">
+			<input type="hidden" id="mainStartDate3"> <input
+				type="hidden" id="mainEndDate3"> <input type="hidden"
+				id="rentacarId">
 			<h2>Fast reservation of rentacar</h2>
-			<button style="background: #ff1a75; color: white" type="submit" class="btn btn-default" id="fastReservationButton">Choose</button>
-			
-			
-			
+			<button style="background: #ff1a75; color: white" type="submit"
+				class="btn btn-default" id="fastReservationButton">Choose</button>
+
+
+
 			<div id="fastReservationDiv" class="container">
 				<br>
 				<table class="table table-hover" id="tableOfCarsOnFastRes">
-	
+
 				</table>
 				<p class="messageSuitableCarsFast"></p>
 				<br>
 			</div>
-		
-			
+
+
 			<h2>Regular reservation of rentacar:</h2>
-			<form class="form-horizontal"  
-				id="carReservationForm">
-				
+			<form class="form-horizontal" id="carReservationForm">
+
 				<div class="form-group">
 					<label class="control-label col-sm-2" for="pickupDateCar">Pickup
 						date: </label>
@@ -320,21 +331,22 @@ body {
 							placeholder="Insert end city" name="endCity">
 					</div>
 				</div>
-				
+
 				<div class="form-group">
-					<label class="control-label col-sm-2" for="carType">Car type:
-					</label>
+					<label class="control-label col-sm-2" for="carType">Car
+						type: </label>
 					<div class="col-sm-10">
-						<select id = "carType">
+						<select id="carType">
 							<option value="Family">Family</option>
 							<option value="Sports">Sports</option>
 							<option value="Van">Van</option>
 						</select>
 					</div>
 				</div>
-				
+
 				<div class="form-group">
-					<label class="control-label col-sm-2" for="passengers">Number of passengers: </label>
+					<label class="control-label col-sm-2" for="passengers">Number
+						of passengers: </label>
 					<div class="col-sm-10">
 						<input type="number" class="form-control" id="passengers"
 							placeholder="Insert number of passengers" name="passengers">
@@ -343,13 +355,14 @@ body {
 				<br>
 				<h2>Price range(optional):</h2>
 				<div class="form-group">
-					<label class="control-label col-sm-2" for="fromPrice">From: </label>
+					<label class="control-label col-sm-2" for="fromPrice">From:
+					</label>
 					<div class="col-sm-10">
 						<input type="number" class="form-control" id="fromPrice"
 							placeholder="Insert start price" name="fromPrice">
 					</div>
 				</div>
-				
+
 				<div class="form-group">
 					<label class="control-label col-sm-2" for="toPrice">To: </label>
 					<div class="col-sm-10">
@@ -357,23 +370,121 @@ body {
 							placeholder="Insert maximum price" name="toPrice">
 					</div>
 				</div>
-				
-				
+
+
 				<div class="form-group">
 					<div class="col-sm-offset-2 col-sm-10">
-						<button style="background: #ff1a75; color: white" type="submit" class="btn btn-default" id="button3">Submit</button>
+						<button style="background: #ff1a75; color: white" type="submit"
+							class="btn btn-default" id="button3">Submit</button>
 					</div>
 				</div>
 			</form>
 			<br>
-			
+
 			<table class="table table-hover" id="showSuitableCars">
 			</table>
 			<p class="messageSuitableCars"></p>
 		</div>
 	</div>
-	
 
+	<div id="hotelReservation" class="tabcontent">
+		<div class="container">
+			<h2>Reserving a room:</h2>
+			<br>
+			<h3>* Reserve these room just in one click, best deals:</h3>
+			<table class="table table-hover" id="fastReservationRoomTable">
+			</table>
+			<br>
+			<h3>* Regular registering room:</h3>
+
+			<form class="form-horizontal" action="#" method="post"
+				id="firstPartRoomReservation">
+
+				<input type="hidden" id="roomReservationHotelId">
+
+				<div class="form-group">
+					<label class="control-label col-sm-2"
+						for="roomReservationStartDate">Start date: </label>
+					<div class="col-sm-10">
+						<input type="datetime-local" class="form-control"
+							id="roomReservationStartDate"
+							placeholder="Insert a start date for the room reservation format [yyyy-MM-dd HH:mm]"
+							name="roomReservationStartDate">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="control-label col-sm-2" for="roomReservationEndDate">End
+						date: </label>
+					<div class="col-sm-10">
+						<input type="datetime-local" class="form-control"
+							id="roomReservationEndDate"
+							placeholder="Insert a end date for the room reservation  format [yyyy-MM-dd HH:mm]"
+							name="roomReservationEndDate">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="control-label col-sm-2"
+						for="roomReservationLowestPrice">Lowest price: </label>
+					<div class="col-sm-10">
+						<input type="number" class="form-control"
+							id="roomReservationLowestPrice"
+							placeholder="Insert lowest price for the room reservation"
+							name="roomReservationLowestPrice">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="control-label col-sm-2"
+						for="roomReservationHighestPrice">Highest price: </label>
+					<div class="col-sm-10">
+						<input type="number" class="form-control"
+							id="roomReservationHighestPrice"
+							placeholder="Insert highest price for the room reservation"
+							name="roomReservationHighestPrice">
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10">
+						<button style="background: #ff1a75; color: white" type="submit"
+							class="btn btn-default" id="button9">Submit</button>
+					</div>
+				</div>
+			</form>
+		</div>
+		<div class="container" style="display: none;">
+			<h3>Now just pick rooms and extra services you want in your reservation:</h3>
+			<form class="form-horizontal" action="#" method="post"
+				id="secondPartRoomReservation">
+
+				<div class="form-group">
+					<label class="control-label col-sm-2"
+						for="roomFastReservationRoomTable">Room: </label>
+					<div class="col-sm-10">
+						<table class="table table-hover" id="roomReservationRoomTable"></table>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="control-label col-sm-2"
+						for="roomFastReservationHcsTable">Hotel Customer Services:
+					</label>
+					<div class="col-sm-10">
+						<table class=" table table-hover" id="roomReservationHcsTable"></table>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="col-sm-offset-2 col-sm-10">
+						<button style="background: #ff1a75; color: white" type="submit"
+							class="btn btn-default" id="button9">Submit</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
 
 
 
@@ -413,12 +524,13 @@ body {
 					<div class="col-sm-10">
 						<input type="date" class="form-control" id="dateOfReturn"
 							placeholder="Insert date of the return" name="dateOfReturn">
-							<p>This field is optional!</p>
+						<p>This field is optional!</p>
 					</div>
 				</div>
 				<h2>Filter: (optional)</h2>
 				<div class="form-group">
-					<label class="control-label col-sm-2" for="from">Price from: </label>
+					<label class="control-label col-sm-2" for="from">Price
+						from: </label>
 					<div class="col-sm-10">
 						<input type="text" class="form-control" id="from"
 							placeholder="Insert price from(optional)" name="from">
@@ -432,21 +544,24 @@ body {
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="control-label col-sm-2" for="fromL">Length from: </label>
+					<label class="control-label col-sm-2" for="fromL">Length
+						from: </label>
 					<div class="col-sm-10">
 						<input type="text" class="form-control" id="fromL"
 							placeholder="Insert length from(optional)" name="fromL">
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="control-label col-sm-2" for="toL">Length to: </label>
+					<label class="control-label col-sm-2" for="toL">Length to:
+					</label>
 					<div class="col-sm-10">
 						<input type="text" class="form-control" id="toL"
 							placeholder="Insert length to(optional)" name="toL">
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="control-label col-sm-2" for="nameL">Insert name of airline: </label>
+					<label class="control-label col-sm-2" for="nameL">Insert
+						name of airline: </label>
 					<div class="col-sm-10">
 						<input type="text" class="form-control" id="nameL"
 							placeholder="Insert name of airline(optional)" name="nameL">
@@ -454,16 +569,16 @@ body {
 				</div>
 				<div class="form-group">
 					<div class="col-sm-offset-2 col-sm-10">
-						<button style="background: #ff1a75; color: white" type="submit" class="btn btn-default"
-							id="searchFlightButton">Search</button>
+						<button style="background: #ff1a75; color: white" type="submit"
+							class="btn btn-default" id="searchFlightButton">Search</button>
 					</div>
 				</div>
 				<table class="table table-hover" id="foundFlights">
-				
-  			</table>
-  			<table class="table table-hover" id="foundFlightsReturn">
-				
-  			</table>
+
+				</table>
+				<table class="table table-hover" id="foundFlightsReturn">
+
+				</table>
 			</form>
 			<br>
 		</div>
@@ -547,143 +662,144 @@ body {
 
 				<div class="form-group">
 					<div class="col-sm-offset-2 col-sm-10">
-						<button style="background: #ff1a75; color: white" type="submit" class="btn btn-default" id="button6">Submit</button>
+						<button style="background: #ff1a75; color: white" type="submit"
+							class="btn btn-default" id="button6">Submit</button>
 					</div>
 				</div>
 			</form>
 			<br>
 		</div>
 	</div>
-	
+
 	<div id="friends" class="tabcontent">
 		<button class="btn btn-primary"
-			 onclick="openCity(event, 'listOfFriends')" id="listOfFri">List of friends</button>
-		<button  class="btn btn-primary"
-			onclick="openCity(event, 'friendRequests')" id="friendR">Friend requests</button>
-		<button  class="btn btn-primary"
-			onclick="openCity(event, 'addFriends')" id="addFrie">Add friends</button>
+			onclick="openCity(event, 'listOfFriends')" id="listOfFri">List
+			of friends</button>
+		<button class="btn btn-primary"
+			onclick="openCity(event, 'friendRequests')" id="friendR">Friend
+			requests</button>
+		<button class="btn btn-primary"
+			onclick="openCity(event, 'addFriends')" id="addFrie">Add
+			friends</button>
 
 	</div>
-	
+
 	<div id="friendRequests" class="tabcontent">
 		<div class="container">
-			<h2>Friend requests:</h2>							
+			<h2>Friend requests:</h2>
 			<table class="table table-hover" id="friendRequestTable">
-				
-  			</table>
+
+			</table>
 			<br>
 		</div>
 	</div>
-	
+
 	<div id="listOfFriends" class="tabcontent">
 		<div class="container">
-			<h2>Your friends:</h2>							
+			<h2>Your friends:</h2>
 			<table class="table table-hover" id="friendList">
-				
-  			</table>
+
+			</table>
 			<br>
 		</div>
 	</div>
-	
+
 	<div id="reserveFlightInfo" class="tabcontent">
 		<div class="container">
-			<h2 align="center">Reservation info:</h2>							
+			<h2 align="center">Reservation info:</h2>
 			<br>
 		</div>
-		<div id="reserveFlightInfoDiv">
-		</div>
+		<div id="reserveFlightInfoDiv"></div>
 	</div>
-	
 
-	
-	
-	
+
+
+
+
 	<div id="addFriends" class="tabcontent">
 		<div class="container">
 			<h2>Search for friends (type name or/and surname):</h2>
-			 <h3>
-			 Name: <input type="text" class="form-control"
-							id="friendRequestName"
-							placeholder="Insert name"
-							name="friendRequestName" style="width: 120px;"/>  Surname: <input type="text" class="form-control"
-							id="friendRequestSurname"
-							placeholder="Insert surname"
-							name="friendRequestSurname" style="width: 120px;" />
-			 </h3>
-			 
-						<button type="submit" id="searchFriends" style="float: left;">Search</button>
-					
-				
+			<h3>
+				Name: <input type="text" class="form-control" id="friendRequestName"
+					placeholder="Insert name" name="friendRequestName"
+					style="width: 120px;" /> Surname: <input type="text"
+					class="form-control" id="friendRequestSurname"
+					placeholder="Insert surname" name="friendRequestSurname"
+					style="width: 120px;" />
+			</h3>
+
+			<button type="submit" id="searchFriends" style="float: left;">Search</button>
+
+
 			<table class="table table-hover" id="foundFriends">
-				
-  			</table>
+
+			</table>
 			<br>
 		</div>
 	</div>
-	
+
 	<div id="flightReservation" class="tabcontent">
 		<div class="container">
 			<div id="seats" align="center">
-			    <div class="inline-block">
-			    	<p>First</p>
-			        <div class="foo blue" id="aa"></div>
-			    </div>
-			
-			    <div class="inline-block">
-			        <p>Economy</p>
-			        <div class="foo purple" id="aa"></div>
-			    </div>
-			
-			    <div class="inline-block">
-			        <p>Business</p>
-			        <div class="foo green" id="aa"></div>
-			    </div>
-			    <div class="inline-block">
-			        <p>Taken</p>
-			        <div class="foo red" id="aa"></div>
-			    </div>
-			    <div class="inline-block">
-			        <p>Chosen</p>
-			        <div class="foo grey" id="aa"></div>
-			    </div>
-			    <div id="seatsFlight">
-			    
-			    </div>
-			 </div>
-			<input type="hidden" id="destinationId">
-			<input type="hidden" id="startDateId">
-			<input type="hidden" id="endDateId">
-							
-				
-			<button type="submit" style="background: #ff1a75; color: white" id="offerRentacarsButton" style="float: left;">Rentacars</button>
-			<br><br>
-			<button type="submit" style="background: #ff1a75; color: white" id="offerHottelsButton" style="float: left;">Hotels</button>
+				<div class="inline-block">
+					<p>First</p>
+					<div class="foo blue" id="aa"></div>
+				</div>
+
+				<div class="inline-block">
+					<p>Economy</p>
+					<div class="foo purple" id="aa"></div>
+				</div>
+
+				<div class="inline-block">
+					<p>Business</p>
+					<div class="foo green" id="aa"></div>
+				</div>
+				<div class="inline-block">
+					<p>Taken</p>
+					<div class="foo red" id="aa"></div>
+				</div>
+				<div class="inline-block">
+					<p>Chosen</p>
+					<div class="foo grey" id="aa"></div>
+				</div>
+				<div id="seatsFlight"></div>
+			</div>
+			<input type="hidden" id="destinationId"> <input type="hidden"
+				id="startDateId"> <input type="hidden" id="endDateId">
+
+
+			<button type="submit" style="background: #ff1a75; color: white"
+				id="offerRentacarsButton" style="float: left;">Rentacars</button>
+			<br> <br>
+			<button type="submit" style="background: #ff1a75; color: white"
+				id="offerHottelsButton" style="float: left;">Hotels</button>
 			<br>
 		</div>
 	</div>
-	
+
 	<div id="showRentacarsInDest" class="tabcontent">
 		<div class="container">
 			<h2>Showing rentacars in destination:</h2>
-			
-			<input type="hidden" id="mainStartDate2">
-			<input type="hidden" id="mainEndDate2">
-			
+
+			<input type="hidden" id="mainStartDate2"> <input
+				type="hidden" id="mainEndDate2">
+
 			<table class="table table-hover" id="tableOfRentacarsDest">
 
 			</table>
-							
-				
-			
+
+
+
 		</div>
 	</div>
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
 
 
 

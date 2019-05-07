@@ -1,6 +1,10 @@
 package tim3.spring.project.isamrs.controller;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -23,7 +27,11 @@ import tim3.spring.project.isamrs.dto.RoomDTO;
 import tim3.spring.project.isamrs.model.Hotel;
 import tim3.spring.project.isamrs.model.HotelAdmin;
 import tim3.spring.project.isamrs.model.Room;
+import tim3.spring.project.isamrs.model.RoomFastReservation;
+import tim3.spring.project.isamrs.model.RoomReservation;
 import tim3.spring.project.isamrs.service.HotelService;
+import tim3.spring.project.isamrs.service.RoomFastReservationService;
+import tim3.spring.project.isamrs.service.RoomReservationService;
 import tim3.spring.project.isamrs.service.RoomService;
 import tim3.spring.project.isamrs.service.impl.CustomUserDetailsService;
 
@@ -39,10 +47,78 @@ public class RoomController {
 	@Autowired
 	HotelService hotelService;
 
+	@Autowired
+	RoomFastReservationService roomFastReservationService;
+
+	@Autowired
+	RoomReservationService roomReservationService;
+
 	@GetMapping(value = "/findConcreteRooms/{hotelId}")
 	public ResponseEntity<Set<Room>> findConcreteRooms(@PathVariable String hotelId) {
 		Hotel retVal = hotelService.getOne(Long.parseLong(hotelId));
 		return new ResponseEntity<>(retVal.getRooms(), HttpStatus.OK);
+	}
+
+	@GetMapping(value = "/searchRoomToReserve/{startDate}/{endDate}/{lowestPrice}/{highestPrice}/{hotelId}")
+	public ResponseEntity<?> findRoomsToReserve(@PathVariable String startDate, @PathVariable String endDate,
+			@PathVariable Double lowestPrice, @PathVariable Double highestPrice, @PathVariable Long hotelId)
+			throws ParseException {
+		List<Room> allRooms = roomService.findByHotel(hotelService.getOne(hotelId));
+		List<Room> retVal = new ArrayList<>();
+		Boolean correctDate = true;
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		Date startDatee = new Date();
+		Date endDatee = new Date();
+		try {
+			startDatee = df.parse(startDate);
+			endDatee = df.parse(endDate);
+		} catch (Exception e) {
+			correctDate = false;
+		}
+		if (!correctDate) {
+			return new ResponseEntity<>(new MessageDTO("Bad format of dates!", "Error"), HttpStatus.OK);
+		}
+		for (Room room : allRooms) {
+			Boolean toContinue = false;
+			List<RoomReservation> allRoomReservations = roomReservationService.findByRoomsContaining(room);
+			List<RoomFastReservation> allRoomFastReservations = roomFastReservationService.findByRoom(room);
+			if (lowestPrice != -1) {
+				if (lowestPrice > room.getPrice()) {
+					continue;
+				}
+			}
+			if (highestPrice != -1) {
+				if (highestPrice < room.getPrice()) {
+					continue;
+				}
+			}
+			for (RoomReservation roomReservation : allRoomReservations) {
+				Date startDate2 = df.parse(roomReservation.getStartDate());
+				Date endDate2 = df.parse(roomReservation.getEndDate());
+				if (!(startDatee.getTime() < startDate2.getTime() && endDatee.getTime() < startDate2.getTime())
+						&& !(startDatee.getTime() > endDate2.getTime() && endDatee.getTime() > endDate2.getTime())) {
+					toContinue = true;
+					break;
+				}
+			}
+			if (toContinue) {
+				continue;
+			}
+			for (RoomFastReservation roomFastReservation : allRoomFastReservations) {
+				Date startDate2 = df.parse(roomFastReservation.getStartDate());
+				Date endDate2 = df.parse(roomFastReservation.getEndDate());
+				if (!(startDatee.getTime() < startDate2.getTime() && endDatee.getTime() < startDate2.getTime())
+						&& !(startDatee.getTime() > endDate2.getTime() && endDatee.getTime() > endDate2.getTime())) {
+					toContinue = true;
+					break;
+				}
+			}
+			if (toContinue) {
+				continue;
+			}
+			retVal.add(room);
+		}
+		return new ResponseEntity<>(retVal, HttpStatus.OK);
 	}
 
 	@GetMapping(value = "/getAllRooms", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -59,14 +135,16 @@ public class RoomController {
 		Set<Room> allRooms = user.getHotel().getRooms();
 		for (Room room : allRooms) {
 			if (room.getRoomNumber() == roomDTO.getRoomNumberRegister()) {
-				return new ResponseEntity<>(new MessageDTO("This number for this hotel is already taken","Error"), HttpStatus.OK);
+				return new ResponseEntity<>(new MessageDTO("This number for this hotel is already taken", "Error"),
+						HttpStatus.OK);
 			}
 		}
 		Room newRoom = new Room(roomDTO);
 		newRoom.setHotel(user.getHotel());
 		Room retVal = roomService.create(newRoom);
 		user.getHotel().getRooms().add(retVal);
-		return new ResponseEntity<>(new MessageDTO("Successful adding room, congratulations!","Error"), HttpStatus.CREATED);
+		return new ResponseEntity<>(new MessageDTO("Successful adding room, congratulations!", "Error"),
+				HttpStatus.CREATED);
 	}
 
 	@GetMapping(value = "/getRooms")
@@ -108,24 +186,26 @@ public class RoomController {
 		if (r == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-		
+
 		HotelAdmin user = (HotelAdmin) this.userDetailsService
 				.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
-		
+
 		Set<Room> allRooms = user.getHotel().getRooms();
 		for (Room room : allRooms) {
 			if (room.getRoomNumber() == roomDTO.getRoomNumberRegister()) {
-				return new ResponseEntity<>(new MessageDTO("This number for this hotel is already taken","Error"), HttpStatus.OK);
+				return new ResponseEntity<>(new MessageDTO("This number for this hotel is already taken", "Error"),
+						HttpStatus.OK);
 			}
 		}
-		
+
 		r.setId(roomDTO.getId());
 		r.setRoomNumber(roomDTO.getRoomNumberRegister());
 		r.setPrice(roomDTO.getRoomPriceRegister());
 		r.setNumberPeople(roomDTO.getRoomPeopleNumberRegister());
 
 		roomService.save(r);
-		return new ResponseEntity<>(new MessageDTO("Room successfully edited, congratulations!","Error"), HttpStatus.OK);
+		return new ResponseEntity<>(new MessageDTO("Room successfully edited, congratulations!", "Error"),
+				HttpStatus.OK);
 	}
 
 	@GetMapping(value = "/searchRoomUnregistered/{numberPeople}/{lowestPrice}/{highestPrice}")
