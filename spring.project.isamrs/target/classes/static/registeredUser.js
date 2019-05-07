@@ -35,6 +35,7 @@ var urlRoot15 = "http://localhost:8080/getSeat";
 var urlRoot16 = "http://localhost:8080/api/makeReservation"
 var urlRootSendMail = "http://localhost:8080/sendEmail";
 var urlRootSearchRoomToReserve = "http://localhost:8080/searchRoomToReserve"
+var urlRootGetMyResFlights="http://localhost:8080/api/getMyResFlights";
 var TOKEN_KEY = 'jwtToken';
 
 getLogged();
@@ -50,7 +51,91 @@ $(document).on('click', '#logoutClicked', function(e) {
 // return '';
 // };
 
-function takeCarFast(id) {
+function showMyReservationsHotels(){
+	console.log('show my reservation hotels called');
+}
+function showMyReservationsFlights(){
+	console.log('show my reservations flights called');
+	
+	$
+	.ajax({
+		type : 'GET',
+		url : urlRootGetMyResFlights,
+		headers : createAuthorizationTokenHeader(TOKEN_KEY),
+		contentType : 'application/json',
+		success : function(data) {
+			$("#tableOfFlightsRes").find("tr").remove();
+			var list = data == null ? []
+					: (data instanceof Array ? data : [ data ]);
+			if (list.length > 0) {
+				
+				var tabela = document.getElementById("tableOfFlightsRes");
+				var count = 1
+				for ( var res in list) {
+					console.log('counter: ' + res);
+					var row = tabela.insertRow(res);
+					var cell1 = row.insertCell(0);
+					var cell2 = row.insertCell(1);
+					var cell3 = row.insertCell(2);
+					var cell4 = row.insertCell(3);
+					var cell5 = row.insertCell(4);
+					var cell6 = row.insertCell(5);
+					var cell7 = row.insertCell(6);
+					
+				
+					
+					cell1.innerHTML = list[res].id;
+					cell2.innerHTML = list[res].passport_num;
+					cell3.innerHTML = list[res].price;
+					cell4.innerHTML = list[res].flightReservation.startAirline.name;
+					cell5.innerHTML = list[res].flightReservation.finalAirline.name;
+					cell6.innerHTML =  list[res].seat;
+					
+					if (new Date(list[res].flightReservation.dateOfEnd) >= new Date()){
+						cell7.innerHTML = '<button style="background: #ff1a75; color: white" id=\"'
+							+ list[res].id
+							+ '\" class=\"cancelFlightResButton\" class="btn btn-primary">Cancel reservation</button>';
+					}else if (new Date(list[res].flightReservation.dateOfEnd)< new Date()){
+						cell7.innerHTML = '<button style="background: #ff1a75; color: white" id=\"'
+							+ list[res].id
+							+ '\" class=\"gradeFlightResButton\" class="btn btn-primary">Grade service</button>';
+					}else {
+						cell7.innerHTML="Cannot cancel";
+					}
+					
+					
+					
+					count++;
+
+				}
+				var row = tabela.insertRow(0);
+				var cell1 = row.insertCell(0);
+				var cell2 = row.insertCell(1);
+				var cell3 = row.insertCell(2);
+				var cell4 = row.insertCell(3);
+				var cell5 = row.insertCell(4);
+				var cell6 = row.insertCell(5);
+				var cell7 = row.insertCell(6);
+				cell1.innerHTML = "Id";
+				cell2.innerHTML = "Passport";
+				cell3.innerHTML = "Price";
+				cell4.innerHTML = "Start airport";
+				cell5.innerHTML = "End airport";
+				cell6.innerHTML = "Seat number";
+			} else {
+				
+				$("#tableOfFlightsRes").append("<h3>No rent-a-car reservations.</h3>")
+			}
+		},
+		error : function(jqXHR, textStatus, errorThrown) {
+			alert(jqXHR.status);
+			alert(textStatus);
+			alert(errorThrown);
+
+		}
+	})
+}
+function takeCarFast(id){
 	console.log('take car fast called');
 	sessionStorage.removeItem("choosenSeats");
 
@@ -2454,7 +2539,8 @@ $(document).on('click', '#allReservationsButtton', function(e) {
 	e.preventDefault();
 	sessionStorage.removeItem("choosenSeats");
 	showMyReservationsCars();
-	;
+	showMyReservationsFlights();
+	showMyReservationsHotels();
 });
 
 $(document).on('click', '.gradeCarResButton', function(e) {
