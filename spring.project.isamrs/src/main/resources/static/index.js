@@ -239,13 +239,15 @@ function fillTableAirlines(data, table) {
 		var cell3 = row.insertCell(3);
 		var cell4 = row.insertCell(4);
 		var cell5 = row.insertCell(5);
+		var cell6 = row.insertCell(6);
 
 		cell0.innerHTML = ++index;
 		cell1.innerHTML = response[counter].name;
 		cell2.innerHTML = response[counter].address;
-		cell3.innerHTML = response[counter].promotionalDescription;
-		cell4.innerHTML = response[counter].score;
-		cell5.innerHTML = '<button id=\"'
+		cell3.innerHTML = response[counter].city;
+		cell4.innerHTML = response[counter].promotionalDescription;
+		cell5.innerHTML = response[counter].score;
+		cell6.innerHTML = '<button id=\"'
 				+ response[counter].id
 				+ '\" class=\" showAirlineProfile\" value=\"Show profile\">Show profile</button>';
 
@@ -257,13 +259,15 @@ function fillTableAirlines(data, table) {
 	var cell3 = row.insertCell(3);
 	var cell4 = row.insertCell(4);
 	var cell5 = row.insertCell(5);
+	var cell6 = row.insertCell(6);
 
 	cell0.innerHTML = '<p style= "color:#002699; font-weight: 200% font-size:150%">#</p>';
 	cell1.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Name</p>';
 	cell2.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Address</p>';
-	cell3.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Description</p>';
-	cell4.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Grade</p>';
-	cell5.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%"></p>';
+	cell3.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">City</p>';
+	cell4.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Description</p>';
+	cell5.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Grade</p>';
+	cell6.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%"></p>';
 
 }
 
@@ -309,13 +313,15 @@ function fillTableHotels(data) {
 		var cell3 = row.insertCell(3);
 		var cell4 = row.insertCell(4);
 		var cell5 = row.insertCell(5);
+		var cell6 = row.insertCell(6);
 
 		cell0.innerHTML = ++index;
 		cell1.innerHTML = response[counter].name;
 		cell2.innerHTML = response[counter].address;
-		cell3.innerHTML = response[counter].promotionalDescription;
-		cell4.innerHTML = response[counter].score;
-		cell5.innerHTML = '<button id=\"'
+		cell3.innerHTML = response[counter].city;
+		cell4.innerHTML = response[counter].promotionalDescription;
+		cell5.innerHTML = response[counter].score;
+		cell6.innerHTML = '<button id=\"'
 				+ response[counter].id
 				+ '\" class=\" showHotelProfile\" value=\"Show profile\">Show profile</button>';
 
@@ -327,13 +333,15 @@ function fillTableHotels(data) {
 	var cell3 = row.insertCell(3);
 	var cell4 = row.insertCell(4);
 	var cell5 = row.insertCell(5);
+	var cell6 = row.insertCell(6);
 
 	cell0.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">#</p>';
 	cell1.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Name</p>';
 	cell2.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Address</p>';
-	cell3.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Description</p>';
-	cell4.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Grade</p>';
-	cell5.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%"></p>';
+	cell3.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">City</p>';
+	cell4.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Description</p>';
+	cell5.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Grade</p>';
+	cell6.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%"></p>';
 
 }
 
@@ -379,13 +387,15 @@ function fillTableRentacars(data) {
 		var cell3 = row.insertCell(3);
 		var cell4 = row.insertCell(4);
 		var cell5 = row.insertCell(5);
+		var cell6 = row.insertCell(6);
 
 		cell0.innerHTML = ++index;
 		cell1.innerHTML = response[counter].name;
 		cell2.innerHTML = response[counter].address;
-		cell3.innerHTML = response[counter].promotionalDescription;
-		cell4.innerHTML = response[counter].score;
-		cell5.innerHTML = '<button id=\"'
+		cell3.innerHTML = response[counter].city;
+		cell4.innerHTML = response[counter].promotionalDescription;
+		cell5.innerHTML = response[counter].score;
+		cell6.innerHTML = '<button id=\"'
 				+ response[counter].id
 				+ '\" class=\" showRentacarProfile\" value=\"Show profile\">Show profile</button>';
 
@@ -397,13 +407,15 @@ function fillTableRentacars(data) {
 	var cell3 = row.insertCell(3);
 	var cell4 = row.insertCell(4);
 	var cell5 = row.insertCell(5);
+	var cell6 = row.insertCell(6);
 
 	cell0.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">#</p>';
 	cell1.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Name</p>';
 	cell2.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Address</p';
-	cell3.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%"> Description</p>';
-	cell4.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Grade</p>';
-	cell5.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%></p>';
+	cell3.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">City</p';
+	cell4.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%"> Description</p>';
+	cell5.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Grade</p>';
+	cell6.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%></p>';
 
 }
 

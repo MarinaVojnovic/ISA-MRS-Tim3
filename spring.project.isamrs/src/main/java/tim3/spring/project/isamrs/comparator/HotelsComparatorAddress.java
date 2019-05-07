@@ -9,8 +9,7 @@ public class HotelsComparatorAddress implements Comparator<Hotel> {
 	public int compare(Hotel hotel1, Hotel hotel2) {
 
 		// for comparison
-		int addressCompare = hotel1.getAddress().compareTo(hotel2.getAddress());
-		return addressCompare;
+		return hotel1.getAddress().compareTo(hotel2.getAddress());
 
 	}
 }

@@ -26,6 +26,9 @@ public class Airline {
 	@GeneratedValue
 	private Long id;
 
+	@Column(name = "city")
+	private String city;
+
 	@Column(name = "score")
 	private Double score;
 
@@ -158,7 +161,7 @@ public class Airline {
 
 	public Airline(String name, String address, String promotionalDescription, Set<Flight> flights,
 			Set<Ticket> quickBookingTickets, Set<AirlineCustomerService> airlineCustomerServices, Integer number,
-			Double score) {
+			Double score, String city) {
 		super();
 		this.name = name;
 		this.address = address;
@@ -168,6 +171,7 @@ public class Airline {
 		this.airlineCustomerServices = airlineCustomerServices;
 		this.gradeNumber = number;
 		this.score = score;
+		this.city = city;
 	}
 
 	public Airline(AirlineDTO airlineDTO) {
@@ -176,6 +180,7 @@ public class Airline {
 		this.promotionalDescription = airlineDTO.getAirlinePromotionalDescription();
 		this.gradeNumber = 0;
 		this.score = 0.0;
+		this.city = airlineDTO.getCity();
 	}
 
 	public void setAirlineCustomerServices(Set<AirlineCustomerService> airlineCustomerServices) {
@@ -244,6 +249,14 @@ public class Airline {
 
 	public void setGradeNumber(Integer gradeNumber) {
 		this.gradeNumber = gradeNumber;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
 	}
 
 }

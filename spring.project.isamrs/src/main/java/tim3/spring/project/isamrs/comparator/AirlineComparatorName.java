@@ -9,8 +9,7 @@ public class AirlineComparatorName implements Comparator<Airline>{
     public int compare(Airline airline1, Airline airline2) { 
 
         // for comparison 
-        int nameCompare = airline1.getName().compareTo(airline2.getName()); 
-        return nameCompare;
+        return airline1.getName().compareTo(airline2.getName()); 
        
 	   }
 }

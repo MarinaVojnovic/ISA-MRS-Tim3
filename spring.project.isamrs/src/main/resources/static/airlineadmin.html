@@ -9,6 +9,7 @@
 <script src="auth.js"></script>
 <script src="airlineadmin.js"></script>
 <script src="bootstrap.min.js"></script>
+
 <style>
 body {
 	background: url('airline2.jpg');
@@ -54,23 +55,23 @@ body {
 	background: #00defc;
 }
 
-#a input{
+#a input {
 	width: 100px !important;
 }
-
 </style>
 </head>
 <body>
 
 	<div class="tab">
-		<button class="tablinks"
-			onclick="openCity(event, 'editAirline')">Edit an airline</button>
+		<button class="tablinks" onclick="openCity(event, 'editAirline')">Edit
+			an airline</button>
 		<button class="tablinks" id="addFlightButton"
 			onclick="openCity(event, 'addFlight')">Add flight</button>
 		<button class="tablinks" onclick="openCity(event, 'editProfile')">Edit
 			profile</button>
-			
-		<button class="tablinks" onclick="openCity(event, 'addDestination')">Add destination</button>
+
+		<button class="tablinks" onclick="openCity(event, 'addDestination')">Add
+			destination</button>
 		<button id="logoutClicked" class="tablinks"
 			onclick="openCity(event, 'logout')">Logout</button>
 	</div>
@@ -80,7 +81,8 @@ body {
 			<h2>Editing an airline:</h2>
 			<form class="form-horizontal" action="#" method="post" id="form1">
 				<div class="form-group">
-					<label class="control-label col-sm-2" for="airlineNameEdit">Name: </label>
+					<label class="control-label col-sm-2" for="airlineNameEdit">Name:
+					</label>
 					<div class="col-sm-10">
 						<input type="text" class="form-control" id="airlineNameEdit"
 							placeholder="Insert a name for the airline"
@@ -88,22 +90,38 @@ body {
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="control-label col-sm-2" for="airlineAddressEdit">Price: </label>
+					<label class="control-label col-sm-2" for="airlineAddressEdit">Address:
+					</label>
 					<div class="col-sm-10">
 						<input type="text" class="form-control" id="airlineAddressEdit"
-							placeholder="Insert an address for the airline" name="airlineAddressEdit">
+							placeholder="Insert an address for the airline"
+							name="airlineAddressEdit">
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="control-label col-sm-2" for="airlinePromotionalDescriptionEdit">Promotional description: </label>
+					<label class="control-label col-sm-2" for="airlineCityEdit">City:
+					</label>
 					<div class="col-sm-10">
-						<input type="text" class="form-control" id="airlinePromotionalDescriptionEdit"
-							placeholder="Insert a promotional description for the airline" name="airlinePromotionalDescriptionEdit">
+						<input type="text" class="form-control" id="airlineCityEdit"
+							placeholder="Insert a city for the airline"
+							name="airlineCityEdit">
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-2"
+						for="airlinePromotionalDescriptionEdit">Promotional
+						description: </label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control"
+							id="airlinePromotionalDescriptionEdit"
+							placeholder="Insert a promotional description for the airline"
+							name="airlinePromotionalDescriptionEdit">
 					</div>
 				</div>
 				<div class="form-group">
 					<div class="col-sm-offset-2 col-sm-10">
-						<button style="background: #ff1a75; color: white" type="submit" class="btn btn-default" id="button1">Submit</button>
+						<button style="background: #ff1a75; color: white" type="submit"
+							class="btn btn-default" id="button1">Submit</button>
 					</div>
 				</div>
 			</form>
@@ -116,15 +134,16 @@ body {
 			<h2>Adding Flight:</h2>
 			<form class="form-horizontal" action="#" method="post" id="form2">
 				<div class="form-group">
-					<label class="control-label col-sm-2" for="flightNumberRegister">Flight number: </label>
+					<label class="control-label col-sm-2" for="flightNumberRegister">Flight
+						number: </label>
 					<div class="col-sm-10">
 						<input type="text" class="form-control" id="flightNumberRegister"
-							placeholder="Insert a fllight number"
-							name="flightNumberRegister">
+							placeholder="Insert a fllight number" name="flightNumberRegister">
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="control-label col-sm-2" for="startDestinationRegister">Start destination: </label>
+					<label class="control-label col-sm-2"
+						for="startDestinationRegister">Start destination: </label>
 					<div class="col-sm-10">
 						<select class="form-control" id="startDestinationRegister"
 							name="startDestinationRegister">
@@ -132,7 +151,8 @@ body {
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="control-label col-sm-2" for="finalDestinationRegister">Final destination: </label>
+					<label class="control-label col-sm-2"
+						for="finalDestinationRegister">Final destination: </label>
 					<div class="col-sm-10">
 						<select class="form-control" id="finalDestinationRegister"
 							name="finalDestinationRegister">
@@ -140,79 +160,89 @@ body {
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="control-label col-sm-2" for="costOfFlight">Cost of flight: </label>
+					<label class="control-label col-sm-2" for="costOfFlight">Cost
+						of flight: </label>
 					<div class="col-sm-10">
 						<input type="number" class="form-control" id="costOfFlight"
 							placeholder="Insert cost for the flight" name="costOfFlight">
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="control-label col-sm-2" for="dateOfFlight">Date of flight: </label>
+					<label class="control-label col-sm-2" for="dateOfFlight">Date
+						of flight: </label>
 					<div class="col-sm-10">
 						<input type="date" class="form-control" id="dateOfFlight"
 							placeholder="Insert date of the flight" name="dateOfFlight">
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="control-label col-sm-2" for="dateOfArrival">Date of arrival: </label>
+					<label class="control-label col-sm-2" for="dateOfArrival">Date
+						of arrival: </label>
 					<div class="col-sm-10">
 						<input type="date" class="form-control" id="dateOfArrival"
 							placeholder="Insert date of the flight" name="dateOfArrival">
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="control-label col-sm-2" for="lengthOfFlight">Length of flight: </label>
+					<label class="control-label col-sm-2" for="lengthOfFlight">Length
+						of flight: </label>
 					<div class="col-sm-10">
 						<input type="datetime" class="form-control" id="lengthOfFlight"
 							placeholder="Insert length of the flight" name="lengthOfFlight">
 					</div>
 				</div>
 				<div class="form-group" id="a">
-					<label class="control-label col-sm-2" for="numberOfSeatsEconomy">Number of seats economy class: </label>
+					<label class="control-label col-sm-2" for="numberOfSeatsEconomy">Number
+						of seats economy class: </label>
 					<div class="col-sm-10">
 						<input type="text" class="form-control" id="numberOfSeatsEconomy"
 							placeholder="" name="numberOfSeatsEconomy">
 					</div>
-					
+
 				</div>
 				<div class="form-group" id="a">
-					<label class="control-label col-sm-2" for="numberOfSeatsBusiness">Number of seats business class: </label>
+					<label class="control-label col-sm-2" for="numberOfSeatsBusiness">Number
+						of seats business class: </label>
 					<div class="col-sm-10">
-						<input type="text" size="5" class="form-control" id="numberOfSeatsBusiness"
-							placeholder="" name="numberOfSeatsBusiness"> 
+						<input type="text" size="5" class="form-control"
+							id="numberOfSeatsBusiness" placeholder=""
+							name="numberOfSeatsBusiness">
 					</div>
 				</div>
 				<div class="form-group" id="a">
-					<label class="control-label col-sm-2" for="numberOfSeatsFirst">Number of seats first class: </label>
+					<label class="control-label col-sm-2" for="numberOfSeatsFirst">Number
+						of seats first class: </label>
 					<div class="col-sm-10">
-						<input type="text" size="5" class="form-control" id="numberOfSeatsFirst"
-							placeholder="" name="numberOfSeatsFirst" >
+						<input type="text" size="5" class="form-control"
+							id="numberOfSeatsFirst" placeholder="" name="numberOfSeatsFirst">
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="control-label col-sm-2" for="numberOfStops">Number of flight stops: </label>
+					<label class="control-label col-sm-2" for="numberOfStops">Number
+						of flight stops: </label>
 					<div class="col-sm-10">
 						<input type="text" class="form-control" id="numberOfFlightStops"
-							placeholder="Insert number of flight stops" name="numberOfFlightStops
+							placeholder="Insert number of flight stops"
+							name="numberOfFlightStops
 							">
-						<p>After clicking on submit you will be offered to insert flight stops! </p>
-						
+						<p>After clicking on submit you will be offered to insert
+							flight stops!</p>
+
 					</div>
 				</div>
 				<div class="form-group">
 					<div class="col-sm-offset-2 col-sm-10">
-						<button style="background: #ff1a75; color: white" type="submit" class="btn btn-default" id="button2">Submit</button>
+						<button style="background: #ff1a75; color: white" type="submit"
+							class="btn btn-default" id="button2">Submit</button>
 					</div>
 				</div>
-				<div class="form-group" id="divStops">
-				
-				</div>
-				
+				<div class="form-group" id="divStops"></div>
+
 			</form>
 			<br>
 		</div>
 	</div>
-	
+
 	<div id="editProfile" class="tabcontent">
 		<div class="container">
 			<h2>Editing profile</h2>
@@ -225,7 +255,7 @@ body {
 						<input type="text" class="form-control"
 							id="airlineAdminUsernameEdit"
 							placeholder="Insert a username for the airline admin"
-							name="airlineAdminUsernameEdit"  disabled>
+							name="airlineAdminUsernameEdit" disabled>
 					</div>
 				</div>
 
@@ -297,20 +327,22 @@ body {
 
 				<div class="form-group">
 					<div class="col-sm-offset-2 col-sm-10">
-						<button style="background: #ff1a75; color: white" type="submit" class="btn btn-default" id="button6">Submit</button>
+						<button style="background: #ff1a75; color: white" type="submit"
+							class="btn btn-default" id="button6">Submit</button>
 					</div>
 				</div>
 			</form>
 			<br>
 		</div>
 	</div>
-	
+
 	<div id="addDestination" class="tabcontent">
 		<div class="container">
 			<h2>Adding Destination to Airline:</h2>
 			<form class="form-horizontal" action="#" method="post" id="form5">
 				<div class="form-group">
-					<label class="control-label col-sm-2" for="chooseDestination">Choose destination: </label>
+					<label class="control-label col-sm-2" for="chooseDestination">Choose
+						destination: </label>
 					<div class="col-sm-10">
 						<select class="form-control" id="chooseDestination"
 							name="chooseDestination">
@@ -319,13 +351,14 @@ body {
 				</div>
 				<div class="form-group">
 					<div class="col-sm-offset-2 col-sm-10">
-						<button type="submit" class="btn btn-default" id="addDestinationButton">Add</button>
+						<button type="submit" class="btn btn-default"
+							id="addDestinationButton">Add</button>
 					</div>
-					</div>
-				</form>
 				</div>
-				</div>
-				
+			</form>
+		</div>
+	</div>
+
 	<div id="passwordValidation" class="tabcontent">
 		<div class="container">
 			<h2>Validate your password:</h2>
@@ -356,8 +389,8 @@ body {
 			<br>
 		</div>
 	</div>
-	
-	
+
+
 	<div id="logout" class="tabcontent">
 		<h1>Soon</h1>
 	</div>

@@ -103,9 +103,9 @@ public class AirlineController {
 
 	@GetMapping(value = "/findAirlines/{field}")
 	public ResponseEntity<List<Airline>> findAirlines(@PathVariable String field) {
-		List<Airline> airlines = (List<Airline>) airlineService.findByName(field);
-		if (airlines.size() == 0) {
-			airlines = (List<Airline>) airlineService.findByAddress(field);
+		List<Airline> airlines = airlineService.findByName(field);
+		if (airlines.isEmpty()) {
+			airlines = airlineService.findByAddress(field);
 		}
 
 		return new ResponseEntity<>(airlines, HttpStatus.OK);
@@ -170,7 +170,6 @@ public class AirlineController {
 
 	@GetMapping(value = "/findDest/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Airline> searchFlights(@PathVariable Long id) {
-		System.out.println("Uslo u search flights");
 		Airline a = airlineService.getOne(id);
 		return new ResponseEntity<>(a, HttpStatus.OK);
 	}

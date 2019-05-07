@@ -4,6 +4,7 @@ public class RentacarDTO {
 	private String rentacarNameRegister;
 	private String rentacarAddressRegister;
 	private String rentacarPromotionalDescription;
+	private String city;
 
 	public String getRentacarNameRegister() {
 		return rentacarNameRegister;
@@ -30,15 +31,24 @@ public class RentacarDTO {
 	}
 
 	public RentacarDTO(String rentacarNameRegister, String rentacarAddressRegister,
-			String rentacarPromotionalDescription) {
+			String rentacarPromotionalDescription, String city) {
 		super();
 		this.rentacarNameRegister = rentacarNameRegister;
 		this.rentacarAddressRegister = rentacarAddressRegister;
 		this.rentacarPromotionalDescription = rentacarPromotionalDescription;
+		this.city = city;
 	}
 
 	public RentacarDTO() {
 		super();
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
 	}
 
 }

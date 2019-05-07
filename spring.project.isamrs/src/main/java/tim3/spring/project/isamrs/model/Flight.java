@@ -221,6 +221,8 @@ public class Flight {
 
 	public void setFlightReservation(List<FlightReservation> flightReservation) {
 		this.flightReservation = flightReservation;
+	}
+	
 	public Double getScore() {
 		return score;
 	}
