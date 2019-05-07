@@ -128,12 +128,19 @@ public class RentacarController {
 		System.out.println("Uslo u find rentacar address");
 		List<Rentacar> allRentacars = rentacarService.getAll();
 		List<Rentacar> rentacars=new ArrayList<Rentacar>();
-		String grad = address.split(", ")[1].split(" ")[1];
-		System.out.println(grad);
-		for (Rentacar rent : allRentacars) {
-			if (rent.getAddress().contains(grad)) {
-				rentacars.add(rent);
+		/*
+		 * String grad = address.split(", ")[1].split(" ")[1]; System.out.println(grad);
+		 * for (Rentacar rent : allRentacars) { if (rent.getAddress().contains(grad)) {
+		 * rentacars.add(rent); } }
+		 */
+		for (Rentacar r : allRentacars) {
+			if (r.getCity()!=null) {
+				System.out.println(r.getCity()+"*** "+address);
+				if (r.getCity().equalsIgnoreCase(address)) {
+					rentacars.add(r);
+				}
 			}
+			
 		}
 		
 		return new ResponseEntity<>(rentacars, HttpStatus.OK);
