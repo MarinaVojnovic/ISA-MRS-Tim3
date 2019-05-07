@@ -1795,10 +1795,14 @@ function searchForCars(rentacarId) {
 							cell10.innerHTML = '<p style= " font-weight: 200%; font-size:150%">Grade</p>';
 							cell9.innerHTML = '<p style= " font-weight: 200%; font-size:150%">Total price</p>';
 							;
+							$("#rentacarReservation").append('<br><br><button type="submit" style="background: #ff1a75; width: 300px; height: 100px; align: center; color: white" id="offerHottelsButton" style="float: left;/">Reserve hotel</button>');
+							$("#rentacarReservation").append('<br><button type="submit" style="background: #ff1a75; width: 300px; height: 1000px; align: center; color: white" id="offerHottelsButton" style="float: left;/">Finish reservation </button>');
 						} else {
 							$(".messageSuitableCars")
 									.append(
 											'<h3>No cars found to satisfy your criteria.</p>');
+							$("#rentacarReservation").append('<br><br><button type="submit" style="background: #ff1a75; width: 300px; height: 100px; align: center; color: white" id="offerHottelsButton" style="float: left;/">Reserve hotel</button>');
+							$("#rentacarReservation").append('<br><button type="submit" style="background: #ff1a75; width: 300px; height: 100px; align: center; color: white" id="offerHottelsButton" style="float: left;/">Finish reservation </button>');
 						}
 
 					},
@@ -1836,7 +1840,7 @@ function takeCar(id, startDate, endDate, passengers) {
 		headers : createAuthorizationTokenHeader(TOKEN_KEY),
 		success : function(data) {
 			alert("Successful reservation of a car, congratulations!");
-
+			
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
 			alert(jqXHR.status);
@@ -2209,8 +2213,8 @@ $(document)
 				'#reserveFlight',
 				function(e) {
 					e.preventDefault();
-					openCity(e, 'reserveFlightInfo');
-					$("#reserveFlightInfoDiv").empty();
+					//openCity(e, 'reserveFlightInfo');
+					//$("#reserveFlightInfoDiv").empty();
 					var tabela = $('<table align="center"></table>');
 					var i = 1;
 					var choosenSeats = JSON
@@ -2267,9 +2271,10 @@ $(document)
 						i++;
 
 					}
-					$("#reserveFlightInfoDiv").append(tabela);
-					$("#reserveFlightInfoDiv").append('<br><br>');
-					$("#reserveFlightInfoDiv")
+					$("#seats").children().remove();
+					$("#seats").append(tabela);
+					$("#seats").append('<br><br>');
+					$("#seats")
 							.append(
 									'<div class="wrapper"><button align="center" type="submit" id="confirmReserveFlight" style="background-color: #ff1a75">Reserve</button></div>');
 
@@ -2330,6 +2335,13 @@ $(document)
 									alert(errorThrown);
 								}
 							})
+							
+							$("#flightReservation").append('<button type="submit" style="background: #ff1a75; color: white" id="offerRentacarsButton" style="float: left;">Rentacars</button><br><br>');
+							$("#flightReservation").append('<button type="submit" style="background: #ff1a75; color: white" id="offerHottelsButton" style="float: left;/">Hotels</button>');
+							
+							
+							
+							
 				})
 
 function sendEmail(list) {
@@ -2544,7 +2556,7 @@ $(document).on('click', '#offerRentacarsButton', function(e) {
 				console.log('destination not found');
 			} else {
 				console.log('destination found');
-				address = data.address;
+				address = data.city;
 				console.log(address);
 
 				$.ajax({
