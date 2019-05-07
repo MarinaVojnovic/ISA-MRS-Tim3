@@ -37,7 +37,6 @@ import tim3.spring.project.isamrs.model.Seat;
 import tim3.spring.project.isamrs.model.User;
 import tim3.spring.project.isamrs.model.UserRoleName;
 import tim3.spring.project.isamrs.model.UserTokenState;
-import tim3.spring.project.isamrs.repository.SeatRepository;
 import tim3.spring.project.isamrs.security.TokenHelper;
 import tim3.spring.project.isamrs.service.CarReservationService;
 import tim3.spring.project.isamrs.service.FlightReservationService;

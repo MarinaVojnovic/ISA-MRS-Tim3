@@ -96,7 +96,7 @@ public class AuthenticationController {
 
 	@PostMapping(value = "auth/registerHotelAdmin")
 	public ResponseEntity<?> registerHotelAdmin(@RequestBody UserDTO user) {
-		if (this.userDetailsService.usernameTaken(user.getUsername()) == true) {
+		if (this.userDetailsService.usernameTaken(user.getUsername())) {
 			return new ResponseEntity<>(new MessageDTO("Username is already taken.", "Error"), HttpStatus.OK);
 		}
 
@@ -129,7 +129,7 @@ public class AuthenticationController {
 
 	@PostMapping(value = "auth/registerRentacarAdmin")
 	public ResponseEntity<?> registerRentacarAdmin(@RequestBody UserDTO user) {
-		if (this.userDetailsService.usernameTaken(user.getUsername()) == true) {
+		if (this.userDetailsService.usernameTaken(user.getUsername())) {
 			return new ResponseEntity<>(new MessageDTO("Username is already taken.", "Error"), HttpStatus.OK);
 		}
 
@@ -162,7 +162,7 @@ public class AuthenticationController {
 
 	@PostMapping(value = "auth/registerUser")
 	public ResponseEntity<?> registerUser(@RequestBody UserDTO user) {
-		if (this.userDetailsService.usernameTaken(user.getUsername()) == true) {
+		if (this.userDetailsService.usernameTaken(user.getUsername())) {
 			return new ResponseEntity<>(new MessageDTO("Username is already taken.", "Error"), HttpStatus.OK);
 		}
 
@@ -191,7 +191,7 @@ public class AuthenticationController {
 
 	@PostMapping(value = "auth/registerSystemAdmin")
 	public ResponseEntity<?> registerSystemAdmin(@RequestBody UserDTO user) {
-		if (this.userDetailsService.usernameTaken(user.getUsername()) == true) {
+		if (this.userDetailsService.usernameTaken(user.getUsername())) {
 			return new ResponseEntity<>(new MessageDTO("Username is already taken.", "Error"), HttpStatus.OK);
 		}
 

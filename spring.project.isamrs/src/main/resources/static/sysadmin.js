@@ -119,11 +119,13 @@ $(document)
 							.getElementById("airlineNameRegister").value;
 					var airlineAddressRegister = document
 							.getElementById("airlineAddressRegister").value;
+					var city = document
+					.getElementById("airlineCityRegister").value;
 					var airlinePromotionalDescription = document
 							.getElementById("airlinePromotionalDescription").value;
 					if (airlineNameRegister == ""
 							|| airlineAddressRegister == ""
-							|| airlinePromotionalDescription == "") {
+							|| airlinePromotionalDescription == "" || city == "") {
 						alert('At least one field is blank, please fill it up with proper information!');
 					} else {
 						$
@@ -136,7 +138,7 @@ $(document)
 									data : createAirlineToJSON(
 											airlineNameRegister,
 											airlineAddressRegister,
-											airlinePromotionalDescription),
+											airlinePromotionalDescription, city),
 									success : function(data) {
 										getAirlineWithoutAdmin();
 										alert("Successful registration, congratulations!");
@@ -162,10 +164,12 @@ $(document)
 							.getElementById("hotelNameRegister").value;
 					var hotelAddressRegister = document
 							.getElementById("hotelAddressRegister").value;
+					var city = document
+					.getElementById("hotelCityRegister").value;
 					var hotelPromotionalDescription = document
 							.getElementById("hotelPromotionalDescription").value;
 					if (hotelNameRegister == "" || hotelAddressRegister == ""
-							|| hotelPromotionalDescription == "") {
+							|| hotelPromotionalDescription == "" || city == "") {
 						alert('At least one field is blank, please fill it up with proper information!');
 					} else {
 						$
@@ -177,7 +181,7 @@ $(document)
 									dataType : "json",
 									data : createHotelToJSON(hotelNameRegister,
 											hotelAddressRegister,
-											hotelPromotionalDescription),
+											hotelPromotionalDescription, city),
 									success : function(data) {
 										getHotelWithoutAdmin();
 										alert("Successful registration, congratulations!");
@@ -203,11 +207,13 @@ $(document)
 							.getElementById("rentacarNameRegister").value;
 					var rentacarAddressRegister = document
 							.getElementById("rentacarAddressRegister").value;
+					var city = document
+					.getElementById("rentacarCityRegister").value;
 					var rentacarPromotionalDescription = document
 							.getElementById("rentacarPromotionalDescription").value;
 					if (rentacarNameRegister == ""
 							|| rentacarAddressRegister == ""
-							|| rentacarPromotionalDescription == "") {
+							|| rentacarPromotionalDescription == "" || city == "") {
 						alert('At least one field is blank, please fill it up with proper information!');
 					} else {
 						$
@@ -220,7 +226,7 @@ $(document)
 									data : createRentacarToJSON(
 											rentacarNameRegister,
 											rentacarAddressRegister,
-											rentacarPromotionalDescription),
+											rentacarPromotionalDescription, city),
 									success : function(data) {
 										getRentacarWithoutAdmin();
 										alert("Successful registration, congratulations!");
@@ -513,29 +519,32 @@ $(document)
 				});
 
 function createAirlineToJSON(airlineNameRegister, airlineAddressRegister,
-		airlinePromotionalDescription) {
+		airlinePromotionalDescription, city) {
 	return JSON.stringify({
 		"airlineNameRegister" : airlineNameRegister,
 		"airlineAddressRegister" : airlineAddressRegister,
 		"airlinePromotionalDescription" : airlinePromotionalDescription,
+		"city" : city,
 	})
 }
 
 function createHotelToJSON(hotelNameRegister, hotelAddressRegister,
-		hotelPromotionalDescription) {
+		hotelPromotionalDescription, city) {
 	return JSON.stringify({
 		"hotelNameRegister" : hotelNameRegister,
 		"hotelAddressRegister" : hotelAddressRegister,
 		"hotelPromotionalDescription" : hotelPromotionalDescription,
+		"city" : city,
 	})
 }
 
 function createRentacarToJSON(rentacarNameRegister, rentacarAddressRegister,
-		rentacarPromotionalDescription) {
+		rentacarPromotionalDescription, city) {
 	return JSON.stringify({
 		"rentacarNameRegister" : rentacarNameRegister,
 		"rentacarAddressRegister" : rentacarAddressRegister,
 		"rentacarPromotionalDescription" : rentacarPromotionalDescription,
+		"city" : city,
 	})
 }
 

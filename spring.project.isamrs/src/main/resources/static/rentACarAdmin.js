@@ -431,6 +431,7 @@ function findRentacar() {
 					} else {
 						document.getElementById("rentacarNameEdit").value = data.name;
 						document.getElementById("rentacarAddressEdit").value = data.address;
+						document.getElementById("rentacarCityEdit").value = data.city;
 						document
 								.getElementById("rentacarPromotionalDescriptionEdit").value = data.promotionalDescription;
 					}
@@ -454,6 +455,8 @@ $(document)
 					var name = document.getElementById("rentacarNameEdit").value;
 					var address = document
 							.getElementById("rentacarAddressEdit").value;
+					var city = document
+					.getElementById("rentacarCityEdit").value;
 					var promotionalDescription = document
 							.getElementById("rentacarPromotionalDescriptionEdit").value;
 
@@ -468,7 +471,7 @@ $(document)
 									url : urlRoot2,
 									headers : createAuthorizationTokenHeader(TOKEN_KEY),
 									data : rentACarToJson(name, address,
-											promotionalDescription),
+											promotionalDescription, city),
 									dataType : "json",
 									contentType : 'application/json',
 									success : function(data) {
@@ -788,11 +791,12 @@ function createBranchDTO(id, city, address){
 	})
 }
 
-function rentACarToJson(name, address, promotionalDescription) {
+function rentACarToJson(name, address, promotionalDescription, city) {
 	return JSON.stringify({
 		"rentacarNameRegister" : name,
 		"rentacarAddressRegister" : address,
 		"rentacarPromotionalDescription" : promotionalDescription,
+		"city": city,
 	})
 }
 
@@ -882,13 +886,13 @@ $(document).on('click', '#editBranchesButton', function(e) {
 
 
 $(document).on('click', '.deleteBranchButton', function(e) {
-	//e.preventDefault();
+	// e.preventDefault();
 	var _this = $(this);
 	deleteBranch(this.id);
 
 });
 $(document).on('click', '.editBranchButton', function(e) {
-	//e.preventDefault();
+	// e.preventDefault();
 	var _this = $(this);
 	openCity(e, "editBranchFormular");
 	editBranch(this.id);
@@ -897,7 +901,7 @@ $(document).on('click', '.editBranchButton', function(e) {
 
 
 $(document).on('click', '#buttonSubmitEditBranch', function(e) {
-	//e.preventDefault();
+	// e.preventDefault();
 	var _this = $(this);
 	
 	saveEditedBranch(this.id);
@@ -942,7 +946,7 @@ $(document).on('click', '.fastResCarButton', function(e) {
 $(document).on('click', '#submitFastFormular', function(e) {
 	console.log('button submit fast formular clicked');
 	saveSubmitFast(document.getElementById("carId").value);
-	//openCity(e, 'fastResFormular');
+	// openCity(e, 'fastResFormular');
 	
 	
 

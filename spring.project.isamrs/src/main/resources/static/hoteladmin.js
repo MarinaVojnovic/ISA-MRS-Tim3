@@ -516,10 +516,12 @@ $(document).on(
 			e.preventDefault();
 			var name = document.getElementById("hotelNameEdit").value;
 			var address = document.getElementById("hotelAddressEdit").value;
+			var city = document.getElementById("hotelCityEdit").value;
 			var promotionalDescription = document
 					.getElementById("hotelPromotionalDescriptionEdit").value;
 
-			if (name == "" || address == "" || promotionalDescription == "") {
+			if (name == "" || address == "" || promotionalDescription == ""
+					|| city == "") {
 				alert('None of the fields is allowed to be empty!');
 			} else {
 
@@ -527,7 +529,8 @@ $(document).on(
 					type : 'PUT',
 					url : urlRoot7,
 					headers : createAuthorizationTokenHeader(TOKEN_KEY),
-					data : hotelToJson(name, address, promotionalDescription),
+					data : hotelToJson(name, address, promotionalDescription,
+							city),
 					dataType : "json",
 					contentType : 'application/json',
 					success : function(data) {
@@ -559,6 +562,7 @@ function findHotel() {
 					} else {
 						document.getElementById("hotelNameEdit").value = data.name;
 						document.getElementById("hotelAddressEdit").value = data.address;
+						document.getElementById("hotelCityEdit").value = data.city;
 						document
 								.getElementById("hotelPromotionalDescriptionEdit").value = data.promotionalDescription;
 					}
@@ -852,10 +856,16 @@ $(document)
 						alert('At least one field is blank, please fill it up with proper information!');
 					} else if (discount < 20 || discount > 70) {
 						alert('Discount must be in a range [20, 70] !');
-					} else if (new Date() > new Date(startDate)) {
+					} else if (new Date() >= new Date(startDate)) {
 						alert('You cannot put for fast reserving in past!');
-					} else if (new Date(startDate) > new Date(endDate)) {
-						alert('End date cant be before start date!');
+					} else if (new Date(startDate) >= new Date(endDate)) {
+						alert('End date cant be before or equal to start date!');
+					} else if ((new Date(startDate)).getTime() + 3024000000 < (new Date(
+							endDate)).getTime()) {
+						alert('You cant reserve room for more than 5 weeks or 35 days!');
+					} else if ((new Date(startDate)).getTime() + 7200000 > (new Date(
+							endDate)).getTime()) {
+						alert('You cant reserve room for less than 2 hours!');
 					} else {
 						$
 								.ajax({
@@ -967,6 +977,23 @@ $(document).on('submit', '#editRoomForm', function(e) {
 
 });
 
+$(document).on(
+		'submit',
+		'#hotelDiscountForm',
+		function(e) {
+			e.preventDefault();
+			var hotelDiscountNumber = document
+					.getElementById("hotelDiscountNumber").value;
+			if (hotelDiscountNumber == "") {
+				alert("Number cant be empty field!");
+			} else if (hotelDiscountNumber < 1 || hotelDiscountNumber > 5) {
+				alert("Number must be in range [1, 5]");
+			} else {
+				setHotelDiscount(hotelDiscountNumber);
+			}
+
+		});
+
 $(document).on('click', '.deleteRFR', function(e) {
 	e.preventDefault();
 	var ID = this.id;
@@ -1007,11 +1034,12 @@ function roomToJson(id, roomNumber, price, numberPeople) {
 	})
 }
 
-function hotelToJson(name, address, promotionalDescription) {
+function hotelToJson(name, address, promotionalDescription, city) {
 	return JSON.stringify({
 		"hotelNameRegister" : name,
 		"hotelAddressRegister" : address,
 		"hotelPromotionalDescription" : promotionalDescription,
+		"city" : city,
 
 	})
 }

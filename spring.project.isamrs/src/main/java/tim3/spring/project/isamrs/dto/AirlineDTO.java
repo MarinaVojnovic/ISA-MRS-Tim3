@@ -4,6 +4,7 @@ public class AirlineDTO {
 	private String airlineNameRegister;
 	private String airlineAddressRegister;
 	private String airlinePromotionalDescription;
+	private String city;
 
 	public String getAirlineNameRegister() {
 		return airlineNameRegister;
@@ -33,11 +34,21 @@ public class AirlineDTO {
 		super();
 	}
 
-	public AirlineDTO(String airlineNameRegister, String airlineAddressRegister, String airlinePromotionalDescription) {
+	public AirlineDTO(String airlineNameRegister, String airlineAddressRegister, String airlinePromotionalDescription,
+			String city) {
 		super();
 		this.airlineNameRegister = airlineNameRegister;
 		this.airlineAddressRegister = airlineAddressRegister;
 		this.airlinePromotionalDescription = airlinePromotionalDescription;
+		this.city = city;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
 	}
 
 }

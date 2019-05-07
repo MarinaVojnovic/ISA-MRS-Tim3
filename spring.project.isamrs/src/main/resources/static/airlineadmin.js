@@ -107,6 +107,7 @@ function findAirline() {
 					} else {
 						document.getElementById("airlineNameEdit").value = data.name;
 						document.getElementById("airlineAddressEdit").value = data.address;
+						document.getElementById("airlineCityEdit").value = data.city;
 						document
 								.getElementById("airlinePromotionalDescriptionEdit").value = data.promotionalDescription;
 					}
@@ -341,12 +342,12 @@ $(document)
 					e.preventDefault();
 					var name = document.getElementById("airlineNameEdit").value;
 					var address = document.getElementById("airlineAddressEdit").value;
-
+					var city = document.getElementById("airlineCityEdit").value;
 					var promotionalDescription = document
 							.getElementById("airlinePromotionalDescriptionEdit").value;
 
 					if (name == "" || address == ""
-							|| promotionalDescription == "") {
+							|| promotionalDescription == "" || city == "") {
 						alert('None of the fields is allowed to be empty!');
 					} else {
 
@@ -356,7 +357,7 @@ $(document)
 									url : urlRoot3,
 									headers : createAuthorizationTokenHeader(TOKEN_KEY),
 									data : airlineToJson(name, address,
-											promotionalDescription),
+											promotionalDescription, city),
 									dataType : "json",
 									contentType : 'application/json',
 									success : function(data) {
@@ -608,11 +609,12 @@ function createFlightToJSON(flightNumberRegister, startDestinationRegister,
 	})
 }
 
-function airlineToJson(name, address, promotionalDescription) {
+function airlineToJson(name, address, promotionalDescription, city) {
 	return JSON.stringify({
 		"airlineNameRegister" : name,
 		"airlineAddressRegister" : address,
 		"airlinePromotionalDescription" : promotionalDescription,
+		"city" : city,
 
 	})
 }

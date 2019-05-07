@@ -9,8 +9,7 @@ public class AirlineComparatorAddress implements Comparator<Airline> {
 	public int compare(Airline airline1, Airline airline2) {
 
 		// for comparison
-		int addressCompare = airline1.getAddress().compareTo(airline2.getAddress());
-		return addressCompare;
+		return airline1.getAddress().compareTo(airline2.getAddress());
 
 	}
 

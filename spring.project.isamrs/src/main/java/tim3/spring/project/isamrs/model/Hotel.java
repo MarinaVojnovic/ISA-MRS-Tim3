@@ -26,6 +26,9 @@ public class Hotel {
 
 	@Column(name = "score")
 	private Double score;
+	
+	@Column(name = "city")
+	private String city;
 
 	@Column(name = "grade_number")
 	private Integer gradeNumber;
@@ -125,7 +128,7 @@ public class Hotel {
 	}
 
 	public Hotel(String name, String address, String promotionalDescription,
-			Set<HotelCustomerService> hotelCustomerServices, Set<Room> rooms, int gradeNumber, double score) {
+			Set<HotelCustomerService> hotelCustomerServices, Set<Room> rooms, int gradeNumber, double score, String city) {
 		super();
 		this.name = name;
 		this.address = address;
@@ -134,6 +137,7 @@ public class Hotel {
 		this.rooms = rooms;
 		this.gradeNumber = gradeNumber;
 		this.score = score;
+		this.city = city;
 	}
 
 	public Hotel(HotelDTO hotelDTO) {
@@ -141,6 +145,7 @@ public class Hotel {
 		this.address = hotelDTO.getHotelAddressRegister();
 		this.promotionalDescription = hotelDTO.getHotelPromotionalDescription();
 		this.score = 0.0;
+		this.city = hotelDTO.getCity();
 		this.gradeNumber = 0;
 	}
 
@@ -174,6 +179,14 @@ public class Hotel {
 
 	public void setRoomReservations(Set<RoomReservation> roomReservations) {
 		this.roomReservations = roomReservations;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
 	}
 
 }

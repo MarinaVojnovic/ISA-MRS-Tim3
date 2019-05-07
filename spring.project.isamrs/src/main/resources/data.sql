@@ -1,28 +1,28 @@
 -- Inserting default airlines in database
-INSERT INTO airline (id, address, name, promotional_description, grade_number, score) 
+INSERT INTO airline (id, address, name, promotional_description, grade_number, score, city) 
 VALUES (1, 'Aerodrom Beograd 59, 11180 Beograd', 'Aerodrom Nikola Tesla', 
-		'Aerodrom da letis i sletis', 0, 0.0)
+		'Aerodrom da letis i sletis', 0, 0.0, 'Beograd')
 ON DUPLICATE KEY UPDATE id = 1;
 
-INSERT INTO airline (id, address, name, promotional_description, grade_number, score) 
+INSERT INTO airline (id, address, name, promotional_description, grade_number, score, city) 
 VALUES (2, 'Aerodrom Beograd 59, 11180 Beograd', 'Aerodrom Nikola Teslaa', 
-		'Aerodrom da letis i sletis', 0, 0.0)
+		'Aerodrom da letis i sletis', 0, 0.0, 'Beograd')
 ON DUPLICATE KEY UPDATE id = 2;
 
-INSERT INTO airline (id, address, name, promotional_description, grade_number, score) 
+INSERT INTO airline (id, address, name, promotional_description, grade_number, score, city) 
 VALUES (3, 'Aerodrom Beograd 59, 11180 Beograd', 'Aerodrom Nikola Teslaaa', 
-		'Aerodrom da letis i sletis', 0, 0.0)
+		'Aerodrom da letis i sletis', 0, 0.0, 'Beograd')
 ON DUPLICATE KEY UPDATE id = 3;
 
 -- Inserting default hotels in database
-INSERT INTO hotel (id, address, name, promotional_description, grade_number, score) 
-VALUES (1, 'Kneza Milosa 1, Bijeljina 76300', 'Hotel Drina', 'Hotel da spavas i jedes', 0, 0.0)
+INSERT INTO hotel (id, address, name, promotional_description, grade_number, score, city) 
+VALUES (1, 'Kneza Milosa 1, Bijeljina 76300', 'Hotel Drina', 'Hotel da spavas i jedes', 0, 0.0, 'Bijeljina')
 ON DUPLICATE KEY UPDATE id = 1;
 
 -- Inserting default rent-a-car services in database
-INSERT INTO rentacar (id, address, name, promotional_description, number, score) 
+INSERT INTO rentacar (id, address, name, promotional_description, number, score, city) 
 VALUES (1, '9, 21000, Dr Svetislava Kasapinovica, Novi Sad', 'RENTACAR NOVI SAD DDM COMPANY'
-		, 'Rentacar da uzmes auto i vozis', 0, 0.0)
+		, 'Rentacar da uzmes auto i vozis', 0, 0.0, 'Novi Sad')
 ON DUPLICATE KEY UPDATE id = 1;
 
 -- Inserting default system administrator in database

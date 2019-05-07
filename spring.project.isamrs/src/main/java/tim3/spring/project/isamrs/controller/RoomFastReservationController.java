@@ -74,7 +74,6 @@ public class RoomFastReservationController {
 		retVal.setEndDate(roomFastReservationDTO.getEndDate());
 		retVal.setDiscount(roomFastReservationDTO.getDiscount());
 		double price = room.getPrice();
-		System.out.println("Upsjelo");
 		if (!roomFastReservationDTO.getHotelCustomerServices().equals("")) {
 			String[] hcsIds = roomFastReservationDTO.getHotelCustomerServices().split(" ");
 			for (String hcsId : hcsIds) {

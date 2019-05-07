@@ -30,12 +30,15 @@ public class Rentacar {
 	@Column(name = "name")
 	private String name;
 
+	@Column(name = "city")
+	private String city;
+
 	@Column(name = "address")
 	private String address;
-	
+
 	@Column(name = "score")
 	private Double score;
-	
+
 	@Column(name = "number")
 	private Integer number;
 
@@ -65,11 +68,10 @@ public class Rentacar {
 	@JsonIgnore
 	@OneToMany(mappedBy = "rentacar", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
 	private Set<Car> cars = new HashSet<>();
-	
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "rentacarRes", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
 	private Set<CarReservation> carReservations = new HashSet<>();
-	
 
 	public Set<CarReservation> getCarReservations() {
 		return carReservations;
@@ -164,12 +166,14 @@ public class Rentacar {
 		this.name = rentacarDTO.getRentacarNameRegister();
 		this.address = rentacarDTO.getRentacarAddressRegister();
 		this.promotionalDescription = rentacarDTO.getRentacarPromotionalDescription();
-		this.score=0.0;
-		this.number=0;
+		this.score = 0.0;
+		this.number = 0;
+		this.city = rentacarDTO.getCity();
 	}
 
-	public Rentacar(String name, String address, String promotionalDescription,
-			Set<RentacarCustomerService> rentacarCustomerServices, Set<Car> cars, Set<BranchOffice> branches, Double score, Integer number) {
+	public Rentacar(String name, String city, String address, String promotionalDescription,
+			Set<RentacarCustomerService> rentacarCustomerServices, Set<Car> cars, Set<BranchOffice> branches,
+			Double score, Integer number) {
 		super();
 		this.name = name;
 		this.address = address;
@@ -177,8 +181,9 @@ public class Rentacar {
 		this.rentacarCustomerServices = rentacarCustomerServices;
 		this.cars = cars;
 		this.branches = branches;
-		this.score=score;
-		this.number=number;
+		this.score = score;
+		this.number = number;
+		this.city = city;
 	}
 
 	public Set<RentacarAdmin> getRentacarAdmins() {
@@ -187,5 +192,13 @@ public class Rentacar {
 
 	public void setRentacarAdmins(Set<RentacarAdmin> rentacarAdmins) {
 		this.rentacarAdmins = rentacarAdmins;
+	}
+
+	public String getCity() {
+		return city;
+	}
+
+	public void setCity(String city) {
+		this.city = city;
 	}
 }
