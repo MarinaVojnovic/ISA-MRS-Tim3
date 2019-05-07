@@ -2199,6 +2199,7 @@ $(document)
 					var choosenSeats = JSON
 							.parse(sessionStorage["choosenSeats"]);
 					var size = choosenSeats.length;
+					sessionStorage.setItem("lengthSeats", JSON.stringify(size));
 					var brojPasosa = document.getElementById("passportNumber").value;
 					var idjeviPutnika = "";
 					var sed = "";
@@ -2226,9 +2227,12 @@ $(document)
 								data : createReservationToJSON(sed,
 										idjeviPutnika, l, brojPasosa),
 								success : function(data) {
-									var list = data == null ? []
-											: (data instanceof Array ? data
-													: [ data ]);
+										sessionStorage.setItem("flightReservationId", JSON.stringify(data.idFlightReservation));
+										var choosenSeats = JSON.parse(sessionStorage["flightReservationId"]);
+										console.log(choosenSeats);
+									var list = data.invitedFriends == null ? []
+											: (data.invitedFriends instanceof Array ? data.invitedFriends
+													: [ data.invitedFriends ]);
 									if (list != []) {
 										sendEmail(list);
 									}
@@ -2239,67 +2243,6 @@ $(document)
 									alert(jqXHR.status);
 									alert(textStatus);
 									alert(errorThrown);
-								}
-							})
-				})
-
-$(document)
-		.on(
-				'click',
-				"#confirmReserveFlight",
-				function(e) {
-					e.preventDefault();
-					var choosenSeats = JSON
-							.parse(sessionStorage["choosenSeats"]);
-					var size = choosenSeats.length;
-					if (sessionStorage["lengthSeats"]) {
-
-					} else {
-						sessionStorage.setItem("lengthSeats", JSON
-								.stringify(size));
-					}
-
-					var brojPasosa = document.getElementById("passportNumber").value;
-					var idjeviPutnika = "";
-					var sed = "";
-					var l = JSON.parse(sessionStorage["flightId"])
-					for (var i = 1; i < size; i++) {
-						var s = document.getElementById("reservation" + i + "").value;
-						idjeviPutnika += s + " ";
-
-					}
-					idjeviPutnika.substring(0, idjeviPutnika.length - 1);
-					var sedista = JSON.parse(sessionStorage["choosenSeats"]);
-					for ( var s in sedista) {
-						sed += sedista[s] + " ";
-
-					}
-					sed.substring(0, sed.length - 1);
-					sessionStorage.removeItem("choosenSeats");
-					$
-							.ajax({
-								type : 'POST',
-								url : urlRoot16,
-								headers : createAuthorizationTokenHeader(TOKEN_KEY),
-								contentType : 'application/json',
-								dataType : "json",
-								data : createReservationToJSON(sed,
-										idjeviPutnika, l, brojPasosa),
-								success : function(data) {
-									var list = data == null ? []
-											: (data instanceof Array ? data
-													: [ data ]);
-									if (list != []) {
-										sendEmail(list);
-									}
-									alert("Successful reservation of a flight, congratulations!");
-
-								},
-								error : function(jqXHR, textStatus, errorThrown) {
-									alert(jqXHR.status);
-									alert(textStatus);
-									alert(errorThrown);
-
 								}
 							})
 				})
