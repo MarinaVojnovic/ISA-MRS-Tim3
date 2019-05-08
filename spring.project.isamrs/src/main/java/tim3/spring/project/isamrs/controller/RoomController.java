@@ -157,16 +157,22 @@ public class RoomController {
 
 	@DeleteMapping(value = "/deleteRoom/{roomId}")
 	@PreAuthorize("hasRole('ROLE_HOTEL_ADMIN')")
-	public ResponseEntity<Room> deleteRoom(@PathVariable String roomId) {
+	public ResponseEntity<MessageDTO> deleteRoom(@PathVariable String roomId) {
 		HotelAdmin ha = (HotelAdmin) this.userDetailsService
 				.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
 		Room room = roomService.getOne(Long.parseLong(roomId));
 		if (room == null) {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
+		List<RoomFastReservation> check1 = roomFastReservationService.findByRoom(room);
+		List<RoomReservation> check2 = roomReservationService.findByRoomsContaining(room);
+		if (!check1.isEmpty() || !check2.isEmpty()) {
+			return new ResponseEntity<>(new MessageDTO("This room is reserved so it cant be deleted", "Error"),
+					HttpStatus.OK);
+		}
 		ha.getHotel().getRooms().remove(room);
 		roomService.delete(Long.parseLong(roomId));
-		return new ResponseEntity<>(room, HttpStatus.OK);
+		return new ResponseEntity<>(new MessageDTO("Successfully deleted room!", "Error"), HttpStatus.OK);
 	}
 
 	@GetMapping(value = "/findRoom/{roomId}")
@@ -190,12 +196,20 @@ public class RoomController {
 		HotelAdmin user = (HotelAdmin) this.userDetailsService
 				.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
 
+		Integer oldRoomNumber = r.getRoomNumber();
 		Set<Room> allRooms = user.getHotel().getRooms();
 		for (Room room : allRooms) {
-			if (room.getRoomNumber() == roomDTO.getRoomNumberRegister()) {
+			if (room.getRoomNumber() == roomDTO.getRoomNumberRegister() && oldRoomNumber != room.getRoomNumber()) {
 				return new ResponseEntity<>(new MessageDTO("This number for this hotel is already taken", "Error"),
 						HttpStatus.OK);
 			}
+		}
+
+		List<RoomFastReservation> check1 = roomFastReservationService.findByRoom(r);
+		List<RoomReservation> check2 = roomReservationService.findByRoomsContaining(r);
+		if (!check1.isEmpty() || !check2.isEmpty()) {
+			return new ResponseEntity<>(new MessageDTO("This room is reserved so it cant be edited", "Error"),
+					HttpStatus.OK);
 		}
 
 		r.setId(roomDTO.getId());

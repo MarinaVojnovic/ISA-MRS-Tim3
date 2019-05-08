@@ -81,6 +81,10 @@ public class RoomReservationController {
 				price += hcs.getPrice();
 			}
 		}
+		if (retVal.getHotelCustomerServices().size() >= roomReservationDTO.getNumberHotelDiscount()) {
+			retVal.setDiscount(retVal.getDiscount() + 10);
+		}
+		int numOfPass = 0;
 		if (!roomReservationDTO.getRoomIds().equals("")) {
 			String[] roomIds = roomReservationDTO.getHotelCustomerServices().split(" ");
 			for (String roomId : roomIds) {
@@ -88,10 +92,11 @@ public class RoomReservationController {
 				retVal.setHotel(room.getHotel());
 				retVal.getRooms().add(room);
 				price += room.getPrice();
+				numOfPass += room.getNumberPeople();
 			}
 		}
 		retVal.setPrice((price / 100) * (100 - roomReservationDTO.getDiscount()));
-		retVal.setNumOfPass(roomReservationDTO.getNumOfPass());
+		retVal.setNumOfPass(numOfPass);
 		roomReservationService.create(retVal);
 		return new ResponseEntity<>(new MessageDTO("Succesfully made reservation!", "Error"), HttpStatus.CREATED);
 	}
@@ -107,7 +112,10 @@ public class RoomReservationController {
 		RoomReservation retVal = new RoomReservation();
 		retVal.setRegularUser(user);
 		retVal.setHotel(rfr.getRoom().getHotel());
-		retVal.setHotelCustomerServices(rfr.getHotelCustomerServices());
+		for (HotelCustomerService hcsss : rfr.getHotelCustomerServices()) {
+			retVal.getHotelCustomerServices().add(hcsss);
+		}
+		// retVal.setHotelCustomerServices(rfr.getHotelCustomerServices());
 		retVal.getRooms().add(rfr.getRoom());
 		retVal.setFastReserved(true);
 		retVal.setRoomFastReservationId(roomFastReservationId);

@@ -50,7 +50,7 @@ public class RoomReservationServiceImpl implements RoomReservationService {
 
 	@Override
 	public List<RoomReservation> findByRoomsContaining(Room r) {
-		return roomReservationRepository.findByRooms2(r);
+		return roomReservationRepository.findByRooms2(r.getId());
 	}
 
 	@Override
