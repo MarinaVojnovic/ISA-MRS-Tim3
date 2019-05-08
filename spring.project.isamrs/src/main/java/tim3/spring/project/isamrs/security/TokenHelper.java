@@ -24,7 +24,7 @@ public class TokenHelper {
 	@Value("somesecret")
 	public String SECRET;
 
-	@Value("300")
+	@Value("87600")
 	private int EXPIRES_IN;
 
 	@Value("Authorization")

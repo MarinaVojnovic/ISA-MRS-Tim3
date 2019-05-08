@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Rent-a-car Administrator</title>
+<title>Registered User</title>
 <meta charset="utf-8">
 <link rel="stylesheet" href="bootstrap.min.css">
 <script src="jquery.min.js"></script>
@@ -14,13 +14,14 @@
 body {
 	background: url('regularUser3.jpg');
 	font-family: Arial;
+	background-size: 100%;
 }
 
 /* Style the tab */
 .tab {
 	overflow: hidden;
 	border: 1px solid #ccc;
-	background-color: #ff1a75;
+	background-color: #cc0033;
 }
 
 .wrapper {
@@ -30,7 +31,7 @@ body {
 /* Style the buttons inside the tab */
 .tab button {
 	color: white;
-	background-color: #ff1a75;
+	background-color: #cc0033;
 	float: left;
 	border: none;
 	outline: none;
@@ -56,7 +57,7 @@ body {
 	padding: 6px 12px;
 	border: 1px solid #ccc;
 	border-top: none;
-	background: #00defc;
+	background: #ccccff;
 }
 
 #a {
@@ -171,7 +172,7 @@ body {
 				</tr>
 
 			</table>
-			<button style="background: #ff1a75; color: white"
+			<button style="background: #cc0033; color: white"
 				id="submitRentacarGrade" class="btn btn-primary">Submit</button>
 
 		</div>
@@ -179,15 +180,15 @@ body {
 	<div id="airlines" class="tabcontent">
 		<div class="container">
 			<h2>Airlines in the system:</h2>
-			<button style="background: #ff1a75; color: white"
+			<button style="background: #cc0033; color: white"
 				class="sortByNameAirlines" class="btn btn-primary">Sort by
 				name</button>
-			<button style="background: #ff1a75; color: white"
+			<button style="background: #cc0033; color: white"
 				class="sortByAddressAirlines" class="btn btn-primary">Sort
 				by address</button>
 			<input type="text" name="" value=""
 				placeholder="Enter name or location" id="nameLocationAirline" />
-			<button style="background: #ff1a75; color: white"
+			<button style="background: #cc0033; color: white"
 				class="searchAirlineButton" class="btn btn-primary">Search</button>
 			<br>
 
@@ -204,15 +205,15 @@ body {
 	<div id="hotels" class="tabcontent">
 		<div class="container">
 			<h2>Hotels in the system:</h2>
-			<button style="background: #ff1a75; color: white"
+			<button style="background: #cc0033; color: white"
 				class="sortByNameHotels" class="btn btn-primary">Sort by
 				name</button>
-			<button style="background: #ff1a75; color: white"
+			<button style="background: #cc0033; color: white"
 				class="sortByAddressHotels" class="btn btn-primary">Sort by
 				address</button>
 			<input type="text" name="" value=""
 				placeholder="Enter name or location" id="nameLocationHotel" />
-			<button style="background: #ff1a75; color: white"
+			<button style="background: #cc0033; color: white"
 				class="searchHotelButton" class="btn btn-primary">Search</button>
 			<br>
 			<table class="table table-hover" id="tableOfHotels">
@@ -225,15 +226,15 @@ body {
 	<div id="rentACars" class="tabcontent">
 		<div class="container">
 			<h2>Rent a cars:</h2>
-			<button style="background: #ff1a75; color: white"
+			<button style="background: #cc0033; color: white"
 				class="sortByNameRentACars" class="btn btn-primary">Sort by
 				name</button>
-			<button style="background: #ff1a75; color: white"
+			<button style="background: #cc0033; color: white"
 				class="sortByAddressRentACars" class="btn btn-primary">Sort
 				by address</button>
 			<input type="text" name="" value=""
 				placeholder="Enter name or location" id="nameLocationRentACar" />
-			<button style="background: #ff1a75; color: white"
+			<button style="background: #cc0033; color: white"
 				class="searchRentACarButton" class="btn btn-primary">Search</button>
 			<br>
 
@@ -267,7 +268,7 @@ body {
 			</div>
 			<div class="form-group">
 				<div class="col-sm-offset-2 col-sm-10">
-					<button style="background: #ff1a75; color: white" type="submit"
+					<button style="background: #cc0033; color: white" type="submit"
 						class="btn btn-default" id="buttonDateFast">Submit</button>
 				</div>
 			</div>
@@ -282,7 +283,7 @@ body {
 				type="hidden" id="mainEndDate3"> <input type="hidden"
 				id="rentacarId">
 			<h2>Fast reservation of rentacar</h2>
-			<button style="background: #ff1a75; color: white" type="submit"
+			<button style="background: #cc0033; color: white" type="submit"
 				class="btn btn-default" id="fastReservationButton">Choose</button>
 
 
@@ -375,7 +376,7 @@ body {
 
 				<div class="form-group">
 					<div class="col-sm-offset-2 col-sm-10">
-						<button style="background: #ff1a75; color: white" type="submit"
+						<button style="background: #cc0033; color: white" type="submit"
 							class="btn btn-default" id="button3">Submit</button>
 					</div>
 				</div>
@@ -449,14 +450,15 @@ body {
 
 				<div class="form-group">
 					<div class="col-sm-offset-2 col-sm-10">
-						<button style="background: #ff1a75; color: white" type="submit"
+						<button style="background: #cc0033; color: white" type="submit"
 							class="btn btn-default" id="button9">Submit</button>
 					</div>
 				</div>
 			</form>
 		</div>
 		<div id="pickRoomAndHcs" class="container" style="display: none;">
-			<h3>Now just pick rooms and extra services you want in your reservation:</h3>
+			<h3>Now just pick rooms and extra services you want in your
+				reservation:</h3>
 			<form class="form-horizontal" action="#" method="post"
 				id="secondPartRoomReservation">
 
@@ -469,9 +471,8 @@ body {
 				</div>
 
 				<div class="form-group">
-					<label class="control-label col-sm-2"
-						for="roomReservationHcsTable">Hotel Customer Services:
-					</label>
+					<label class="control-label col-sm-2" for="roomReservationHcsTable">Hotel
+						Customer Services: </label>
 					<div class="col-sm-10">
 						<table class=" table table-hover" id="roomReservationHcsTable"></table>
 					</div>
@@ -479,10 +480,11 @@ body {
 
 				<div class="form-group">
 					<div class="col-sm-offset-2 col-sm-10">
-						<button style="background: #ff1a75; color: white" type="submit"
+						<button style="background: #cc0033; color: white" type="submit"
 							class="btn btn-default" id="button9">Submit</button>
-						<button style="background: #ff1a75; color: white"
-							class="btn btn-default" id="BackReservationButton">Go back</button>
+						<button style="background: #cc0033; color: white"
+							class="btn btn-default" id="BackReservationButton">Go
+							back</button>
 					</div>
 				</div>
 			</form>
@@ -572,7 +574,7 @@ body {
 				</div>
 				<div class="form-group">
 					<div class="col-sm-offset-2 col-sm-10">
-						<button style="background: #ff1a75; color: white" type="submit"
+						<button style="background: #cc0033; color: white" type="submit"
 							class="btn btn-default" id="searchFlightButton">Search</button>
 					</div>
 				</div>
@@ -665,7 +667,7 @@ body {
 
 				<div class="form-group">
 					<div class="col-sm-offset-2 col-sm-10">
-						<button style="background: #ff1a75; color: white" type="submit"
+						<button style="background: #cc0033; color: white" type="submit"
 							class="btn btn-default" id="button6">Submit</button>
 					</div>
 				</div>
@@ -772,7 +774,7 @@ body {
 				id="startDateId"> <input type="hidden" id="endDateId">
 
 
-			
+
 			<br>
 		</div>
 	</div>
