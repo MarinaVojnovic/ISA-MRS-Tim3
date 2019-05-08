@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,12 +21,18 @@ import org.springframework.web.bind.annotation.RestController;
 
 import tim3.spring.project.isamrs.dto.MessageDTO;
 import tim3.spring.project.isamrs.dto.RoomFastReservationDTO;
+import tim3.spring.project.isamrs.model.Hotel;
+import tim3.spring.project.isamrs.model.HotelAdmin;
 import tim3.spring.project.isamrs.model.HotelCustomerService;
 import tim3.spring.project.isamrs.model.Room;
 import tim3.spring.project.isamrs.model.RoomFastReservation;
+import tim3.spring.project.isamrs.model.RoomReservation;
 import tim3.spring.project.isamrs.service.HotelCustomerServiceService;
+import tim3.spring.project.isamrs.service.HotelService;
 import tim3.spring.project.isamrs.service.RoomFastReservationService;
+import tim3.spring.project.isamrs.service.RoomReservationService;
 import tim3.spring.project.isamrs.service.RoomService;
+import tim3.spring.project.isamrs.service.impl.CustomUserDetailsService;
 
 @RestController
 public class RoomFastReservationController {
@@ -38,12 +45,22 @@ public class RoomFastReservationController {
 	@Autowired
 	HotelCustomerServiceService hotelCustomerServiceService;
 
+	@Autowired
+	private CustomUserDetailsService userDetailsService;
+
+	@Autowired
+	RoomReservationService roomReservationService;
+
+	@Autowired
+	HotelService hotelService;
+
 	@PostMapping(value = "/createRoomFastReservation", consumes = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ROLE_HOTEL_ADMIN')")
 	public ResponseEntity<MessageDTO> create(@RequestBody RoomFastReservationDTO roomFastReservationDTO)
 			throws ParseException {
 		Room room = roomService.getOne(roomFastReservationDTO.getRoomId());
 		List<RoomFastReservation> reservations = roomFastReservationService.findByRoom(room);
+		List<RoomReservation> reservations2 = roomReservationService.findByRoomsContaining(room);
 		Boolean correctDate = true;
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		Date startDate = new Date();
@@ -64,6 +81,16 @@ public class RoomFastReservationController {
 					&& !(startDate.getTime() > endDate2.getTime() && endDate.getTime() > endDate2.getTime())) {
 				return new ResponseEntity<>(new MessageDTO(
 						"This room already have been fast reserved by this period, pick some other dates!", "Error"),
+						HttpStatus.OK);
+			}
+		}
+		for (RoomReservation roomReservation : reservations2) {
+			Date startDate2 = df.parse(roomReservation.getStartDate());
+			Date endDate2 = df.parse(roomReservation.getEndDate());
+			if (!(startDate.getTime() < startDate2.getTime() && endDate.getTime() < startDate2.getTime())
+					&& !(startDate.getTime() > endDate2.getTime() && endDate.getTime() > endDate2.getTime())) {
+				return new ResponseEntity<>(new MessageDTO(
+						"This room already have been reserved by this period, pick some other dates!", "Error"),
 						HttpStatus.OK);
 			}
 		}
@@ -90,9 +117,22 @@ public class RoomFastReservationController {
 	}
 
 	@GetMapping(value = "/getRoomFastReservations", consumes = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_HOTEL_ADMIN')")
 	public ResponseEntity<List<RoomFastReservation>> getRoomFastReservations() {
+		HotelAdmin hotelAdmin = (HotelAdmin) this.userDetailsService
+				.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
 
-		List<RoomFastReservation> retVal = roomFastReservationService.getAll();
+		List<RoomFastReservation> retVal = roomFastReservationService.findByHotel(hotelAdmin.getHotel());
+
+		return new ResponseEntity<>(retVal, HttpStatus.OK);
+	}
+
+	@GetMapping(value = "/getConcreteRoomFastReservations/{hotelId}", consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<RoomFastReservation>> getConcreteRoomFastReservations(@PathVariable Long hotelId) {
+
+		Hotel h = hotelService.getOne(hotelId);
+
+		List<RoomFastReservation> retVal = roomFastReservationService.findByHotel(h);
 
 		return new ResponseEntity<>(retVal, HttpStatus.OK);
 	}

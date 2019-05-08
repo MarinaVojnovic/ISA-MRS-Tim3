@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import tim3.spring.project.isamrs.model.Hotel;
 import tim3.spring.project.isamrs.model.Room;
 import tim3.spring.project.isamrs.model.RoomFastReservation;
 import tim3.spring.project.isamrs.repository.RoomFastReservationRepository;
@@ -50,6 +51,11 @@ public class RoomFastReservationServiceImpl implements RoomFastReservationServic
 	@Override
 	public List<RoomFastReservation> findByRoom(Room r) {
 		return roomFastReservationRepository.findByRoom(r);
+	}
+
+	@Override
+	public List<RoomFastReservation> findByHotel(Hotel h) {
+		return roomFastReservationRepository.findByHotel2(h.getId());
 	}
 
 }

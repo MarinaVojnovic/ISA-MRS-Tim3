@@ -10,6 +10,7 @@ public class RoomReservationDTO {
 	private Integer numOfPass;
 	private String hotelCustomerServices;
 	private Double discount;
+	private Integer numberHotelDiscount;
 
 	public Long getId() {
 		return id;
@@ -76,7 +77,7 @@ public class RoomReservationDTO {
 	}
 
 	public RoomReservationDTO(Long id, String roomIds, Long hotelId, String startDate, String endDate, Double price,
-			Integer numOfPass, String hotelCustomerServices, Double discount) {
+			Integer numOfPass, String hotelCustomerServices, Double discount, Integer numberHotelDiscount) {
 		super();
 		this.id = id;
 		this.roomIds = roomIds;
@@ -87,6 +88,7 @@ public class RoomReservationDTO {
 		this.numOfPass = numOfPass;
 		this.hotelCustomerServices = hotelCustomerServices;
 		this.discount = discount;
+		this.numberHotelDiscount = numberHotelDiscount;
 	}
 
 	public RoomReservationDTO() {
@@ -99,6 +101,14 @@ public class RoomReservationDTO {
 
 	public void setDiscount(Double discount) {
 		this.discount = discount;
+	}
+
+	public Integer getNumberHotelDiscount() {
+		return numberHotelDiscount;
+	}
+
+	public void setNumberHotelDiscount(Integer numberHotelDiscount) {
+		this.numberHotelDiscount = numberHotelDiscount;
 	}
 
 }

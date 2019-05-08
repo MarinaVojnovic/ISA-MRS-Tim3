@@ -1,4 +1,4 @@
-function getHotelDiscountValue(key) {
+function getHotelDiscountValue() {
 	retVal = localStorage.getItem("hotelDiscount");
 	if (retVal) {
 		return retVal;

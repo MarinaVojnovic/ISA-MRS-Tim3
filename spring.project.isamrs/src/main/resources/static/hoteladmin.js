@@ -204,28 +204,31 @@ function fillTableRoomFastReservations(data, table) {
 	$("#" + table).find("tr").remove();
 	var tabela = document.getElementById(table);
 
+	var indeks = 0;
 	for ( var counter in response) {
-		var row = tabela.insertRow(counter);
-		var cell0 = row.insertCell(0)
-		var cell1 = row.insertCell(1);
-		var cell2 = row.insertCell(2);
-		var cell3 = row.insertCell(3);
-		var cell4 = row.insertCell(4);
-		var cell5 = row.insertCell(5);
-		var cell6 = row.insertCell(6);
-		var cell7 = row.insertCell(7);
-		var cell8 = row.insertCell(8);
+		if (!response[counter].reserved) {
+			var row = tabela.insertRow(indeks++);
+			var cell0 = row.insertCell(0)
+			var cell1 = row.insertCell(1);
+			var cell2 = row.insertCell(2);
+			var cell3 = row.insertCell(3);
+			var cell4 = row.insertCell(4);
+			var cell5 = row.insertCell(5);
+			var cell6 = row.insertCell(6);
+			var cell7 = row.insertCell(7);
+			var cell8 = row.insertCell(8);
 
-		cell0.innerHTML = response[counter].room.hotel.name;
-		cell1.innerHTML = response[counter].room.roomNumber;
-		cell2.innerHTML = response[counter].room.numberPeople;
-		cell3.innerHTML = response[counter].startDate;
-		cell4.innerHTML = response[counter].endDate;
-		cell5.innerHTML = response[counter].originalPrice;
-		cell6.innerHTML = response[counter].discount + "%";
-		cell7.innerHTML = response[counter].newPrice;
-		cell8.innerHTML = "<button class=\"deleteRFR\" id=\""
-				+ response[counter].id + "\">Delete</button>"
+			cell0.innerHTML = response[counter].room.hotel.name;
+			cell1.innerHTML = response[counter].room.roomNumber;
+			cell2.innerHTML = response[counter].room.numberPeople;
+			cell3.innerHTML = response[counter].startDate;
+			cell4.innerHTML = response[counter].endDate;
+			cell5.innerHTML = response[counter].originalPrice;
+			cell6.innerHTML = response[counter].discount + "%";
+			cell7.innerHTML = response[counter].newPrice;
+			cell8.innerHTML = "<button class=\"deleteRFR\" id=\""
+					+ response[counter].id + "\">Delete</button>"
+		}
 
 	}
 	var row = tabela.insertRow(0);
@@ -667,11 +670,7 @@ function deleteRoom(roomId) {
 		headers : createAuthorizationTokenHeader(TOKEN_KEY),
 		dataType : "json",
 		success : function(data) {
-			if (data == null) {
-				console.log('Room not found');
-			} else {
-				console.log('Room successfully deleted.');
-			}
+			alert(data.message);
 
 			urlRoot3 = "http://localhost:8080/deleteRoom";
 			showRooms("forDelete");
