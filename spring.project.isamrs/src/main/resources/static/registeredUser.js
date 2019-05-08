@@ -39,6 +39,7 @@ var urlRootConcreteHcs = "http://localhost:8080/getConcreteHotelCustomerServices
 var urlRootReserveFastRoomReservation = "http://localhost:8080/createRoomReservationFast";
 var urlRootGetConcreteRFR = "http://localhost:8080/getConcreteRoomFastReservations";
 var urlRootReserveRegularRoom = "http://localhost:8080/createRoomReservationRegular";
+var urlRootGetMyResFlights="http://localhost:8080/api/getMyResFlights";
 var TOKEN_KEY = 'jwtToken';
 
 getLogged();
@@ -54,7 +55,91 @@ $(document).on('click', '#logoutClicked', function(e) {
 // return '';
 // };
 
-function takeCarFast(id) {
+function showMyReservationsHotels(){
+	console.log('show my reservation hotels called');
+}
+function showMyReservationsFlights(){
+	console.log('show my reservations flights called');
+	
+	$
+	.ajax({
+		type : 'GET',
+		url : urlRootGetMyResFlights,
+		headers : createAuthorizationTokenHeader(TOKEN_KEY),
+		contentType : 'application/json',
+		success : function(data) {
+			$("#tableOfFlightsRes").find("tr").remove();
+			var list = data == null ? []
+					: (data instanceof Array ? data : [ data ]);
+			if (list.length > 0) {
+				
+				var tabela = document.getElementById("tableOfFlightsRes");
+				var count = 1
+				for ( var res in list) {
+					console.log('counter: ' + res);
+					var row = tabela.insertRow(res);
+					var cell1 = row.insertCell(0);
+					var cell2 = row.insertCell(1);
+					var cell3 = row.insertCell(2);
+					var cell4 = row.insertCell(3);
+					var cell5 = row.insertCell(4);
+					var cell6 = row.insertCell(5);
+					var cell7 = row.insertCell(6);
+					
+				
+					
+					cell1.innerHTML = list[res].id;
+					cell2.innerHTML = list[res].passport_num;
+					cell3.innerHTML = list[res].price;
+					cell4.innerHTML = list[res].flightReservation.startAirline.name;
+					cell5.innerHTML = list[res].flightReservation.finalAirline.name;
+					cell6.innerHTML =  list[res].seat;
+					
+					if (new Date(list[res].flightReservation.dateOfEnd) >= new Date()){
+						cell7.innerHTML = '<button style="background: #ff1a75; color: white" id=\"'
+							+ list[res].id
+							+ '\" class=\"cancelFlightResButton\" class="btn btn-primary">Cancel reservation</button>';
+					}else if (new Date(list[res].flightReservation.dateOfEnd)< new Date()){
+						cell7.innerHTML = '<button style="background: #ff1a75; color: white" id=\"'
+							+ list[res].id
+							+ '\" class=\"gradeFlightResButton\" class="btn btn-primary">Grade service</button>';
+					}else {
+						cell7.innerHTML="Cannot cancel";
+					}
+					
+					
+					
+					count++;
+
+				}
+				var row = tabela.insertRow(0);
+				var cell1 = row.insertCell(0);
+				var cell2 = row.insertCell(1);
+				var cell3 = row.insertCell(2);
+				var cell4 = row.insertCell(3);
+				var cell5 = row.insertCell(4);
+				var cell6 = row.insertCell(5);
+				var cell7 = row.insertCell(6);
+				cell1.innerHTML = "Id";
+				cell2.innerHTML = "Passport";
+				cell3.innerHTML = "Price";
+				cell4.innerHTML = "Start airport";
+				cell5.innerHTML = "End airport";
+				cell6.innerHTML = "Seat number";
+			} else {
+				
+				$("#tableOfFlightsRes").append("<h3>No rent-a-car reservations.</h3>")
+			}
+		},
+		error : function(jqXHR, textStatus, errorThrown) {
+			alert(jqXHR.status);
+			alert(textStatus);
+			alert(errorThrown);
+
+		}
+	})
+}
+function takeCarFast(id){
 	console.log('take car fast called');
 	sessionStorage.removeItem("choosenSeats");
 
@@ -1714,10 +1799,14 @@ function searchForCars(rentacarId) {
 							cell10.innerHTML = '<p style= " font-weight: 200%; font-size:150%">Grade</p>';
 							cell9.innerHTML = '<p style= " font-weight: 200%; font-size:150%">Total price</p>';
 							;
+							$("#rentacarReservation").append('<br><br><button type="submit" style="background: #ff1a75; width: 300px; height: 100px; align: center; color: white" id="offerHottelsButton" style="float: left;/">Reserve hotel</button>');
+							$("#rentacarReservation").append('<br><button type="submit" style="background: #ff1a75; width: 300px; height: 1000px; align: center; color: white" id="offerHottelsButton" style="float: left;/">Finish reservation </button>');
 						} else {
 							$(".messageSuitableCars")
 									.append(
 											'<h3>No cars found to satisfy your criteria.</p>');
+							$("#rentacarReservation").append('<br><br><button type="submit" style="background: #ff1a75; width: 300px; height: 100px; align: center; color: white" id="offerHottelsButton" style="float: left;/">Reserve hotel</button>');
+							$("#rentacarReservation").append('<br><button type="submit" style="background: #ff1a75; width: 300px; height: 100px; align: center; color: white" id="offerHottelsButton" style="float: left;/">Finish reservation </button>');
 						}
 
 					},
@@ -1755,7 +1844,7 @@ function takeCar(id, startDate, endDate, passengers) {
 		headers : createAuthorizationTokenHeader(TOKEN_KEY),
 		success : function(data) {
 			alert("Successful reservation of a car, congratulations!");
-
+			
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
 			alert(jqXHR.status);
@@ -2479,8 +2568,8 @@ $(document)
 				'#reserveFlight',
 				function(e) {
 					e.preventDefault();
-					openCity(e, 'reserveFlightInfo');
-					$("#reserveFlightInfoDiv").empty();
+					//openCity(e, 'reserveFlightInfo');
+					//$("#reserveFlightInfoDiv").empty();
 					var tabela = $('<table align="center"></table>');
 					var i = 1;
 					var choosenSeats = JSON
@@ -2537,9 +2626,10 @@ $(document)
 						i++;
 
 					}
-					$("#reserveFlightInfoDiv").append(tabela);
-					$("#reserveFlightInfoDiv").append('<br><br>');
-					$("#reserveFlightInfoDiv")
+					$("#seats").children().remove();
+					$("#seats").append(tabela);
+					$("#seats").append('<br><br>');
+					$("#seats")
 							.append(
 									'<div class="wrapper"><button align="center" type="submit" id="confirmReserveFlight" style="background-color: #ff1a75">Reserve</button></div>');
 
@@ -2554,6 +2644,7 @@ $(document)
 					var choosenSeats = JSON
 							.parse(sessionStorage["choosenSeats"]);
 					var size = choosenSeats.length;
+					sessionStorage.setItem("lengthSeats", JSON.stringify(size));
 					var brojPasosa = document.getElementById("passportNumber").value;
 					var idjeviPutnika = "";
 					var sed = "";
@@ -2581,9 +2672,12 @@ $(document)
 								data : createReservationToJSON(sed,
 										idjeviPutnika, l, brojPasosa),
 								success : function(data) {
-									var list = data == null ? []
-											: (data instanceof Array ? data
-													: [ data ]);
+										sessionStorage.setItem("flightReservationId", JSON.stringify(data.idFlightReservation));
+										var choosenSeats = JSON.parse(sessionStorage["flightReservationId"]);
+										console.log(choosenSeats);
+									var list = data.invitedFriends == null ? []
+											: (data.invitedFriends instanceof Array ? data.invitedFriends
+													: [ data.invitedFriends ]);
 									if (list != []) {
 										sendEmail(list);
 									}
@@ -2596,67 +2690,13 @@ $(document)
 									alert(errorThrown);
 								}
 							})
-				})
-
-$(document)
-		.on(
-				'click',
-				"#confirmReserveFlight",
-				function(e) {
-					e.preventDefault();
-					var choosenSeats = JSON
-							.parse(sessionStorage["choosenSeats"]);
-					var size = choosenSeats.length;
-					if (sessionStorage["lengthSeats"]) {
-
-					} else {
-						sessionStorage.setItem("lengthSeats", JSON
-								.stringify(size));
-					}
-
-					var brojPasosa = document.getElementById("passportNumber").value;
-					var idjeviPutnika = "";
-					var sed = "";
-					var l = JSON.parse(sessionStorage["flightId"])
-					for (var i = 1; i < size; i++) {
-						var s = document.getElementById("reservation" + i + "").value;
-						idjeviPutnika += s + " ";
-
-					}
-					idjeviPutnika.substring(0, idjeviPutnika.length - 1);
-					var sedista = JSON.parse(sessionStorage["choosenSeats"]);
-					for ( var s in sedista) {
-						sed += sedista[s] + " ";
-
-					}
-					sed.substring(0, sed.length - 1);
-					sessionStorage.removeItem("choosenSeats");
-					$
-							.ajax({
-								type : 'POST',
-								url : urlRoot16,
-								headers : createAuthorizationTokenHeader(TOKEN_KEY),
-								contentType : 'application/json',
-								dataType : "json",
-								data : createReservationToJSON(sed,
-										idjeviPutnika, l, brojPasosa),
-								success : function(data) {
-									var list = data == null ? []
-											: (data instanceof Array ? data
-													: [ data ]);
-									if (list != []) {
-										sendEmail(list);
-									}
-									alert("Successful reservation of a flight, congratulations!");
-
-								},
-								error : function(jqXHR, textStatus, errorThrown) {
-									alert(jqXHR.status);
-									alert(textStatus);
-									alert(errorThrown);
-
-								}
-							})
+							
+							$("#flightReservation").append('<button type="submit" style="background: #ff1a75; color: white" id="offerRentacarsButton" style="float: left;">Rentacars</button><br><br>');
+							$("#flightReservation").append('<button type="submit" style="background: #ff1a75; color: white" id="offerHottelsButton" style="float: left;/">Hotels</button>');
+							
+							
+							
+							
 				})
 
 function sendEmail(list) {
@@ -2809,7 +2849,8 @@ $(document).on('click', '#allReservationsButtton', function(e) {
 	e.preventDefault();
 	sessionStorage.removeItem("choosenSeats");
 	showMyReservationsCars();
-	;
+	showMyReservationsFlights();
+	showMyReservationsHotels();
 });
 
 $(document).on('click', '.gradeCarResButton', function(e) {
@@ -2870,7 +2911,7 @@ $(document).on('click', '#offerRentacarsButton', function(e) {
 				console.log('destination not found');
 			} else {
 				console.log('destination found');
-				address = data.address;
+				address = data.city;
 				console.log(address);
 
 				$.ajax({

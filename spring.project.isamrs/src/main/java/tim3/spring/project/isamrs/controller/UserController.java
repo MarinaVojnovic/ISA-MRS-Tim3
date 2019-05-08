@@ -24,6 +24,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import tim3.spring.project.isamrs.comparator.FriendsComparatorNameSurname;
 import tim3.spring.project.isamrs.dto.FlightReservationDTO;
+import tim3.spring.project.isamrs.dto.FlightReservationReturnDTO;
 import tim3.spring.project.isamrs.dto.FriendRequestDTO;
 import tim3.spring.project.isamrs.dto.InvitedFriendDTO;
 import tim3.spring.project.isamrs.dto.PasswordDTO;
@@ -224,6 +225,24 @@ public class UserController {
 		return new ResponseEntity<List<CarReservation>>(res, HttpStatus.OK);
 	}
 
+
+	@GetMapping(value = "/getMyResFlights")
+	@PreAuthorize("hasRole('ROLE_USER')")
+	public ResponseEntity<List<FlightReservation>> getMyResFlights() {
+		System.out.println("Uslo u GET MY RESERVATION FLIGHTS");
+		RegularUser logged = (RegularUser) this.userDetailsService
+				 .loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().
+				  getName());
+		System.out.println(logged.getFirstName());
+		
+		  List<FlightReservation> res=new ArrayList<FlightReservation>();
+		 res = flightReservationService.findByNameAndLastName(logged.getFirstName(),
+		 logged.getLastName()); 
+		 return new ResponseEntity<List<FlightReservation>>(res, HttpStatus.OK);
+		 
+		
+	}
+
 	@GetMapping(value = "/getAllFriendRequests")
 	@PreAuthorize("hasRole('ROLE_USER')")
 	public ResponseEntity<List<FriendRequest>> getAllFriendRequests() {
@@ -296,7 +315,7 @@ public class UserController {
 	
 	@PostMapping(value = "/makeReservation")
 	@PreAuthorize("hasRole('ROLE_USER')")
-	public ResponseEntity<List<InvitedFriendDTO>> makeReservation(@RequestBody FlightReservationDTO flightReservation) {
+	public ResponseEntity<FlightReservationReturnDTO> makeReservation(@RequestBody FlightReservationDTO flightReservation) {
 		int brPasosa=Integer.parseInt(flightReservation.getPassportNum());
 		String idjeviPutnika=flightReservation.getUsers();
 		String sedista=flightReservation.getSeats();
@@ -326,7 +345,8 @@ public class UserController {
 			
 		}
 		}
-		return new ResponseEntity<List<InvitedFriendDTO>>(invited, HttpStatus.CREATED);
+		FlightReservationReturnDTO frd=new FlightReservationReturnDTO(invited,fr.getId());
+		return new ResponseEntity<FlightReservationReturnDTO>(frd, HttpStatus.CREATED);
 
 	}
 	

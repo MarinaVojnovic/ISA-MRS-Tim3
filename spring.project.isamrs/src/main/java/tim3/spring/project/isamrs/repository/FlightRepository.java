@@ -7,7 +7,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import tim3.spring.project.isamrs.model.Airline;
+import tim3.spring.project.isamrs.model.CarReservation;
 import tim3.spring.project.isamrs.model.Flight;
+import tim3.spring.project.isamrs.model.RegularUser;
 import tim3.spring.project.isamrs.model.Seat;
 
 @Repository
@@ -18,4 +20,7 @@ public interface FlightRepository extends JpaRepository<Flight, Long> {
 	public List<Flight> findByStartAirlineAndFinalAirlineAndDateOfStartAndDateOfEnd(Airline start,Airline end, Date startD,Date endD);
 	public List<Flight> findByStartAirlineAndFinalAirlineAndDateOfStart(Airline start,Airline end, Date startD);
 	public List<Flight> findByStartAirlineAndFinalAirline(Airline start,Airline end);
+	
+
+
 }
