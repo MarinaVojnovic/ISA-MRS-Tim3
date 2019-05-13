@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,7 +32,7 @@ public class HotelController {
 
 	@Autowired
 	private CustomUserDetailsService userDetailsService;
-	
+
 	@GetMapping(value = "/findConcreteHotel/{id}")
 	public ResponseEntity<Hotel> findConcreteHotel(@PathVariable String id) {
 		Hotel retVal = hotelService.getOne(Long.parseLong(id));
@@ -69,17 +70,22 @@ public class HotelController {
 	public ResponseEntity<Hotel> saveChangesHotel(@RequestBody HotelDTO hotel) {
 		HotelAdmin hotelAdmin = (HotelAdmin) this.userDetailsService
 				.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
-		Hotel h = hotelAdmin.getHotel();
+		Hotel h = hotelService.getOne(hotelAdmin.getHotel().getId());
 		if (h == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 		h.setName(hotel.getHotelNameRegister());
 		h.setAddress(hotel.getHotelAddressRegister());
 		h.setPromotionalDescription(hotel.getHotelPromotionalDescription());
+		h.setCity(hotel.getCity());
 
 		hotelAdmin.setHotel(h);
+		Hotel hotel2 = null;
 
-		Hotel hotel2 = hotelService.save(h);
+		try {
+			hotel2 = hotelService.save(h);
+		} catch (JpaSystemException e) {
+		}
 		return new ResponseEntity<>(hotel2, HttpStatus.OK);
 	}
 

@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -26,7 +27,7 @@ public class Hotel {
 
 	@Column(name = "score")
 	private Double score;
-	
+
 	@Column(name = "city")
 	private String city;
 
@@ -57,6 +58,9 @@ public class Hotel {
 	@JsonIgnore
 	@OneToMany(mappedBy = "hotel", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
 	private Set<Room> rooms = new HashSet<>();
+
+	@Version
+	private Long version;
 
 	public Hotel() {
 		super();
@@ -128,7 +132,8 @@ public class Hotel {
 	}
 
 	public Hotel(String name, String address, String promotionalDescription,
-			Set<HotelCustomerService> hotelCustomerServices, Set<Room> rooms, int gradeNumber, double score, String city) {
+			Set<HotelCustomerService> hotelCustomerServices, Set<Room> rooms, int gradeNumber, double score,
+			String city) {
 		super();
 		this.name = name;
 		this.address = address;
@@ -187,6 +192,14 @@ public class Hotel {
 
 	public void setCity(String city) {
 		this.city = city;
+	}
+
+	public Long getVersion() {
+		return version;
+	}
+
+	public void setVersion(Long version) {
+		this.version = version;
 	}
 
 }

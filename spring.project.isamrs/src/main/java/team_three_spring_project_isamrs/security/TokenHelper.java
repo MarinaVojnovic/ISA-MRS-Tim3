@@ -83,7 +83,6 @@ public class TokenHelper {
 	}
 
 	private Boolean isCreatedBeforeLastPasswordReset(Date created, Date lastPasswordReset) {
-		// created.before(lastPasswordReset)
 		return (lastPasswordReset != null && created.getTime() + 1000 < lastPasswordReset.getTime());
 	}
 

@@ -83,6 +83,7 @@ public class AirlineController {
 		a.setName(airline.getAirlineNameRegister());
 		a.setAddress(airline.getAirlineAddressRegister());
 		a.setPromotionalDescription(airline.getAirlinePromotionalDescription());
+		a.setCity(airline.getCity());
 
 		airlineAdmin.setAirline(a);
 
