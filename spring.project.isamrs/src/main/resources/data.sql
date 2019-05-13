@@ -15,8 +15,8 @@ VALUES (3, 'Aerodrom Beograd 59, 11180 Beograd', 'Aerodrom Nikola Teslaaa',
 ON DUPLICATE KEY UPDATE id = 3;
 
 -- Inserting default hotels in database
-INSERT INTO hotel (id, address, name, promotional_description, grade_number, score, city) 
-VALUES (1, 'Kneza Milosa 1, Bijeljina 76300', 'Hotel Drina', 'Hotel da spavas i jedes', 0, 0.0, 'Bijeljina')
+INSERT INTO hotel (id, address, name, promotional_description, grade_number, score, city, version) 
+VALUES (1, 'Kneza Milosa 1, Bijeljina 76300', 'Hotel Drina', 'Hotel da spavas i jedes', 0, 0.0, 'Bijeljina', 0)
 ON DUPLICATE KEY UPDATE id = 1;
 
 -- Inserting default rent-a-car services in database

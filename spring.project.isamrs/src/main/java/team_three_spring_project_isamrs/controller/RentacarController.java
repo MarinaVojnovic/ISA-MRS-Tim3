@@ -87,6 +87,7 @@ public class RentacarController {
 		r.setName(rentacar.getRentacarNameRegister());
 		r.setAddress(rentacar.getRentacarAddressRegister());
 		r.setPromotionalDescription(rentacar.getRentacarPromotionalDescription());
+		r.setCity(rentacar.getCity());
 
 		rentacarAdmin.setRentacar(r);
 

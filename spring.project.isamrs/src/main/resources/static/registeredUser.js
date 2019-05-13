@@ -39,10 +39,23 @@ var urlRootConcreteHcs = "http://localhost:8080/getConcreteHotelCustomerServices
 var urlRootReserveFastRoomReservation = "http://localhost:8080/createRoomReservationFast";
 var urlRootGetConcreteRFR = "http://localhost:8080/getConcreteRoomFastReservations";
 var urlRootReserveRegularRoom = "http://localhost:8080/createRoomReservationRegular";
-var urlRootGetMyResFlights="http://localhost:8080/api/getMyResFlights";
+var urlRootGetMyResFlights = "http://localhost:8080/api/getMyResFlights";
+
+var urlRootProfile7 = "http://localhost:8080/findConcreteAirline";
+var urlRootProfile8 = "http://localhost:8080/findConcreteHotel";
+var urlRootProfile9 = "http://localhost:8080/findConcreteRentacar";
+var urlRootProfile10 = "http://localhost:8080/findConcreteFlights";
+var urlRootProfile11 = "http://localhost:8080/findConcreteRooms";
+var urlRootProfile12 = "http://localhost:8080/findConcreteCars";
+var urlRootProfile13 = "http://localhost:8080/getConcreteDestinations";
+var urlRootProfile14 = "http://localhost:8080/getConcreteHotelCustomerServices";
+var urlRootProfile15 = "http://localhost:8080/getConcreteBranches";
+
 var TOKEN_KEY = 'jwtToken';
 
-getLogged();
+$(document).on('click', '#editProfileButton', function(e) {
+	getLogged();
+})
 
 $(document).on('click', '#logoutClicked', function(e) {
 	e.preventDefault();
@@ -50,96 +63,90 @@ $(document).on('click', '#logoutClicked', function(e) {
 	window.location.href = "index.html";
 })
 
-// window.onbeforeunload = function() {
-// sessionStorage.removeItem("choosenSeats");
-// return '';
-// };
-
-function showMyReservationsHotels(){
+function showMyReservationsHotels() {
 	console.log('show my reservation hotels called');
 }
-function showMyReservationsFlights(){
+function showMyReservationsFlights() {
 	console.log('show my reservations flights called');
-	
+
 	$
-	.ajax({
-		type : 'GET',
-		url : urlRootGetMyResFlights,
-		headers : createAuthorizationTokenHeader(TOKEN_KEY),
-		contentType : 'application/json',
-		success : function(data) {
-			$("#tableOfFlightsRes").find("tr").remove();
-			var list = data == null ? []
-					: (data instanceof Array ? data : [ data ]);
-			if (list.length > 0) {
-				
-				var tabela = document.getElementById("tableOfFlightsRes");
-				var count = 1
-				for ( var res in list) {
-					console.log('counter: ' + res);
-					var row = tabela.insertRow(res);
-					var cell1 = row.insertCell(0);
-					var cell2 = row.insertCell(1);
-					var cell3 = row.insertCell(2);
-					var cell4 = row.insertCell(3);
-					var cell5 = row.insertCell(4);
-					var cell6 = row.insertCell(5);
-					var cell7 = row.insertCell(6);
-					
-				
-					
-					cell1.innerHTML = list[res].id;
-					cell2.innerHTML = list[res].passport_num;
-					cell3.innerHTML = list[res].price;
-					cell4.innerHTML = list[res].flightReservation.startAirline.name;
-					cell5.innerHTML = list[res].flightReservation.finalAirline.name;
-					cell6.innerHTML =  list[res].seat;
-					
-					if (new Date(list[res].flightReservation.dateOfEnd) >= new Date()){
-						cell7.innerHTML = '<button style="background: #ff1a75; color: white" id=\"'
-							+ list[res].id
-							+ '\" class=\"cancelFlightResButton\" class="btn btn-primary">Cancel reservation</button>';
-					}else if (new Date(list[res].flightReservation.dateOfEnd)< new Date()){
-						cell7.innerHTML = '<button style="background: #ff1a75; color: white" id=\"'
-							+ list[res].id
-							+ '\" class=\"gradeFlightResButton\" class="btn btn-primary">Grade service</button>';
-					}else {
-						cell7.innerHTML="Cannot cancel";
+			.ajax({
+				type : 'GET',
+				url : urlRootGetMyResFlights,
+				headers : createAuthorizationTokenHeader(TOKEN_KEY),
+				contentType : 'application/json',
+				success : function(data) {
+					$("#tableOfFlightsRes").find("tr").remove();
+					var list = data == null ? []
+							: (data instanceof Array ? data : [ data ]);
+					if (list.length > 0) {
+
+						var tabela = document
+								.getElementById("tableOfFlightsRes");
+						var count = 1
+						for ( var res in list) {
+							console.log('counter: ' + res);
+							var row = tabela.insertRow(res);
+							var cell1 = row.insertCell(0);
+							var cell2 = row.insertCell(1);
+							var cell3 = row.insertCell(2);
+							var cell4 = row.insertCell(3);
+							var cell5 = row.insertCell(4);
+							var cell6 = row.insertCell(5);
+							var cell7 = row.insertCell(6);
+
+							cell1.innerHTML = list[res].id;
+							cell2.innerHTML = list[res].passport_num;
+							cell3.innerHTML = list[res].price;
+							cell4.innerHTML = list[res].flightReservation.startAirline.name;
+							cell5.innerHTML = list[res].flightReservation.finalAirline.name;
+							cell6.innerHTML = list[res].seat;
+
+							if (new Date(list[res].flightReservation.dateOfEnd) >= new Date()) {
+								cell7.innerHTML = '<button style="background: #ff1a75; color: white" id=\"'
+										+ list[res].id
+										+ '\" class=\"cancelFlightResButton\" class="btn btn-primary">Cancel reservation</button>';
+							} else if (new Date(
+									list[res].flightReservation.dateOfEnd) < new Date()) {
+								cell7.innerHTML = '<button style="background: #ff1a75; color: white" id=\"'
+										+ list[res].id
+										+ '\" class=\"gradeFlightResButton\" class="btn btn-primary">Grade service</button>';
+							} else {
+								cell7.innerHTML = "Cannot cancel";
+							}
+
+							count++;
+
+						}
+						var row = tabela.insertRow(0);
+						var cell1 = row.insertCell(0);
+						var cell2 = row.insertCell(1);
+						var cell3 = row.insertCell(2);
+						var cell4 = row.insertCell(3);
+						var cell5 = row.insertCell(4);
+						var cell6 = row.insertCell(5);
+						var cell7 = row.insertCell(6);
+						cell1.innerHTML = "Id";
+						cell2.innerHTML = "Passport";
+						cell3.innerHTML = "Price";
+						cell4.innerHTML = "Start airport";
+						cell5.innerHTML = "End airport";
+						cell6.innerHTML = "Seat number";
+					} else {
+
+						$("#tableOfFlightsRes").append(
+								"<h3>No rent-a-car reservations.</h3>")
 					}
-					
-					
-					
-					count++;
+				},
+				error : function(jqXHR, textStatus, errorThrown) {
+					alert(jqXHR.status);
+					alert(textStatus);
+					alert(errorThrown);
 
 				}
-				var row = tabela.insertRow(0);
-				var cell1 = row.insertCell(0);
-				var cell2 = row.insertCell(1);
-				var cell3 = row.insertCell(2);
-				var cell4 = row.insertCell(3);
-				var cell5 = row.insertCell(4);
-				var cell6 = row.insertCell(5);
-				var cell7 = row.insertCell(6);
-				cell1.innerHTML = "Id";
-				cell2.innerHTML = "Passport";
-				cell3.innerHTML = "Price";
-				cell4.innerHTML = "Start airport";
-				cell5.innerHTML = "End airport";
-				cell6.innerHTML = "Seat number";
-			} else {
-				
-				$("#tableOfFlightsRes").append("<h3>No rent-a-car reservations.</h3>")
-			}
-		},
-		error : function(jqXHR, textStatus, errorThrown) {
-			alert(jqXHR.status);
-			alert(textStatus);
-			alert(errorThrown);
-
-		}
-	})
+			})
 }
-function takeCarFast(id){
+function takeCarFast(id) {
 	console.log('take car fast called');
 	sessionStorage.removeItem("choosenSeats");
 
@@ -562,13 +569,17 @@ function fillTableAirlines(data) {
 		var cell4 = row.insertCell(3);
 		var cell5 = row.insertCell(4);
 		var cell6 = row.insertCell(5);
+		var cell7 = row.insertCell(6);
 
 		cell1.innerHTML = response[counter].name;
 		cell2.innerHTML = response[counter].address;
 		cell3.innerHTML = response[counter].city;
 		cell4.innerHTML = response[counter].promotionalDescription;
 		cell5.innerHTML = response[counter].score;
-		cell6.innerHTML = '<button style="background: #ff1a75; color: white" id=\"'
+		cell6.innerHTML = '<button id=\"'
+				+ response[counter].id
+				+ '\" class=\" showAirlineProfile\" value=\"Show profile\" style=\"background:#cc0033\">Show profile</button>';
+		cell7.innerHTML = '<button style="background: #cc0033; color: white" id=\"'
 				+ response[counter].id
 				+ '\" class=\"chooseAirline\" class="btn btn-primary">Choose</button>';
 
@@ -580,13 +591,15 @@ function fillTableAirlines(data) {
 	var cell4 = row.insertCell(3);
 	var cell5 = row.insertCell(4);
 	var cell6 = row.insertCell(5);
+	var cell7 = row.insertCell(6);
 
 	cell1.innerHTML = '<p style= "font-weight: 200%; font-size:150%">Name</p>';
 	cell2.innerHTML = '<p style= "font-weight: 200%; font-size:150%">Address</p>';
 	cell3.innerHTML = '<p style= "font-weight: 200%; font-size:150%">City</p>';
 	cell4.innerHTML = '<p style= "font-weight: 200%; font-size:150%">Promotional Description</p>';
 	cell5.innerHTML = '<p style= "font-weight: 200%; font-size:150%">Grade</p>';
-	cell6.innerHTML = '<p style= "font-weight: 200%; font-size:150%"></p>';
+	cell6.innerHTML = '<p style= "font-weight: 200%; font-size:150%">Profile</p>';
+	cell7.innerHTML = '<p style= "font-weight: 200%; font-size:150%"></p>';
 
 }
 
@@ -607,13 +620,17 @@ function fillTableHotels(data) {
 		var cell4 = row.insertCell(3);
 		var cell5 = row.insertCell(4);
 		var cell6 = row.insertCell(5);
+		var cell7 = row.insertCell(6);
 
 		cell1.innerHTML = response[counter].name;
 		cell2.innerHTML = response[counter].address;
 		cell3.innerHTML = response[counter].city;
 		cell4.innerHTML = response[counter].promotionalDescription;
 		cell5.innerHTML = response[counter].score;
-		cell6.innerHTML = '<button style="background: #ff1a75; color: white" id=\"'
+		cell6.innerHTML = '<button id=\"'
+				+ response[counter].id
+				+ '\" class=\" showHotelProfile\" value=\"Show profile\" style=\"background:#cc0033\">Show profile</button>';
+		cell7.innerHTML = '<button style="background: #ff1a75; color: white" id=\"'
 				+ response[counter].id
 				+ '\" class=\"chooseHotel\" class="btn btn-primary">Choose</button>';
 
@@ -625,12 +642,14 @@ function fillTableHotels(data) {
 	var cell4 = row.insertCell(3);
 	var cell5 = row.insertCell(4);
 	var cell6 = row.insertCell(5);
+	var cell7 = row.insertCell(6);
 
 	cell1.innerHTML = '<p style= "font-weight: 200%; font-size:150%">Name</p>';
 	cell2.innerHTML = '<p style= "font-weight: 200%; font-size:150%">Address</p>';
 	cell3.innerHTML = '<p style= "font-weight: 200%; font-size:150%">City</p>';
 	cell4.innerHTML = '<p style= "font-weight: 200%; font-size:150%">Promotional Description</p>';
 	cell5.innerHTML = '<p style= "font-weight: 200%; font-size:150%">Grade</p>';
+	cell6.innerHTML = '<p style= "font-weight: 200%; font-size:150%">Profile</p>';
 	cell6.innerHTML = '<p style= "font-weight: 200%; font-size:150%"></p>';
 
 }
@@ -768,13 +787,17 @@ function fillTableRentacars(data) {
 		var cell4 = row.insertCell(3);
 		var cell5 = row.insertCell(4);
 		var cell6 = row.insertCell(5);
+		var cell7 = row.insertCell(6);
 
 		cell1.innerHTML = response[counter].name;
 		cell2.innerHTML = response[counter].address;
 		cell3.innerHTML = response[counter].city;
 		cell4.innerHTML = response[counter].promotionalDescription;
 		cell5.innerHTML = response[counter].score;
-		cell6.innerHTML = '<button style="background: #ff1a75; color: white" id=\"'
+		cell6.innerHTML = '<button id=\"'
+				+ response[counter].id
+				+ '\" class=\" showRentacarProfile\" value=\"Show profile\" style=\"background:#cc0033\">Show profile</button>';
+		cell7.innerHTML = '<button style="background: #ff1a75; color: white" id=\"'
 				+ response[counter].id
 				+ '\" class=\"chooseRentacar\" class="btn btn-primary">Choose</button>';
 
@@ -786,12 +809,14 @@ function fillTableRentacars(data) {
 	var cell4 = row.insertCell(3);
 	var cell5 = row.insertCell(4);
 	var cell6 = row.insertCell(5);
+	var cell7 = row.insertCell(6);
 
 	cell1.innerHTML = '<p style= "font-weight: 200%; font-size:150%">Name</p>';
 	cell2.innerHTML = '<p style= "font-weight: 200%; font-size:150%">Address</p>';
 	cell3.innerHTML = '<p style= "font-weight: 200%; font-size:150%">City</p>';
 	cell4.innerHTML = '<p style= "font-weight: 200%; font-size:150%">Promotional Description</p>';
 	cell5.innerHTML = '<p style= "font-weight: 200%; font-size:150%">Grade</p>';
+	cell6.innerHTML = '<p style= "font-weight: 200%; font-size:150%">Profile</p>';
 	cell6.innerHTML = '<p style= "font-weight: 200%; font-size:150%"></p>';
 
 }
@@ -1300,8 +1325,8 @@ function getLogged() {
 						if (data == null) {
 							alert('Error while finding loged one!');
 						} else {
-							document.getElementById("userUsernameEdit").value = data.username;
-							document.getElementById("userFirstNameEdit").value = data.firstName;
+							document.getElementById('userUsernameEdit').value = data.username;
+							document.getElementById('userFirstNameEdit').value = data.firstName;
 							document.getElementById("userLastNameEdit").value = data.lastName;
 							document.getElementById("userEmailEdit").value = data.email;
 							document.getElementById("userPhoneNumberEdit").value = data.phoneNumber;
@@ -1353,6 +1378,7 @@ $(document)
 											firstName, lastName, email,
 											phoneNumber),
 									success : function(data) {
+										setJwtToken(TOKEN_KEY, data.accessToken);
 										alert("Successful editing, congratulations!");
 
 									},
@@ -1799,14 +1825,22 @@ function searchForCars(rentacarId) {
 							cell10.innerHTML = '<p style= " font-weight: 200%; font-size:150%">Grade</p>';
 							cell9.innerHTML = '<p style= " font-weight: 200%; font-size:150%">Total price</p>';
 							;
-							$("#rentacarReservation").append('<br><br><button type="submit" style="background: #ff1a75; width: 300px; height: 100px; align: center; color: white" id="offerHottelsButton" style="float: left;/">Reserve hotel</button>');
-							$("#rentacarReservation").append('<br><button type="submit" style="background: #ff1a75; width: 300px; height: 1000px; align: center; color: white" id="offerHottelsButton" style="float: left;/">Finish reservation </button>');
+							$("#rentacarReservation")
+									.append(
+											'<br><br><button type="submit" style="background: #ff1a75; width: 300px; height: 100px; align: center; color: white" id="offerHottelsButton" style="float: left;/">Reserve hotel</button>');
+							$("#rentacarReservation")
+									.append(
+											'<br><button type="submit" style="background: #ff1a75; width: 300px; height: 1000px; align: center; color: white" id="offerHottelsButton" style="float: left;/">Finish reservation </button>');
 						} else {
 							$(".messageSuitableCars")
 									.append(
 											'<h3>No cars found to satisfy your criteria.</p>');
-							$("#rentacarReservation").append('<br><br><button type="submit" style="background: #ff1a75; width: 300px; height: 100px; align: center; color: white" id="offerHottelsButton" style="float: left;/">Reserve hotel</button>');
-							$("#rentacarReservation").append('<br><button type="submit" style="background: #ff1a75; width: 300px; height: 100px; align: center; color: white" id="offerHottelsButton" style="float: left;/">Finish reservation </button>');
+							$("#rentacarReservation")
+									.append(
+											'<br><br><button type="submit" style="background: #ff1a75; width: 300px; height: 100px; align: center; color: white" id="offerHottelsButton" style="float: left;/">Reserve hotel</button>');
+							$("#rentacarReservation")
+									.append(
+											'<br><button type="submit" style="background: #ff1a75; width: 300px; height: 100px; align: center; color: white" id="offerHottelsButton" style="float: left;/">Finish reservation </button>');
 						}
 
 					},
@@ -1844,7 +1878,7 @@ function takeCar(id, startDate, endDate, passengers) {
 		headers : createAuthorizationTokenHeader(TOKEN_KEY),
 		success : function(data) {
 			alert("Successful reservation of a car, congratulations!");
-			
+
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
 			alert(jqXHR.status);
@@ -2097,14 +2131,14 @@ $(document)
 										alert("Succesfully reserved these rooms!")
 										openCity(e, 'hotels');
 										$("#pickRoomAndHcs").hide();
-										$("#roomReservationStartDate")
-												.prop('disabled', false);
+										$("#roomReservationStartDate").prop(
+												'disabled', false);
 										$("#roomReservationEndDate").prop(
 												'disabled', false);
-										$("#roomReservationLowestPrice")
-												.prop('disabled', false);
-										$("#roomReservationHighestPrice")
-												.prop('disabled', false);
+										$("#roomReservationLowestPrice").prop(
+												'disabled', false);
+										$("#roomReservationHighestPrice").prop(
+												'disabled', false);
 									},
 									error : function(jqXHR, textStatus,
 											errorThrown) {
@@ -2185,14 +2219,10 @@ $(document).on('click', '.reserveRFR', function(e) {
 			alert("Succesfully reserved this room on special offer!")
 			openCity(e, 'hotels');
 			$("#pickRoomAndHcs").hide();
-			$("#roomReservationStartDate")
-					.prop('disabled', false);
-			$("#roomReservationEndDate").prop(
-					'disabled', false);
-			$("#roomReservationLowestPrice")
-					.prop('disabled', false);
-			$("#roomReservationHighestPrice")
-					.prop('disabled', false);
+			$("#roomReservationStartDate").prop('disabled', false);
+			$("#roomReservationEndDate").prop('disabled', false);
+			$("#roomReservationLowestPrice").prop('disabled', false);
+			$("#roomReservationHighestPrice").prop('disabled', false);
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
 			alert(jqXHR.status);
@@ -2568,8 +2598,8 @@ $(document)
 				'#reserveFlight',
 				function(e) {
 					e.preventDefault();
-					//openCity(e, 'reserveFlightInfo');
-					//$("#reserveFlightInfoDiv").empty();
+					// openCity(e, 'reserveFlightInfo');
+					// $("#reserveFlightInfoDiv").empty();
 					var tabela = $('<table align="center"></table>');
 					var i = 1;
 					var choosenSeats = JSON
@@ -2672,9 +2702,14 @@ $(document)
 								data : createReservationToJSON(sed,
 										idjeviPutnika, l, brojPasosa),
 								success : function(data) {
-										sessionStorage.setItem("flightReservationId", JSON.stringify(data.idFlightReservation));
-										var choosenSeats = JSON.parse(sessionStorage["flightReservationId"]);
-										console.log(choosenSeats);
+									sessionStorage
+											.setItem(
+													"flightReservationId",
+													JSON
+															.stringify(data.idFlightReservation));
+									var choosenSeats = JSON
+											.parse(sessionStorage["flightReservationId"]);
+									console.log(choosenSeats);
 									var list = data.invitedFriends == null ? []
 											: (data.invitedFriends instanceof Array ? data.invitedFriends
 													: [ data.invitedFriends ]);
@@ -2690,13 +2725,14 @@ $(document)
 									alert(errorThrown);
 								}
 							})
-							
-							$("#flightReservation").append('<button type="submit" style="background: #ff1a75; color: white" id="offerRentacarsButton" style="float: left;">Rentacars</button><br><br>');
-							$("#flightReservation").append('<button type="submit" style="background: #ff1a75; color: white" id="offerHottelsButton" style="float: left;/">Hotels</button>');
-							
-							
-							
-							
+
+					$("#flightReservation")
+							.append(
+									'<button type="submit" style="background: #ff1a75; color: white" id="offerRentacarsButton" style="float: left;">Rentacars</button><br><br>');
+					$("#flightReservation")
+							.append(
+									'<button type="submit" style="background: #ff1a75; color: white" id="offerHottelsButton" style="float: left;/">Hotels</button>');
+
 				})
 
 function sendEmail(list) {
@@ -2994,4 +3030,459 @@ function mailToJson(emailAddress, id) {
 						+ " \nreject here \nhttp://localhost:8080/api/rejectFlightReservation/"
 						+ id
 			})
+}
+
+// vaso :)
+$(document).on("click", "#airlineBack", function(e) {
+	e.preventDefault();
+	openCity(event, 'airlines')
+});
+
+$(document).on("click", "#hotelBack", function(e) {
+	e.preventDefault();
+	openCity(event, 'hotels')
+});
+
+$(document).on("click", "#rentacarBack", function(e) {
+	e.preventDefault();
+	openCity(event, 'rentACars')
+});
+
+$(document).on(
+		"click",
+		".showRentacarProfile",
+		function(e) {
+			e.preventDefault();
+			var ID = this.id;
+			openCity(event, 'rentacarProfile');
+			var finalPath = urlRootProfile9 + "/" + ID;
+			$.ajax({
+				type : 'GET',
+				url : finalPath,
+				dataType : "json",
+				success : function(data) {
+					if (data) {
+						var finalPath2 = urlRootProfile12 + "/" + ID;
+						$.ajax({
+							type : 'GET',
+							url : finalPath2,
+							dataType : "json",
+							success : function(data) {
+								if (data) {
+									fillTableCars(data, "tableAllCar2");
+								}
+							},
+							error : function(jqXHR, textStatus, errorThrown) {
+								alert(jqXHR.status);
+								alert(textStatus);
+								alert(errorThrown);
+							}
+
+						})
+						ymaps.ready(init(data.address, "rentacarLocation"));
+						$("#rentacarProfileName").html(data.name);
+						$("#rentacarProfileAddress").html(data.address);
+						$("#rentacarProfilePromoDescription").html(
+								data.promotionalDescription);
+						$("#rentacarProfileScore").html(data.score);
+
+						var finalPath3 = urlRootProfile15 + "/" + ID;
+						$.ajax({
+							type : 'GET',
+							url : finalPath3,
+							dataType : "json",
+							success : function(data) {
+								if (data) {
+									fillTableBranches(data,
+											"tableBranchOffices")
+								}
+							},
+							error : function(jqXHR, textStatus, errorThrown) {
+								alert(jqXHR.status);
+								alert(textStatus);
+								alert(errorThrown);
+							}
+
+						})
+					}
+				},
+				error : function(jqXHR, textStatus, errorThrown) {
+					alert(jqXHR.status);
+					alert(textStatus);
+					alert(errorThrown);
+				}
+
+			})
+		});
+
+$(document).on(
+		"click",
+		".showHotelProfile",
+		function(e) {
+			e.preventDefault();
+			var ID = this.id;
+			openCity(event, 'hotelProfile');
+			var finalPath = urlRootProfile8 + "/" + ID;
+			$.ajax({
+				type : 'GET',
+				url : finalPath,
+				dataType : "json",
+				success : function(data) {
+					if (data) {
+						var finalPath2 = urlRootProfile11 + "/" + ID;
+						$.ajax({
+							type : 'GET',
+							url : finalPath2,
+							dataType : "json",
+							success : function(data) {
+								if (data) {
+									fillTableRooms(data, "tableAllRoom2");
+								}
+							},
+							error : function(jqXHR, textStatus, errorThrown) {
+								alert(jqXHR.status);
+								alert(textStatus);
+								alert(errorThrown);
+							}
+
+						})
+						ymaps.ready(init(data.address, "hotelLocation"));
+						$("#hotelProfileName").html(data.name);
+						$("#hotelProfileAddress").html(data.address);
+						$("#hotelProfilePromoDescription").html(
+								data.promotionalDescription);
+						$("#hotelProfileScore").html(data.score);
+
+						var finalPath3 = urlRootProfile14 + "/" + ID;
+						$.ajax({
+							type : 'GET',
+							url : finalPath3,
+							dataType : "json",
+							success : function(data) {
+								if (data) {
+									fillTableHotelCustomerServices(data,
+											"tableHotelCustomerServices")
+								}
+							},
+							error : function(jqXHR, textStatus, errorThrown) {
+								alert(jqXHR.status);
+								alert(textStatus);
+								alert(errorThrown);
+							}
+
+						})
+
+					}
+				},
+				error : function(jqXHR, textStatus, errorThrown) {
+					alert(jqXHR.status);
+					alert(textStatus);
+					alert(errorThrown);
+				}
+
+			})
+		});
+
+$(document).on(
+		"click",
+		".showAirlineProfile",
+		function(e) {
+			e.preventDefault();
+			var ID = this.id;
+			openCity(event, 'airlineProfile');
+			var finalPath = urlRootProfile7 + "/" + ID;
+			$.ajax({
+				type : 'GET',
+				url : finalPath,
+				dataType : "json",
+				success : function(data) {
+					if (data) {
+						var finalPath2 = urlRootProfile10 + "/" + ID;
+						$.ajax({
+							type : 'GET',
+							url : finalPath2,
+							dataType : "json",
+							success : function(data) {
+								if (data) {
+									fillTableFlights(data, "tableAllFlight2");
+								}
+							},
+							error : function(jqXHR, textStatus, errorThrown) {
+								alert(jqXHR.status);
+								alert(textStatus);
+								alert(errorThrown);
+							}
+
+						})
+						ymaps.ready(init(data.address, "airlineLocation"));
+						$("#airlineProfileName").html(data.name);
+						$("#airlineProfileAddress").html(data.address);
+						$("#airlineProfilePromoDescription").html(
+								data.promotionalDescription);
+						$("#airlineProfileScore").html(data.score);
+
+						var finalPath3 = urlRootProfile13 + "/" + ID;
+						$.ajax({
+							type : 'GET',
+							url : finalPath3,
+							dataType : "json",
+							success : function(data) {
+								if (data) {
+									fillTableDestinations(data,
+											"tableDestinations")
+								}
+							},
+							error : function(jqXHR, textStatus, errorThrown) {
+								alert(jqXHR.status);
+								alert(textStatus);
+								alert(errorThrown);
+							}
+
+						})
+
+					}
+				},
+				error : function(jqXHR, textStatus, errorThrown) {
+					alert(jqXHR.status);
+					alert(textStatus);
+					alert(errorThrown);
+				}
+
+			})
+		});
+
+function fillTableCars(data, table) {
+	var response = data;
+	$("#" + table).find("tr").remove();
+	var tabela = document.getElementById(table);
+
+	var index = 0;
+	for ( var counter in response) {
+		var row = tabela.insertRow(counter);
+		var cell0 = row.insertCell(0);
+		var cell1 = row.insertCell(1);
+		var cell2 = row.insertCell(2);
+		var cell3 = row.insertCell(3);
+		var cell4 = row.insertCell(4);
+		var cell5 = row.insertCell(5);
+		var cell6 = row.insertCell(6);
+		var cell7 = row.insertCell(7);
+		var cell8 = row.insertCell(8);
+		var cell9 = row.insertCell(9);
+
+		cell0.innerHTML = ++index;
+		cell1.innerHTML = response[counter].rentacar.name;
+		cell2.innerHTML = response[counter].name;
+		cell3.innerHTML = response[counter].price;
+		cell4.innerHTML = response[counter].year;
+		cell5.innerHTML = response[counter].seats;
+		cell6.innerHTML = response[counter].carType;
+		cell7.innerHTML = response[counter].brand;
+		cell8.innerHTML = response[counter].model;
+		cell9.innerHTML = response[counter].score;
+
+	}
+	var row = tabela.insertRow(0);
+	var cell0 = row.insertCell(0);
+	var cell1 = row.insertCell(1);
+	var cell2 = row.insertCell(2);
+	var cell3 = row.insertCell(3);
+	var cell4 = row.insertCell(4);
+	var cell5 = row.insertCell(5);
+	var cell6 = row.insertCell(6);
+	var cell7 = row.insertCell(7);
+	var cell8 = row.insertCell(8);
+	var cell9 = row.insertCell(9);
+
+	cell0.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">#</p>';
+	cell1.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Rentacar it belongs to</p>';
+	cell2.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Name</p';
+	cell3.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Price</p>';
+	cell4.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Car year</p>';
+	cell5.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Number of seats</p>';
+	cell6.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Car type</p';
+	cell7.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Brand</p>';
+	cell8.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Model</p>';
+	cell9.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Grade</p>';
+}
+
+function fillTableRooms(data, table) {
+	var response = data;
+	$("#" + table).find("tr").remove();
+	var tabela = document.getElementById(table);
+
+	var index = 0;
+	for ( var counter in response) {
+		var row = tabela.insertRow(counter);
+		var cell0 = row.insertCell(0);
+		var cell1 = row.insertCell(1);
+		var cell2 = row.insertCell(2);
+		var cell3 = row.insertCell(3);
+		var cell4 = row.insertCell(4);
+		var cell5 = row.insertCell(5);
+
+		cell0.innerHTML = ++index;
+		cell1.innerHTML = response[counter].hotel.name;
+		cell2.innerHTML = response[counter].roomNumber;
+		cell3.innerHTML = response[counter].price;
+		cell4.innerHTML = response[counter].numberPeople;
+		cell5.innerHTML = response[counter].score;
+
+	}
+	var row = tabela.insertRow(0);
+	var cell0 = row.insertCell(0);
+	var cell1 = row.insertCell(1);
+	var cell2 = row.insertCell(2);
+	var cell3 = row.insertCell(3);
+	var cell4 = row.insertCell(4);
+	var cell5 = row.insertCell(5);
+
+	cell0.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">#</p>';
+	cell1.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Hotel it belongs to</p>';
+	cell2.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Number of room</p';
+	cell3.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Price</p>';
+	cell4.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Number of people for room</p>';
+	cell5.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Grade</p>';
+}
+
+function fillTableFlights(data, table) {
+	var response = data;
+	$("#" + table).find("tr").remove();
+	var tabela = document.getElementById(table);
+	var index = 0;
+	for ( var counter in response) {
+		var row = tabela.insertRow(counter);
+		var cell0 = row.insertCell(0);
+		var cell1 = row.insertCell(1);
+		var cell2 = row.insertCell(2);
+		var cell3 = row.insertCell(3);
+		var cell4 = row.insertCell(4);
+		var cell5 = row.insertCell(5);
+		var cell6 = row.insertCell(6);
+		var cell7 = row.insertCell(7);
+		var cell8 = row.insertCell(8);
+		var cell9 = row.insertCell(9);
+		var cell10 = row.insertCell(10);
+
+		cell0.innerHTML = ++index;
+		cell1.innerHTML = response[counter].airline.name;
+		cell2.innerHTML = response[counter].number;
+		cell3.innerHTML = response[counter].startAirline.name;
+		cell4.innerHTML = response[counter].finalAirline.name;
+		cell5.innerHTML = response[counter].cost;
+		cell6.innerHTML = response[counter].dateOfStart;
+		cell7.innerHTML = response[counter].dateOfEnd;
+		cell8.innerHTML = response[counter].numOfStops;
+		cell9.innerHTML = response[counter].lengthOfFlight;
+		cell10.innerHTML = response[counter].score;
+
+	}
+	var row = tabela.insertRow(0);
+	var cell0 = row.insertCell(0);
+	var cell1 = row.insertCell(1);
+	var cell2 = row.insertCell(2);
+	var cell3 = row.insertCell(3);
+	var cell4 = row.insertCell(4);
+	var cell5 = row.insertCell(5);
+	var cell6 = row.insertCell(6);
+	var cell7 = row.insertCell(7);
+	var cell8 = row.insertCell(8);
+	var cell9 = row.insertCell(9);
+	var cell10 = row.insertCell(10);
+
+	cell0.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">#</p>';
+	cell1.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Airline it belongs to</p>';
+	cell2.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Number of flight</p';
+	cell3.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Start airline</p>';
+	cell4.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Final airline</p>';
+	cell5.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Cost</p>';
+	cell6.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Start date</p>';
+	cell7.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">End date</p>';
+	cell8.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Number of stops</p>';
+	cell9.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Length of flights</p>';
+	cell10.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Grade</p>';
+}
+
+function fillTableBranches(data, table) {
+	var response = data;
+	$("#" + table).find("tr").remove();
+	var tabela = document.getElementById(table);
+
+	var index = 0;
+	for ( var counter in response) {
+		var row = tabela.insertRow(counter);
+		var cell0 = row.insertCell(0)
+		var cell1 = row.insertCell(1);
+		var cell2 = row.insertCell(2);
+
+		cell0.innerHTML = ++index;
+		cell1.innerHTML = response[counter].city;
+		cell2.innerHTML = response[counter].address;
+
+	}
+	var row = tabela.insertRow(0);
+	var cell0 = row.insertCell(0);
+	var cell1 = row.insertCell(1);
+	var cell2 = row.insertCell(2);
+
+	cell0.innerHTML = '<p style= "color:#002699; font-weight: 200% font-size:150%">#</p>';
+	cell1.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">City</p>';
+	cell2.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Address</p>';
+
+}
+
+function fillTableHotelCustomerServices(data, table) {
+	var response = data;
+	$("#" + table).find("tr").remove();
+	var tabela = document.getElementById(table);
+
+	var index = 0;
+	for ( var counter in response) {
+		var row = tabela.insertRow(counter);
+		var cell0 = row.insertCell(0)
+		var cell1 = row.insertCell(1);
+		var cell2 = row.insertCell(2);
+
+		cell0.innerHTML = ++index;
+		cell1.innerHTML = response[counter].name;
+		cell2.innerHTML = response[counter].price;
+
+	}
+	var row = tabela.insertRow(0);
+	var cell0 = row.insertCell(0);
+	var cell1 = row.insertCell(1);
+	var cell2 = row.insertCell(2);
+
+	cell0.innerHTML = '<p style= "color:#002699; font-weight: 200% font-size:150%">#</p>';
+	cell1.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Name</p>';
+	cell2.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Price</p>';
+
+}
+
+function fillTableDestinations(data, table) {
+	var response = data;
+	$("#" + table).find("tr").remove();
+	var tabela = document.getElementById(table);
+
+	var index = 0;
+	for ( var counter in response) {
+		var row = tabela.insertRow(counter);
+		var cell0 = row.insertCell(0)
+		var cell1 = row.insertCell(1);
+		var cell2 = row.insertCell(2);
+
+		cell0.innerHTML = ++index;
+		cell1.innerHTML = response[counter].worksWith.name;
+		cell2.innerHTML = response[counter].worksWith.address;
+
+	}
+	var row = tabela.insertRow(0);
+	var cell0 = row.insertCell(0);
+	var cell1 = row.insertCell(1);
+	var cell2 = row.insertCell(2);
+
+	cell0.innerHTML = '<p style= "color:#002699; font-weight: 200% font-size:150%">#</p>';
+	cell1.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Name</p>';
+	cell2.innerHTML = '<p style= "color:#002699; font-weight: 200%; font-size:150%">Address</p>';
+
 }
