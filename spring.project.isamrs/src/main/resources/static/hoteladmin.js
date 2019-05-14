@@ -53,6 +53,32 @@ window.onload = function(e) {
 	})
 }
 
+function createChart(canvasId, labelNames, data) {
+	var ctx = document.getElementById(canvasId).getContext('2d');
+	var myChart = new Chart(ctx, {
+		type : 'bar',
+		data : {
+			labels : labelNames,
+			datasets : [ {
+				label : 'one attendance',
+				data : data,
+				backgroundColor : Array(data.length).fill(' #0099ff'),
+				borderColor : Array(data.length).fill('black'),
+				borderWidth : 1
+			} ]
+		},
+		options : {
+			scales : {
+				yAxes : [ {
+					ticks : {
+						beginAtZero : true
+					}
+				} ]
+			}
+		}
+	});
+}
+
 function fillDatasAddRoomFastReservation() {
 	$.ajax({
 		type : 'GET',
@@ -938,8 +964,13 @@ $(document).on('click', '.deleteRoomButton', function(e) {
 });
 
 $(document).on('click', '#reportHotelButton', function(e) {
-	// e.preventDefault();
 	fillDatas();
+	createChart("myChart1", [ 'Red', 'Blue', 'Yellow', 'Green',
+		'Purple', 'Orange' ], [ 12, 19, 3, 5, 2, 3 ]);
+	createChart("myChart2", [ 'Red', 'Blue', 'Yellow', 'Green',
+		'Purple', 'Orange' ], [ 12, 19, 3, 5, 2, 3 ]);
+	createChart("myChart3", [ 'Red', 'Blue', 'Yellow', 'Green',
+		'Purple', 'Orange' ], [ 12, 19, 3, 5, 2, 3 ]);
 });
 
 $(document).on('click', '#addHotelCustomerServiceButton', function(e) {
@@ -973,6 +1004,13 @@ $(document).on('submit', '#editRoomForm', function(e) {
 	saveEditedRoom();
 	openCity(e, 'editRoom');
 	showRooms('forEdit');
+
+});
+
+$(document).on('click', '#findAmountHotel', function(e) {
+	e.preventDefault();
+
+	//popuni za report 4
 
 });
 
