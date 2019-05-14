@@ -2,6 +2,7 @@ package team_three_spring_project_isamrs.controller;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,9 +25,13 @@ import team_three_spring_project_isamrs.dto.AirlineDTO;
 import team_three_spring_project_isamrs.model.Airline;
 import team_three_spring_project_isamrs.model.AirlineAdmin;
 import team_three_spring_project_isamrs.model.AirlineWorkingDestinations;
+import team_three_spring_project_isamrs.model.Flight;
+import team_three_spring_project_isamrs.model.Seat;
 import team_three_spring_project_isamrs.model.User;
 import team_three_spring_project_isamrs.service.AirlineService;
 import team_three_spring_project_isamrs.service.AirlineWorkingService;
+import team_three_spring_project_isamrs.service.FlightService;
+import team_three_spring_project_isamrs.service.SeatService;
 import team_three_spring_project_isamrs.service.impl.CustomUserDetailsService;
 
 @RestController
@@ -39,6 +45,12 @@ public class AirlineController {
 
 	@Autowired
 	private CustomUserDetailsService userDetailsService;
+	
+	@Autowired
+	private FlightService flightService;
+	
+	@Autowired
+	private SeatService seatService;
 
 	@GetMapping(value = "/gradeAirline/{id}/{grade}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ROLE_USER')")
@@ -190,4 +202,46 @@ public class AirlineController {
 		Airline a = airlineService.getOne(id);
 		return new ResponseEntity<>(a, HttpStatus.OK);
 	}
+	
+	@GetMapping(value="/getAllFlightsAirline")
+	@PreAuthorize("hasRole('ROLE_AIRLINE_ADMIN')")
+	public ResponseEntity<List<Flight>> getAllFlightsAirline() {
+		User logged = (User) this.userDetailsService
+				.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+		Airline air = ((AirlineAdmin) logged).getAirline();
+		List<Flight> flights = this.flightService.findByStartAirline(air);
+		List<Flight> returnFlights=new ArrayList<Flight>();
+		for(Flight f: flights) {
+			if(f.getDateOfStart().after(new Date())) {
+				returnFlights.add(f);
+			}
+		}
+		return new ResponseEntity<>(flights, HttpStatus.OK);
+	}
+	
+	@PostMapping(value="/addQuickBooking/{sed}/{popust}")
+	@PreAuthorize("hasRole('ROLE_AIRLINE_ADMIN')")
+	public ResponseEntity<Boolean> addQuickBooking(@PathVariable String sed,@PathVariable int popust) {
+		String [] sedista=sed.split("\\*");
+		for(String st: sedista) {
+			Seat s=this.seatService.getOne(Long.parseLong(st));
+			s.setQuickBooking(true);
+			s.setDiscount(popust);
+			this.seatService.save(s);
+			
+		}
+		return new ResponseEntity<>(true, HttpStatus.OK);
+	}
+	
+	@DeleteMapping(value="/deleteSeats/{sed}")
+	@PreAuthorize("hasRole('ROLE_AIRLINE_ADMIN')")
+	public ResponseEntity<Boolean> deleteSeats(@PathVariable String sed) {
+		String [] sedista=sed.split("\\*");
+		for(String st: sedista) {
+			this.seatService.delete(Long.parseLong(st));
+			
+		}
+		return new ResponseEntity<>(true, HttpStatus.OK);
+	}
+	
 }

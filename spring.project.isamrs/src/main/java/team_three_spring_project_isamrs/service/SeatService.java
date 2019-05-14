@@ -16,5 +16,7 @@ public interface SeatService {
 	public List<Seat> getAll();
 
 	public void save(Seat s);
+	
+	public void delete(long id);
 
 }

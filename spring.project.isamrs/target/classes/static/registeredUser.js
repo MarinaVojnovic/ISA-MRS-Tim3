@@ -57,8 +57,11 @@ var urlRootGetMyResFlights = "http://localhost:8080/api/getMyResFlights";
 var urlRootFindAirlineFromRes = "http://localhost:8080/findAirlineFromRes";
 var urlRootFindFlightFromRes = "http://localhost:8080/findFlightFromRes";
 
-var urlRootGradeFlight = "http://localhost:8080/gradeFlight";
-var urlRootGradeAirline = "http://localhost:8080/gradeAirline";
+
+var urlRootGradeFlight="http://localhost:8080/gradeFlight";
+var urlRootGradeAirline="http://localhost:8080/gradeAirline";
+var finishReservationUrl="http://localhost:8080/api/finishReservation"
+
 var TOKEN_KEY = 'jwtToken';
 
 $(document).on('click', '#editProfileButton', function(e) {
@@ -2616,7 +2619,7 @@ $(document)
 
 										if (j % 4 == 0) {
 											tr
-													.append('<td><div class="foo cyan"></div></td>');
+													.append('<td><div class="foo seat"></div></td>');
 
 										}
 										if (list[fr].taken == true) {
@@ -2626,6 +2629,13 @@ $(document)
 															+ '">'
 															+ i
 															+ '</div></td>');
+										}else if(list[fr].quickBooking==true){
+											tr
+											.append('<td><div class="foo yellow" id="'
+													+ list[fr].id
+													+ '">'
+													+ i
+													+ '</div></td>');
 										} else {
 											tr
 													.append('<td id="a"><div class="foo blue" id="'
@@ -2651,7 +2661,7 @@ $(document)
 
 										if (j % 4 == 0) {
 											tr
-													.append('<td><div class="foo cyan"></div></td>');
+													.append('<td><div class="foo seat"></div></td>');
 										}
 										if (list2[fr].taken == true) {
 											tr
@@ -2660,6 +2670,13 @@ $(document)
 															+ '">'
 															+ i
 															+ '</div></td>');
+										}else if(list2[fr].quickBooking==true){
+											tr
+											.append('<td><div class="foo yellow" id="'
+													+ list[fr].id
+													+ '">'
+													+ i
+													+ '</div></td>');
 										} else {
 											tr
 													.append('<td id="a"><div class="foo green" id="'
@@ -2685,7 +2702,7 @@ $(document)
 
 										if (j % 4 == 0) {
 											tr
-													.append('<td><div class="foo cyan"></div></td>');
+													.append('<td><div class="foo seat"></div></td>');
 										}
 										if (list3[fr].taken == true) {
 											tr
@@ -2694,6 +2711,13 @@ $(document)
 															+ '">'
 															+ i
 															+ '</div></td>');
+										}else if(list3[fr].quickBooking==true){
+											tr
+											.append('<td><div class="foo yellow" id="'
+													+ list[fr].id
+													+ '">'
+													+ i
+													+ '</div></td>');
 										} else {
 											tr
 													.append('<td id="a"><div class="foo purple" id="'
@@ -2879,9 +2903,40 @@ $(document)
 									'<button type="submit" style="background: #ff1a75; color: white" id="offerRentacarsButton" style="float: left;">Rentacars</button><br><br>');
 					$("#flightReservation")
 							.append(
-									'<button type="submit" style="background: #ff1a75; color: white" id="offerHotelsButton" style="float: left;/">Hotels</button>');
+									'<button type="submit" style="background: #ff1a75; color: white" id="offerHottelsButton" style="float: left;/">Hotels</button>');
+					$("#flightReservation")
+					.append(
+							'<button type="submit" style="background: #ff1a75; color: white" id="finishReservation" style="float: left;/">Finish reservation</button>');
 
 				})
+				
+$(document).on('click',"#finishReservation",function(e){
+	e.preventDefault();
+	var id = JSON.parse(sessionStorage["flightReservationId"])
+	console.log(id+"ODHHDHD");
+	$.ajax({
+		type: 'GET',
+		url : finishReservationUrl+"/"+ id,
+		headers : createAuthorizationTokenHeader(TOKEN_KEY),
+		contentType : 'application/json',
+		success : function(data) {
+			if (data) {
+				sendEmailReservation(data.message,data.email);
+				alert("Successfully finished reservation.");
+				openCity(e, 'searchAndFilterFlight');
+			}
+			else{
+				
+			}
+		},
+		error : function(jqXHR, textStatus, errorThrown) {
+			alert(jqXHR.status);
+			alert(textStatus);
+			alert(errorThrown);
+		}
+
+	})
+	})
 
 function sendEmail(list) {
 	for ( var f in list) {
@@ -2902,6 +2957,25 @@ function sendEmail(list) {
 			}
 		})
 	}
+}
+
+function sendEmailReservation(message,email) {
+		$.ajax({
+			type : 'POST',
+			url : urlRootSendMail,
+			contentType : 'application/json',
+
+			data : mailToJsonReservation(message, email),
+			success : function(data) {
+
+			},
+			error : function(jqXHR, textStatus, errorThrown) {
+				alert(jqXHR.status);
+				alert(textStatus);
+				alert(errorThrown);
+
+			}
+		})
 }
 
 $(document)
@@ -3307,6 +3381,15 @@ function mailToJson(emailAddress, id) {
 						+ id
 						+ " \nreject here \nhttp://localhost:8080/api/rejectFlightReservation/"
 						+ id
+			})
+}
+
+function mailToJsonReservation(message, email) {
+	return JSON
+			.stringify({
+				"emailAddress" : email,
+				"subject" : "Finished reservation",
+				"body" : message
 			})
 }
 

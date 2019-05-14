@@ -20,5 +20,7 @@ public interface FlightRepository extends JpaRepository<Flight, Long> {
 	public List<Flight> findByStartAirlineAndFinalAirlineAndDateOfStart(Airline start, Airline end, Date startD);
 
 	public List<Flight> findByStartAirlineAndFinalAirline(Airline start, Airline end);
+	
+	public List<Flight> findByStartAirline(Airline start);
 
 }

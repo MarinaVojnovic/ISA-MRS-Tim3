@@ -6,7 +6,12 @@ var urlRoot5 = "http://localhost:8080/api/getLogged";
 var urlRoot6 = "http://localhost:8080/getAllAirlinesExcept";
 var urlRoot7 = "http://localhost:8080/addDestination";
 var urlRoot8 = "http://localhost:8080/getAirlineWorkingDestinations";
-var urlGetFirstTime = "http://localhost:8080/api/isFirstTime"
+var urlRoot9 = "http://localhost:8080/getAllFlightsAirline";
+var urlGetFirstTime = "http://localhost:8080/api/isFirstTime";
+var urlRoot14 = "http://localhost:8080/getFlight";
+var urlRoot15 = "http://localhost:8080/getSeat";
+var urlRoot16 = "http://localhost:8080/addQuickBooking";
+var urlRoot17 = "http://localhost:8080/deleteSeats";
 var urlChangePassword = "http://localhost:8080/api/changePasswordFirstTime";
 
 var TOKEN_KEY = 'jwtToken';
@@ -497,6 +502,284 @@ function getAllAirlines() {
 
 }
 
+$(document).on('click',"#allFligh",function(e){
+	e.preventDefault();
+	$("#tableAllFlights").empty();
+	$.ajax({
+		type : 'GET',
+		url : urlRoot9,
+		headers : createAuthorizationTokenHeader(TOKEN_KEY),
+		contentType : 'application/json',
+		success : function(data) {
+			var list = data== null ? []
+			: (data instanceof Array ? data
+					: [ data]);
+			if (list.length > 0) {
+				var tabela = document
+						.getElementById("tableAllFlights");
+				var count = 1;
+				for ( var flight in list) {
+					console.log('counter: '
+							+ flight);
+					var row = tabela
+							.insertRow(flight);
+					var cell1 = row
+							.insertCell(0);
+					var cell2 = row
+							.insertCell(1);
+					var cell3 = row
+							.insertCell(2);
+					var cell4 = row
+							.insertCell(3);
+					var cell5 = row
+							.insertCell(4);
+					var cell6 = row
+							.insertCell(5);
+					var cell7 = row
+							.insertCell(6);
+					var cell8 = row
+							.insertCell(7);
+					var cell9 = row
+							.insertCell(8);
+					cell1.innerHTML = list[flight].number;
+					cell2.innerHTML = list[flight].startAirline.name;
+					cell3.innerHTML = list[flight].finalAirline.name;
+					cell4.innerHTML = list[flight].cost;
+					cell5.innerHTML = new Date(
+							list[flight].dateOfStart);
+					cell6.innerHTML = new Date(
+							list[flight].dateOfEnd);
+					cell7.innerHTML = list[flight].numOfStops;
+					cell8.innerHTML = list[flight].lengthOfFlight;
+					cell9.innerHTML = '<button name=\"'
+							+ list[flight].id
+							+ '\" class=\"chooseFlight\" class="btn btn-primary">Choose flight</button>';
+				}
+				var row = tabela.insertRow(0);
+				var cell1 = row.insertCell(0);
+				var cell2 = row.insertCell(1);
+				var cell3 = row.insertCell(2);
+				var cell4 = row.insertCell(3);
+				var cell5 = row.insertCell(4);
+				var cell6 = row.insertCell(5);
+				var cell7 = row.insertCell(6);
+				var cell8 = row.insertCell(7);
+				var cell9 = row.insertCell(8);
+				cell1.innerHTML = "Flight number";
+				cell2.innerHTML = "Start destination";
+				cell3.innerHTML = "Final destination";
+				cell4.innerHTML = "Cost";
+				cell5.innerHTML = "Date of flight";
+				cell6.innerHTML = "Date of arrival";
+				cell7.innerHTML = "Number of stops";
+				cell8.innerHTML = "Length of flight";
+				cell9.innerHTML = "";
+			} else {
+				$("#tableAllFlights")
+						.append(
+								"<h3>No flights found </h3>");
+			}
+
+			},
+		error : function(jqXHR, textStatus, errorThrown) {
+			alert(jqXHR.status);
+			alert(textStatus);
+			alert(errorThrown);
+
+		}
+	})
+	
+})
+
+
+$(document)
+		.on(
+				'click',
+				'.chooseFlight',
+				function(e) {
+					console.log('choose flight clicked');
+					e.preventDefault();
+					sessionStorage.removeItem("choosenSeats");
+					var id = $(this).attr('name');
+					sessionStorage.setItem("flightId", JSON.stringify(id));
+					$("#seatsFlight").empty();
+					$("#seatsFlight").append(
+							"<h3>Click on seats you want to reserve</h3>")
+					$("#seatsFlight")
+							.append(
+									"<h3>If you want to cancel seat click again on it</h3>")
+					$
+							.ajax({
+								type : 'GET',
+								dataType : 'json',
+								url : urlRoot14 + "/" + id,
+								headers : createAuthorizationTokenHeader(TOKEN_KEY),
+								success : function(data) {
+									var table = $('<table align="center"></table>')
+									var list = data.firstClass == null ? []
+											: (data.firstClass instanceof Array ? data.firstClass
+													: [ data.firstClass ]);
+									var list2 = data.businessClass == null ? []
+											: (data.businessClass instanceof Array ? data.businessClass
+													: [ data.businessClass ]);
+									var list3 = data.economyClass == null ? []
+											: (data.economyClass instanceof Array ? data.economyClass
+													: [ data.economyClass ]);
+									var i = 1;
+									var j = 1;
+
+									var tr;
+									for ( var fr in list) {
+										if (j % 6 == 1) {
+											if (j != 1) {
+												table.append(tr);
+											}
+											tr = $('<tr></tr>');
+											j = 1;
+										}
+										console.log(list[fr].taken);
+
+										if (j % 4 == 0) {
+											tr
+													.append('<td><div class="foo seat"></div></td>');
+
+										}
+										if (list[fr].taken == true) {
+											tr
+													.append('<td><div class="foo red" id="'
+															+ list[fr].id
+															+ '">'
+															+ i
+															+ '</div></td>');
+										} else if(list[fr].quickBooking==true){
+											tr
+											.append('<td><div class="foo yellow" id="'
+													+ list[fr].id
+													+ '">'
+													+ i
+													+ '</div></td>');
+										}
+										else {
+											tr
+													.append('<td id="a"><div class="foo blue" id="'
+															+ list[fr].id
+															+ '">'
+															+ i
+															+ '</div></td>');
+										}
+										i++;
+										j++;
+
+									}
+									table.append(tr);
+									j = 1;
+									for ( var fr in list2) {
+										if (j % 6 == 1) {
+											if (j != 1) {
+												table.append(tr);
+											}
+											tr = $('<tr></tr>');
+											j = 1;
+										}
+
+										if (j % 4 == 0) {
+											tr
+													.append('<td><div class="foo seat"></div></td>');
+										}
+										if (list2[fr].taken == true) {
+											tr
+													.append('<td><div class="foo red" id="'
+															+ list2[fr].id
+															+ '">'
+															+ i
+															+ '</div></td>');
+										}else if(list2[fr].quickBooking==true){
+											tr
+											.append('<td><div class="foo yellow" id="'
+													+ list[fr].id
+													+ '">'
+													+ i
+													+ '</div></td>');
+										} else {
+											tr
+													.append('<td id="a"><div class="foo green" id="'
+															+ list2[fr].id
+															+ '">'
+															+ i
+															+ '</div></td>');
+										}
+										i++;
+										j++;
+
+									}
+									table.append(tr);
+									j = 1;
+									for ( var fr in list3) {
+										if (j % 6 == 1) {
+											if (j != 1) {
+												table.append(tr);
+											}
+											tr = $('<tr></tr>');
+											j = 1;
+										}
+
+										if (j % 4 == 0) {
+											tr
+													.append('<td><div class="foo seat"></div></td>');
+										}
+										if (list3[fr].taken == true) {
+											tr
+													.append('<td><div class="foo red" id="'
+															+ list3[fr].id
+															+ '">'
+															+ i
+															+ '</div></td>');
+										}else if(list3[fr].quickBooking==true){
+											tr
+											.append('<td><div class="foo yellow" id="'
+													+ list[fr].id
+													+ '">'
+													+ i
+													+ '</div></td>');
+										}
+										
+										else {
+											tr
+													.append('<td id="a"><div class="foo purple" id="'
+															+ list3[fr].id
+															+ '">'
+															+ i
+															+ '</div></td>');
+										}
+										i++;
+										j++;
+
+									}
+									table.append(tr);
+									$("#seatsFlight").append('<br><br>')
+									$("#seatsFlight").append(table);
+									$("#seatsFlight").append('<br><br>')
+									$("#seatsFlight")
+											.append(
+													'<button id="quickBooking" class="btn btn-primary">Quick booking</button>');
+									$("#seatsFlight").append('<div class="divider"/>')
+									$("#seatsFlight")
+									.append(
+											'<button id="deleteSeats" class="btn btn-primary">Delete</button>');
+
+								},
+								error : function(jqXHR, textStatus, errorThrown) {
+									alert(jqXHR.status);
+									alert(textStatus);
+									alert(errorThrown);
+
+								}
+							})
+
+					openCity(e, 'flightReservation');
+
+				});
+
 $(document).on(
 		'click',
 		'#addFlightButton',
@@ -544,6 +827,180 @@ $(document).on(
 				}
 			})
 		})
+		
+$(document)
+		.on(
+				'click',
+				'#a',
+				function(e) {
+					e.preventDefault();
+					var id = $(this).find('div').attr('id');
+					if (sessionStorage["choosenSeats"]) {
+
+					} else {
+						var choosenSeats = [];
+						sessionStorage.setItem("choosenSeats", JSON
+								.stringify(choosenSeats));
+					}
+					var choosenSeats = JSON
+							.parse(sessionStorage["choosenSeats"]);
+					var i = 0;
+					for ( var s in choosenSeats) {
+						console.log(s);
+						if (choosenSeats[s] == id) {
+							i = 1;
+							$
+									.ajax({
+										type : 'GET',
+										url : urlRoot15 + "/" + id,
+										headers : createAuthorizationTokenHeader(TOKEN_KEY),
+										dataType : "json",
+										success : function(data) {
+											console.log((data.fc).toString())
+											if ((data.fc).toString() == "ECONOMY") {
+												$("#" + id + "").removeClass();
+												$("#" + id + "").addClass(
+														"foo purple");
+											} else if ((data.fc).toString() == "BUSINESS") {
+												$("#" + id + "").removeClass();
+												$("#" + id + "").addClass(
+														"foo green");
+											} else {
+												$("#" + id + "").removeClass();
+												$("#" + id + "").addClass(
+														"foo blue");
+											}
+											choosenSeats.splice(s, 1);
+											sessionStorage
+													.setItem(
+															"choosenSeats",
+															JSON
+																	.stringify(choosenSeats));
+
+										},
+										error : function(jqXHR, textStatus,
+												errorThrown) {
+											alert(jqXHR.status);
+											alert(textStatus);
+											alert(errorThrown);
+										}
+
+									})
+							break;
+						}
+					}
+					if (i == 0) {
+						choosenSeats.push(id);
+						sessionStorage.setItem("choosenSeats", JSON
+								.stringify(choosenSeats));
+						$(this).find('div').removeClass(
+								$(this).find('div').attr('class')).addClass(
+								"foo grey");
+					}
+				})
+				
+$(document).on('click','#book',function(e){
+	e.preventDefault();
+	var popust=document.getElementById("discount").value;
+	console.log("popust",popust);
+	if(isNaN(popust) || popust <0 || popust>70){
+		alert("Discount must be number between 0 and 70");
+	}else{
+	sed="";
+	var sedista = JSON.parse(sessionStorage["choosenSeats"]);
+	for ( var s in sedista) {
+	sed += sedista[s] + "*";
+	}
+	console.log(sed);
+	sed.substring(0, sed.length - 1);
+	sessionStorage.removeItem("choosenSeats");
+	$
+		.ajax({
+			type : 'POST',
+			url : urlRoot16+"/"+sed+"/"+popust,
+			headers : createAuthorizationTokenHeader(TOKEN_KEY),
+			contentType : 'application/json',
+			success : function(data) {
+				alert("Successful added to quick booking tickets!");
+				openCity(event, 'allFlights');
+	
+			},
+			error : function(jqXHR, textStatus, errorThrown) {
+				alert(jqXHR.status);
+				alert(textStatus);
+				alert(errorThrown);
+			}
+		})
+	}
+	
+})				
+				
+				
+$(document).on('click','#quickBooking',function(e){
+	e.preventDefault();
+	$("#deleteSeats").remove();
+	$("#quickBooking").remove();
+	$("#seatsFlight")
+	.append(
+			'<label>Discount:</label><input type="text" id="discount" size="10" maxlength="2"/>');
+	$("#seatsFlight").append('<div class="divider"/>')
+	$("#seatsFlight").append('<button id="book" class="btn btn-primary">Finish</button>')
+//	sed="";
+//	var sedista = JSON.parse(sessionStorage["choosenSeats"]);
+//	for ( var s in sedista) {
+//	sed += sedista[s] + "*";
+//	}
+//	console.log(sed);
+//	sed.substring(0, sed.length - 1);
+//	sessionStorage.removeItem("choosenSeats");
+//	$
+//		.ajax({
+//			type : 'POST',
+//			url : urlRoot16+"/"+sed,
+//			headers : createAuthorizationTokenHeader(TOKEN_KEY),
+//			contentType : 'application/json',
+//			success : function(data) {
+//				alert("Successful added to quick booking tickets!");
+//				openCity(event, 'allFlights');
+//	
+//			},
+//			error : function(jqXHR, textStatus, errorThrown) {
+//				alert(jqXHR.status);
+//				alert(textStatus);
+//				alert(errorThrown);
+//			}
+//		})
+
+})
+
+$(document).on('click',"#deleteSeats",function(e){
+	e.preventDefault();
+	sed="";
+	var sedista = JSON.parse(sessionStorage["choosenSeats"]);
+	for ( var s in sedista) {
+	sed += sedista[s] + "*";
+	}
+	sed.substring(0, sed.length - 1);
+	sessionStorage.removeItem("choosenSeats");
+	$
+		.ajax({
+			type : 'DELETE',
+			url : urlRoot17+"/"+sed,
+			headers : createAuthorizationTokenHeader(TOKEN_KEY),
+			contentType : 'application/json',
+			success : function(data) {
+				alert("Successful deleted seats!");
+				openCity(event, 'allFlights');
+	
+			},
+			error : function(jqXHR, textStatus, errorThrown) {
+				alert(jqXHR.status);
+				alert(textStatus);
+				alert(errorThrown);
+			}
+		})
+})
+
 
 $(document).on(
 		'submit',
