@@ -989,6 +989,7 @@ $(document).on(
 				alert("Number must be in range [1, 5]");
 			} else {
 				setHotelDiscount(hotelDiscountNumber);
+				alert("Succesfully set new discount number!");
 			}
 
 		});

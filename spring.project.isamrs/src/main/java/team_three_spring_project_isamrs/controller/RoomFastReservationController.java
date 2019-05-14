@@ -89,8 +89,9 @@ public class RoomFastReservationController {
 			Date endDate2 = df.parse(roomReservation.getEndDate());
 			if (!(startDate.getTime() < startDate2.getTime() && endDate.getTime() < startDate2.getTime())
 					&& !(startDate.getTime() > endDate2.getTime() && endDate.getTime() > endDate2.getTime())) {
-				return new ResponseEntity<>(new MessageDTO(
-						"This room already have been reserved by this period, pick some other dates!", "Error"),
+				return new ResponseEntity<>(
+						new MessageDTO("This room already have been reserved by this period, pick some other dates!",
+								"Error"),
 						HttpStatus.OK);
 			}
 		}
@@ -100,7 +101,9 @@ public class RoomFastReservationController {
 		retVal.setStartDate(roomFastReservationDTO.getStartDate());
 		retVal.setEndDate(roomFastReservationDTO.getEndDate());
 		retVal.setDiscount(roomFastReservationDTO.getDiscount());
-		double price = room.getPrice();
+		long numberOfNights = ((df.parse(roomFastReservationDTO.getEndDate()).getTime()
+				- df.parse(roomFastReservationDTO.getStartDate()).getTime() - 1000 * 60) / 86400000) + 1;
+		double price = room.getPrice() * numberOfNights;
 		if (!roomFastReservationDTO.getHotelCustomerServices().equals("")) {
 			String[] hcsIds = roomFastReservationDTO.getHotelCustomerServices().split(" ");
 			for (String hcsId : hcsIds) {
