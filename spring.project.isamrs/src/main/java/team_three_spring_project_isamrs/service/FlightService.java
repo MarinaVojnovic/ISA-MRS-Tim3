@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.List;
 
 import team_three_spring_project_isamrs.model.Airline;
-import team_three_spring_project_isamrs.model.Car;
 import team_three_spring_project_isamrs.model.Flight;
 
 public interface FlightService {

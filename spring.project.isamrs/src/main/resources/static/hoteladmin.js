@@ -15,11 +15,17 @@ var urlRoot14 = "http://localhost:8080/createRoomFastReservation";
 var urlGetFirstTime = "http://localhost:8080/api/isFirstTime";
 var urlChangePassword = "http://localhost:8080/api/changePasswordFirstTime";
 var urlRootFindHotelAmount = "http://localhost:8080/findHotelAmount";
+var urlRootReportHotelAttendance = "http://localhost:8080/reportHotelAttendance";
 
 var TOKEN_KEY = 'jwtToken';
 
-findHotel();
-getLogged();
+$(document).on('click', '#editHotelButton', function(e) {
+	findHotel();
+});
+
+$(document).on('click', '#editProfileButton', function(e) {
+	getLogged();
+});
 
 window.onload = function(e) {
 	console.log('window loades');
@@ -196,6 +202,24 @@ function fillDatas() {
 		}
 
 	})
+	$.ajax({
+		type : 'GET',
+		url : urlRootReportHotelAttendance,
+		headers : createAuthorizationTokenHeader(TOKEN_KEY),
+		dataType : "json",
+		success : function(data) {
+			// napravi chart myChart1
+			createChart("myChart1", data.dailyLabels, data.dailyValues)
+			createChart("myChart2", data.weeklyLabels, data.weeklyValues)
+			createChart("myChart3", data.monthlyLabels, data.monthlyValues)
+		},
+		error : function(jqXHR, textStatus, errorThrown) {
+			alert(jqXHR.status);
+			alert(textStatus);
+			alert(errorThrown);
+		}
+
+	})
 }
 
 function fillTableHotelCustomerServices(data, table) {
@@ -254,7 +278,8 @@ function fillTableRoomFastReservations(data, table) {
 			cell6.innerHTML = response[counter].discount + "%";
 			cell7.innerHTML = response[counter].newPrice;
 			cell8.innerHTML = "<button class=\"deleteRFR\" id=\""
-					+ response[counter].id + "\">Delete</button>"
+					+ response[counter].id
+					+ "\" style=\" background:#cc0033;color:white\">Delete</button>"
 		}
 
 	}
@@ -760,11 +785,11 @@ function showRooms(type) {
 						cell3.innerHTML = response[counter].price;
 						cell4.innerHTML = response[counter].numberPeople;
 						if (type == "forDelete") {
-							cell5.innerHTML = '<button style="background: #ff1a75; color: white" id=\"'
+							cell5.innerHTML = '<button style="background: #cc0033; color: white" id=\"'
 									+ response[counter].id
 									+ '\" class=\"deleteRoomButton\" class="btn btn-primary">Delete</button>';
 						} else if (type == "forEdit") {
-							cell5.innerHTML = '<button style="background: #ff1a75; color: white" id=\"'
+							cell5.innerHTML = '<button style="background: #cc0033; color: white" id=\"'
 									+ response[counter].id
 									+ '\" class=\"editRoomButton\" class="btn btn-primary" >Edit</button>';
 						}
@@ -969,12 +994,6 @@ $(document).on(
 		'#reportHotelButton',
 		function(e) {
 			fillDatas();
-			createChart("myChart1", [ 'Red', 'Blue', 'Yellow', 'Green',
-					'Purple', 'Orange' ], [ 12, 19, 3, 5, 2, 3 ]);
-			createChart("myChart2", [ 'Red', 'Blue', 'Yellow', 'Green',
-					'Purple', 'Orange' ], [ 12, 19, 3, 5, 2, 3 ]);
-			createChart("myChart3", [ 'Red', 'Blue', 'Yellow', 'Green',
-					'Purple', 'Orange' ], [ 12, 19, 3, 5, 2, 3 ]);
 		});
 
 $(document).on('click', '#addHotelCustomerServiceButton', function(e) {
@@ -1029,7 +1048,7 @@ $(document).on('click', '#findAmountHotel', function(e) {
 		headers : createAuthorizationTokenHeader(TOKEN_KEY),
 		dataType : "json",
 		success : function(data) {
-			$("#amountHotelValue").html(data);
+			$("#amountHotelValue").html(data.toFixed(2));
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
 			alert(jqXHR.status);

@@ -61,7 +61,7 @@ body {
 <body>
 
 	<div class="tab">
-		<button class="tablinks" onclick="openCity(event, 'editHotel')">Edit
+		<button id="editHotelButton" class="tablinks" onclick="openCity(event, 'editHotel')">Edit
 			hotel</button>
 		<button class="tablinks" onclick="openCity(event, 'addRoom')">Add
 			room</button>
@@ -69,7 +69,7 @@ body {
 			onclick="openCity(event, 'deleteRoom')">Delete room</button>
 		<button id="editRoomsButton" class="tablinks"
 			onclick="openCity(event, 'editRoom')">Edit room</button>
-		<button class="tablinks" onclick="openCity(event, 'editProfile')">Edit
+		<button id="editProfileButton" class="tablinks" onclick="openCity(event, 'editProfile')">Edit
 			profile</button>
 		<button id="reportHotelButton" class="tablinks"
 			onclick="openCity(event, 'report')">Reports</button>
@@ -528,7 +528,7 @@ body {
 	<div id="report" class="tabcontent">
 		<div class="container">
 			<h2>Reports:</h2>
-
+			<hr style="border-color: black">
 			<div class="container">
 				<table>
 					<tr>
@@ -539,13 +539,13 @@ body {
 					</tr>
 				</table>
 			</div>
-			<br>
+			<hr style="border-color: black">
 			<div class="container">
 				<h3>2) Average grade for each room of this hotel:</h3>
 				<table class="table" id="reportHotelEachRoom">
 				</table>
 			</div>
-			<br>
+			<hr style="border-color: black">
 			<div class="container">
 				<h3>3) Graphic show of attendance in this hotel:</h3>
 				<br>
@@ -562,7 +562,7 @@ body {
 					style="max-width: 400px; max-height: 400px; margin-left: 12%"></canvas>
 
 			</div>
-			<br>
+			<hr style="border-color: black">
 			<div class="container">
 				<h3>4) Amounts of this hotel in concrete period:</h3>
 				<h5>* Put dates for which you want to see amount you earned,
@@ -582,6 +582,7 @@ body {
 					</tr>
 				</table>
 			</div>
+			<hr style="border-color: black">
 		</div>
 
 	</div>

@@ -11,9 +11,17 @@ var urlRoot10 = "http://localhost:8080/getAllRentacars";
 
 var TOKEN_KEY = 'jwtToken';
 
-getAirlineWithoutAdmin();
-getHotelWithoutAdmin();
-getRentacarWithoutAdmin();
+$(document).on('click', '#registerAirlineAdminButton', function(e) {
+	getAirlineWithoutAdmin();
+})
+
+$(document).on('click', '#registerHotelAdminButton', function(e) {
+	getHotelWithoutAdmin();
+})
+
+$(document).on('click', '#registerRentACarAdminButton', function(e) {
+	getRentacarWithoutAdmin();
+})
 
 $(document).on('click', '#logoutClicked', function(e) {
 	e.preventDefault();
@@ -119,13 +127,13 @@ $(document)
 							.getElementById("airlineNameRegister").value;
 					var airlineAddressRegister = document
 							.getElementById("airlineAddressRegister").value;
-					var city = document
-					.getElementById("airlineCityRegister").value;
+					var city = document.getElementById("airlineCityRegister").value;
 					var airlinePromotionalDescription = document
 							.getElementById("airlinePromotionalDescription").value;
 					if (airlineNameRegister == ""
 							|| airlineAddressRegister == ""
-							|| airlinePromotionalDescription == "" || city == "") {
+							|| airlinePromotionalDescription == ""
+							|| city == "") {
 						alert('At least one field is blank, please fill it up with proper information!');
 					} else {
 						$
@@ -164,8 +172,7 @@ $(document)
 							.getElementById("hotelNameRegister").value;
 					var hotelAddressRegister = document
 							.getElementById("hotelAddressRegister").value;
-					var city = document
-					.getElementById("hotelCityRegister").value;
+					var city = document.getElementById("hotelCityRegister").value;
 					var hotelPromotionalDescription = document
 							.getElementById("hotelPromotionalDescription").value;
 					if (hotelNameRegister == "" || hotelAddressRegister == ""
@@ -207,13 +214,13 @@ $(document)
 							.getElementById("rentacarNameRegister").value;
 					var rentacarAddressRegister = document
 							.getElementById("rentacarAddressRegister").value;
-					var city = document
-					.getElementById("rentacarCityRegister").value;
+					var city = document.getElementById("rentacarCityRegister").value;
 					var rentacarPromotionalDescription = document
 							.getElementById("rentacarPromotionalDescription").value;
 					if (rentacarNameRegister == ""
 							|| rentacarAddressRegister == ""
-							|| rentacarPromotionalDescription == "" || city == "") {
+							|| rentacarPromotionalDescription == ""
+							|| city == "") {
 						alert('At least one field is blank, please fill it up with proper information!');
 					} else {
 						$
@@ -226,7 +233,8 @@ $(document)
 									data : createRentacarToJSON(
 											rentacarNameRegister,
 											rentacarAddressRegister,
-											rentacarPromotionalDescription, city),
+											rentacarPromotionalDescription,
+											city),
 									success : function(data) {
 										getRentacarWithoutAdmin();
 										alert("Successful registration, congratulations!");

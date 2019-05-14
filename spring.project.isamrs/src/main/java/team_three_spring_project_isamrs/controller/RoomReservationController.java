@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import team_three_spring_project_isamrs.dto.MessageDTO;
+import team_three_spring_project_isamrs.dto.ReportHotelAttendanceDTO;
 import team_three_spring_project_isamrs.dto.RoomReservationDTO;
 import team_three_spring_project_isamrs.model.HotelAdmin;
 import team_three_spring_project_isamrs.model.HotelCustomerService;
@@ -173,7 +174,7 @@ public class RoomReservationController {
 
 	@GetMapping(value = "/findHotelAmount/{startDate}/{endDate}")
 	@PreAuthorize("hasRole('ROLE_HOTEL_ADMIN')")
-	public ResponseEntity<Integer> findHotelAmount(@PathVariable String startDate, @PathVariable String endDate)
+	public ResponseEntity<Double> findHotelAmount(@PathVariable String startDate, @PathVariable String endDate)
 			throws ParseException {
 		HotelAdmin ha = (HotelAdmin) this.userDetailsService
 				.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
@@ -208,10 +209,74 @@ public class RoomReservationController {
 			}
 			retVal.add(roomReservation);
 		}
-		int value = 0;
+		double value = 0;
 		for (RoomReservation roomReservation : retVal) {
 			value += roomReservation.getPrice();
 		}
 		return new ResponseEntity<>(value, HttpStatus.OK);
 	}
+
+	@GetMapping(value = "/reportHotelAttendance")
+	@PreAuthorize("hasRole('ROLE_HOTEL_ADMIN')")
+	public ResponseEntity<ReportHotelAttendanceDTO> reportHotelAttendance() throws ParseException {
+		ReportHotelAttendanceDTO retVal = new ReportHotelAttendanceDTO();
+		long DAY_IN_MILI = 86400000;
+		Date currentDate = new Date();
+		DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd");
+		DateFormat df2 = new SimpleDateFormat("yyyy-MM");
+		Date today = df1.parse(df1.format(currentDate));
+		Date thisMonth = df2.parse(df2.format(currentDate));
+		List<RoomReservation> allReservations = roomReservationService.getAll();
+		Date workWith = new Date();
+		Date workWith2 = new Date();
+		Date startDate = new Date();
+		Date endDate = new Date();
+		// daily
+		for (int i = 1; i < 8; i++) {
+			int number = 0;
+			workWith = new Date(today.getTime() - i * DAY_IN_MILI);
+			retVal.getDailyLabels().add(df1.format(workWith));
+			for (RoomReservation roomReservation : allReservations) {
+				startDate = df1.parse(roomReservation.getStartDate());
+				endDate = df1.parse(roomReservation.getEndDate());
+				if (!startDate.after(workWith) && !endDate.before(workWith)) {
+					number += roomReservation.getNumOfPass();
+				}
+			}
+			retVal.getDailyValues().add(number);
+		}
+		// weekly
+		for (int i = 0; i < 7; i++) {
+			int number = 0;
+			workWith = new Date(today.getTime() - (i * 7 + 1) * DAY_IN_MILI);
+			workWith2 = new Date(today.getTime() - (7 * i + 7) * DAY_IN_MILI);
+			retVal.getWeeklyLabels().add(df1.format(workWith2) + " to " + df1.format(workWith));
+			for (RoomReservation roomReservation : allReservations) {
+				startDate = df1.parse(roomReservation.getStartDate());
+				endDate = df1.parse(roomReservation.getEndDate());
+				if (!startDate.after(workWith) && !endDate.before(workWith2)) {
+					number += roomReservation.getNumOfPass();
+				}
+			}
+			retVal.getWeeklyValues().add(number);
+		}
+		// monthly
+		for (int i = 0; i < 7; i++) {
+			int number = 0;
+			workWith = new Date(thisMonth.getTime() - DAY_IN_MILI);
+			workWith2 = df2.parse(df2.format(workWith));
+			retVal.getMonthlyLabels().add(df2.format(workWith2));
+			for (RoomReservation roomReservation : allReservations) {
+				startDate = df1.parse(roomReservation.getStartDate());
+				endDate = df1.parse(roomReservation.getEndDate());
+				if (!startDate.after(workWith) && !endDate.before(workWith2)) {
+					number += roomReservation.getNumOfPass();
+				}
+			}
+			retVal.getMonthlyValues().add(number);
+			thisMonth = df2.parse(df2.format(new Date(thisMonth.getTime() - DAY_IN_MILI)));
+		}
+		return new ResponseEntity<>(retVal, HttpStatus.OK);
+	}
+
 }

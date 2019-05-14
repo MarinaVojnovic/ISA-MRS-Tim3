@@ -12,6 +12,7 @@ import team_three_spring_project_isamrs.repository.HotelRepository;
 import team_three_spring_project_isamrs.service.HotelService;
 
 @Service
+@Transactional(readOnly = true)
 public class HotelServiceImpl implements HotelService {
 
 	@Autowired
@@ -28,20 +29,15 @@ public class HotelServiceImpl implements HotelService {
 	}
 
 	@Override
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
 	public Hotel create(Hotel hotel) {
 		return hotelRepository.save(hotel);
 	}
 
 	@Override
-	@Transactional(propagation = Propagation.REQUIRED, readOnly = false, rollbackFor = Exception.class)
+	@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
 	public Hotel save(Hotel hotel) {
-		Hotel h = null;
-		try {
-			h = hotelRepository.save(hotel);
-		} catch (Exception e) {
-			return null;
-		}
-		return h;
+		return hotelRepository.save(hotel);
 	}
 
 	public List<Hotel> findByName(String name) {

@@ -108,30 +108,30 @@ body {
 	background: #c2c2a3
 }
 
-.yellow{
+.yellow {
 	background: #ffff00
 }
 
-.divider{
-    width:25px;
-    height:auto;
-    display:inline-block;
+.divider {
+	width: 25px;
+	height: auto;
+	display: inline-block;
 }
 </style>
 </head>
 <body>
 
 	<div class="tab">
-		<button class="tablinks" onclick="openCity(event, 'editAirline')">Edit
-			an airline</button>
+		<button id="editAirlineButton" class="tablinks"
+			onclick="openCity(event, 'editAirline')">Edit an airline</button>
 		<button class="tablinks" id="addFlightButton"
 			onclick="openCity(event, 'addFlight')">Add flight</button>
-		<button class="tablinks" onclick="openCity(event, 'editProfile')">Edit
-			profile</button>
-		<button class="tablinks" id="allFligh" onclick="openCity(event, 'allFlights')">All flights</button>
-
-		<button class="tablinks" onclick="openCity(event, 'addDestination')">Add
-			destination</button>
+		<button id="editProfileButton" class="tablinks"
+			onclick="openCity(event, 'editProfile')">Edit profile</button>
+		<button class="tablinks" id="allFligh"
+			onclick="openCity(event, 'allFlights')">All flights</button>
+		<button id="addDestinationButton" class="tablinks"
+			onclick="openCity(event, 'addDestination')">Add destination</button>
 		<button id="logoutClicked" class="tablinks"
 			onclick="openCity(event, 'logout')">Logout</button>
 	</div>
@@ -255,8 +255,9 @@ body {
 					<label class="control-label col-sm-2" for="numberOfSeatsEconomy">Number
 						of seats economy class: </label>
 					<div class="col-sm-10">
-						<input type="number" class="form-control" id="numberOfSeatsEconomy"
-							placeholder="" name="numberOfSeatsEconomy">
+						<input type="number" class="form-control"
+							id="numberOfSeatsEconomy" placeholder=""
+							name="numberOfSeatsEconomy">
 					</div>
 
 				</div>
@@ -395,9 +396,9 @@ body {
 			<br>
 		</div>
 	</div>
-	
-	
-		<div id="flightReservation" class="tabcontent">
+
+
+	<div id="flightReservation" class="tabcontent">
 		<div class="container">
 			<div id="seats" align="center">
 				<div class="inline-block">
@@ -490,8 +491,8 @@ body {
 			<br>
 		</div>
 	</div>
-	
-	
+
+
 	<div id="allFlights" class="tabcontent">
 		<div class="container">
 			<h2>All flights:</h2>
