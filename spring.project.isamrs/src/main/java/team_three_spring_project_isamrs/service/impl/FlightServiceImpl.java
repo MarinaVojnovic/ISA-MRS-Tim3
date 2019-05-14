@@ -58,4 +58,9 @@ public class FlightServiceImpl implements FlightService {
 		return this.flightRepository.findByStartAirlineAndFinalAirline(start, end);
 	}
 
+	@Override
+	public List<Flight> findByStartAirline(Airline start) {
+		return this.flightRepository.findByStartAirline(start);
+	}
+
 }

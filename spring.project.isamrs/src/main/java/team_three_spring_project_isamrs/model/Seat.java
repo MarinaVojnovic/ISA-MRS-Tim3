@@ -26,20 +26,28 @@ public class Seat {
 	@Column(name="taken")
 	Boolean taken;
 	
+	@Column(name="quickBooking")
+	Boolean quickBooking;
+	
 	@Column(name="class")
 	FlightClass fc;
+	
+	@Column(name="discount")
+	int discount;
 	
 	@OneToOne(mappedBy = "seat", cascade = CascadeType.ALL,
             fetch = FetchType.LAZY)
 	private FlightReservation flightReservation;
 
-	public Seat(Long id, Flight flight, Boolean taken, FlightClass fc, FlightReservation flightReservation) {
+	public Seat(Long id, Flight flight, Boolean quickBooking,Boolean taken, FlightClass fc, FlightReservation flightReservation,int discount) {
 		super();
 		this.id = id;
 		this.flight = flight;
+		this.quickBooking=quickBooking;
 		this.taken = taken;
 		this.fc = fc;
 		this.flightReservation = flightReservation;
+		this.discount=discount;
 	}
 
 	public FlightReservation getFlightReservation() {
@@ -50,23 +58,27 @@ public class Seat {
 		this.flightReservation = flightReservation;
 	}
 
-	public Seat(Long id, Flight flight, Boolean taken,FlightClass fc) {
+	public Seat(Long id, Flight flight, Boolean quickBooking, Boolean taken,FlightClass fc,int discount) {
 		super();
 		this.id = id;
 		this.flight = flight;
+		this.quickBooking=quickBooking;
 		this.taken = taken;
 		this.fc=fc;
+		this.discount=discount;
 	}
 
 	public Seat() {
 		super();
 	}
 
-	public Seat(Flight flight,Boolean taken,FlightClass fc) {
+	public Seat(Flight flight,Boolean quickBooking,Boolean taken,FlightClass fc,int discount) {
 		super();
 		this.flight = flight;
+		this.quickBooking=quickBooking;
 		this.taken = taken;
 		this.fc=fc;
+		this.discount=discount;
 	}
 
 	public Long getId() {
@@ -98,8 +110,24 @@ public class Seat {
 		return fc;
 	}
 
+	public int getDiscount() {
+		return discount;
+	}
+
+	public void setDiscount(int discount) {
+		this.discount = discount;
+	}
+
 	public void setFc(FlightClass fc) {
 		this.fc = fc;
+	}
+
+	public Boolean getQuickBooking() {
+		return quickBooking;
+	}
+
+	public void setQuickBooking(Boolean quickBooking) {
+		this.quickBooking = quickBooking;
 	}
 	
 	

@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.view.RedirectView;
 
 import team_three_spring_project_isamrs.comparator.FriendsComparatorNameSurname;
+import team_three_spring_project_isamrs.dto.FinishedReservationDTO;
 import team_three_spring_project_isamrs.dto.FlightReservationDTO;
 import team_three_spring_project_isamrs.dto.FlightReservationReturnDTO;
 import team_three_spring_project_isamrs.dto.FriendRequestDTO;
@@ -31,6 +32,7 @@ import team_three_spring_project_isamrs.model.CarReservation;
 import team_three_spring_project_isamrs.model.Flight;
 import team_three_spring_project_isamrs.model.FlightReservation;
 import team_three_spring_project_isamrs.model.FriendRequest;
+import team_three_spring_project_isamrs.model.HotelReservation;
 import team_three_spring_project_isamrs.model.RegularUser;
 import team_three_spring_project_isamrs.model.Seat;
 import team_three_spring_project_isamrs.model.User;
@@ -364,5 +366,18 @@ public class UserController {
 			return new RedirectView("http://localhost:8080/rejectedReservation.html");
 		}
 		return null;
+	}
+	
+	@GetMapping(value="/finishReservation/{id}")
+	@PreAuthorize("hasRole('ROLE_USER')")
+	public ResponseEntity<FinishedReservationDTO> finishReservation(@PathVariable Long id) {
+		FlightReservation fr=this.flightReservationService.getOne(id);
+		//CarReservation cr=this.carReservationService.findByFlight(id);
+		//HotelReservation hr=this.hotelReservationService.findByHotel(id);
+		String message="You have successfully reserved flight from: "+ fr.getFlightReservation().getStartAirline().getCity()+" to " +fr.getFlightReservation().getFinalAirline().getCity()+" on "+fr.getFlightReservation().getDateOfStart();
+		String email=fr.getRegularUserFlightReservation().getEmail();
+		FinishedReservationDTO dto=new FinishedReservationDTO(fr,new CarReservation(),new HotelReservation(),message,email);
+		return new ResponseEntity<>(dto, HttpStatus.OK);
+		
 	}
 }

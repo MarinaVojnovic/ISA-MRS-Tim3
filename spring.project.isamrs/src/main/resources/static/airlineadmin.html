@@ -56,8 +56,66 @@ body {
 	background: #ccccff;
 }
 
-#a input {
+#aaa input {
 	width: 100px !important;
+}
+
+#a {
+	border: 1px solid rgba(0, 0, 0, .2);
+}
+
+#aa {
+	border: 1px solid rgba(0, 0, 0, .2);
+}
+
+.foo {
+	float: left;
+	width: 40px;
+	height: 40px;
+}
+
+.inline-block {
+	display: inline-block;
+	width: 60px;
+	height: 60px;
+}
+
+.blue {
+	background: #13b4ff;
+}
+
+.cyan {
+	background: #00defc;
+}
+
+.purple {
+	background: #ab3fdd;
+}
+
+.wine {
+	background: #ae163e;
+}
+
+.green {
+	background: #00e600;
+}
+
+.red {
+	background: #ff0000
+}
+
+.grey {
+	background: #c2c2a3
+}
+
+.yellow{
+	background: #ffff00
+}
+
+.divider{
+    width:25px;
+    height:auto;
+    display:inline-block;
 }
 </style>
 </head>
@@ -70,6 +128,7 @@ body {
 			onclick="openCity(event, 'addFlight')">Add flight</button>
 		<button class="tablinks" onclick="openCity(event, 'editProfile')">Edit
 			profile</button>
+		<button class="tablinks" id="allFligh" onclick="openCity(event, 'allFlights')">All flights</button>
 
 		<button class="tablinks" onclick="openCity(event, 'addDestination')">Add
 			destination</button>
@@ -192,7 +251,7 @@ body {
 							placeholder="Insert length of the flight" name="lengthOfFlight">
 					</div>
 				</div>
-				<div class="form-group" id="a">
+				<div class="form-group" id="aaa">
 					<label class="control-label col-sm-2" for="numberOfSeatsEconomy">Number
 						of seats economy class: </label>
 					<div class="col-sm-10">
@@ -201,7 +260,7 @@ body {
 					</div>
 
 				</div>
-				<div class="form-group" id="a">
+				<div class="form-group" id="aaa">
 					<label class="control-label col-sm-2" for="numberOfSeatsBusiness">Number
 						of seats business class: </label>
 					<div class="col-sm-10">
@@ -210,7 +269,7 @@ body {
 							name="numberOfSeatsBusiness">
 					</div>
 				</div>
-				<div class="form-group" id="a">
+				<div class="form-group" id="aaa">
 					<label class="control-label col-sm-2" for="numberOfSeatsFirst">Number
 						of seats first class: </label>
 					<div class="col-sm-10">
@@ -336,6 +395,47 @@ body {
 			<br>
 		</div>
 	</div>
+	
+	
+		<div id="flightReservation" class="tabcontent">
+		<div class="container">
+			<div id="seats" align="center">
+				<div class="inline-block">
+					<p>First</p>
+					<div class="foo blue" id="aa"></div>
+				</div>
+
+				<div class="inline-block">
+					<p>Economy</p>
+					<div class="foo purple" id="aa"></div>
+				</div>
+
+				<div class="inline-block">
+					<p>Business</p>
+					<div class="foo green" id="aa"></div>
+				</div>
+				<div class="inline-block">
+					<p>Taken</p>
+					<div class="foo red" id="aa"></div>
+				</div>
+				<div class="inline-block">
+					<p>Quick booking</p>
+					<div class="foo yellow" id="aa"></div>
+				</div>
+				<div class="inline-block">
+					<p>Chosen</p>
+					<div class="foo grey" id="aa"></div>
+				</div>
+				<div id="seatsFlight"></div>
+			</div>
+			<input type="hidden" id="destinationId"> <input type="hidden"
+				id="startDateId"> <input type="hidden" id="endDateId">
+
+
+
+			<br>
+		</div>
+	</div>
 
 	<div id="addDestination" class="tabcontent">
 		<div class="container">
@@ -387,6 +487,18 @@ body {
 					</div>
 				</div>
 			</form>
+			<br>
+		</div>
+	</div>
+	
+	
+	<div id="allFlights" class="tabcontent">
+		<div class="container">
+			<h2>All flights:</h2>
+			<table class="table table-hover" id="tableAllFlights">
+
+			</table>
+
 			<br>
 		</div>
 	</div>

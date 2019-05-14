@@ -18,6 +18,7 @@ public interface FlightService {
 	public List<Flight> findByStartAirlineAndFinalAirlineAndDateOfStartAndDateOfEnd(Airline start,Airline end, Date startD,Date endD);
 	public List<Flight> findByStartAirlineAndFinalAirlineAndDateOfStart(Airline start,Airline end, Date startD);
 	public List<Flight> findByStartAirlineAndFinalAirline(Airline start,Airline end);
+	public List<Flight> findByStartAirline(Airline start);
 	public Flight save(Flight flight);
 
 	

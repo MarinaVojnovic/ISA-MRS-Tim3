@@ -42,4 +42,10 @@ public class SeatServiceImpl implements SeatService {
 
 	}
 
+	@Override
+	public void delete(long id) {
+		this.seatRepository.delete(id);
+		
+	}
+
 }

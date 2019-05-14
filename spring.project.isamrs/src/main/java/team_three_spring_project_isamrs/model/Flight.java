@@ -88,13 +88,13 @@ public class Flight {
 		this.lengthOfFlight = flightDTO.getLength();
 		this.seats = new HashSet<>();
 		for (int i = 0; i < flightDTO.getNumOfSeatsEconomy(); i++) {
-			this.seats.add(new Seat(this, false, FlightClass.ECONOMY));
+			this.seats.add(new Seat(this, false,false, FlightClass.ECONOMY,0));
 		}
 		for (int i = 0; i < flightDTO.getNumOfSeatsBusiness(); i++) {
-			this.seats.add(new Seat(this, false, FlightClass.BUSINESS));
+			this.seats.add(new Seat(this, false,false, FlightClass.BUSINESS,0));
 		}
 		for (int i = 0; i < flightDTO.getNumOfSeatsFirst(); i++) {
-			this.seats.add(new Seat(this, false, FlightClass.FIRST));
+			this.seats.add(new Seat(this,false,false, FlightClass.FIRST,0));
 		}
 		this.airline = flightDTO.getFlighAirline();
 		this.numOfStops = flightDTO.getNumOfStops();
