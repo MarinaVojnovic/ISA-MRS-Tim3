@@ -1,6 +1,8 @@
 package tim3.spring.project.isamrs.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +21,7 @@ import tim3.spring.project.isamrs.dto.CarReservationDTO;
 import tim3.spring.project.isamrs.dto.MessageDTO;
 import tim3.spring.project.isamrs.model.Car;
 import tim3.spring.project.isamrs.model.CarReservation;
+import tim3.spring.project.isamrs.model.FlightReservation;
 import tim3.spring.project.isamrs.model.RegularUser;
 import tim3.spring.project.isamrs.model.Rentacar;
 import tim3.spring.project.isamrs.service.CarReservationService;
@@ -114,31 +117,40 @@ public class CarReservationController {
 				Integer.parseInt(endDate.split("\\-")[1]) - 1,
 				Integer.parseInt(endDate.split("\\-")[2]));
 		
-		
+		List<FlightReservation> flightRes=user.getFlightReservations();
+		System.out.println("AA");
+		/*
+		 * FlightReservation last=flightRes.get(0); for (FlightReservation f :
+		 * flightRes) { if (f.getId()> last.getId()) { last=f; } }
+		 */
+		System.out.println("BB");
 		CarReservationDTO dto = new CarReservationDTO(carId,startDatee,endDatee,passengers);
-		System.out.println("A");
 		CarReservation newCarRes = new CarReservation(dto);
-		System.out.println("B");
-		System.out.println("Car id from dto:"+dto.getCarId());
 		Car car = carService.getOne(dto.getCarId());
-		System.out.println("C");
 		newCarRes.setCar(car);
 		newCarRes.setPrice(car.getPrice());
 		newCarRes.setRegularUser(user);
+		System.out.println("CC");
+		//newCarRes.setResFlight(last);
+		System.out.println("DD");
 		Rentacar rentacar = rentacarService.getOne(car.getRentacar().getId());
-		System.out.println("D");
-		System.out.println(newCarRes.getEndDate());
 		newCarRes.setRentacarRes(rentacar);
-		System.out.println("FFF");
+		//last.getCarReservations().add(newCarRes);
+		//System.out.println(last.getId()+"       "+"jjjjjj");
+		
 		
 		carReservationService.save(newCarRes);
-		System.out.println("E");
+		System.out.println("hhhhh");
+		
 		user.getCarReservations().add(newCarRes);
-		System.out.println("F");
+		System.out.println("ssss");
 		rentacar.getCarReservations().add(newCarRes);
-		System.out.println("G");
+		System.out.println("rrrr");
 		car.getReservations().add(newCarRes);
-		System.out.println("H");
+		System.out.println("EE");
+		
+		System.out.println("FF");
+		
 		return new ResponseEntity<>(newCarRes, HttpStatus.CREATED);
 	}
 	
@@ -183,21 +195,27 @@ public class CarReservationController {
 		System.out.println("Uslo u cancel car reservation");
 		RegularUser user = (RegularUser) this.userDetailsService
 				.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
-		for (CarReservation cr : user.getCarReservations()) {
-			if (cr.getId()==resId) {
-				user.getCarReservations().remove(cr);
-			}
-		}
+		int brojac=-1;
+		System.out.println("A");
+		/*
+		 * for (CarReservation cr : user.getCarReservations()) { brojac++; if
+		 * (cr.getId()==resId) { user.getCarReservations().remove(brojac); } }
+		 */
+		System.out.println("B");
 		userDetailsService.saveUser(user);
 		CarReservation carRes = carReservationService.getOne(resId);
 		Car car = carRes.getCar();
-		for (CarReservation cr : car.getReservations()) {
-			if (cr.getId()==resId) {
-				car.getReservations().remove(cr);
-			}
-		}
+		int brojac2=-1;
+		  for (CarReservation cr : car.getReservations())
+		  { 
+			  brojac2++;
+			  if (cr.getId()==resId) {
+		  car.getReservations().remove(brojac2); } }
+		  System.out.println("C");
 		carService.save(car);
+		System.out.println("D");
 		carReservationService.delete(resId);
+		System.out.println("F");
 		
 	
 		return new ResponseEntity<>(carRes, HttpStatus.OK);

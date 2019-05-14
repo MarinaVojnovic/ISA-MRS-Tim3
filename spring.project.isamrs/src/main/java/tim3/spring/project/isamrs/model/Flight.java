@@ -30,6 +30,8 @@ public class Flight {
 	@GeneratedValue
 	private Long id;
 	
+	
+	
 	@Column(name="score")
 	private Double score;
 	

@@ -36,6 +36,10 @@ public class FlightServiceImpl implements FlightService{
 	}
 
 	@Override
+	public Flight save(Flight flight) {
+		return flightRepository.save(flight);
+	}
+	@Override
 	public Flight update(Flight flight) {
 		// TODO Auto-generated method stub
 		return null;

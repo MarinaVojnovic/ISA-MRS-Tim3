@@ -23,6 +23,7 @@ var urlRootFindSuitCars = "http://localhost:8080/findSuitCars";
 var urlRootGetAllCars = "http://localhost:8080/getAllCars";
 var urlRootCreateCarRes = "http://localhost:8080/createCarReservation";
 var urlRootCancelCarRes = "http://localhost:8080/cancelCarReservation";
+var urlRootCancelFlightRes="http://localhost:8080/cancelFlightReservation";
 var urlRootGetMyResCars = "http://localhost:8080/api/getMyResCars";
 var urlRootFindRentacarFromRes = "http://localhost:8080/findRentacarFromRes";
 var urlRootFindCarFromRes = "http://localhost:8080/findCarFromRes";
@@ -36,6 +37,11 @@ var urlRoot16 = "http://localhost:8080/api/makeReservation"
 var urlRootSendMail = "http://localhost:8080/sendEmail";
 var urlRootSearchRoomToReserve = "http://localhost:8080/searchRoomToReserve"
 var urlRootGetMyResFlights="http://localhost:8080/api/getMyResFlights";
+var urlRootFindAirlineFromRes="http://localhost:8080/findAirlineFromRes";
+var urlRootFindFlightFromRes="http://localhost:8080/findFlightFromRes";
+
+var urlRootGradeFlight="http://localhost:8080/gradeFlight";
+var urlRootGradeAirline="http://localhost:8080/gradeAirline";
 var TOKEN_KEY = 'jwtToken';
 
 getLogged();
@@ -51,6 +57,140 @@ $(document).on('click', '#logoutClicked', function(e) {
 // return '';
 // };
 
+function saveGradedAirline(){
+	console.log('save graded airline called');
+	
+	sessionStorage.removeItem("choosenSeats");
+	var airlineId = document.getElementById("airlineId").value;
+	var flightId = document.getElementById("flightId").value
+	var airlineGrade = document.getElementById("airlineGrade").value;
+	var flightGrade = document.getElementById("flightGrade").value;
+
+	console.log(airlineId);
+	console.log(flightId);
+	console.log(airlineGrade);
+	console.log(flightGrade);
+
+	if (airlineGrade != "") {
+		console.log('airline grade nije 0');
+		if (airlineGrade < 1 || airlineGrade > 5) {
+			alert('Grade must be between 1 and 5');
+		} else {
+			$.ajax({
+				type : 'GET',
+				url : urlRootGradeAirline + "/" + airlineId + "/"
+						+ airlineGrade,
+				headers : createAuthorizationTokenHeader(TOKEN_KEY),
+				dataType : "json",
+				success : function(data) {
+					alert('airline successfully graded');
+				},
+				error : function(jqXHR, textStatus, errorThrown) {
+					alert(jqXHR.status);
+					alert(textStatus);
+					alert(errorThrown);
+				}
+
+			})
+		}
+	}
+
+	if (flightGrade != "") {
+		console.log('flight grade nije 0');
+		if (flightGrade < 1 || flightGrade > 5) {
+			alert('Grade must be between 1 and 5');
+		} else {
+			$.ajax({
+				type : 'GET',
+				url : urlRootGradeFlight + "/" + flightId + "/" + flightGrade,
+				headers : createAuthorizationTokenHeader(TOKEN_KEY),
+				dataType : "json",
+				success : function(data) {
+					alert('flight successfully graded');
+				},
+				error : function(jqXHR, textStatus, errorThrown) {
+					alert(jqXHR.status);
+					alert(textStatus);
+					alert(errorThrown);
+				}
+
+			})
+		}
+	}
+
+	
+}
+function fillGradeFlightForm(id){
+	console.log('fill grade flight form called');
+	sessionStorage.removeItem("choosenSeats");
+	var rentacarName;
+	var carName;
+	$.ajax({
+		type : 'GET',
+		url : urlRootFindAirlineFromRes + "/" + id,
+		headers : createAuthorizationTokenHeader(TOKEN_KEY),
+		dataType : "json",
+		success : function(data) {
+
+			console.log(data.name);
+			airlineName = data.name;
+			$("#airlineGradeName").append(
+					'<h2>Airline ' + airlineName + '</h2>');
+			document.getElementById("airlineId").value = data.id;
+
+		},
+		error : function(jqXHR, textStatus, errorThrown) {
+			alert(jqXHR.status);
+			alert(textStatus);
+			alert(errorThrown);
+		}
+
+	})
+
+	$.ajax({
+		type : 'GET',
+		url : urlRootFindFlightFromRes + "/" + id,
+		headers : createAuthorizationTokenHeader(TOKEN_KEY),
+		dataType : "json",
+		success : function(data) {
+			console.log(data.name);
+			flightName = data.name;
+			$("#flightGradeName").append('<h2> Flight ' + '</h2>');
+
+			document.getElementById("flightId").value = data.id;
+
+		},
+		error : function(jqXHR, textStatus, errorThrown) {
+			alert(jqXHR.status);
+			alert(textStatus);
+			alert(errorThrown);
+		}
+
+	})
+}
+function cancelFlightReservation(id){
+	console.log('cancel flight reservation called');
+	console.log(id);
+	sessionStorage.removeItem("choosenSeats");
+	$.ajax({
+		type : 'DELETE',
+		url : urlRootCancelFlightRes + "/" + id,
+		dataType : "json",
+		headers : createAuthorizationTokenHeader(TOKEN_KEY),
+		success : function(data) {
+
+			alert('Reservation of flight successfully deleted.');
+			
+
+			showMyReservationsFlights();
+
+		},
+		error : function(XMLHttpRequest) {
+			alert("Error while deleting car");
+		}
+
+	})
+}
 function showMyReservationsHotels(){
 	console.log('show my reservation hotels called');
 }
@@ -124,7 +264,7 @@ function showMyReservationsFlights(){
 				cell6.innerHTML = "Seat number";
 			} else {
 				
-				$("#tableOfFlightsRes").append("<h3>No rent-a-car reservations.</h3>")
+				$("#tableOfFlightsRes").append("<h3>No flight reservations.</h3>")
 			}
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
@@ -2506,12 +2646,23 @@ $(document).on('click', '.gradeCarResButton', function(e) {
 	fillGradeRentacarForm(this.id);
 
 });
+
+$(document).on('click', '.gradeFlightResButton', function(e) {
+	console.log('grade flight res button clicked');
+	e.preventDefault();
+	sessionStorage.removeItem("choosenSeats");
+	openCity(e, 'gradeAirline');
+	fillGradeFlightForm(this.id);
+
+});
 $(document).on('click', '.cancelCarResButton', function(e) {
 	console.log('cancel car reservation button clicked');
 	e.preventDefault();
 	sessionStorage.removeItem("choosenSeats");
 	cancelCarReservation(this.id);
 });
+
+
 
 $(document).on('click', '#submitRentacarGrade', function(e) {
 	console.log('submit rentacar grade clicked');
@@ -2520,11 +2671,27 @@ $(document).on('click', '#submitRentacarGrade', function(e) {
 	saveGradedRentacar();
 });
 
+$(document).on('click', '#submitAirlineGrade', function(e) {
+	console.log('submit airline grade clicked');
+	e.preventDefault();
+	sessionStorage.removeItem("choosenSeats");
+	saveGradedAirline();
+});
+
 $(document).on('click', '#fastReservationButton', function(e) {
 	console.log('fast reservation button clicked');
 	e.preventDefault();
 	sessionStorage.removeItem("choosenSeats");
 	showCarsForFastRes();
+});
+
+
+$(document).on('click', '.cancelFlightResButton', function(e) {
+	console.log('CANCEL FLIGHT RES BUTTON CLICKED');
+	e.preventDefault();
+	sessionStorage.removeItem("choosenSeats");
+	cancelFlightReservation(this.id);
+	
 });
 
 $(document).on('click', '#offerRentacarsButton', function(e) {

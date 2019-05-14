@@ -23,6 +23,7 @@ import tim3.spring.project.isamrs.dto.AirlineDTO;
 import tim3.spring.project.isamrs.model.Airline;
 import tim3.spring.project.isamrs.model.AirlineAdmin;
 import tim3.spring.project.isamrs.model.AirlineWorkingDestinations;
+import tim3.spring.project.isamrs.model.Rentacar;
 import tim3.spring.project.isamrs.model.User;
 import tim3.spring.project.isamrs.service.AirlineService;
 import tim3.spring.project.isamrs.service.AirlineWorkingService;
@@ -40,6 +41,22 @@ public class AirlineController {
 	@Autowired
 	private CustomUserDetailsService userDetailsService;
 
+	@GetMapping(value = "/gradeAirline/{id}/{grade}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_USER')")
+	public ResponseEntity<Airline> gradeAirline(@PathVariable Long id, @PathVariable Integer grade) {
+		System.out.println("Uslo u grade airline     "+id);
+		Airline airline = airlineService.getOne(id);
+		System.out.println(airline.getName());
+		System.out.println("A");
+		airline.setScore(airline.getScore()+grade);
+		System.out.println("B");
+		airline.setGradeNumber(airline.getGradeNumber()+1);
+		System.out.println("C");
+		airlineService.save(airline);
+		System.out.println("D");
+		return new ResponseEntity<>(airline, HttpStatus.CREATED);
+	}
+	
 	@GetMapping(value = "/findConcreteAirline/{id}")
 	public ResponseEntity<Airline> findConcreteAirline(@PathVariable String id) {
 		Airline retVal = airlineService.getOne(Long.parseLong(id));

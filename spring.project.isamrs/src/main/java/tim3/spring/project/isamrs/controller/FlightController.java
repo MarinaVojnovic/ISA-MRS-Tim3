@@ -26,6 +26,7 @@ import tim3.spring.project.isamrs.dto.FoundFlightsDTO;
 import tim3.spring.project.isamrs.dto.SeatsDTO;
 import tim3.spring.project.isamrs.model.Airline;
 import tim3.spring.project.isamrs.model.AirlineAdmin;
+import tim3.spring.project.isamrs.model.Car;
 import tim3.spring.project.isamrs.model.Flight;
 import tim3.spring.project.isamrs.model.FlightClass;
 import tim3.spring.project.isamrs.model.FlightStops;
@@ -53,6 +54,17 @@ public class FlightController {
 	
 	@Autowired
 	private SeatService seatService;
+	
+	@GetMapping(value = "/gradeFlight/{id}/{grade}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_USER')")
+	public ResponseEntity<Flight> gradeFlight(@PathVariable Long id, @PathVariable Integer grade) {
+		System.out.println("Uslo u grade car");
+		Flight flight = flightService.getOne(id);
+		flight.setScore(flight.getScore() + grade);
+		flight.setNumber(flight.getNumber() + 1);
+		flightService.save(flight);
+		return new ResponseEntity<>(flight, HttpStatus.CREATED);
+	}
 	
 	@GetMapping(value = "/findConcreteFlights/{airlineId}")
 	public ResponseEntity<Set<Flight>> findConcreteFlights(@PathVariable String airlineId) {

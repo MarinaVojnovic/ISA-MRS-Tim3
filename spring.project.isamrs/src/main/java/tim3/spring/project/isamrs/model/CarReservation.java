@@ -19,6 +19,14 @@ public class CarReservation {
 	@GeneratedValue
 	private Long id;
 	
+
+	/*
+	 * public FlightReservation getResFlight() { return resFlight; }
+	 * 
+	 * public void setResFlight(FlightReservation resFlight) { this.resFlight =
+	 * resFlight; }
+	 */
+
 	@Column(name = "price")
 	private Double price;
 	
@@ -33,6 +41,10 @@ public class CarReservation {
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	RegularUser regularUser;
+	
+	/*
+	 * @ManyToOne(fetch=FetchType.EAGER) FlightReservation resFlight;
+	 */
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	Car car;
