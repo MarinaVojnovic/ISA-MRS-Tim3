@@ -357,6 +357,9 @@ function showCarsForFastRes() {
 	var startDate = document.getElementById("mainStartDate3").value;
 	var endDate = document.getElementById("mainEndDate3").value;
 
+	if (endDate==""){
+		endDate=-1;
+	}
 	console.log('RENTACAAAAR ID' + rentacarId);
 	$
 			.ajax({

@@ -51,13 +51,18 @@ public class FlightReservationController {
 		System.out.println("A");
 		int brojac=-1;
 		
-		  for (FlightReservation fr : user.getFlightReservations()) { brojac++; if
-		  (fr.getId()==resId) { user.getCarReservations().remove(brojac); } }
-		 
+		/*
+		 * for (FlightReservation fr : user.getFlightReservations()) { if
+		 * (fr.getId()==resId) { user.getCarReservations().remove(brojac); } }
+		 */
 		System.out.println("B");
 		userDetailsService.saveUser(user);
 		System.out.println("C");
 		FlightReservation flightRes = flightReservationService.getOne(resId);
+		
+		System.out.println("SEAAAAAAAT NUMBEEEEEEEEEER"+flightRes.getSeat().getId());
+		flightRes.getSeat().setTaken(false);
+		 
 		System.out.println("D");
 		Flight flight = flightRes.getFlightReservation();
 		System.out.println("E");
