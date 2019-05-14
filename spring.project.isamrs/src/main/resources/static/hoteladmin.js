@@ -14,6 +14,7 @@ var urlRoot13 = "http://localhost:8080/deleteRoomFastReservation";
 var urlRoot14 = "http://localhost:8080/createRoomFastReservation";
 var urlGetFirstTime = "http://localhost:8080/api/isFirstTime";
 var urlChangePassword = "http://localhost:8080/api/changePasswordFirstTime";
+var urlRootFindHotelAmount = "http://localhost:8080/findHotelAmount";
 
 var TOKEN_KEY = 'jwtToken';
 
@@ -60,7 +61,7 @@ function createChart(canvasId, labelNames, data) {
 		data : {
 			labels : labelNames,
 			datasets : [ {
-				label : 'one attendance',
+				label : 'attendance',
 				data : data,
 				backgroundColor : Array(data.length).fill(' #0099ff'),
 				borderColor : Array(data.length).fill('black'),
@@ -963,15 +964,18 @@ $(document).on('click', '.deleteRoomButton', function(e) {
 	deleteRoom(this.id);
 });
 
-$(document).on('click', '#reportHotelButton', function(e) {
-	fillDatas();
-	createChart("myChart1", [ 'Red', 'Blue', 'Yellow', 'Green',
-		'Purple', 'Orange' ], [ 12, 19, 3, 5, 2, 3 ]);
-	createChart("myChart2", [ 'Red', 'Blue', 'Yellow', 'Green',
-		'Purple', 'Orange' ], [ 12, 19, 3, 5, 2, 3 ]);
-	createChart("myChart3", [ 'Red', 'Blue', 'Yellow', 'Green',
-		'Purple', 'Orange' ], [ 12, 19, 3, 5, 2, 3 ]);
-});
+$(document).on(
+		'click',
+		'#reportHotelButton',
+		function(e) {
+			fillDatas();
+			createChart("myChart1", [ 'Red', 'Blue', 'Yellow', 'Green',
+					'Purple', 'Orange' ], [ 12, 19, 3, 5, 2, 3 ]);
+			createChart("myChart2", [ 'Red', 'Blue', 'Yellow', 'Green',
+					'Purple', 'Orange' ], [ 12, 19, 3, 5, 2, 3 ]);
+			createChart("myChart3", [ 'Red', 'Blue', 'Yellow', 'Green',
+					'Purple', 'Orange' ], [ 12, 19, 3, 5, 2, 3 ]);
+		});
 
 $(document).on('click', '#addHotelCustomerServiceButton', function(e) {
 	// e.preventDefault();
@@ -1009,8 +1013,31 @@ $(document).on('submit', '#editRoomForm', function(e) {
 
 $(document).on('click', '#findAmountHotel', function(e) {
 	e.preventDefault();
+	var startDate = document.getElementById("amountSearchStartDate").value;
+	var endDate = document.getElementById("amountSearchEndDate").value;
+	if (startDate == "") {
+		startDate = "0000-00-00"
+	}
+	if (endDate == "") {
+		endDate = "0000-00-00"
+	}
+	var finalPath = urlRootFindHotelAmount + "/" + startDate + "/" + endDate;
+	// popuni za report 4
+	$.ajax({
+		type : 'GET',
+		url : finalPath,
+		headers : createAuthorizationTokenHeader(TOKEN_KEY),
+		dataType : "json",
+		success : function(data) {
+			$("#amountHotelValue").html(data);
+		},
+		error : function(jqXHR, textStatus, errorThrown) {
+			alert(jqXHR.status);
+			alert(textStatus);
+			alert(errorThrown);
+		}
 
-	//popuni za report 4
+	})
 
 });
 

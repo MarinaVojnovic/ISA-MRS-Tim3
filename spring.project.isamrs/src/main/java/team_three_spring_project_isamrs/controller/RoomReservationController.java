@@ -3,6 +3,8 @@ package team_three_spring_project_isamrs.controller;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import team_three_spring_project_isamrs.dto.MessageDTO;
 import team_three_spring_project_isamrs.dto.RoomReservationDTO;
+import team_three_spring_project_isamrs.model.HotelAdmin;
 import team_three_spring_project_isamrs.model.HotelCustomerService;
 import team_three_spring_project_isamrs.model.RegularUser;
 import team_three_spring_project_isamrs.model.Room;
@@ -97,7 +100,7 @@ public class RoomReservationController {
 				numOfPass += room.getNumberPeople();
 			}
 		}
-		retVal.setPrice((price / 100) * (100 - roomReservationDTO.getDiscount()));
+		retVal.setPrice((price / 100) * (100 - retVal.getDiscount()));
 		retVal.setNumOfPass(numOfPass);
 		roomReservationService.create(retVal);
 		return new ResponseEntity<>(new MessageDTO("Succesfully made reservation!", "Error"), HttpStatus.CREATED);
@@ -166,5 +169,49 @@ public class RoomReservationController {
 		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
+	}
+
+	@GetMapping(value = "/findHotelAmount/{startDate}/{endDate}")
+	@PreAuthorize("hasRole('ROLE_HOTEL_ADMIN')")
+	public ResponseEntity<Integer> findHotelAmount(@PathVariable String startDate, @PathVariable String endDate)
+			throws ParseException {
+		HotelAdmin ha = (HotelAdmin) this.userDetailsService
+				.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+		List<RoomReservation> allReservations = roomReservationService.findByHotel(ha.getHotel());
+		List<RoomReservation> retVal = new ArrayList<>();
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+		Date startDate1 = new Date();
+		Date endDate1 = new Date();
+		Date startDate2 = new Date();
+		Date endDate2 = new Date();
+		for (RoomReservation roomReservation : allReservations) {
+			startDate1 = df.parse(roomReservation.getStartDate().substring(0, 10));
+			endDate1 = df.parse(roomReservation.getEndDate().substring(0, 10));
+			if (!startDate.equals("0000-00-00") && !endDate.equals("0000-00-00")) {
+				startDate2 = df.parse(startDate);
+				endDate2 = df.parse(endDate);
+				if (startDate2.getTime() >= endDate2.getTime()
+						|| (startDate2.getTime() < startDate1.getTime() && endDate2.getTime() < startDate1.getTime())
+						|| (startDate2.getTime() > endDate1.getTime() && endDate2.getTime() > endDate1.getTime())) {
+					continue;
+				}
+			} else if (startDate.equals("0000-00-00") && !endDate.equals("0000-00-00")) {
+				endDate2 = df.parse(endDate);
+				if (endDate2.getTime() < startDate1.getTime()) {
+					continue;
+				}
+			} else if (!startDate.equals("0000-00-00") && endDate.equals("0000-00-00")) {
+				startDate2 = df.parse(startDate);
+				if (endDate1.getTime() < startDate2.getTime()) {
+					continue;
+				}
+			}
+			retVal.add(roomReservation);
+		}
+		int value = 0;
+		for (RoomReservation roomReservation : retVal) {
+			value += roomReservation.getPrice();
+		}
+		return new ResponseEntity<>(value, HttpStatus.OK);
 	}
 }
