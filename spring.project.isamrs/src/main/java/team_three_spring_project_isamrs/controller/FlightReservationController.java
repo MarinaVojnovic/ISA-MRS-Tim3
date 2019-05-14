@@ -1,4 +1,4 @@
-package tim3.spring.project.isamrs.controller;
+package team_three_spring_project_isamrs.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,19 +11,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import tim3.spring.project.isamrs.model.Airline;
-import tim3.spring.project.isamrs.model.Car;
-import tim3.spring.project.isamrs.model.CarReservation;
-import tim3.spring.project.isamrs.model.Flight;
-import tim3.spring.project.isamrs.model.FlightReservation;
-import tim3.spring.project.isamrs.model.RegularUser;
-import tim3.spring.project.isamrs.model.Rentacar;
-import tim3.spring.project.isamrs.service.CarReservationService;
-import tim3.spring.project.isamrs.service.CarService;
-import tim3.spring.project.isamrs.service.FlightReservationService;
-import tim3.spring.project.isamrs.service.FlightService;
-import tim3.spring.project.isamrs.service.RentacarService;
-import tim3.spring.project.isamrs.service.impl.CustomUserDetailsService;
+import team_three_spring_project_isamrs.model.Airline;
+import team_three_spring_project_isamrs.model.Flight;
+import team_three_spring_project_isamrs.model.FlightReservation;
+import team_three_spring_project_isamrs.model.RegularUser;
+import team_three_spring_project_isamrs.service.FlightReservationService;
+import team_three_spring_project_isamrs.service.FlightService;
+import team_three_spring_project_isamrs.service.impl.CustomUserDetailsService;
 @RestController
 public class FlightReservationController {
 	@Autowired

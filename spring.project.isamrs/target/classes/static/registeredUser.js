@@ -280,7 +280,7 @@ function showMyReservationsFlights() {
 				cell6.innerHTML = "Seat number";
 			} else {
 				
-				$("#tableOfFlightsRes").append("<h3>No flight reservations.</h3>")
+				$("#tableOfFlightsRes").html("<h3>No flight reservations.</h3>")
 			}
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
@@ -684,7 +684,7 @@ function showMyReservationsCars() {
 						cell6.innerHTML = "Rentacar name";
 					} else {
 
-						$("#tableOfRentacarsRes").append(
+						$("#tableOfRentacarsRes").html(
 								"<h3>No rent-a-car reservations.</h3>")
 					}
 				},

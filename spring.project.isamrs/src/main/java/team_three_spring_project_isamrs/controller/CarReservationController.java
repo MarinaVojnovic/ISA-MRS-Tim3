@@ -1,19 +1,5 @@
 package team_three_spring_project_isamrs.controller;
 
-import team_three_spring_project_isamrs.dto.CarReservationDTO;
-import team_three_spring_project_isamrs.dto.MessageDTO;
-import team_three_spring_project_isamrs.model.Car;
-import team_three_spring_project_isamrs.model.CarReservation;
-import team_three_spring_project_isamrs.model.RegularUser;
-import team_three_spring_project_isamrs.model.Rentacar;
-import team_three_spring_project_isamrs.service.CarReservationService;
-import team_three_spring_project_isamrs.service.CarService;
-import team_three_spring_project_isamrs.service.RentacarService;
-import team_three_spring_project_isamrs.service.impl.CustomUserDetailsService;
-
-
-
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -29,6 +15,18 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import team_three_spring_project_isamrs.dto.CarReservationDTO;
+import team_three_spring_project_isamrs.dto.MessageDTO;
+import team_three_spring_project_isamrs.model.Car;
+import team_three_spring_project_isamrs.model.CarReservation;
+import team_three_spring_project_isamrs.model.FlightReservation;
+import team_three_spring_project_isamrs.model.RegularUser;
+import team_three_spring_project_isamrs.model.Rentacar;
+import team_three_spring_project_isamrs.service.CarReservationService;
+import team_three_spring_project_isamrs.service.CarService;
+import team_three_spring_project_isamrs.service.RentacarService;
+import team_three_spring_project_isamrs.service.impl.CustomUserDetailsService;
 
 @RestController
 public class CarReservationController {
