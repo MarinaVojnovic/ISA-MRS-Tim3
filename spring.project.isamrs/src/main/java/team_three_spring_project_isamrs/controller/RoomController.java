@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import team_three_spring_project_isamrs.dto.MessageDTO;
 import team_three_spring_project_isamrs.dto.RoomDTO;
-import team_three_spring_project_isamrs.model.Flight;
 import team_three_spring_project_isamrs.model.Hotel;
 import team_three_spring_project_isamrs.model.HotelAdmin;
 import team_three_spring_project_isamrs.model.Room;
@@ -225,7 +224,6 @@ public class RoomController {
 	}
 
 	@GetMapping(value = "/searchRoomUnregistered/{numberPeople}/{lowestPrice}/{highestPrice}")
-	@PreAuthorize("hasRole('ROLE_HOTEL_ADMIN')")
 	public ResponseEntity<List<Room>> searchRoomUnregistered(@PathVariable Integer numberPeople,
 			@PathVariable Double lowestPrice, @PathVariable Double highestPrice) {
 		List<Room> allRooms = roomService.getAll();
@@ -244,31 +242,5 @@ public class RoomController {
 		}
 		return new ResponseEntity<>(retVal, HttpStatus.OK);
 	}
-	
-	/*
-	@GetMapping(value = "/findHotelAmount/{startDate}/{endDate}")
-	public ResponseEntity<List<RoomReservation>> searchFlightUnregistered(@PathVariable String startDate,
-			@PathVariable String endDate) {
-		HotelAdmin ha = (HotelAdmin) this.userDetailsService
-				.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
-		List<RoomReservation> allReservations = roomReservationService.findByHotel(ha.getHotel());
-		List<RoomReservation> retVal = new ArrayList<>();
-		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-		Date startDate1 = new Date();
-		Date endDate1 = new Date();
-		Date startDate2 = new Date();
-		Date endDate2 = new Date();
-		for (RoomReservation roomReservation : allReservations) {
-			startDate1 = df.parse(roomReservation.getStartDate().substring(0, 10));
-			endDate1 = df.parse(roomReservation.getEndDate().substring(0, 10));
-			if (startDate.equals("0000-00-00") && endDate.equals("0000-00-00")) {
-				continue;
-			}
-			if (!endDate.equals("0000-00-00") && !endDate.equals(endDatee)) {
-				continue;
-			}
-			retVal.add(roomReservation);
-		}
-		return new ResponseEntity<>(retVal, HttpStatus.OK);
-	}*/
+
 }
