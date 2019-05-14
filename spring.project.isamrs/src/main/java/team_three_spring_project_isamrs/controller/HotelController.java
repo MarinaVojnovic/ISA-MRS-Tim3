@@ -1,5 +1,6 @@
 package team_three_spring_project_isamrs.controller;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -105,6 +106,23 @@ public class HotelController {
 		List<Hotel> hotels = hotelService.findByName(field);
 		if (hotels.isEmpty()) {
 			hotels = hotelService.findByAddress(field);
+		}
+
+		return new ResponseEntity<>(hotels, HttpStatus.OK);
+	}
+
+	@GetMapping(value = "/findHotelByDestination/{address}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<Hotel>> findHotelsByDestination(@PathVariable String address) {
+		List<Hotel> allHotels = hotelService.getAll();
+		List<Hotel> hotels = new ArrayList<Hotel>();
+
+		for (Hotel h : allHotels) {
+			if (h.getCity() != null) {
+				if (h.getCity().equalsIgnoreCase(address)) {
+					hotels.add(h);
+				}
+			}
+
 		}
 
 		return new ResponseEntity<>(hotels, HttpStatus.OK);
