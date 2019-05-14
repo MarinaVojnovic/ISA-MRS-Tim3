@@ -17,7 +17,9 @@ var urlRootFindSuitCarsFast =  "http://localhost:8080/findSuitCarsFast";
 
 var TOKEN_KEY = 'jwtToken';
 
-findRentacar();
+$(document).on('click', '#editRentacarButton', function(e) {
+	findRentacar();
+});
 
 window.onload = function(e) {
 	console.log('window loades');
@@ -546,15 +548,15 @@ function showCars(type) {
 						cell3.innerHTML = response[counter].price;
 						cell4.innerHTML = response[counter].year;
 						if (type == "forDelete") {
-							cell9.innerHTML = '<button style="background: #ff1a75; color: white"id=\"'
+							cell9.innerHTML = '<button style="background: #cc0033; color: white"id=\"'
 									+ response[counter].id
 									+ '\" class=\"deleteCarButton\" class="btn btn-primary">Delete</button>';
 						} else if (type == "forEdit") {
-							cell9.innerHTML = '<button style="background: #ff1a75; color: white" id=\"'
+							cell9.innerHTML = '<button style="background: #cc0033; color: white" id=\"'
 									+ response[counter].id
 									+ '\" class=\"editCarButton\" class="btn btn-primary" >Edit</button>';
 						} else if (type=="forFastRes"){
-							cell9.innerHTML = '<button style="background: #ff1a75; color: white" id=\"'
+							cell9.innerHTML = '<button style="background: #cc0033; color: white" id=\"'
 								+ response[counter].id
 								+ '\" class=\"fastResCarButton\" class="btn btn-primary" >Choose</button>';
 						}
@@ -648,11 +650,11 @@ function showBranches(type) {
 						cell3.innerHTML = response[counter].address;
 						
 						if (type == "branchesForDelete") {
-							cell4.innerHTML = '<button style="background: #ff1a75; color: white"id=\"'
+							cell4.innerHTML = '<button style="background: #cc0033; color: white"id=\"'
 									+ response[counter].id
 									+ '\" class=\"deleteBranchButton\" class="btn btn-primary">Delete</button>';
 						} else if (type == "branchesForEdit") {
-							cell4.innerHTML = '<button style="background: #ff1a75; color: white" id=\"'
+							cell4.innerHTML = '<button style="background: #cc0033; color: white" id=\"'
 									+ response[counter].id
 									+ '\" class=\"editBranchButton\" class="btn btn-primary" >Edit</button>';
 						}
@@ -946,11 +948,8 @@ $(document).on('click', '.fastResCarButton', function(e) {
 $(document).on('click', '#submitFastFormular', function(e) {
 	console.log('button submit fast formular clicked');
 	saveSubmitFast(document.getElementById("carId").value);
-	// openCity(e, 'fastResFormular');
-	
-	
-
 });
+
 function passwordDTOJson(password1) {
 	return JSON.stringify({
 		"password" : password1
