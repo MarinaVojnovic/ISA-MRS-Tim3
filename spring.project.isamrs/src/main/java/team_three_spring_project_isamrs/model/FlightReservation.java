@@ -1,5 +1,10 @@
 package team_three_spring_project_isamrs.model;
 
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -7,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -19,6 +25,19 @@ public class FlightReservation {
 	@GeneratedValue
 	private Long id;
 
+	
+	/*
+	 * @OneToMany(mappedBy = "resFlight", fetch = FetchType.LAZY, cascade =
+	 * CascadeType.REFRESH) private Set<CarReservation> carReservations = new
+	 * HashSet<>();
+	 */
+	
+	/*
+	 * public Set<CarReservation> getCarReservations() { return carReservations; }
+	 * 
+	 * public void setCarReservations(Set<CarReservation> carReservations) {
+	 * this.carReservations = carReservations; }
+	 */
 	@Column(name = "price")
 	private Double price;
 

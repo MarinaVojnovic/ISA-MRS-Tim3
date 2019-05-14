@@ -1,5 +1,9 @@
 package team_three_spring_project_isamrs.model;
 
+import team_three_spring_project_isamrs.dto.CarReservationDTO;
+
+
+
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -10,8 +14,6 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import team_three_spring_project_isamrs.dto.CarReservationDTO;
-
 @Entity
 @Table(catalog = "dbtim3", name = "car_reservation")
 public class CarReservation {
@@ -19,6 +21,14 @@ public class CarReservation {
 	@GeneratedValue
 	private Long id;
 	
+
+	/*
+	 * public FlightReservation getResFlight() { return resFlight; }
+	 * 
+	 * public void setResFlight(FlightReservation resFlight) { this.resFlight =
+	 * resFlight; }
+	 */
+
 	@Column(name = "price")
 	private Double price;
 	
@@ -33,6 +43,10 @@ public class CarReservation {
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	RegularUser regularUser;
+	
+	/*
+	 * @ManyToOne(fetch=FetchType.EAGER) FlightReservation resFlight;
+	 */
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	Car car;

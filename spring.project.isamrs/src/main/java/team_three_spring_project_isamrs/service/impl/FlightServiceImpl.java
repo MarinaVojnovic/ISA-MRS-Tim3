@@ -32,6 +32,11 @@ public class FlightServiceImpl implements FlightService {
 	}
 
 	@Override
+	public Flight save(Flight flight) {
+		return flightRepository.save(flight);
+	}
+
+	@Override
 	public void delete(long id) {
 
 	}
