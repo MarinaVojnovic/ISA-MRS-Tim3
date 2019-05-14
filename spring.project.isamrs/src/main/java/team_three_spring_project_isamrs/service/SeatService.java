@@ -14,6 +14,7 @@ public interface SeatService {
 	public Seat update(Seat seat);
 
 	public List<Seat> getAll();
+	public List<Seat> findByQuickBooking(Boolean b);
 
 	public void save(Seat s);
 	

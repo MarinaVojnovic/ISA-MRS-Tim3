@@ -12,5 +12,6 @@ import team_three_spring_project_isamrs.model.Seat;
 @Repository
 public interface SeatRepository extends JpaRepository<Seat, Long>{
 	public List<Seat> findByFlightAndFc(Flight fs,FlightClass fc);
+	public List<Seat> findByQuickBooking(Boolean b);
 
 }

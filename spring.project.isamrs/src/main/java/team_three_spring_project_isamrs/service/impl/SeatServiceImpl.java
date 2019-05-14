@@ -48,4 +48,9 @@ public class SeatServiceImpl implements SeatService {
 		
 	}
 
+	@Override
+	public List<Seat> findByQuickBooking(Boolean b) {
+		return this.seatRepository.findByQuickBooking(b);
+	}
+
 }
