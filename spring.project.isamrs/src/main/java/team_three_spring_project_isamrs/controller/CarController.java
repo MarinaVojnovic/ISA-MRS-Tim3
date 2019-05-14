@@ -2,6 +2,7 @@ package team_three_spring_project_isamrs.controller;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -129,6 +130,15 @@ public class CarController {
 			@PathVariable Double toPrice)
 
 	{
+		System.out.println("Rentacar id: "+rentacarId);
+		System.out.println("Start date: "+startDate);
+		System.out.println("End date: "+endDate);
+		System.out.println("Start city: "+startCity);
+		System.out.println("End city: "+endCity);
+		System.out.println("Car type: "+carType);
+		System.out.println("Passengers: "+passengers);
+		System.out.println("From price: "+fromPrice);
+		System.out.println("To price"+toPrice);
 		List<Car> theFinalList = new ArrayList<>();
 		List<Car> finalList = new ArrayList<>();
 		List<Car> lista1 = new ArrayList<>();
@@ -151,6 +161,8 @@ public class CarController {
 				mesto2 = true;
 			}
 		}
+		
+		System.out.println("\n\nMesto 1 "+mesto1+" mesto 2 "+mesto2);
 
 		if (mesto1 && mesto2) {
 			for (Car c : cars) {
@@ -158,6 +170,7 @@ public class CarController {
 					lista1.add(c);
 				}
 			}
+			System.out.println("Lista 1 size (da je okej car type i broj sedista) : \n"+lista1.size());
 
 			if (fromPrice != -1) {
 
@@ -171,7 +184,7 @@ public class CarController {
 					lista2.add(c);
 				}
 			}
-
+			System.out.println("Lista 2 size (da je okej cena) : \n"+lista2.size());
 			if (toPrice != -1) {
 				for (Car c : lista2) {
 					if (c.getPrice() <= toPrice) {
@@ -210,14 +223,24 @@ public class CarController {
 			}
 		}
 
-		int brojac = -1;
+		System.out.println("Final list da je okej datum: "+theFinalList.size());
+		for (Car car : theFinalList) {
+			System.out.println(car.getName());
+		}
+		
 		for (int i = 0; i < theFinalList.size(); i++) {
-			brojac++;
-			if (theFinalList.get(i).getOnFastRes()) {
-				theFinalList.remove(brojac);
+			
+			System.out.println(theFinalList.get(i).getOnFastRes());
+			if (theFinalList.get(i).getOnFastRes()==true) {
+				System.out.println("USLO U REMOVE");
+				theFinalList.remove(i);
 			}
 		}
-
+		System.out.println("Final list da su izbaceni na fast: "+theFinalList.size());
+		System.out.println("Final list da je okej datum: "+theFinalList.size());
+		for (Car car : theFinalList) {
+			System.out.println(car.getName());
+		}
 		return new ResponseEntity<>(theFinalList, HttpStatus.OK);
 
 	}
@@ -228,36 +251,53 @@ public class CarController {
 	public ResponseEntity<List<Car>> findSuitCarsFast(@PathVariable String rentacarId, @PathVariable String startDate,
 			@PathVariable String endDate) {
 
+		System.out.println("Find suitable cars called");
+		System.out.println("Rentacar id: "+rentacarId);
+		System.out.println("Start date: "+startDate);
+		System.out.println("End date: "+endDate);
+		
 		List<Car> theFinalList = new ArrayList<>();
-
+		Date endDatee=null;
 		Date startDatee = new Date(Integer.parseInt(startDate.split("\\-")[0]) - 1900,
 				Integer.parseInt(startDate.split("\\-")[1]) - 1, Integer.parseInt(startDate.split("\\-")[2]));
-		Date endDatee = new Date(Integer.parseInt(endDate.split("\\-")[0]) - 1900,
-				Integer.parseInt(endDate.split("\\-")[1]) - 1, Integer.parseInt(endDate.split("\\-")[2]));
+		if (!endDate.equals("-1")) {
+			endDatee = new Date(Integer.parseInt(endDate.split("\\-")[0]) - 1900,
+					Integer.parseInt(endDate.split("\\-")[1]) - 1, Integer.parseInt(endDate.split("\\-")[2]));
 
+		}
+		
 		Rentacar rentacar = rentacarService.getOne(Long.parseLong(rentacarId));
-		List<Car> cars = carService.findByRentacar(rentacar);
+		ArrayList<Car> cars = (ArrayList) carService.findByRentacar(rentacar);
+		System.out.println("Cars size: "+cars.size());
 		for (Car car : cars) {
 			Boolean dozvola = true;
 			for (CarReservation res : car.getReservations()) {
+				
 				if (!endDate.equals("-1")) {
+					System.out.println("Uslo u prvi if");
 					if (startDatee.compareTo(res.getStartDate()) < 0 && endDatee.compareTo(res.getEndDate()) < 0
 							&& endDatee.compareTo(res.getStartDate()) > 0) {
+						System.out.println("a");
 						dozvola = false;
 					} else if (startDatee.compareTo(res.getStartDate()) <= 0
 							&& endDatee.compareTo(res.getEndDate()) >= 0) {
+						System.out.println("b");
 						dozvola = false;
 					} else if (startDatee.compareTo(res.getStartDate()) >= 0
 							&& endDatee.compareTo(res.getEndDate()) >= 0
 							&& startDatee.compareTo(res.getEndDate()) < 0) {
+						System.out.println("c");
 						dozvola = false;
 					} else if (startDatee.compareTo(res.getStartDate()) >= 0
 							&& endDatee.compareTo(res.getEndDate()) <= 0) {
+						System.out.println("d");
 						dozvola = false;
 					} else {
+						System.out.println("e tj dozvola je true");
 						dozvola = true;
 					}
 				} else {
+					System.out.println("End date je -1");
 					if (startDatee.compareTo(res.getStartDate()) >= 0 && startDatee.compareTo(res.getEndDate()) < 0) {
 						dozvola = false;
 					}
@@ -265,19 +305,30 @@ public class CarController {
 
 			}
 			if (dozvola) {
+				System.out.println("uslo u dozvolu i dodavanje auta");
 				theFinalList.add(car);
 			}
 		}
 
-		int brojac = -1;
-		for (int i = 0; i < theFinalList.size(); i++) {
-			brojac++;
-			if (!theFinalList.get(i).getOnFastRes()) {
-				theFinalList.remove(brojac);
+	
+		System.out.println("Brisanje onih koji nisu na fast");
+		/*
+		 * for (int i = 0; i < theFinalList.size(); i++) {
+		 * System.out.println(theFinalList.get(i).getOnFastRes()); if
+		 * (theFinalList.get(i).getOnFastRes()==false) { System.out.println("uslo");
+		 * theFinalList.remove(i); } }
+		 */
+		
+		ArrayList<Car> returnList=new ArrayList<Car>();
+		System.out.println("The final list size: "+theFinalList.size());
+		for (Car car : theFinalList) {
+			if (car.getOnFastRes()==true) {
+				System.out.println("uslo u trueeee");
+				returnList.add(car);
 			}
 		}
-
-		return new ResponseEntity<>(theFinalList, HttpStatus.OK);
+		System.out.println("Return list size: "+returnList.size());
+		return new ResponseEntity<>(returnList, HttpStatus.OK);
 
 	}
 

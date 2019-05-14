@@ -19,11 +19,12 @@ var urlRoot12 = "http://localhost:8080/api/getAllFriendRequests";
 var urlRoot13 = "http://localhost:8080/api/removeFriend";
 var urlRootFindDest = "http://localhost:8080/findDest";
 var urlRootFindRentacarDest = "http://localhost:8080/findRentacar";
+var urlRootFindHotelDest = "http://localhost:8080/findHotelByDestination";
 var urlRootFindSuitCars = "http://localhost:8080/findSuitCars";
 var urlRootGetAllCars = "http://localhost:8080/getAllCars";
 var urlRootCreateCarRes = "http://localhost:8080/createCarReservation";
 var urlRootCancelCarRes = "http://localhost:8080/cancelCarReservation";
-var urlRootCancelFlightRes="http://localhost:8080/cancelFlightReservation";
+var urlRootCancelFlightRes = "http://localhost:8080/cancelFlightReservation";
 var urlRootGetMyResCars = "http://localhost:8080/api/getMyResCars";
 var urlRootFindRentacarFromRes = "http://localhost:8080/findRentacarFromRes";
 var urlRootFindCarFromRes = "http://localhost:8080/findCarFromRes";
@@ -52,13 +53,15 @@ var urlRootProfile13 = "http://localhost:8080/getConcreteDestinations";
 var urlRootProfile14 = "http://localhost:8080/getConcreteHotelCustomerServices";
 var urlRootProfile15 = "http://localhost:8080/getConcreteBranches";
 
-var urlRootGetMyResFlights="http://localhost:8080/api/getMyResFlights";
-var urlRootFindAirlineFromRes="http://localhost:8080/findAirlineFromRes";
-var urlRootFindFlightFromRes="http://localhost:8080/findFlightFromRes";
+var urlRootGetMyResFlights = "http://localhost:8080/api/getMyResFlights";
+var urlRootFindAirlineFromRes = "http://localhost:8080/findAirlineFromRes";
+var urlRootFindFlightFromRes = "http://localhost:8080/findFlightFromRes";
+
 
 var urlRootGradeFlight="http://localhost:8080/gradeFlight";
 var urlRootGradeAirline="http://localhost:8080/gradeAirline";
 var finishReservationUrl="http://localhost:8080/api/finishReservation"
+
 var TOKEN_KEY = 'jwtToken';
 
 $(document).on('click', '#editProfileButton', function(e) {
@@ -76,9 +79,9 @@ $(document).on('click', '#logoutClicked', function(e) {
 // return '';
 // };
 
-function saveGradedAirline(){
+function saveGradedAirline() {
 	console.log('save graded airline called');
-	
+
 	sessionStorage.removeItem("choosenSeats");
 	var airlineId = document.getElementById("airlineId").value;
 	var flightId = document.getElementById("flightId").value
@@ -137,9 +140,8 @@ function saveGradedAirline(){
 		}
 	}
 
-	
 }
-function fillGradeFlightForm(id){
+function fillGradeFlightForm(id) {
 	console.log('fill grade flight form called');
 	sessionStorage.removeItem("choosenSeats");
 	var rentacarName;
@@ -187,7 +189,7 @@ function fillGradeFlightForm(id){
 
 	})
 }
-function cancelFlightReservation(id){
+function cancelFlightReservation(id) {
 	console.log('cancel flight reservation called');
 	console.log(id);
 	sessionStorage.removeItem("choosenSeats");
@@ -199,7 +201,6 @@ function cancelFlightReservation(id){
 		success : function(data) {
 
 			alert('Reservation of flight successfully deleted.');
-			
 
 			showMyReservationsFlights();
 
@@ -210,7 +211,7 @@ function cancelFlightReservation(id){
 
 	})
 }
-function showMyReservationsHotels(){
+function showMyReservationsHotels() {
 	console.log('show my reservation hotels called');
 }
 function showMyReservationsFlights() {
@@ -266,30 +267,31 @@ function showMyReservationsFlights() {
 
 						}
 						var row = tabela.insertRow(0);
-				var cell1 = row.insertCell(0);
-				var cell2 = row.insertCell(1);
-				var cell3 = row.insertCell(2);
-				var cell4 = row.insertCell(3);
-				var cell5 = row.insertCell(4);
-				var cell6 = row.insertCell(5);
-				var cell7 = row.insertCell(6);
-				cell1.innerHTML = "Id";
-				cell2.innerHTML = "Passport";
-				cell3.innerHTML = "Price";
-				cell4.innerHTML = "Start airport";
-				cell5.innerHTML = "End airport";
-				cell6.innerHTML = "Seat number";
-			} else {
-				
-				$("#tableOfFlightsRes").html("<h3>No flight reservations.</h3>")
-			}
-		},
-		error : function(jqXHR, textStatus, errorThrown) {
-			alert(jqXHR.status);
-			alert(textStatus);
-			alert(errorThrown);
+						var cell1 = row.insertCell(0);
+						var cell2 = row.insertCell(1);
+						var cell3 = row.insertCell(2);
+						var cell4 = row.insertCell(3);
+						var cell5 = row.insertCell(4);
+						var cell6 = row.insertCell(5);
+						var cell7 = row.insertCell(6);
+						cell1.innerHTML = "Id";
+						cell2.innerHTML = "Passport";
+						cell3.innerHTML = "Price";
+						cell4.innerHTML = "Start airport";
+						cell5.innerHTML = "End airport";
+						cell6.innerHTML = "Seat number";
+					} else {
 
-		}
+						$("#tableOfFlightsRes").html(
+								"<h3>No flight reservations.</h3>")
+					}
+				},
+				error : function(jqXHR, textStatus, errorThrown) {
+					alert(jqXHR.status);
+					alert(textStatus);
+					alert(errorThrown);
+
+				}
 			})
 }
 function takeCarFast(id) {
@@ -350,6 +352,7 @@ function takeCarFast(id) {
 	}
 
 }
+
 function showCarsForFastRes() {
 	sessionStorage.removeItem("choosenSeats");
 	console.log('show cars for fast res called');
@@ -357,6 +360,9 @@ function showCarsForFastRes() {
 	var startDate = document.getElementById("mainStartDate3").value;
 	var endDate = document.getElementById("mainEndDate3").value;
 
+	if (endDate==""){
+		endDate=-1;
+	}
 	console.log('RENTACAAAAR ID' + rentacarId);
 	$
 			.ajax({
@@ -1973,20 +1979,20 @@ function searchForCars(rentacarId) {
 							;
 							$("#rentacarReservation")
 									.append(
-											'<br><br><button type="submit" style="background: #ff1a75; width: 300px; height: 100px; align: center; color: white" id="offerHottelsButton" style="float: left;/">Reserve hotel</button>');
+											'<br><br><button type="submit" style="background: #ff1a75; width: 300px; height: 100px; align: center; color: white" id="offerHotelsButton" style="float: left;/">Reserve hotel</button>');
 							$("#rentacarReservation")
 									.append(
-											'<br><button type="submit" style="background: #ff1a75; width: 300px; height: 1000px; align: center; color: white" id="offerHottelsButton" style="float: left;/">Finish reservation </button>');
+											'<br><button type="submit" style="background: #ff1a75; width: 300px; height: 1000px; align: center; color: white" id="offerHotelsButton" style="float: left;/">Finish reservation </button>');
 						} else {
 							$(".messageSuitableCars")
 									.append(
 											'<h3>No cars found to satisfy your criteria.</p>');
 							$("#rentacarReservation")
 									.append(
-											'<br><br><button type="submit" style="background: #ff1a75; width: 300px; height: 100px; align: center; color: white" id="offerHottelsButton" style="float: left;/">Reserve hotel</button>');
+											'<br><br><button type="submit" style="background: #ff1a75; width: 300px; height: 100px; align: center; color: white" id="offerHotelsButton" style="float: left;/">Reserve hotel</button>');
 							$("#rentacarReservation")
 									.append(
-											'<br><button type="submit" style="background: #ff1a75; width: 300px; height: 100px; align: center; color: white" id="offerHottelsButton" style="float: left;/">Finish reservation </button>');
+											'<br><button type="submit" style="background: #ff1a75; width: 300px; height: 100px; align: center; color: white" id="offerHotelsButton" style="float: left;/">Finish reservation </button>');
 						}
 
 					},
@@ -3096,6 +3102,55 @@ function showRentacarsDest(data, startDate, endDate) {
 
 }
 
+function showHotelsDest(data) {
+	sessionStorage.removeItem("choosenSeats");
+	console.log('show rentacars dest called');
+	var response = data;
+	$("#tableOfHotelsDest").find("tr").remove();
+	var tabela = document.getElementById("tableOfHotelsDest");
+	console.log(tabela);
+
+	for ( var counter in response) {
+		console.log('counter: ' + counter);
+		var row = tabela.insertRow(counter);
+		var cell1 = row.insertCell(0);
+		var cell2 = row.insertCell(1);
+		var cell3 = row.insertCell(2);
+		var cell4 = row.insertCell(3);
+		var cell5 = row.insertCell(4);
+		var cell6 = row.insertCell(5);
+
+		var location = "https://maps.google.com/?q="
+				+ response[counter].address;
+
+		cell1.innerHTML = response[counter].name;
+		cell2.innerHTML = response[counter].address;
+		cell3.innerHTML = response[counter].promotionalDescription;
+		cell4.innerHTML = response[counter].grade;
+		cell6.innerHTML = '<button style="background: #ff1a75; color: white" id=\"'
+				+ response[counter].id
+				+ '\" class=\"chooseHotel\" class="btn btn-primary">Choose</button>';
+		cell5.innerHTML = '<a href=\"' + location
+				+ '\" target=\"_blank\">Show location</a>';
+
+	}
+	var row = tabela.insertRow(0);
+	var cell1 = row.insertCell(0);
+	var cell2 = row.insertCell(1);
+	var cell3 = row.insertCell(2);
+	var cell4 = row.insertCell(3);
+	var cell5 = row.insertCell(4);
+	var cell6 = row.insertCell(5);
+
+	cell1.innerHTML = '<p style= "font-weight: 200%; font-size:150%">Name</p>';
+	cell2.innerHTML = '<p style= "font-weight: 200%; font-size:150%">Address</p>';
+	cell3.innerHTML = '<p style= "font-weight: 200%; font-size:150%">Promotional Description</p>';
+	cell4.innerHTML = '<p style= "font-weight: 200%; font-size:150%">Average Grade</p>';
+	cell6.innerHTML = '<p style= "font-weight: 200%; font-size:150%"></p>';
+	cell5.innerHTML = '<p style= "font-weight: 200%; font-size:150%">Location</p>';
+
+}
+
 $(document).on('click', '#allReservationsButtton', function(e) {
 	console.log('all reservations button clicked');
 	e.preventDefault();
@@ -3129,8 +3184,6 @@ $(document).on('click', '.cancelCarResButton', function(e) {
 	cancelCarReservation(this.id);
 });
 
-
-
 $(document).on('click', '#submitRentacarGrade', function(e) {
 	console.log('submit rentacar grade clicked');
 	e.preventDefault();
@@ -3152,13 +3205,12 @@ $(document).on('click', '#fastReservationButton', function(e) {
 	showCarsForFastRes();
 });
 
-
 $(document).on('click', '.cancelFlightResButton', function(e) {
 	console.log('CANCEL FLIGHT RES BUTTON CLICKED');
 	e.preventDefault();
 	sessionStorage.removeItem("choosenSeats");
 	cancelFlightReservation(this.id);
-	
+
 });
 
 $(document).on('click', '#offerRentacarsButton', function(e) {
@@ -3229,6 +3281,63 @@ $(document).on('click', '#offerRentacarsButton', function(e) {
 	console.log(destination);
 	console.log(startDate);
 	console.log(endDate);
+
+});
+
+$(document).on('click', '#offerHotelsButton', function(e) {
+	console.log('offer hotels clicked');
+	e.preventDefault();
+	sessionStorage.removeItem("choosenSeats");
+	var destination = document.getElementById("destinationId").value;
+
+	openCity(e, 'showHotelsInDest');
+
+	var address = "";
+	$.ajax({
+		type : 'GET',
+		url : urlRootFindDest + "/" + destination,
+		headers : createAuthorizationTokenHeader(TOKEN_KEY),
+		dataType : "json",
+		success : function(data) {
+			if (data == null) {
+				console.log('destination not found');
+			} else {
+				console.log('destination found');
+				address = data.city;
+				console.log(address);
+
+				$.ajax({
+					type : 'GET',
+					url : urlRootFindHotelDest + "/" + address,
+					headers : createAuthorizationTokenHeader(TOKEN_KEY),
+					dataType : "json",
+					success : function(data) {
+						if (data == null) {
+							console.log('hotel not found');
+						} else {
+							console.log('hotel found');
+
+							showHotelsDest(data);
+
+						}
+					},
+					error : function(jqXHR, textStatus, errorThrown) {
+						alert(jqXHR.status);
+						alert(textStatus);
+						alert(errorThrown);
+					}
+
+				})
+
+			}
+		},
+		error : function(jqXHR, textStatus, errorThrown) {
+			alert(jqXHR.status);
+			alert(textStatus);
+			alert(errorThrown);
+		}
+
+	})
 
 });
 

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import team_three_spring_project_isamrs.model.Hotel;
 import team_three_spring_project_isamrs.model.RegularUser;
 import team_three_spring_project_isamrs.model.Room;
 import team_three_spring_project_isamrs.model.RoomReservation;
@@ -51,6 +52,11 @@ public class RoomReservationServiceImpl implements RoomReservationService {
 	@Override
 	public List<RoomReservation> findByRegularUser(RegularUser regularUser) {
 		return roomReservationRepository.findByRegularUser(regularUser);
+	}
+
+	@Override
+	public List<RoomReservation> findByHotel(Hotel hotel) {
+		return roomReservationRepository.findByHotel(hotel);
 	}
 
 }

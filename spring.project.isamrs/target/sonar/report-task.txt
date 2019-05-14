@@ -2,5 +2,5 @@ projectKey=tim3:ProjekatIsaMrsTim3
 serverUrl=http://localhost:9000
 serverVersion=7.7.0.23042
 dashboardUrl=http://localhost:9000/dashboard?id=tim3%3AProjekatIsaMrsTim3
-ceTaskId=AWqsMfdSt1EShmy6kSFa
-ceTaskUrl=http://localhost:9000/api/ce/task?id=AWqsMfdSt1EShmy6kSFa
+ceTaskId=AWq2S4Lpt1EShmy6kSFb
+ceTaskUrl=http://localhost:9000/api/ce/task?id=AWq2S4Lpt1EShmy6kSFb
