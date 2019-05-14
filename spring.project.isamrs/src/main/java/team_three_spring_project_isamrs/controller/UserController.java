@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.view.RedirectView;
 
 import team_three_spring_project_isamrs.comparator.FriendsComparatorNameSurname;
+import team_three_spring_project_isamrs.dto.FastReservationDTO;
 import team_three_spring_project_isamrs.dto.FinishedReservationDTO;
 import team_three_spring_project_isamrs.dto.FlightReservationDTO;
 import team_three_spring_project_isamrs.dto.FlightReservationReturnDTO;
@@ -380,4 +381,21 @@ public class UserController {
 		return new ResponseEntity<>(dto, HttpStatus.OK);
 		
 	}
+	
+	@GetMapping(value="/fastReservationAirline/{id}")
+	@PreAuthorize("hasRole('ROLE_USER')")
+	public ResponseEntity<List<FastReservationDTO>> fastReservationAirline(@PathVariable Long id) {
+		List<Seat> sedista=this.seatService.findByQuickBooking(true);
+		List<FastReservationDTO> brza=new ArrayList<FastReservationDTO>();
+		for(Seat s: sedista) {
+			if(s.getFlight().getAirline().getId()==id) {
+				
+				brza.add(new FastReservationDTO(s.getFlight().getNumber(),s.getFlight().getStartAirline().getCity(),s.getFlight().getFinalAirline().getCity(),s.getFlight().getDateOfStart().toString(),s.getFlight().getDateOfEnd().toString(),s.getFlight().getLengthOfFlight(),s.getFlight().getCost(),s.getDiscount()));
+			}
+		}
+		return new ResponseEntity<List<FastReservationDTO>>(brza, HttpStatus.OK);
+		
+	}
+	
+	
 }

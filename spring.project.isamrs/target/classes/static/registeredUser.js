@@ -57,9 +57,11 @@ var urlRootGetMyResFlights = "http://localhost:8080/api/getMyResFlights";
 var urlRootFindAirlineFromRes = "http://localhost:8080/findAirlineFromRes";
 var urlRootFindFlightFromRes = "http://localhost:8080/findFlightFromRes";
 
-var urlRootGradeFlight = "http://localhost:8080/gradeFlight";
-var urlRootGradeAirline = "http://localhost:8080/gradeAirline";
-var finishReservationUrl = "http://localhost:8080/api/finishReservation"
+
+var urlRootGradeFlight="http://localhost:8080/gradeFlight";
+var urlRootGradeAirline="http://localhost:8080/gradeAirline";
+var finishReservationUrl="http://localhost:8080/api/finishReservation";
+var fastReservationAirline="http://localhost:8080/api/fastReservationAirline";
 
 var TOKEN_KEY = 'jwtToken';
 
@@ -1211,6 +1213,94 @@ function searchFilter() {
 		}
 	})
 
+}
+
+$(document).on(
+		'click',
+		'.chooseAirline',
+		function(e) {
+			// e.preventDefault();
+			var _this = $(this);
+			sessionStorage.removeItem("choosenSeats");
+			console.log('airline number' + '   ' + this.id);
+			openCity(e, 'airlineReservation');
+			$.ajax({
+				type : 'GET',
+				url : fastReservationAirline+"/"+this.id,
+				headers : createAuthorizationTokenHeader(TOKEN_KEY),
+				contentType : 'application/json',
+				success : function(data) {
+					if (data) {
+						fillTableFlightFastReservations(data,
+								"fastReservationAirline");
+					}
+				},
+				error : function(jqXHR, textStatus, errorThrown) {
+					alert(jqXHR.status);
+					alert(textStatus);
+					alert(errorThrown);
+				}
+
+			})
+
+		});
+
+function fillTableFlightFastReservations(data, table) {
+	var response = data;
+	$("#" + table).find("tr").remove();
+	var tabela = document.getElementById(table);
+
+	var indeks = 0;
+	for ( var counter in response) {
+		if (!response[counter].reserved) {
+			var row = tabela.insertRow(indeks++);
+			var cell0 = row.insertCell(0)
+			var cell1 = row.insertCell(1);
+			var cell2 = row.insertCell(2);
+			var cell3 = row.insertCell(3);
+			var cell4 = row.insertCell(4);
+			var cell5 = row.insertCell(5);
+			var cell6 = row.insertCell(6);
+			var cell7 = row.insertCell(7);
+			var cell8 = row.insertCell(8);
+			var cell9 = row.insertCell(9);
+
+			cell0.innerHTML = response[counter].flightNumber;
+			cell1.innerHTML = response[counter].startDestination;
+			cell2.innerHTML = response[counter].finalDestination;
+			cell3.innerHTML = response[counter].dateOfFlight;
+			cell4.innerHTML = response[counter].dateOfArrival;
+			cell5.innerHTML = response[counter].length;
+			cell6.innerHTML = response[counter].price;
+			cell7.innerHTML = response[counter].discount +" %";
+			cell8.innerHTML = response[counter].total ;
+			cell9.innerHTML = "<button class=\"reserveFastFlight\" id=\""
+					+ response[counter].id + "\">Reserve</button>"
+		}
+
+	}
+	var row = tabela.insertRow(0);
+	var cell0 = row.insertCell(0);
+	var cell1 = row.insertCell(1);
+	var cell2 = row.insertCell(2);
+	var cell3 = row.insertCell(3);
+	var cell4 = row.insertCell(4);
+	var cell5 = row.insertCell(5);
+	var cell6 = row.insertCell(6);
+	var cell7 = row.insertCell(7);
+	var cell8 = row.insertCell(8);
+	var cell9=row.insertCell(9);
+
+	cell0.innerHTML = '<p style= "color:#002699;">Flight number</p>';
+	cell1.innerHTML = '<p style= "color:#002699;">Start destinationr</p>';
+	cell2.innerHTML = '<p style= "color:#002699;">Final destination</p>';
+	cell3.innerHTML = '<p style= "color:#002699;">Date of flight</p>';
+	cell4.innerHTML = '<p style= "color:#002699; ">Date of arrival</p>';
+	cell5.innerHTML = '<p style= "color:#002699;">Length</p>';
+	cell6.innerHTML = '<p style= "color:#002699;">Price</p>';
+	cell7.innerHTML = '<p style= "color:#002699;">Discount</p>';
+	cell8.innerHTML = '<p style= "color:#002699;">Total</p>';
+	cell9.innerHTML = '<p style= "color:#002699;">Total</p>';
 }
 
 $(document)
