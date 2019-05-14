@@ -72,6 +72,8 @@ public class RoomReservationController {
 		retVal.setStartDate(roomReservationDTO.getStartDate());
 		retVal.setEndDate(roomReservationDTO.getEndDate());
 		retVal.setDiscount(roomReservationDTO.getDiscount());
+		long numberOfNights = ((df.parse(roomReservationDTO.getEndDate()).getTime()
+				- df.parse(roomReservationDTO.getStartDate()).getTime() - 1000 * 60) / 86400000) + 1;
 		double price = 0;
 		if (!roomReservationDTO.getHotelCustomerServices().equals("")) {
 			String[] hcsIds = roomReservationDTO.getHotelCustomerServices().split(" ");
@@ -86,12 +88,12 @@ public class RoomReservationController {
 		}
 		int numOfPass = 0;
 		if (!roomReservationDTO.getRoomIds().equals("")) {
-			String[] roomIds = roomReservationDTO.getHotelCustomerServices().split(" ");
+			String[] roomIds = roomReservationDTO.getRoomIds().split(" ");
 			for (String roomId : roomIds) {
 				Room room = roomService.getOne(Long.parseLong(roomId));
 				retVal.setHotel(room.getHotel());
 				retVal.getRooms().add(room);
-				price += room.getPrice();
+				price += room.getPrice() * numberOfNights;
 				numOfPass += room.getNumberPeople();
 			}
 		}

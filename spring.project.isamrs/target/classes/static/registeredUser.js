@@ -1955,7 +1955,6 @@ function fillTableHotelCustomerServicesPick(data, table) {
 	var tabela = document.getElementById(table);
 
 	for ( var counter in response) {
-		alert(counter);
 		var row = tabela.insertRow(counter);
 		var cell0 = row.insertCell(0)
 		var cell1 = row.insertCell(1);
@@ -2125,7 +2124,7 @@ $(document)
 									dataType : "json",
 									data : roomReservationToJSON(startDate,
 											endDate, discount, hcsIds, roomIds,
-											numberHotelDiscount), // srediti
+											numberHotelDiscount),
 									headers : createAuthorizationTokenHeader(TOKEN_KEY),
 									success : function(data) {
 										alert("Succesfully reserved these rooms!")
