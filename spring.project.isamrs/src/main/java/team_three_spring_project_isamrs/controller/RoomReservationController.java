@@ -24,6 +24,11 @@ import team_three_spring_project_isamrs.dto.MessageDTO;
 import team_three_spring_project_isamrs.dto.ReportHotelAttendanceDTO;
 import team_three_spring_project_isamrs.dto.RoomReservationDTO;
 import team_three_spring_project_isamrs.model.HotelAdmin;
+import team_three_spring_project_isamrs.model.Car;
+import team_three_spring_project_isamrs.model.CarReservation;
+import team_three_spring_project_isamrs.model.Flight;
+import team_three_spring_project_isamrs.model.FlightReservation;
+import team_three_spring_project_isamrs.model.Hotel;
 import team_three_spring_project_isamrs.model.HotelCustomerService;
 import team_three_spring_project_isamrs.model.RegularUser;
 import team_three_spring_project_isamrs.model.Room;
@@ -51,6 +56,38 @@ public class RoomReservationController {
 
 	@Autowired
 	private CustomUserDetailsService userDetailsService;
+	
+	@DeleteMapping(value = "/cancelHotelReservation/{resId}")
+	@PreAuthorize("hasRole('ROLE_USER')")
+	public ResponseEntity<?> cancelHotelReservation(@PathVariable Long resId) {
+		System.out.println("Uslo u cancel hotel reservation");
+		RegularUser user = (RegularUser) this.userDetailsService
+				.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+		int brojac=-1;
+		System.out.println("A");
+		/*
+		 * for (CarReservation cr : user.getCarReservations()) { brojac++; if
+		 * (cr.getId()==resId) { user.getCarReservations().remove(brojac); } }
+		 */
+		System.out.println("B");
+		RoomReservation roomRes = roomReservationService.getOne(resId);
+		roomReservationService.delete(resId);
+		
+		
+		
+	
+		return new ResponseEntity<>(roomRes, HttpStatus.OK);
+		
+		
+		
+	}
+	
+	@GetMapping(value = "/findHotelFromRes/{resId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Hotel> findHotelFromRes(@PathVariable Long resId) {
+		RoomReservation res = roomReservationService.getOne(resId);
+		Hotel hotel = res.getHotel();
+		return new ResponseEntity<>(hotel, HttpStatus.OK);
+	}
 
 	@PostMapping(value = "/createRoomReservationRegular", consumes = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ROLE_USER')")
