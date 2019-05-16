@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import team_three_spring_project_isamrs.comparator.HotelsComparatorAddress;
 import team_three_spring_project_isamrs.comparator.HotelsComparatorName;
 import team_three_spring_project_isamrs.dto.HotelDTO;
+import team_three_spring_project_isamrs.model.Airline;
 import team_three_spring_project_isamrs.model.Hotel;
 import team_three_spring_project_isamrs.model.HotelAdmin;
 import team_three_spring_project_isamrs.service.HotelService;
@@ -34,6 +35,24 @@ public class HotelController {
 	@Autowired
 	private CustomUserDetailsService userDetailsService;
 
+
+	@GetMapping(value = "/gradeHotel/{id}/{grade}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PreAuthorize("hasRole('ROLE_USER')")
+	public ResponseEntity<Hotel> gradeHotel(@PathVariable Long id, @PathVariable Integer grade) {
+		System.out.println("Uslo u grade hotel     "+id);
+		Hotel hotel = hotelService.getOne(id);
+		System.out.println(hotel.getName());
+		System.out.println("A");
+		hotel.setScore(hotel.getScore()+grade);
+		System.out.println("B");
+		hotel.setGradeNumber(hotel.getGradeNumber()+1);
+		System.out.println("C");
+		hotelService.save(hotel);
+		System.out.println("D");
+		return new ResponseEntity<>(hotel, HttpStatus.CREATED);
+	}
+	
+	
 	@GetMapping(value = "/findConcreteHotel/{id}")
 	public ResponseEntity<Hotel> findConcreteHotel(@PathVariable String id) {
 		Hotel retVal = hotelService.getOne(Long.parseLong(id));

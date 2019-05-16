@@ -9,6 +9,7 @@
 <script src="bootstrap.min.js"></script>
 <script src="auth.js"></script>
 <script type="text/javascript" src="rentACarAdmin.js"></script>
+<script src="chart.min.js"></script>
 <style>
 body {
 	background-image: url(rentacar2.png);
@@ -142,6 +143,38 @@ body {
 			</table>
 			<p id="messageCarsGrades"></p>
 		</div>
+			
+			<div class="container">
+				<h3>Graphic show of attendance in this rentacar:</h3>
+				<br>
+				<h4 style="margin-left: 6%">A) Daily attendance</h4>
+				<canvas id="myChart1" width="400" height="400"
+					style="max-width: 400px; max-height: 400px; margin-left: 12%"></canvas>
+				<br>
+				<h4 style="margin-left: 6%">B) Weekly attendance</h4>
+				<canvas id="myChart2" width="400" height="400"
+					style="max-width: 400px; max-height: 400px; margin-left: 12%"></canvas>
+				<br>
+				<h4 style="margin-left: 6%">C) Monthly attendance</h4>
+				<canvas id="myChart3" width="400" height="400"
+					style="max-width: 400px; max-height: 400px; margin-left: 12%"></canvas>
+
+			</div>
+			<br>
+			<div class="container">
+				<h3>Amounts of this rentacar in concrete period:</h3>
+				<h5>* Put dates for which you want to see amount you earned, leave blank if you don't want to limit date *</h5>
+				<div class="container">
+					Start date: <input type="date" name="" value=""
+						placeholder="Pick start date" id="amountSearchStartDate" /> End
+					date: <input type="date" name="" value=""
+						placeholder="Pick end date" id="amountSearchEndDate" />
+					<button style="background: #cc0033; color: white"
+						class="findAmountHotel" class="btn btn-primary">Search</button>
+				</div>
+				<table><tr><td><h4>Amount of money in inserted period ->&nbsp</h4></td><td><h4 id="amountHotelValue">0</h4></td></tr></table>
+			</div>
+		
 	</div>
 	
 	<div id="passwordValidation" class="tabcontent">

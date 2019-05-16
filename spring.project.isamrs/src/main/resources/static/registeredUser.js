@@ -59,7 +59,14 @@ var urlRootFindFlightFromRes = "http://localhost:8080/findFlightFromRes";
 
 var urlRootGradeFlight = "http://localhost:8080/gradeFlight";
 var urlRootGradeAirline = "http://localhost:8080/gradeAirline";
+var urlRootGetMyResHotels="http://localhost:8080/api/getMyResHotels";
 var TOKEN_KEY = 'jwtToken';
+
+var urlRootFindRoomFromRes="http://localhost:8080/findRoomFromRes";
+var urlRootFindHotelFromRes="http://localhost:8080/findHotelFromRes";
+
+var urlRootGradeHotel="http://localhost:8080/gradeHotel";
+var urlRootCancelHotelRes="http://localhost:8080/cancelHotelReservation";
 
 $(document).on('click', '#editProfileButton', function(e) {
 	getLogged();
@@ -76,6 +83,91 @@ $(document).on('click', '#logoutClicked', function(e) {
 // return '';
 // };
 
+function cancelHotelReservation(id){
+	console.log('cancel hotel reservation button clicked');
+	sessionStorage.removeItem("choosenSeats");
+	$.ajax({
+		type : 'DELETE',
+		url : urlRootCancelHotelRes + "/" + id,
+		dataType : "json",
+		headers : createAuthorizationTokenHeader(TOKEN_KEY),
+		success : function(data) {
+
+			alert('Reservation successfully deleted.');
+			console.log('bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb');
+
+			showMyReservationsHotels();
+
+		},
+		error : function(XMLHttpRequest) {
+			alert("Error while deleting car");
+		}
+
+	})
+	
+}
+function saveGradedHotel() {
+	console.log('save graded hotel called');
+
+	sessionStorage.removeItem("choosenSeats");
+	var hotelId = document.getElementById("hotelId").value;
+	//var flightId = document.getElementById("flightId").value
+	var hotelGrade = document.getElementById("hotelGrade").value;
+	//var flightGrade = document.getElementById("flightGrade").value;
+
+	/*console.log(airlineId);
+	console.log(flightId);
+	console.log(airlineGrade);
+	console.log(flightGrade);*/
+
+	if (hotelGrade != "") {
+		console.log('hotel grade nije 0');
+		if (hotelGrade < 1 || hotelGrade > 5) {
+			alert('Grade must be between 1 and 5');
+		} else {
+			$.ajax({
+				type : 'GET',
+				url : urlRootGradeHotel + "/" + hotelId + "/"
+						+ hotelGrade,
+				headers : createAuthorizationTokenHeader(TOKEN_KEY),
+				dataType : "json",
+				success : function(data) {
+					alert('hotel successfully graded');
+				},
+				error : function(jqXHR, textStatus, errorThrown) {
+					alert(jqXHR.status);
+					alert(textStatus);
+					alert(errorThrown);
+				}
+
+			})
+		}
+	}
+
+	/*if (flightGrade != "") {
+		console.log('flight grade nije 0');
+		if (flightGrade < 1 || flightGrade > 5) {
+			alert('Grade must be between 1 and 5');
+		} else {
+			$.ajax({
+				type : 'GET',
+				url : urlRootGradeFlight + "/" + flightId + "/" + flightGrade,
+				headers : createAuthorizationTokenHeader(TOKEN_KEY),
+				dataType : "json",
+				success : function(data) {
+					alert('flight successfully graded');
+				},
+				error : function(jqXHR, textStatus, errorThrown) {
+					alert(jqXHR.status);
+					alert(textStatus);
+					alert(errorThrown);
+				}
+
+			})
+		}
+	}*/
+
+}
 function saveGradedAirline() {
 	console.log('save graded airline called');
 
@@ -137,6 +229,60 @@ function saveGradedAirline() {
 		}
 	}
 
+}
+
+function fillGradeHotelForm(id){
+	console.log('fill grade hotel form called');
+	sessionStorage.removeItem("choosenSeats");
+	var hotelName;
+	var roomName;
+	$.ajax({
+		type : 'GET',
+		url : urlRootFindHotelFromRes + "/" + id,
+		headers : createAuthorizationTokenHeader(TOKEN_KEY),
+		dataType : "json",
+		success : function(data) {
+
+			console.log(data.name);
+			hotelName = data.name;
+			$("#hotelGradeName").append(
+					'<h2>Hotel ' + hotelName + '</h2>');
+			document.getElementById("hotelId").value = data.id;
+
+		},
+		error : function(jqXHR, textStatus, errorThrown) {
+			alert(jqXHR.status);
+			alert(textStatus);
+			alert(errorThrown);
+		}
+
+	})
+	$("#roomGradeName").append('<h2> Room service: </h2>');
+
+	/*$.ajax({
+		type : 'GET',
+		url : urlRootFindRoomFromRes + "/" + id,
+		headers : createAuthorizationTokenHeader(TOKEN_KEY),
+		dataType : "json",
+		success : function(data) {
+			console.log(data.name);
+			roomName = data.name;
+			$("#roomGradeName").append('<h2> Room ' + roomName + '</h2>');
+
+			document.getElementById("roomId").value = data.id;
+
+		},
+		error : function(jqXHR, textStatus, errorThrown) {
+			alert(jqXHR.status);
+			alert(textStatus);
+			alert(errorThrown);
+		}
+
+	})*/
+	
+	
+
+	
 }
 function fillGradeFlightForm(id) {
 	console.log('fill grade flight form called');
@@ -208,8 +354,125 @@ function cancelFlightReservation(id) {
 
 	})
 }
+const getNestedObject = (nestedObj, pathArr) => {
+    return pathArr.reduce((obj, key) =>
+        (obj && obj[key] !== 'undefined') ? obj[key] : undefined, nestedObj);
+}
+
+
 function showMyReservationsHotels() {
 	console.log('show my reservation hotels called');
+	sessionStorage.removeItem("choosenSeats");
+	$
+			.ajax({
+				type : 'GET',
+				url : urlRootGetMyResHotels,
+				headers : createAuthorizationTokenHeader(TOKEN_KEY),
+				contentType : 'application/json',
+				success : function(data) {
+					$("#tableOfHotelsRes").find("tr").remove();
+					var list = data == null ? []
+							: (data instanceof Array ? data : [ data ]);
+					if (list.length > 0) {
+
+						var tabela = document
+								.getElementById("tableOfHotelsRes");
+						var count = 1
+						for ( var res in list) {
+							console.log('counter: ' + res);
+							var row = tabela.insertRow(res);
+							var cell1 = row.insertCell(0);
+							var cell2 = row.insertCell(1);
+							var cell3 = row.insertCell(2);
+							var cell4 = row.insertCell(3);
+							var cell5 = row.insertCell(4);
+							var cell6 = row.insertCell(5);
+							var cell7 = row.insertCell(6);
+							var cell8 = row.insertCell(7);
+							var cell9 = row.insertCell(8);
+							var cell10 = row.insertCell(9);
+							
+							cell1.innerHTML = list[res].id;
+							cell2.innerHTML = list[res].startDate;
+							cell3.innerHTML = list[res].endDate;
+							cell4.innerHTML = list[res].price;
+							cell5.innerHTML = list[res].discount;
+							cell6.innerHTML = list[res].numOfPass;
+							cell7.innerHTML = list[res].hotelName;
+							
+							cell9.innerHTML = list[res].roomNumbers;
+							console.log('roooom numbeeeeeeeeeers'+list[res].roomNumbers);
+							/*var listOfRooms = data == null ? []
+							: (list[res].rooms instanceof Set ? list[res].rooms : [ list[res].rooms ]);
+							console.log('treba sada da udje u rooms' + listOfRooms.length);
+							listOfRooms = Array.from(listOfRooms);
+							console.log(listOfRooms.length);
+							var soba = listOfRooms[0];
+							console.log(soba.id);*/
+							/*
+							for (var room in listOfRooms){
+								console.log('uslo '+room);
+			
+								console.log('room number: '+listOfRooms[room]);
+								rooms+=listOfRooms[room].id+", ";
+								
+							}*/
+							
+							if (list[res].hotelCustomerServices==null){
+								cell8.innerHTML="";
+							}else{
+								cell8.innerHTML = list[res].hotelCustomerServices;
+							}
+							
+							
+							if (new Date(list[res].startDate) >= new Date()) {
+								cell10.innerHTML = '<button style="background: #ff1a75; color: white" id=\"'
+										+ list[res].id
+										+ '\" class=\"cancelHotelResButton\" class="btn btn-primary">Cancel reservation</button>';
+							} else if (new Date(list[res].endDate) < new Date()) {
+								cell10.innerHTML = '<button style="background: #ff1a75; color: white" id=\"'
+										+ list[res].id
+										+ '\" class=\"gradeHotelResButton\" class="btn btn-primary">Grade service</button>';
+							} else {
+								cell10.innerHTML = "Cannot cancel";
+							}
+
+							count++;
+
+						}
+						var row = tabela.insertRow(0);
+						var cell1 = row.insertCell(0);
+						var cell2 = row.insertCell(1);
+						var cell3 = row.insertCell(2);
+						var cell4 = row.insertCell(3);
+						var cell5 = row.insertCell(4);
+						var cell6 = row.insertCell(5);
+						var cell7 = row.insertCell(6);
+						var cell8 = row.insertCell(7);
+						var cell9 = row.insertCell(7);
+						
+						cell1.innerHTML = "Id";
+						cell2.innerHTML = "Start date";
+						cell3.innerHTML = "End date";
+						cell4.innerHTML = "Price";
+						cell5.innerHTML = "Discount";
+						cell6.innerHTML = "Number of people";
+						cell7.innerHTML = "Hotel";
+						cell8.innerHTML = "Rooms";
+						cell9.innerHTML = "Additional services";
+					} else {
+
+						$("#tableOfHotelsRes").html(
+								"<h3>No hotel reservations.</h3>")
+					}
+				},
+				error : function(jqXHR, textStatus, errorThrown) {
+					alert(jqXHR.status);
+					alert(textStatus);
+					alert(errorThrown);
+
+				}
+			})
 }
 function showMyReservationsFlights() {
 	console.log('show my reservations flights called');
@@ -1976,20 +2239,21 @@ function searchForCars(rentacarId) {
 							;
 							$("#rentacarReservation")
 									.append(
-											'<br><br><button type="submit" style="background: #ff1a75; width: 300px; height: 100px; align: center; color: white" id="offerHotelsButton" style="float: left;/">Reserve hotel</button>');
+											'<br><br><button type="submit" style="background: #ff1a75;  align: center; color: white" id="offerHotelsButton" style="float: left;/">Reserve hotel</button>');
 							$("#rentacarReservation")
 									.append(
-											'<br><button type="submit" style="background: #ff1a75; width: 300px; height: 1000px; align: center; color: white" id="offerHotelsButton" style="float: left;/">Finish reservation </button>');
+											'<br><button type="submit" style="background: #ff1a75;  align: center; color: white" id="offerHotelsButton" style="float: left;/">Finish reservation </button>');
 						} else {
 							$(".messageSuitableCars")
 									.append(
 											'<h3>No cars found to satisfy your criteria.</p>');
+							
 							$("#rentacarReservation")
-									.append(
-											'<br><br><button type="submit" style="background: #ff1a75; width: 300px; height: 100px; align: center; color: white" id="offerHotelsButton" style="float: left;/">Reserve hotel</button>');
+									.html(
+											'<br><br><button type="submit" style="background: #ff1a75; align: center; color: white" id="offerHotelsButton" style="float: left;/">Reserve hotel</button>');
 							$("#rentacarReservation")
-									.append(
-											'<br><button type="submit" style="background: #ff1a75; width: 300px; height: 100px; align: center; color: white" id="offerHotelsButton" style="float: left;/">Finish reservation </button>');
+									.html(
+											'<br><button type="submit" style="background: #ff1a75; align: center; color: white" id="offerHotelsButton" style="float: left;/">Finish reservation </button>');
 						}
 
 					},
@@ -2276,7 +2540,7 @@ $(document)
 											numberHotelDiscount),
 									headers : createAuthorizationTokenHeader(TOKEN_KEY),
 									success : function(data) {
-										alert("Succesfully reserved these rooms!")
+										alert(data.message)
 										openCity(e, 'hotels');
 										$("#pickRoomAndHcs").hide();
 										$("#roomReservationStartDate").prop(
@@ -3103,11 +3367,27 @@ $(document).on('click', '.gradeFlightResButton', function(e) {
 	fillGradeFlightForm(this.id);
 
 });
+
+$(document).on('click', '.gradeHotelResButton', function(e) {
+	console.log('grade hotel res button clicked');
+	e.preventDefault();
+	sessionStorage.removeItem("choosenSeats");
+	openCity(e, 'gradeHotel');
+	fillGradeHotelForm(this.id);
+
+});
 $(document).on('click', '.cancelCarResButton', function(e) {
 	console.log('cancel car reservation button clicked');
 	e.preventDefault();
 	sessionStorage.removeItem("choosenSeats");
 	cancelCarReservation(this.id);
+});
+
+$(document).on('click', '.cancelHotelResButton', function(e) {
+	console.log('cancel hotel reservation button clicked');
+	e.preventDefault();
+	sessionStorage.removeItem("choosenSeats");
+	cancelHotelReservation(this.id);
 });
 
 $(document).on('click', '#submitRentacarGrade', function(e) {
@@ -3122,6 +3402,13 @@ $(document).on('click', '#submitAirlineGrade', function(e) {
 	e.preventDefault();
 	sessionStorage.removeItem("choosenSeats");
 	saveGradedAirline();
+});
+
+$(document).on('click', '#submitHotelGrade', function(e) {
+	console.log('submit hotel grade clicked');
+	e.preventDefault();
+	sessionStorage.removeItem("choosenSeats");
+	saveGradedHotel();
 });
 
 $(document).on('click', '#fastReservationButton', function(e) {

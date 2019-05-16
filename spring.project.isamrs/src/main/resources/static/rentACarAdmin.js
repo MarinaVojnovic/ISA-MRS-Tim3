@@ -98,7 +98,7 @@ function saveSubmitFast(id){
 }
 
 function showGrades(){
-	console.log('show grades called');
+	
 	
 	$
 	.ajax({
@@ -914,8 +914,15 @@ $(document).on('click', '#buttonSubmitEditBranch', function(e) {
 
 $(document).on('click', '#reportsButton', function(e) {
 	console.log('reports button clicked');
-	
 	openCity(e, 'reports');
+	
+	/*createChart("myChart1", [ 'Red', 'Blue', 'Yellow', 'Green',
+		'Purple', 'Orange' ], [ 12, 19, 3, 5, 2, 3 ]);
+	createChart("myChart2", [ 'Red', 'Blue', 'Yellow', 'Green',
+		'Purple', 'Orange' ], [ 12, 19, 3, 5, 2, 3 ]);
+	createChart("myChart3", [ 'Red', 'Blue', 'Yellow', 'Green',
+		'Purple', 'Orange' ], [ 12, 19, 3, 5, 2, 3 ]);*/
+	
 	showGrades();
 	
 

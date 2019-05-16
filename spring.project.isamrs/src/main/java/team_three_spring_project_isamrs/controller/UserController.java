@@ -26,12 +26,15 @@ import team_three_spring_project_isamrs.dto.FlightReservationReturnDTO;
 import team_three_spring_project_isamrs.dto.FriendRequestDTO;
 import team_three_spring_project_isamrs.dto.InvitedFriendDTO;
 import team_three_spring_project_isamrs.dto.PasswordDTO;
+import team_three_spring_project_isamrs.dto.RoomReservationDTO;
 import team_three_spring_project_isamrs.dto.UserDTO;
 import team_three_spring_project_isamrs.model.CarReservation;
 import team_three_spring_project_isamrs.model.Flight;
 import team_three_spring_project_isamrs.model.FlightReservation;
 import team_three_spring_project_isamrs.model.FriendRequest;
 import team_three_spring_project_isamrs.model.RegularUser;
+import team_three_spring_project_isamrs.model.Room;
+import team_three_spring_project_isamrs.model.RoomReservation;
 import team_three_spring_project_isamrs.model.Seat;
 import team_three_spring_project_isamrs.model.User;
 import team_three_spring_project_isamrs.model.UserRoleName;
@@ -42,6 +45,7 @@ import team_three_spring_project_isamrs.service.FlightReservationService;
 import team_three_spring_project_isamrs.service.FlightService;
 import team_three_spring_project_isamrs.service.FriendRequestService;
 import team_three_spring_project_isamrs.service.RegularUserService;
+import team_three_spring_project_isamrs.service.RoomReservationService;
 import team_three_spring_project_isamrs.service.SeatService;
 import team_three_spring_project_isamrs.service.UserService;
 import team_three_spring_project_isamrs.service.impl.CustomUserDetailsService;
@@ -70,6 +74,9 @@ public class UserController {
 
 	@Autowired
 	private FlightReservationService flightReservationService;
+	
+	@Autowired
+	private RoomReservationService roomReservationService;
 
 	@Autowired
 	private SeatService seatService;
@@ -219,6 +226,30 @@ public class UserController {
 		List<CarReservation> res = new ArrayList<CarReservation>();
 		res = carReservationService.findByRegularUser(logged);
 		return new ResponseEntity<List<CarReservation>>(res, HttpStatus.OK);
+	}
+	
+
+	@GetMapping(value = "/getMyResHotels")
+	@PreAuthorize("hasRole('ROLE_USER')")
+	public ResponseEntity<List<RoomReservationDTO>> getMyResHotels() {
+		RegularUser logged = (RegularUser) this.userDetailsService
+				.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+		List<RoomReservation> res = new ArrayList<RoomReservation>();
+		res = roomReservationService.findByRegularUser(logged);
+		System.out.println("AAA");
+		List<RoomReservationDTO> resDto=new ArrayList<>();
+		System.out.println("BBB");
+		System.out.println(res.size());
+		for (RoomReservation r : res) {
+			System.out.println("CCC");
+			RoomReservationDTO dto=new RoomReservationDTO(r);
+			System.out.println(dto.getRoomNumbers());
+			System.out.println("DDD");
+			resDto.add(dto);
+			System.out.println("EEE");
+		}
+		System.out.println("FFF");
+		return new ResponseEntity<List<RoomReservationDTO>>(resDto, HttpStatus.OK);
 	}
 
 	@GetMapping(value = "/getMyResFlights")
