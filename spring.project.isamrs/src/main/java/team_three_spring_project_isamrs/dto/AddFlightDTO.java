@@ -10,8 +10,8 @@ public class AddFlightDTO {
 	Airline finalDestinationRegister;
 	Airline flighAirline;
 	double costOfFlight;
-	Date dateOfFlight;
-	Date dateOfArrival;
+	String dateOfFlight;
+	String dateOfArrival;
 	int length;
 	int numOfSeatsEconomy;
 	int numOfSeatsBusiness;
@@ -19,7 +19,7 @@ public class AddFlightDTO {
 	int numOfStops;
 	
 	public AddFlightDTO(String flightNumberRegister, Airline startDestinationRegister, Airline finalDestinationRegister,
-			Airline flighAirline, double costOfFlight, Date dateOfFlight, Date dateOfArrival, int length,
+			Airline flighAirline, double costOfFlight, String dateOfFlight, String dateOfArrival, int length,
 			int numOfSeatsEconomy, int numOfSeatsBusiness, int numOfSeatsFirst, int numOfStops) {
 		super();
 		this.flightNumberRegister = flightNumberRegister;
@@ -62,16 +62,17 @@ public class AddFlightDTO {
 	public void setCostOfFlight(double costOfFlight) {
 		this.costOfFlight = costOfFlight;
 	}
-	public Date getDateOfFlight() {
+
+	public String getDateOfFlight() {
 		return dateOfFlight;
 	}
-	public void setDateOfFlight(Date dateOfFlight) {
+	public void setDateOfFlight(String dateOfFlight) {
 		this.dateOfFlight = dateOfFlight;
 	}
-	public Date getDateOfArrival() {
+	public String getDateOfArrival() {
 		return dateOfArrival;
 	}
-	public void setDateOfArrival(Date dateOfArrival) {
+	public void setDateOfArrival(String dateOfArrival) {
 		this.dateOfArrival = dateOfArrival;
 	}
 	public int getLength() {

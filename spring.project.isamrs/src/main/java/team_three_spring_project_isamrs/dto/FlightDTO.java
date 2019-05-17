@@ -7,7 +7,6 @@ public class FlightDTO {
 	double costOfFlight;
 	String dateOfFlight;
 	String dateOfArrival;
-	int length;
 	int numOfSeatsEconomy;
 	int numOfSeatsBusiness;
 	int numOfSeatsFirst;
@@ -50,12 +49,7 @@ public class FlightDTO {
 	public void setDateOfArrival(String dateOfArrival) {
 		this.dateOfArrival = dateOfArrival;
 	}
-	public int getLength() {
-		return length;
-	}
-	public void setLength(int length) {
-		this.length = length;
-	}
+
 	
 	
 	public int getNumOfStops() {
@@ -90,7 +84,7 @@ public class FlightDTO {
 		this.numOfSeatsFirst = numOfSeatsFirst;
 	}
 	public FlightDTO(String flightNumberRegister, String startDestinationRegister, String finalDestinationRegister,
-			double costOfFlight, String dateOfFlight, String dateOfArrival, int length, int numOfSeatsEconomy,
+			double costOfFlight, String dateOfFlight, String dateOfArrival, int numOfSeatsEconomy,
 			int numOfSeatsBusiness, int numOfSeatsFirst, int numOfStops, String stops) {
 		super();
 		this.flightNumberRegister = flightNumberRegister;
@@ -99,7 +93,6 @@ public class FlightDTO {
 		this.costOfFlight = costOfFlight;
 		this.dateOfFlight = dateOfFlight;
 		this.dateOfArrival = dateOfArrival;
-		this.length = length;
 		this.numOfSeatsEconomy = numOfSeatsEconomy;
 		this.numOfSeatsBusiness = numOfSeatsBusiness;
 		this.numOfSeatsFirst = numOfSeatsFirst;

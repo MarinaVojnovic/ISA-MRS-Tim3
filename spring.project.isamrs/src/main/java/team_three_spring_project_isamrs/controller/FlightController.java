@@ -1,6 +1,6 @@
 package team_three_spring_project_isamrs.controller;
 
-import java.sql.Date;
+import java.util.Date;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -77,13 +77,15 @@ public class FlightController {
 		User logged = (User) this.userDetailsService
 				.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
 		Airline air = ((AirlineAdmin) logged).getAirline();
-		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		Date dateOfFlight = new Date(df.parse(flightDTO.getDateOfFlight()).getTime());
 		Date dateOfArrival = new Date(df.parse(flightDTO.getDateOfArrival()).getTime());
+		long l=(dateOfArrival.getTime()-dateOfFlight.getTime())/60000;
+		int length=(int)l;
 		Flight fl = this.flightService.create(new Flight(new AddFlightDTO(flightDTO.getFlightNumberRegister(),
 				this.airlineService.getOne(Long.parseLong(flightDTO.getStartDestinationRegister())),
 				this.airlineService.getOne(Long.parseLong(flightDTO.getFinalDestinationRegister())), air,
-				flightDTO.getCostOfFlight(), dateOfFlight, dateOfArrival, flightDTO.getLength(),
+				flightDTO.getCostOfFlight(), df.format(dateOfFlight), df.format(dateOfArrival), length,
 				flightDTO.getNumOfSeatsEconomy(), flightDTO.getNumOfSeatsBusiness(), flightDTO.getNumOfSeatsFirst(),
 				flightDTO.getNumOfStops())));
 		if (flightDTO.getNumOfStops() > 0) {
@@ -131,26 +133,39 @@ public class FlightController {
 		return new ResponseEntity<>(retVal, HttpStatus.OK);
 	}
 
-	@SuppressWarnings("deprecation")
 	@GetMapping(value = "/searchFlight/{startDestination}/{finalDestination}/{dateOfFlight}/{dateOfArrival}/{from}/{to}/{fromL}/{toL}/{name}")
 	public ResponseEntity<FoundFlightsDTO> searchFlights(@PathVariable Long startDestination,
 			@PathVariable Long finalDestination, @PathVariable String dateOfFlight, @PathVariable String dateOfArrival,
 			@PathVariable String from, @PathVariable String to, @PathVariable String fromL, @PathVariable String toL,
-			@PathVariable String name) {
-		Date dateOfFl = new Date(Integer.parseInt(dateOfFlight.split("\\-")[0]) - 1900,
-				Integer.parseInt(dateOfFlight.split("\\-")[1]) - 1, Integer.parseInt(dateOfFlight.split("\\-")[2]));
-		Date dateOfArr = new Date(0, 0, 0);
+			@PathVariable String name) throws ParseException {
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+		Date dateOfFl = df.parse(dateOfFlight);
+		Date dateOfArr = new Date();
 		if (!dateOfArrival.equals("noDate")) {
-			dateOfArr = new Date(Integer.parseInt(dateOfArrival.split("\\-")[0]) - 1900,
-					Integer.parseInt(dateOfArrival.split("\\-")[1]) - 1,
-					Integer.parseInt(dateOfArrival.split("\\-")[2]));
+			dateOfArr = df.parse(dateOfArrival);
 		}
 		List<Flight> flights;
-		List<Flight> returnFlights;
-		flights = this.flightService.findByStartAirlineAndFinalAirlineAndDateOfStart(
-				this.airlineService.getOne(startDestination), this.airlineService.getOne(finalDestination), dateOfFl);
-		returnFlights = this.flightService.findByStartAirlineAndFinalAirlineAndDateOfStart(
-				this.airlineService.getOne(finalDestination), this.airlineService.getOne(startDestination), dateOfArr);
+		List<Flight> returnFlights=new ArrayList<>();
+		flights = this.flightService.findByStartAirlineAndFinalAirline(
+				this.airlineService.getOne(startDestination), this.airlineService.getOne(finalDestination));
+		if (!dateOfArrival.equals("noDate")) {
+			returnFlights = this.flightService.findByStartAirlineAndFinalAirline(
+					this.airlineService.getOne(finalDestination), this.airlineService.getOne(startDestination));
+		}
+		List<Flight> flights2=new ArrayList<>();
+		List<Flight> returnFLights2=new ArrayList<>();
+		for(Flight f: flights) {
+			if(df.parse(f.getDateOfStart()).equals(dateOfFl)) {
+				flights2.add(f);
+			}
+		}
+		if(!dateOfArrival.equals("noDate")) {
+			for(Flight f: returnFlights) {
+				if(df.parse(f.getDateOfStart()).equals(dateOfArr)) {
+					returnFLights2.add(f);
+				}
+			}
+		}
 
 		List<Flight> filtered = new ArrayList<>();
 		List<Flight> filteredReturn = new ArrayList<>();
@@ -184,7 +199,7 @@ public class FlightController {
 		} else {
 			namee = "";
 		}
-		for (Flight f : flights) {
+		for (Flight f : flights2) {
 			if (f.getCost() > fromm && f.getCost() < too && f.getLengthOfFlight() > fromLL
 					&& f.getLengthOfFlight() < toLL) {
 				if (!namee.equals("")) {
@@ -198,7 +213,7 @@ public class FlightController {
 
 		}
 
-		for (Flight f : returnFlights) {
+		for (Flight f : returnFLights2) {
 			if (f.getCost() > fromm && f.getCost() < too && f.getLengthOfFlight() > fromLL
 					&& f.getLengthOfFlight() < toLL) {
 				if (!namee.equals("")) {

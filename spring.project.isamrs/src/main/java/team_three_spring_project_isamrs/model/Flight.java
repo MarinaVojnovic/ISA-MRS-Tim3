@@ -51,10 +51,10 @@ public class Flight {
 	private double cost;
 
 	@Column(name = "dateOfStart")
-	private Date dateOfStart;
+	private String dateOfStart;
 
 	@Column(name = "dateOfEnd")
-	private Date dateOfEnd;
+	private String dateOfEnd;
 
 	@Column(name = "numOfStops")
 	private int numOfStops;
@@ -119,19 +119,19 @@ public class Flight {
 		this.number = number;
 	}
 
-	public Date getDateOfStart() {
+	public String getDateOfStart() {
 		return dateOfStart;
 	}
 
-	public void setDateOfStart(Date dateOfStart) {
+	public void setDateOfStart(String dateOfStart) {
 		this.dateOfStart = dateOfStart;
 	}
 
-	public Date getDateOfEnd() {
+	public String getDateOfEnd() {
 		return dateOfEnd;
 	}
 
-	public void setDateOfEnd(Date dateOfEnd) {
+	public void setDateOfEnd(String dateOfEnd) {
 		this.dateOfEnd = dateOfEnd;
 	}
 

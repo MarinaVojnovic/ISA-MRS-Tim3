@@ -1694,10 +1694,10 @@ $(document)
 													cell2.innerHTML = list[flight].startAirline.name;
 													cell3.innerHTML = list[flight].finalAirline.name;
 													cell4.innerHTML = list[flight].cost;
-													cell5.innerHTML = new Date(
-															list[flight].dateOfStart);
-													cell6.innerHTML = new Date(
-															list[flight].dateOfEnd);
+													cell5.innerHTML = 
+															list[flight].dateOfStart;
+													cell6.innerHTML = 
+															list[flight].dateOfEnd;
 													cell7.innerHTML = list[flight].numOfStops;
 													cell8.innerHTML = list[flight].lengthOfFlight;
 													cell9.innerHTML = '<button name=\"'
@@ -1728,11 +1728,11 @@ $(document)
 														.append(
 																"<h3>No flights found </h3>");
 											}
+											$("#foundFlightsReturn")
+											.append("<h3>Found flights return: </h3>")
 											if (list2.length > 0) {
 
-												$("#foundFlightsReturn")
-														.append(
-																"<h3>Found flights return: </h3>")
+												
 												var tabela = document
 														.getElementById("foundFlightsReturn");
 												var count = 1;
@@ -1763,10 +1763,8 @@ $(document)
 													cell2.innerHTML = list2[flight].startAirline.name;
 													cell3.innerHTML = list2[flight].finalAirline.name;
 													cell4.innerHTML = list2[flight].cost;
-													cell5.innerHTML = new Date(
-															list2[flight].dateOfStart);
-													cell6.innerHTML = new Date(
-															list2[flight].dateOfEnd);
+													cell5.innerHTML = list2[flight].dateOfStart;
+													cell6.innerHTML = list2[flight].dateOfEnd;
 													cell7.innerHTML = list2[flight].numOfStops;
 													cell8.innerHTML = list2[flight].lengthOfFlight;
 													cell9.innerHTML = '<button name=\"'
