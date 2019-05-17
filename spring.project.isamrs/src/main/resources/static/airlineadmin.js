@@ -13,6 +13,9 @@ var urlRoot15 = "http://localhost:8080/getSeat";
 var urlRoot16 = "http://localhost:8080/addQuickBooking";
 var urlRoot17 = "http://localhost:8080/deleteSeats";
 var urlChangePassword = "http://localhost:8080/api/changePasswordFirstTime";
+var urlRoot18="http://localhost:8080/getFlights";
+var urlRoot19 = "http://localhost:8080/reportFlightAttendance";
+var urlRoot20 = "http://localhost:8080/findAirlineAmount";
 
 var TOKEN_KEY = 'jwtToken';
 
@@ -27,6 +30,13 @@ $(document).on('click', '#editProfileButton', function(e) {
 $(document).on('click', '#addDestinationButton', function(e) {
 	getAllAirlines();
 })
+
+$(document).on(
+		'click',
+		'#reportsButton',
+		function(e) {
+			fillDatas();
+		});
 
 window.onload = function(e) {
 	console.log('window loades');
@@ -59,6 +69,141 @@ window.onload = function(e) {
 		}
 
 	})
+}
+
+function fillDatas() {
+	$.ajax({
+		type : 'GET',
+		url : urlRoot2,
+		headers : createAuthorizationTokenHeader(TOKEN_KEY),
+		dataType : "json",
+		success : function(data) {
+			if (data) {
+				$.ajax({
+					type : 'GET',
+					url : urlRoot18,
+					headers : createAuthorizationTokenHeader(TOKEN_KEY),
+					dataType : "json",
+					success : function(data) {
+						if (data) {
+							fillTableFlights(data, "reportAirlineEachFlight");
+						}
+					},
+					error : function(jqXHR, textStatus, errorThrown) {
+						alert(jqXHR.status);
+						alert(textStatus);
+						alert(errorThrown);
+					}
+
+				})
+				if(data.gradeNumber!=0){
+				$("#reportAirlineAverageGrade").html((data.score/data.gradeNumber).toFixed(2));
+				}
+				$("#reportAirlineAverageGrade").html((data.score).toFixed(2))
+			}
+		},
+		error : function(jqXHR, textStatus, errorThrown) {
+			alert(jqXHR.status);
+			alert(textStatus);
+			alert(errorThrown);
+		}
+
+	})
+	$.ajax({
+		type : 'GET',
+		url : urlRoot19,
+		headers : createAuthorizationTokenHeader(TOKEN_KEY),
+		dataType : "json",
+		success : function(data) {
+			// napravi chart myChart1
+			createChart("myChart1", data.dailyLabels, data.dailyValues)
+			createChart("myChart2", data.weeklyLabels, data.weeklyValues)
+			createChart("myChart3", data.monthlyLabels, data.monthlyValues)
+		},
+		error : function(jqXHR, textStatus, errorThrown) {
+			alert(jqXHR.status);
+			alert(textStatus);
+			alert(errorThrown);
+		}
+
+	})
+}
+
+function fillTableFlights(data, table) {
+	var response = data;
+	$("#" + table).find("tr").remove();
+	var tabela = document.getElementById(table);
+
+	var index = 0;
+	for ( var counter in response) {
+		var row = tabela.insertRow(counter);
+		var cell0 = row.insertCell(0);
+		var cell1 = row.insertCell(1);
+		var cell2 = row.insertCell(2);
+		var cell3 = row.insertCell(3);
+		var cell4 = row.insertCell(4);
+		var cell5 = row.insertCell(5);
+		var cell6 = row.insertCell(6);
+		var cell7 = row.insertCell(7);
+
+		cell0.innerHTML = ++index;
+		cell1.innerHTML = response[counter].number;
+		cell2.innerHTML = response[counter].startAirline.city
+		cell3.innerHTML = response[counter].finalAirline.city;
+		cell4.innerHTML = response[counter].dateOfStart;
+		cell5.innerHTML = response[counter].dateOfEnd;
+		cell6.innerHTML = response[counter].cost;
+		if(response[counter].gradeNumber!=0){
+		cell7.innerHTML = (response[counter].score/response[counter].gradeNumber).toFixed(2);
+		}else{
+			cell7.innerHTML = (response[counter].score).toFixed(2);
+		}
+		}
+	var row = tabela.insertRow(0);
+	var cell0 = row.insertCell(0);
+	var cell1 = row.insertCell(1);
+	var cell2 = row.insertCell(2);
+	var cell3 = row.insertCell(3);
+	var cell4 = row.insertCell(4);
+	var cell5 = row.insertCell(5);
+	var cell6 = row.insertCell(6);
+	var cell7 = row.insertCell(7);
+
+	cell0.innerHTML = '<p style= "color:#002699;">#</p>';
+	cell1.innerHTML = '<p style= "color:#002699;">Flight number</p>';
+	cell2.innerHTML = '<p style= "color:#002699;">Start destination</p';
+	cell3.innerHTML = '<p style= "color:#002699;">Final destination</p>';
+	cell4.innerHTML = '<p style= "color:#002699;">Start date</p>';
+	cell5.innerHTML = '<p style= "color:#002699;">End date</p>';
+	cell6.innerHTML = '<p style= "color:#002699;">Cost</p>';
+	cell7.innerHTML = '<p style= "color:#002699;">Score</p>';
+}
+
+
+function createChart(canvasId, labelNames, data) {
+	var ctx = document.getElementById(canvasId).getContext('2d');
+	var myChart = new Chart(ctx, {
+		type : 'bar',
+		data : {
+			labels : labelNames,
+			datasets : [ {
+				label : 'attendance',
+				data : data,
+				backgroundColor : Array(data.length).fill(' #0099ff'),
+				borderColor : Array(data.length).fill('black'),
+				borderWidth : 1
+			} ]
+		},
+		options : {
+			scales : {
+				yAxes : [ {
+					ticks : {
+						beginAtZero : true
+					}
+				} ]
+			}
+		}
+	});
 }
 
 function passwordValidation() {
@@ -942,6 +1087,36 @@ $(document).on('click', '#book', function(e) {
 	}
 
 })
+
+$(document).on('click', '#findAmountAirline', function(e) {
+	e.preventDefault();
+	var startDate = document.getElementById("amountSearchStartDate").value;
+	var endDate = document.getElementById("amountSearchEndDate").value;
+	if (startDate == "") {
+		startDate = "0000-00-00"
+	}
+	if (endDate == "") {
+		endDate = "0000-00-00"
+	}
+	var finalPath = urlRoot20 + "/" + startDate + "/" + endDate;
+	// popuni za report 4
+	$.ajax({
+		type : 'GET',
+		url : finalPath,
+		headers : createAuthorizationTokenHeader(TOKEN_KEY),
+		dataType : "json",
+		success : function(data) {
+			$("#amountAirlineValue").html(data.toFixed(2));
+		},
+		error : function(jqXHR, textStatus, errorThrown) {
+			alert(jqXHR.status);
+			alert(textStatus);
+			alert(errorThrown);
+		}
+
+	})
+
+});
 
 $(document)
 		.on(

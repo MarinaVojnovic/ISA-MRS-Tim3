@@ -232,5 +232,15 @@ public class FlightController {
 		Seat s = this.seatService.getOne(id);
 		return new ResponseEntity<>(s, HttpStatus.OK);
 	}
+	
+	@GetMapping(value="getFlights")
+	public ResponseEntity<List<Flight>> getFlights(){
+		User logged = (User) this.userDetailsService
+				.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+		List<Flight> flights=this.flightService.findByStartAirline(((AirlineAdmin) logged).getAirline());
+		return new ResponseEntity<>(flights,HttpStatus.OK);
+	}
+	
+	
 
 }

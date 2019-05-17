@@ -2,6 +2,7 @@ package team_three_spring_project_isamrs.controller;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -345,7 +346,7 @@ public class UserController {
 		List<InvitedFriendDTO> invited = new ArrayList<>();
 		FlightReservation fr = this.flightReservationService.create(new FlightReservation(fl.getCost(),
 				(RegularUser) logged, fl, this.seatService.getOne(Long.parseLong(sedista.split(" ")[0])), true,
-				brPasosa, logged.getFirstName(), logged.getLastName()));
+				brPasosa,new Date(), logged.getFirstName(), logged.getLastName()));
 
 		flightReservations.add(fr);
 		String[] idjevi = idjeviPutnika.split(" ");
@@ -357,7 +358,7 @@ public class UserController {
 			for (int i = 0; i < idjevi.length; i++) {
 				FlightReservation fri = this.flightReservationService.create(
 						new FlightReservation(fl.getCost(), this.regularUserService.findById(Long.parseLong(idjevi[i])),
-								fl, this.seatService.getOne(Long.parseLong(sed[i + 1])), false, 0,
+								fl, this.seatService.getOne(Long.parseLong(sed[i + 1])), false, 0, new Date(),
 								this.regularUserService.findById(Long.parseLong(idjevi[i])).getFirstName(),
 								this.regularUserService.findById(Long.parseLong(idjevi[i])).getLastName()));
 				flightReservations.add(fr);

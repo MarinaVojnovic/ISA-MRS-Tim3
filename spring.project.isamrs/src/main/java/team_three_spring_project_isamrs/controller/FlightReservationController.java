@@ -1,5 +1,12 @@
 package team_three_spring_project_isamrs.controller;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -11,12 +18,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import team_three_spring_project_isamrs.dto.ReportFlightAttendanceDTO;
+import team_three_spring_project_isamrs.dto.ReportHotelAttendanceDTO;
 import team_three_spring_project_isamrs.model.Airline;
+import team_three_spring_project_isamrs.model.AirlineAdmin;
 import team_three_spring_project_isamrs.model.Car;
 import team_three_spring_project_isamrs.model.CarReservation;
 import team_three_spring_project_isamrs.model.Flight;
 import team_three_spring_project_isamrs.model.FlightReservation;
+import team_three_spring_project_isamrs.model.HotelAdmin;
 import team_three_spring_project_isamrs.model.RegularUser;
+import team_three_spring_project_isamrs.model.RoomReservation;
 import team_three_spring_project_isamrs.model.Seat;
 import team_three_spring_project_isamrs.service.FlightReservationService;
 import team_three_spring_project_isamrs.service.FlightService;
@@ -116,5 +128,112 @@ public class FlightReservationController {
 				 
 		return new ResponseEntity<>(flightRes, HttpStatus.OK);
 
+	}
+	
+	@GetMapping(value = "/reportFlightAttendance")
+	@PreAuthorize("hasRole('ROLE_AIRLINE_ADMIN')")
+	public ResponseEntity<ReportFlightAttendanceDTO> reportFlightAttendance() throws ParseException {
+		ReportFlightAttendanceDTO retVal = new ReportFlightAttendanceDTO();
+		long DAY_IN_MILI = 86400000;
+		Date currentDate = new Date();
+		DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd");
+		DateFormat df2 = new SimpleDateFormat("yyyy-MM");
+		Date today = df1.parse(df1.format(currentDate));
+		Date thisMonth = df2.parse(df2.format(currentDate));
+		List<FlightReservation> allReservations = this.flightReservationService.getAll();
+		Date workWith = new Date();
+		Date workWith2 = new Date();
+		Date startDate = new Date();
+		// daily
+		for (int i = 1; i < 8; i++) {
+			int number = 0;
+			workWith = new Date(today.getTime() - i * DAY_IN_MILI);
+			retVal.getDailyLabels().add(df1.format(workWith));
+			for (FlightReservation flightReservation : allReservations) {
+				startDate = flightReservation.getDateSold();
+				if (df1.format(startDate).equals(df1.format(workWith))) {
+					number += 1;
+				}
+			}
+			retVal.getDailyValues().add(number);
+		}
+		// weekly
+		for (int i = 0; i < 7; i++) {
+			int number = 0;
+			workWith = new Date(today.getTime() - (i * 7 + 1) * DAY_IN_MILI);
+			workWith2 = new Date(today.getTime() - (7 * i + 7) * DAY_IN_MILI);
+			retVal.getWeeklyLabels().add(df1.format(workWith2) + " to " + df1.format(workWith));
+			for (FlightReservation flightReservation : allReservations) {
+				startDate = flightReservation.getDateSold();
+				if (!startDate.after(workWith) && !startDate.before(workWith2)) {
+					number += 1;
+				}
+			}
+			retVal.getWeeklyValues().add(number);
+		}
+		// monthly
+		for (int i = 0; i < 7; i++) {
+			int number = 0;
+			workWith = new Date(thisMonth.getTime() - DAY_IN_MILI);
+			workWith2 = df2.parse(df2.format(workWith));
+			retVal.getMonthlyLabels().add(df2.format(workWith2));
+			for (FlightReservation flightReservation : allReservations) {
+				startDate = flightReservation.getDateSold();
+				if (!startDate.after(workWith) && !startDate.before(workWith2)) {
+					number += 1;
+				}
+			}
+			retVal.getMonthlyValues().add(number);
+			thisMonth = df2.parse(df2.format(new Date(thisMonth.getTime() - DAY_IN_MILI)));
+		}
+		return new ResponseEntity<>(retVal, HttpStatus.OK);
+	}
+	
+	
+	@GetMapping(value = "/findAirlineAmount/{startDate}/{endDate}")
+	@PreAuthorize("hasRole('ROLE_AIRLINE_ADMIN')")
+	public ResponseEntity<Double> findAirlineAmount(@PathVariable String startDate, @PathVariable String endDate)
+			throws ParseException {
+		AirlineAdmin aa = (AirlineAdmin) this.userDetailsService
+				.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+		List<FlightReservation> allReservations = this.flightReservationService.getAll();
+		List<FlightReservation> fromMyAirline=new ArrayList<FlightReservation>();
+		for(FlightReservation fr: allReservations) {
+			if(fr.getFlightReservation().getAirline().getId()==aa.getAirline().getId()) {
+				fromMyAirline.add(fr);
+			}
+		}
+		List<FlightReservation> retVal = new ArrayList<>();
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+		Date startDate1 = new Date();
+		Date startDate2 = new Date();
+		Date endDate2 = new Date();
+		for (FlightReservation fr : fromMyAirline) {
+			startDate1 = fr.getDateSold();
+			if (!startDate.equals("0000-00-00") && !endDate.equals("0000-00-00")) {
+				startDate2 = df.parse(startDate);
+				endDate2 = df.parse(endDate);
+				if (startDate2.getTime() >= endDate2.getTime()
+						|| (startDate1.before(startDate2)) || (startDate1.after(endDate2))) {
+					continue;
+				}
+			} else if (startDate.equals("0000-00-00") && !endDate.equals("0000-00-00")) {
+				endDate2 = df.parse(endDate);
+				if (endDate2.before(startDate1)) {
+					continue;
+				}
+			} else if (!startDate.equals("0000-00-00") && endDate.equals("0000-00-00")) {
+				startDate2 = df.parse(startDate);
+				if (startDate2.after(startDate1)) {
+					continue;
+				}
+			}
+			retVal.add(fr);
+		}
+		double value = 0;
+		for (FlightReservation fr: retVal) {
+			value += fr.getPrice();
+		}
+		return new ResponseEntity<>(value, HttpStatus.OK);
 	}
 }
