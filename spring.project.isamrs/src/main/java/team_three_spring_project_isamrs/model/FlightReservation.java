@@ -1,5 +1,7 @@
 package team_three_spring_project_isamrs.model;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -53,6 +55,9 @@ public class FlightReservation {
 	
 	@Column(name="passportNum")
 	int passportNum;
+	
+	@Column(name="dateSold")
+	Date dateSold;
 	
 	@Column(name="name")
 	String name;
@@ -139,7 +144,7 @@ public class FlightReservation {
 	}
 
 	public FlightReservation(Long id, Double price, RegularUser regularUserFlightReservation, Flight flightReservation,
-			Seat seat, Boolean confirmed, int passportNum, String name, String lastName) {
+			Seat seat, Boolean confirmed, int passportNum, Date dateSold, String name, String lastName) {
 		super();
 		this.id = id;
 		this.price = price;
@@ -148,12 +153,13 @@ public class FlightReservation {
 		this.seat = seat;
 		this.confirmed = confirmed;
 		this.passportNum = passportNum;
+		this.dateSold = dateSold;
 		this.name = name;
 		this.lastName = lastName;
 	}
 
 	public FlightReservation(Double price, RegularUser regularUserFlightReservation, Flight flightReservation,
-			Seat seat, Boolean confirmed, int passportNum, String name, String lastName) {
+			Seat seat, Boolean confirmed, int passportNum, Date dateSold, String name, String lastName) {
 		super();
 		this.price = price;
 		this.regularUserFlightReservation = regularUserFlightReservation;
@@ -161,8 +167,17 @@ public class FlightReservation {
 		this.seat = seat;
 		this.confirmed = confirmed;
 		this.passportNum = passportNum;
+		this.dateSold = dateSold;
 		this.name = name;
 		this.lastName = lastName;
+	}
+
+	public Date getDateSold() {
+		return dateSold;
+	}
+
+	public void setDateSold(Date dateSold) {
+		this.dateSold = dateSold;
 	}
 	
 	

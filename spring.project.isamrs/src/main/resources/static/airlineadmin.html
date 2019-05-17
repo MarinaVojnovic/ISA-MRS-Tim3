@@ -9,6 +9,7 @@
 <script src="auth.js"></script>
 <script src="airlineadmin.js"></script>
 <script src="bootstrap.min.js"></script>
+<script src="chart.min.js"></script>
 
 <style>
 body {
@@ -132,6 +133,8 @@ body {
 			onclick="openCity(event, 'allFlights')">All flights</button>
 		<button id="addDestinationButton" class="tablinks"
 			onclick="openCity(event, 'addDestination')">Add destination</button>
+		<button id="reportsButton" class="tablinks"
+			onclick="openCity(event, 'report')">Reports</button>
 		<button id="logoutClicked" class="tablinks"
 			onclick="openCity(event, 'logout')">Logout</button>
 	</div>
@@ -436,6 +439,68 @@ body {
 
 			<br>
 		</div>
+	</div>
+	
+	<div id="report" class="tabcontent">
+		<div class="container">
+			<h2>Reports:</h2>
+			<hr style="border-color: black">
+			<div class="container">
+				<table>
+					<tr>
+						<td>
+							<h3>1) Average grade for this airline ->&nbsp</h3>
+						</td>
+						<td><h3 id="reportAirlineAverageGrade">X</h3></td>
+					</tr>
+				</table>
+			</div>
+			<hr style="border-color: black">
+			<div class="container">
+				<h3>2) Average grade for each flight of this airline:</h3>
+				<table class="table" id="reportAirlineEachFlight">
+				</table>
+			</div>
+			<hr style="border-color: black">
+			<div class="container">
+				<h3>3) Graphic show of sold tickets of this airline:</h3>
+				<br>
+				<h4 style="margin-left: 6%">A) Daily </h4>
+				<canvas id="myChart1" width="400" height="400"
+					style="max-width: 400px; max-height: 400px; margin-left: 12%"></canvas>
+				<br>
+				<h4 style="margin-left: 6%">B) Weekly </h4>
+				<canvas id="myChart2" width="400" height="400"
+					style="max-width: 400px; max-height: 400px; margin-left: 12%"></canvas>
+				<br>
+				<h4 style="margin-left: 6%">C) Monthly </h4>
+				<canvas id="myChart3" width="400" height="400"
+					style="max-width: 400px; max-height: 400px; margin-left: 12%"></canvas>
+
+			</div>
+			<hr style="border-color: black">
+			<div class="container">
+				<h3>4) Amounts of this flight in concrete period:</h3>
+				<h5>* Put dates for which you want to see amount you earned,
+					leave blank if you don't want to limit date *</h5>
+				<div class="container">
+					Start date: <input type="date" name="" value=""
+						placeholder="Pick start date" id="amountSearchStartDate" /> End
+					date: <input type="date" name="" value=""
+						placeholder="Pick end date" id="amountSearchEndDate" />
+					<button style="background: #cc0033; color: white"
+						id="findAmountAirline" class="btn btn-primary">Search</button>
+				</div>
+				<table>
+					<tr>
+						<td><h4>Amount of money in inserted period ->&nbsp</h4></td>
+						<td><h4 id="amountAirlineValue">0</h4></td>
+					</tr>
+				</table>
+			</div>
+			<hr style="border-color: black">
+		</div>
+
 	</div>
 
 	<div id="addDestination" class="tabcontent">
