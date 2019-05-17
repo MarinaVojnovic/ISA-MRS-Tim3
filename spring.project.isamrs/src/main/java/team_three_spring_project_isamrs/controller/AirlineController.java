@@ -1,5 +1,8 @@
 package team_three_spring_project_isamrs.controller;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -152,8 +155,12 @@ public class AirlineController {
 		List<Airline> back = new ArrayList<>();
 		for (Airline a : airlines) {
 			int i = 0;
+			if(a.getId()==air.getId()) {
+				i=1;
+			}
+			
 			for (AirlineWorkingDestinations awd : airlineWorkingDestinations) {
-				if (awd.getWorksWith().getId().equals(a.getId())) {
+				if (awd.getWorksWith().getId().equals(a.getId()) || a.getId()==air.getId()) {
 					i = 1;
 				}
 			}
@@ -205,14 +212,15 @@ public class AirlineController {
 	
 	@GetMapping(value="/getAllFlightsAirline")
 	@PreAuthorize("hasRole('ROLE_AIRLINE_ADMIN')")
-	public ResponseEntity<List<Flight>> getAllFlightsAirline() {
+	public ResponseEntity<List<Flight>> getAllFlightsAirline() throws ParseException {
 		User logged = (User) this.userDetailsService
 				.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
 		Airline air = ((AirlineAdmin) logged).getAirline();
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		List<Flight> flights = this.flightService.findByStartAirline(air);
 		List<Flight> returnFlights=new ArrayList<Flight>();
 		for(Flight f: flights) {
-			if(f.getDateOfStart().after(new Date())) {
+			if(df.parse(f.getDateOfStart()).after(new Date())) {
 				returnFlights.add(f);
 			}
 		}

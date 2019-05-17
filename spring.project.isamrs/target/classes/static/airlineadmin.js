@@ -288,26 +288,27 @@ function addFlight() {
 	var costOfFlight = document.getElementById("costOfFlight").value;
 	var dateOfFlight = document.getElementById("dateOfFlight").value;
 	var dateOfArrival = document.getElementById("dateOfArrival").value;
-	var length = document.getElementById("lengthOfFlight").value;
 	var numOfSeatsEconomy = document.getElementById("numberOfSeatsEconomy").value;
 	var numOfSeatsBusiness = document.getElementById("numberOfSeatsBusiness").value;
 	var numOfSeatsFirst = document.getElementById("numberOfSeatsFirst").value;
 	var numOfStops = document.getElementById("numberOfFlightStops").value;
+	dateOfFlight=dateOfFlight.replace("T", " ");
+	dateOfArrival=dateOfArrival.replace("T"," ");
 	var stops = "";
 	var i = 0
 	if (flightNumberRegister == "" || costOfFlight == "" || dateOfFlight == ""
-			|| dateOfArrival == "" || length == "" || numOfSeatsEconomy == ""
+			|| dateOfArrival == "" || numOfSeatsEconomy == ""
 			|| numOfSeatsBusiness == "" || numOfSeatsFirst == ""
 			|| numOfStops == "") {
 		alert("You must fill in all of the fields");
 		i = 1;
 	}
-	if (isNaN(costOfFlight) || costOfFlight < 0 || isNaN(length) || length < 0
+	if (isNaN(costOfFlight) || costOfFlight < 0 
 			|| isNaN(numOfSeatsEconomy) || numOfSeatsEconomy < 0
 			|| isNaN(numOfSeatsBusiness) || numOfSeatsBusiness < 0
 			|| isNaN(numOfSeatsFirst) || numOfSeatsFirst < 0
 			|| isNaN(numOfStops) || numOfStops < 0) {
-		alert("You must insert positive number for cost of flight,length,number of seats and stops!");
+		alert("You must insert positive number for cost of flight,number of seats and stops!");
 		i = 1;
 	}
 	if (startDestinationRegister == finalDestinationRegister) {
@@ -347,7 +348,7 @@ function addFlight() {
 			dataType : "json",
 			data : createFlightToJSON(flightNumberRegister,
 					startDestinationRegister, finalDestinationRegister,
-					costOfFlight, dateOfFlight, dateOfArrival, length,
+					costOfFlight, dateOfFlight, dateOfArrival,
 					numOfSeatsEconomy, numOfSeatsBusiness, numOfSeatsFirst,
 					numOfStops, stops),
 			success : function(data) {
@@ -381,7 +382,6 @@ $(document)
 					var dateOfFlight = document.getElementById("dateOfFlight").value;
 					var dateOfArrival = document
 							.getElementById("dateOfArrival").value;
-					var length = document.getElementById("lengthOfFlight").value;
 					var numOfSeatsEconomy = document
 							.getElementById("numberOfSeatsEconomy").value;
 					var numOfSeatsBusiness = document
@@ -390,24 +390,25 @@ $(document)
 							.getElementById("numberOfSeatsFirst").value;
 					var numOfStops = document
 							.getElementById("numberOfFlightStops").value;
+					dateOfFlight=dateOfFlight.replace("T", " ");
+					dateOfArrival=dateOfArrival.replace("T"," ");
 					var i = 0
 					if (flightNumberRegister == "" || costOfFlight == ""
 							|| dateOfFlight == "" || dateOfArrival == ""
-							|| length == "" || numOfSeatsEconomy == ""
+							|| numOfSeatsEconomy == ""
 							|| numOfSeatsBusiness == ""
 							|| numOfSeatsFirst == "" || numOfStops == "") {
 						alert("You must fill in all of the fields");
 						i = 1;
 					}
 					if (isNaN(costOfFlight) || costOfFlight < 0
-							|| isNaN(length) || length < 0
 							|| isNaN(numOfSeatsEconomy)
 							|| numOfSeatsEconomy < 0
 							|| isNaN(numOfSeatsBusiness)
 							|| numOfSeatsBusiness < 0 || isNaN(numOfSeatsFirst)
 							|| numOfSeatsFirst < 0 || isNaN(numOfStops)
 							|| numOfStops < 0) {
-						alert("You must insert positive number for cost of flight,length,number of seats and stops!");
+						alert("You must insert positive number for cost of flight,number of seats and stops!");
 						i = 1;
 					}
 					if (startDestination == finalDestination) {
@@ -701,10 +702,10 @@ $(document)
 											cell2.innerHTML = list[flight].startAirline.name;
 											cell3.innerHTML = list[flight].finalAirline.name;
 											cell4.innerHTML = list[flight].cost;
-											cell5.innerHTML = new Date(
-													list[flight].dateOfStart);
-											cell6.innerHTML = new Date(
-													list[flight].dateOfEnd);
+											cell5.innerHTML = 
+													list[flight].dateOfStart;
+											cell6.innerHTML =
+													list[flight].dateOfEnd;
 											cell7.innerHTML = list[flight].numOfStops;
 											cell8.innerHTML = list[flight].lengthOfFlight;
 											cell9.innerHTML = '<button name=\"'
@@ -940,6 +941,31 @@ $(document).on(
 		function(e) {
 			e.preventDefault();
 			$.ajax({
+				type: 'GET',
+				url: urlRoot2 ,
+				headers : createAuthorizationTokenHeader(TOKEN_KEY),
+				success: function(data){
+					var list = data == null ? []
+					: (data instanceof Array ? data : [ data ]);
+				if (data == null) {
+	
+				} else {
+					var option=$('<option name="'
+							+ data.id + '">'
+							+ data.name
+							+ '</option>');
+					$("#startDestinationRegister").append(option);
+				}
+					
+				},
+				error : function(jqXHR, textStatus, errorThrown) {
+					alert(jqXHR.status);
+					alert(textStatus);
+					alert(errorThrown);
+
+				}
+			})
+			$.ajax({
 				type : 'GET',
 				url : urlRoot8,
 				headers : createAuthorizationTokenHeader(TOKEN_KEY),
@@ -954,13 +980,13 @@ $(document).on(
 								: (data instanceof Array ? data : [ data ]);
 						if (list.length > 0) {
 							var i = 0
-							$.each(list, function(index, destination) {
-								var option = $('<option name="'
-										+ destination.worksWith.id + '">'
-										+ destination.worksWith.name
-										+ '</option>')
-								$("#startDestinationRegister").append(option);
-							})
+//							$.each(list, function(index, destination) {
+//								var option = $('<option name="'
+//										+ destination.worksWith.id + '">'
+//										+ destination.worksWith.name
+//										+ '</option>')
+//								$("#startDestinationRegister").append(option);
+//							})
 							$.each(list, function(index, destination) {
 								var option = $('<option name="'
 										+ destination.worksWith.id + '">'
@@ -1235,7 +1261,7 @@ function passwordDTOJson(password1) {
 
 function createFlightToJSON(flightNumberRegister, startDestinationRegister,
 		finalDestinationRegister, costOfFlight, dateOfFlight, dateOfArrival,
-		length, numOfSeatsEconomy, numOfSeatsBusiness, numOfSeatsFirst,
+		numOfSeatsEconomy, numOfSeatsBusiness, numOfSeatsFirst,
 		numOfStops, stops) {
 	return JSON.stringify({
 		"flightNumberRegister" : flightNumberRegister,
@@ -1244,7 +1270,6 @@ function createFlightToJSON(flightNumberRegister, startDestinationRegister,
 		"costOfFlight" : costOfFlight,
 		"dateOfFlight" : dateOfFlight,
 		"dateOfArrival" : dateOfArrival,
-		"length" : length,
 		"numOfSeatsEconomy" : numOfSeatsEconomy,
 		"numOfSeatsBusiness" : numOfSeatsBusiness,
 		"numOfSeatsFirst" : numOfSeatsFirst,
