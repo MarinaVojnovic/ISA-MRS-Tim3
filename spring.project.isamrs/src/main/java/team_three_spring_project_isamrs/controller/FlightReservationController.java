@@ -16,8 +16,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import team_three_spring_project_isamrs.dto.InvitedFriendDTO;
 import team_three_spring_project_isamrs.dto.ReportFlightAttendanceDTO;
 import team_three_spring_project_isamrs.dto.ReportHotelAttendanceDTO;
 import team_three_spring_project_isamrs.model.Airline;
@@ -26,12 +28,15 @@ import team_three_spring_project_isamrs.model.Car;
 import team_three_spring_project_isamrs.model.CarReservation;
 import team_three_spring_project_isamrs.model.Flight;
 import team_three_spring_project_isamrs.model.FlightReservation;
+import team_three_spring_project_isamrs.model.FriendRequest;
 import team_three_spring_project_isamrs.model.HotelAdmin;
 import team_three_spring_project_isamrs.model.RegularUser;
 import team_three_spring_project_isamrs.model.RoomReservation;
 import team_three_spring_project_isamrs.model.Seat;
+import team_three_spring_project_isamrs.model.User;
 import team_three_spring_project_isamrs.service.FlightReservationService;
 import team_three_spring_project_isamrs.service.FlightService;
+import team_three_spring_project_isamrs.service.FriendRequestService;
 import team_three_spring_project_isamrs.service.SeatService;
 import team_three_spring_project_isamrs.service.impl.CustomUserDetailsService;
 
@@ -47,6 +52,9 @@ public class FlightReservationController {
 	SeatService seatService;
 	@Autowired
 	private CustomUserDetailsService userDetailsService;
+	
+	@Autowired
+	FriendRequestService friendRequestService;
 
 	@GetMapping(value = "/findAirlineFromRes/{resId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Airline> findAirlineFromRes(@PathVariable Long resId) {
@@ -187,6 +195,62 @@ public class FlightReservationController {
 			thisMonth = df2.parse(df2.format(new Date(thisMonth.getTime() - DAY_IN_MILI)));
 		}
 		return new ResponseEntity<>(retVal, HttpStatus.OK);
+	}
+	
+	@PostMapping(value="/myReservation/{passportNum}/{seatId}")
+	public ResponseEntity<Long> myReservation(@PathVariable int passportNum,@PathVariable long seatId){
+			RegularUser logged=(RegularUser)this.userDetailsService
+					.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+			Seat s=this.seatService.getOne(seatId);
+			Flight fl=s.getFlight();
+			Double price=fl.getCost();
+			s.setTaken(true);
+			if(s.getDiscount()!=0) {
+				price=(price*s.getDiscount())/100;
+			}
+			FlightReservation fr=this.flightReservationService.create(new FlightReservation(price,logged,fl,s,true,passportNum,new Date(),logged.getFirstName(),logged.getLastName()));	
+			return new ResponseEntity<Long>(fr.getId(), HttpStatus.OK);
+	}
+	
+	@PostMapping(value="/reserveForFriend/{name}/{lastName}/{passportNumber}/{fromFriendList}/{seatId}")
+	public ResponseEntity<InvitedFriendDTO> reserveForFriend(@PathVariable String name,@PathVariable String lastName,@PathVariable int passportNumber,@PathVariable boolean fromFriendList,@PathVariable long seatId){
+			RegularUser logged=(RegularUser)this.userDetailsService
+					.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+			InvitedFriendDTO dto;
+			FlightReservation reservation;
+			int found=0;
+			RegularUser foundUser=new RegularUser();
+			Seat s=this.seatService.getOne(seatId);
+			if(fromFriendList) {
+				List<FriendRequest> fr=this.friendRequestService.findByReceivedAndAccepted(logged, true);
+				List<FriendRequest> fr2=this.friendRequestService.findBySentAndAccepted(logged, true);
+				fr2.addAll(fr);
+				for(FriendRequest f: fr2) {
+					if((f.getReceived().getFirstName().equalsIgnoreCase(name) && f.getReceived().getLastName().equalsIgnoreCase(lastName) && f.getReceived().getId()!=logged.getId())) {
+						found=1;
+						foundUser=f.getReceived();
+						break;
+					}else if(f.getSent().getFirstName().equalsIgnoreCase(name) && f.getSent().getLastName().equalsIgnoreCase(lastName) && f.getSent().getId()!=logged.getId()) {
+						found=1;
+						foundUser=f.getSent();
+						break;
+					}
+				}
+			}
+			double price=s.getFlight().getCost();
+			if(s.getDiscount()!=0) {
+				price=(price*s.getDiscount())/100;
+			}	
+			if(found==1) {
+				s.setTaken(true);
+				reservation=this.flightReservationService.create(new FlightReservation(price,foundUser,s.getFlight(),s,false,passportNumber,new Date(),foundUser.getFirstName(),foundUser.getLastName()));
+				dto=new InvitedFriendDTO(foundUser.getEmail(),reservation.getId());
+			}else {
+				s.setTaken(true);
+				reservation=this.flightReservationService.create(new FlightReservation(price,null,s.getFlight(),s,true,passportNumber,new Date(),name,lastName));
+				dto=new InvitedFriendDTO("no",reservation.getId());
+			}
+			return new ResponseEntity<InvitedFriendDTO>(dto, HttpStatus.OK);
 	}
 	
 	

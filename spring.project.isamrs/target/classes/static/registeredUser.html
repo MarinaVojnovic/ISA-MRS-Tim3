@@ -107,6 +107,11 @@ table.poseban3 td {
 	word-wrap: break-word;
 }
 
+td {
+      padding: 0;
+      vertical-align: middle;
+    }
+
 /* Style the tab */
 .tab {
 	overflow: hidden;
@@ -205,6 +210,8 @@ table.poseban3 td {
 .seat{
 	backgroung: #ccccff
 }
+
+
 </style>
 </head>
 <body>
@@ -932,14 +939,14 @@ table.poseban3 td {
 				</div>
 				<div id="seatsFlight"></div>
 			</div>
-			<input type="hidden" id="destinationId"> <input type="hidden"
-				id="startDateId"> <input type="hidden" id="endDateId">
+			
 
 
 
 			<br>
 		</div>
 	</div>
+	
 
 	<div id="showRentacarsInDest" class="tabcontent">
 		<div class="container">
@@ -1121,6 +1128,15 @@ table.poseban3 td {
 			</table>
 		</div>
 
+	</div>
+	
+	<div id="inviteFriend" class="tabcontent">
+		<div class="container">
+		
+		<input type="hidden" id="destinationId"> <input type="hidden"
+				id="startDateId"> <input type="hidden" id="endDateId">
+			
+		</div>
 	</div>
 
 	<script>
