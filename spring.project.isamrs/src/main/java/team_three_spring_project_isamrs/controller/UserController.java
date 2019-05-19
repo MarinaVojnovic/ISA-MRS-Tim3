@@ -341,6 +341,7 @@ public class UserController {
 	@PreAuthorize("hasRole('ROLE_USER')")
 	public ResponseEntity<FlightReservationReturnDTO> makeReservation(
 			@RequestBody FlightReservationDTO flightReservation) {
+		System.out.println("MAKE RESERVATION FLIGHT CALLED");
 		int brPasosa = Integer.parseInt(flightReservation.getPassportNum());
 		String idjeviPutnika = flightReservation.getUsers();
 		String sedista = flightReservation.getSeats();
@@ -352,29 +353,48 @@ public class UserController {
 				.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
 		
 		
-		Integer numberOfRes = user.getCarReservations().size()+user.getFlightReservations().size()+user.getRoomReservations().size();
+		Integer flights =0;
+		if (user.getFlightReservations()!=null && user.getFlightReservations().size() !=0) {
+			System.out.println("Uslo u flight "+user.getFlightReservations().size());
+			flights=user.getFlightReservations().size();
+			
+		}
+		Integer cars=0;
+		if (user.getCarReservations()!=null && user.getCarReservations().size() !=0) {
+			System.out.println("Uslo u cars "+user.getCarReservations().size());
+			cars=user.getCarReservations().size();
+		}
+		Integer hotels=0;
+		if (user.getRoomReservations()!=null && user.getRoomReservations().size() !=0) {
+			System.out.println("Uslo u hotels "+user.getRoomReservations().size());
+			hotels=user.getRoomReservations().size();
+		}
+		
 		Integer discount;
-		if (numberOfRes==3) {
+		Integer numberOfRes = flights+cars+hotels;
+		if (numberOfRes>=3 && numberOfRes < 10) {
 			discount=5;
-		}else if(numberOfRes==10) {
+		}else if(numberOfRes>=10 && numberOfRes <30) {
 			discount=10;
-		}else if (numberOfRes==30) {
+		}else if (numberOfRes>=30 && numberOfRes < 100) {
 			discount=20;
-		}else if(numberOfRes==100) {
+		}else if(numberOfRes>=100) {
 			discount=40;
 		}else {
 			discount=0;
 		}
+		
 		
 		Flight fl = this.flightService.getOne(let);
 		List<FlightReservation> flightReservations = new ArrayList<>();
 		List<InvitedFriendDTO> invited = new ArrayList<>();
 		FlightReservation fr = this.flightReservationService.create(new FlightReservation(fl.getCost(),
 				(RegularUser) logged, fl, this.seatService.getOne(Long.parseLong(sedista.split(" ")[0])), true,
-				brPasosa,new Date(), logged.getFirstName(), logged.getLastName()));
+				brPasosa,new Date(), logged.getFirstName(), logged.getLastName(), discount));
 
-				brPasosa, logged.getFirstName(), logged.getLastName()));
-		fr.setDiscount(discount);
+			
+		
+		
 		Double newPrice=0.0;
 		if (discount!=0) {
 			newPrice=fl.getCost()*(100-discount)/100;

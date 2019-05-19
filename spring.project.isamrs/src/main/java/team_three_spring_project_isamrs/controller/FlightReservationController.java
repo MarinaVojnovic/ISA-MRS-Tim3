@@ -237,7 +237,42 @@ public class FlightReservationController {
 			if(s.getDiscount()!=0) {
 				price=(price*s.getDiscount())/100;
 			}
-			FlightReservation fr=this.flightReservationService.create(new FlightReservation(price,logged,fl,s,true,passportNum,new Date(),logged.getFirstName(),logged.getLastName()));	
+
+			Integer flights =0;
+			if (logged.getFlightReservations()!=null && logged.getFlightReservations().size() !=0) {
+				System.out.println("Uslo u flight "+logged.getFlightReservations().size());
+				flights=logged.getFlightReservations().size();
+				
+			}
+			Integer cars=0;
+			if (logged.getCarReservations()!=null && logged.getCarReservations().size() !=0) {
+				System.out.println("Uslo u cars "+logged.getCarReservations().size());
+				cars=logged.getCarReservations().size();
+			}
+			Integer hotels=0;
+			if (logged.getRoomReservations()!=null && logged.getRoomReservations().size() !=0) {
+				System.out.println("Uslo u hotels "+logged.getRoomReservations().size());
+				hotels=logged.getRoomReservations().size();
+			}
+			
+			Integer discount;
+			Integer numberOfRes = flights+cars+hotels;
+			if (numberOfRes>=3 && numberOfRes < 10) {
+				discount=5;
+			}else if(numberOfRes>=10 && numberOfRes <30) {
+				discount=10;
+			}else if (numberOfRes>=30 && numberOfRes < 100) {
+				discount=20;
+			}else if(numberOfRes>=100) {
+				discount=40;
+			}else {
+				discount=0;
+			}
+			
+			
+			
+			System.out.println("BROJ REZERVACIJA U FLIGHTS: "+numberOfRes);
+			FlightReservation fr=this.flightReservationService.create(new FlightReservation(price,logged,fl,s,true,passportNum,new Date(),logged.getFirstName(),logged.getLastName(),discount));	
 			return new ResponseEntity<Long>(fr.getId(), HttpStatus.OK);
 	}
 	

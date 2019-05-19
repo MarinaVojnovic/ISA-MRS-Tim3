@@ -108,19 +108,37 @@ public class CarReservationController {
 		RegularUser user = (RegularUser) this.userDetailsService
 				.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
 		
-		Integer numberOfRes = user.getCarReservations().size()+user.getFlightReservations().size()+user.getRoomReservations().size();
+		Integer flights =0;
+		if (user.getFlightReservations()!=null && user.getFlightReservations().size() !=0) {
+			System.out.println("Uslo u flight "+user.getFlightReservations().size());
+			flights=user.getFlightReservations().size();
+			
+		}
+		Integer cars=0;
+		if (user.getCarReservations()!=null && user.getCarReservations().size() !=0) {
+			System.out.println("Uslo u cars "+user.getCarReservations().size());
+			cars=user.getCarReservations().size();
+		}
+		Integer hotels=0;
+		if (user.getRoomReservations()!=null && user.getRoomReservations().size() !=0) {
+			System.out.println("Uslo u hotels "+user.getRoomReservations().size());
+			hotels=user.getRoomReservations().size();
+		}
+		
 		Integer discount;
-		if (numberOfRes==3) {
+		Integer numberOfRes = flights+cars+hotels;
+		if (numberOfRes>=3 && numberOfRes < 10) {
 			discount=5;
-		}else if(numberOfRes==10) {
+		}else if(numberOfRes>=10 && numberOfRes <30) {
 			discount=10;
-		}else if (numberOfRes==30) {
+		}else if (numberOfRes>=30 && numberOfRes < 100) {
 			discount=20;
-		}else if(numberOfRes==100) {
+		}else if(numberOfRes>=100) {
 			discount=40;
 		}else {
 			discount=0;
 		}
+		System.out.println("Discount in carssss: "+discount);
 		
 		@SuppressWarnings("deprecation")
 		Date startDatee = new Date(Integer.parseInt(startDate.split("\\-")[0]) - 1900,
