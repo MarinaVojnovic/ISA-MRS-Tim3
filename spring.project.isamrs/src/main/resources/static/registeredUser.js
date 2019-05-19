@@ -70,6 +70,8 @@ var urlRootGradeHotel="http://localhost:8080/gradeHotel";
 var urlRootCancelHotelRes="http://localhost:8080/cancelHotelReservation";
 var finishReservationUrl="http://localhost:8080/api/finishReservation";
 var fastReservationAirline="http://localhost:8080/api/fastReservationAirline";
+var myReservationUrl="http://localhost:8080/myReservation";
+var reserveForFriendUrl="http://localhost:8080/reserveForFriend"
 
 $(document).on('click', '#editProfileButton', function(e) {
 	getLogged();
@@ -3114,13 +3116,170 @@ $(document)
 
 				});
 
+$(document).on('click','#inviteMore',function(e){
+	e.preventDefault();
+	var friendName=document.getElementById("friendName").value;
+	var lastName=document.getElementById("friendLastName").value;
+	var passportNumber=document.getElementById("passportNumber").value;
+	var cekiran;
+	if(document.getElementById("checkboxFriend").checked){
+		cekiran=true;
+	}else{
+		cekiran=false;
+	}
+	if(friendName=="" || lastName=="" || passportNumber==""){
+		alert("All fields must be filled in.")
+	}else if(isNaN(passportNumber)){
+		alert("Passport number must be number!");
+	}else{
+		var choosenSeats=JSON.parse(sessionStorage["choosenSeats"]);
+		var idSedista=choosenSeats.shift();
+		sessionStorage.setItem("choosenSeats", JSON.stringify(choosenSeats));
+		var friendNum=JSON.parse(sessionStorage["friendNumber"]);
+		var upisi=friendNum+1;
+		sessionStorage.setItem("friendNumber", JSON.stringify(upisi));
+		var numSeats=JSON.parse(sessionStorage["numSeats"]);
+		console.log("Broj sedista",numSeats);
+		$.ajax({
+			type: 'POST',
+			url: reserveForFriendUrl+'/'+friendName+'/'+lastName+'/'+passportNumber+'/'+cekiran+'/'+idSedista,
+			headers : createAuthorizationTokenHeader(TOKEN_KEY),
+		    success: function(data){
+		    	$("#inviteFriend").empty();
+		    	if(data.email!="no"){
+		    		sendEmail(data);
+		    		
+		    	}if(numSeats>=friendNum){
+		    	
+		    		openCity(e, 'inviteFriend');
+		    		$("#inviteFriend").append("<h2 align='center'>Invite friend number "+friendNum+": <h2>");
+		    		var table=$('<table align="center"></table>');
+		    		var tr=$('<tr></tr>');
+		    		tr.append('<td><p>  Name:  </p></td>');
+		    		tr.append('<td><input type="text" align="center" id="friendName"></td>');
+		    		table.append(tr);
+		    		var tr1=$('<tr></tr>');
+		    		tr1.append('<td><p>  Last name:  </p></td>');
+		    		tr1.append('<td><input type="text" align="center" id="friendLastName"></td>');
+		    		table.append(tr1);
+		    		var tr2=$('<tr></tr>');
+		    		tr2.append('<td><p>  Passport number:  </p></td>');
+		    		tr2.append('<td><input type="text" align="center" id="passportNumber"></td>');
+		    		table.append(tr2);
+		    		var tr3=$('<tr></tr>');
+		    		tr3.append('<td><p>  Is in friend list?:  </p></td>');
+		    		tr3.append('<td><input type="checkbox" id="checkboxFriend" value="Friend"></td>');
+		    		table.append(tr3);
+		    		table.append('<button align="center" type="submit" id="inviteMore" class="btn btn-primary" style="background-color: #cc0033">Next</button>');
+		    		$("#inviteFriend").append(table);
+		    		$("#inviteFriend").append('<input type="checkbox" id="friendList">');
+		    		
+		    	}
+		    	else{
+		    		$("#inviteFriend").empty();
+		    		$("#inviteFriend")
+					.append(
+							'<button type="submit" style="background: #cc0033; color: white" id="offerRentacarsButton" style="float: left;">Rentacars</button><br><br>');
+		    		$("#inviteFriend")
+					.append(
+							'<button type="submit" style="background: #cc0033; color: white" id="offerHottelsButton" style="float: left;/">Hotels</button>');
+		    		$("#inviteFriend")
+					.append(
+							'<button type="submit" style="background: #cc0033; color: white" id="finishReservation" style="float: left;/">Finish reservation</button>');
+		    		
+		    	}
+		    },
+			error : function(jqXHR, textStatus,errorThrown) {
+				alert(jqXHR.status);
+				alert(textStatus);
+				alert(errorThrown);
+			
+			}
+		})
+		
+	}
+})
+
+$(document).on('click',"#nextButton",function(e){
+	e.preventDefault();
+	var passportNumber=document.getElementById("passportNumber").value;
+	if(passportNumber=="" || isNaN(passportNumber)){
+		alert("Passport number must be number!")
+	}else{
+	var choosenSeats=JSON.parse(sessionStorage["choosenSeats"]);
+	var idSedista=choosenSeats.shift();
+	sessionStorage.setItem("friendNumber", JSON.stringify(2));
+	sessionStorage.setItem("choosenSeats", JSON.stringify(choosenSeats));
+	var duzina=choosenSeats.length;
+	sessionStorage.setItem("numSeats", JSON.stringify(duzina));
+	$.ajax({
+		type: 'POST',
+		url: myReservationUrl+'/'+passportNumber+'/'+idSedista,
+		headers : createAuthorizationTokenHeader(TOKEN_KEY),
+	    success: function(data){
+	    	console.log(data);
+	    	sessionStorage
+			.setItem(
+					"flightReservationId",
+					JSON
+							.stringify(data));
+	    	if(duzina>=1){
+	    		openCity(e, 'inviteFriend');
+	    		$("#inviteFriend").children().remove();
+	    		$("#inviteFriend").append("<h2 align='center'>Invite friend number "+1+": <h2>");
+	    		var table=$('<table align="center"></table>');
+	    		var tr=$('<tr></tr>');
+	    		tr.append('<td><p>  Name:  </p></td>');
+	    		tr.append('<td><input type="text" align="center" id="friendName"></td>');
+	    		table.append(tr);
+	    		var tr1=$('<tr></tr>');
+	    		tr1.append('<td><p>  Last name:  </p></td>');
+	    		tr1.append('<td><input type="text" align="center" id="friendLastName"></td>');
+	    		table.append(tr1);
+	    		var tr2=$('<tr></tr>');
+	    		tr2.append('<td><p>  Passport number:  </p></td>');
+	    		tr2.append('<td><input type="text" align="center" id="passportNumber"></td>');
+	    		table.append(tr2);
+	    		var tr3=$('<tr></tr>');
+	    		tr3.append('<td><p>  Is in friend list?:  </p></td>');
+	    		tr3.append('<td><input type="checkbox" id="checkboxFriend" value="Friend"></td>');
+	    		table.append(tr3);
+	    		table.append('<button align="center" type="submit" id="inviteMore" class="btn btn-primary" style="background-color: #cc0033">Next</button>');
+	    		$("#inviteFriend").append(table);
+	    		//$("#inviteFriend").append('<div><input type="checkbox" id="friendList"></div>');
+	   
+	    	}else{
+		    		$("#inviteFriend").empty();
+		    		$("#inviteFriend")
+					.append(
+							'<button type="submit" style="background: #cc0033; color: white" id="offerRentacarsButton" style="float: left;">Rentacars</button><br><br>');
+		    		$("#inviteFriend")
+					.append(
+							'<button type="submit" style="background: #cc0033; color: white" id="offerHottelsButton" style="float: left;/">Hotels</button>');
+		    		$("#inviteFriend")
+					.append(
+							'<button type="submit" style="background: #cc0033; color: white" id="finishReservation" style="float: left;/">Finish reservation</button>');
+		    		
+	    	}
+	    },
+		error : function(jqXHR, textStatus,errorThrown) {
+			alert(jqXHR.status);
+			alert(textStatus);
+			alert(errorThrown);
+		
+		}
+	})
+	}
+	
+})
+
 $(document)
 		.on(
 				'click',
 				'#reserveFlight',
 				function(e) {
 					e.preventDefault();
-					// openCity(e, 'reserveFlightInfo');
+					openCity(e, 'inviteFriend');
 					// $("#reserveFlightInfoDiv").empty();
 					var tabela = $('<table align="center"></table>');
 					var i = 1;
@@ -3132,133 +3291,12 @@ $(document)
 					tr
 							.append('<td><input type="text" id="passportNumber"></td>');
 					tabela.append(tr);
-					var j = choosenSeats.length;
-					for (var k = 0; k < j - 1; k++) {
-						var tr = $('<tr></tr>');
-						tr.append('<td><p>Choose friend number ' + i
-								+ ': </p></td><td></td>')
-						var td = $('<td></td>');
-						var select = $('<select id="reservation' + i
-								+ '" style="width=400px"></select>');
-						$
-								.ajax({
-									type : 'GET',
-									url : urlRoot11,
-									headers : createAuthorizationTokenHeader(TOKEN_KEY),
-									contentType : 'application/json',
-									async : false,
-									success : function(data) {
-										var list = data == null ? []
-												: (data instanceof Array ? data
-														: [ data ]);
-										if (list.length > 0) {
-											for ( var friend in list) {
-												var option = $('<option value="'
-														+ list[friend].id
-														+ '">'
-														+ list[friend].firstName
-														+ " "
-														+ list[friend].lastName
-														+ '</option>');
-												select.append(option);
-											}
-										}
-									},
-									error : function(jqXHR, textStatus,
-											errorThrown) {
-										alert(jqXHR.status);
-										alert(textStatus);
-										alert(errorThrown);
-
-									}
-								})
-						td.append(select);
-						tr.append(td);
-						tabela.append(tr);
-						i++;
-
-					}
-					$("#seats").children().remove();
-					$("#seats").append(tabela);
-					$("#seats").append('<br><br>');
-					$("#seats")
-							.append(
-									'<div class="wrapper"><button align="center" type="submit" id="confirmReserveFlight" style="background-color: #cc0033">Reserve</button></div>');
-
+					tabela.append('<button align="center" type="submit" id="nextButton" style="background-color: #cc0033" class="btn btn-primary">Next</button>');
+					$("#inviteFriend").children().remove();
+					$("#inviteFriend").append(tabela);
+					$("#inviteFriend").append('<br><br>');
 				})
 
-$(document)
-		.on(
-				'click',
-				"#confirmReserveFlight",
-				function(e) {
-					e.preventDefault();
-					var choosenSeats = JSON
-							.parse(sessionStorage["choosenSeats"]);
-					var size = choosenSeats.length;
-					sessionStorage.setItem("lengthSeats", JSON.stringify(size));
-					var brojPasosa = document.getElementById("passportNumber").value;
-					var idjeviPutnika = "";
-					var sed = "";
-					var l = JSON.parse(sessionStorage["flightId"])
-					for (var i = 1; i < size; i++) {
-						var s = document.getElementById("reservation" + i + "").value;
-						idjeviPutnika += s + " ";
-
-					}
-					idjeviPutnika.substring(0, idjeviPutnika.length - 1);
-					var sedista = JSON.parse(sessionStorage["choosenSeats"]);
-					for ( var s in sedista) {
-						sed += sedista[s] + " ";
-
-					}
-					sed.substring(0, sed.length - 1);
-					sessionStorage.removeItem("choosenSeats");
-					$
-							.ajax({
-								type : 'POST',
-								url : urlRoot16,
-								headers : createAuthorizationTokenHeader(TOKEN_KEY),
-								contentType : 'application/json',
-								dataType : "json",
-								data : createReservationToJSON(sed,
-										idjeviPutnika, l, brojPasosa),
-								success : function(data) {
-									sessionStorage
-											.setItem(
-													"flightReservationId",
-													JSON
-															.stringify(data.idFlightReservation));
-									var choosenSeats = JSON
-											.parse(sessionStorage["flightReservationId"]);
-									console.log(choosenSeats);
-									var list = data.invitedFriends == null ? []
-											: (data.invitedFriends instanceof Array ? data.invitedFriends
-													: [ data.invitedFriends ]);
-									if (list != []) {
-										sendEmail(list);
-									}
-									alert("Successful reservation of a flight, congratulations!");
-
-								},
-								error : function(jqXHR, textStatus, errorThrown) {
-									alert(jqXHR.status);
-									alert(textStatus);
-									alert(errorThrown);
-								}
-							})
-
-					$("#flightReservation")
-							.append(
-									'<button type="submit" style="background: #cc0033; color: white" id="offerRentacarsButton" style="float: left;">Rentacars</button><br><br>');
-					$("#flightReservation")
-							.append(
-									'<button type="submit" style="background: #cc0033; color: white" id="offerHottelsButton" style="float: left;/">Hotels</button>');
-					$("#flightReservation")
-							.append(
-									'<button type="submit" style="background: #cc0033; color: white" id="finishReservation" style="float: left;/">Finish reservation</button>');
-
-				})
 
 $(document).on('click', "#finishReservation", function(e) {
 	e.preventDefault();
@@ -3287,14 +3325,13 @@ $(document).on('click', "#finishReservation", function(e) {
 	})
 })
 
-function sendEmail(list) {
-	for ( var f in list) {
+function sendEmail(f) {
 		$.ajax({
 			type : 'POST',
 			url : urlRootSendMail,
 			contentType : 'application/json',
 
-			data : mailToJson(list[f].email, list[f].reservationId),
+			data : mailToJson(f.email, f.reservationId),
 			success : function(data) {
 
 			},
@@ -3305,7 +3342,6 @@ function sendEmail(list) {
 
 			}
 		})
-	}
 }
 
 function sendEmailReservation(message, email) {
@@ -3748,7 +3784,7 @@ function mailToJson(emailAddress, id) {
 	return JSON
 			.stringify({
 				"emailAddress" : emailAddress,
-				"subject" : "Register verification",
+				"subject" : "Reservation acceptance",
 				"body" : "A friend invited you to a flight accept here:\nhttp://localhost:8080/api/acceptFlightReservation/"
 						+ id
 						+ " \nreject here \nhttp://localhost:8080/api/rejectFlightReservation/"
