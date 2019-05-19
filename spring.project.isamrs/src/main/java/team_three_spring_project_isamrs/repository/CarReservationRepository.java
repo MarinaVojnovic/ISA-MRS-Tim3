@@ -15,4 +15,5 @@ public interface CarReservationRepository extends JpaRepository<CarReservation, 
 	public List<CarReservation> findByRegularUser(RegularUser regularUser);
 	public List<CarReservation> findByCar(Car car);
 	public List<CarReservation> findByRentacarRes(Rentacar rentacarRes);
+	public List<CarReservation> findByFlightId(Long flightId);
 }

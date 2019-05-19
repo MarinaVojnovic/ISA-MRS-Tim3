@@ -108,6 +108,7 @@ public class RoomReservationDTO {
 		this.discount=room.getDiscount();
 		System.out.println("hhh");
 		this.roomNumbers="";
+		this.hotelCustomerServices="";
 		for (Room r : room.getRooms()) {
 			System.out.println("jjj");
 			System.out.println(r.getRoomNumber());
@@ -124,8 +125,8 @@ public class RoomReservationDTO {
 		}
 		System.out.println("rrr");
 		
-		if (this.hotelCustomerServices!=null) {
-			this.hotelCustomerServices=this.hotelCustomerServices.substring(0, this.hotelCustomerServices.length()-1);
+		if (this.hotelCustomerServices!="") {
+			this.hotelCustomerServices=this.hotelCustomerServices.substring(0, this.hotelCustomerServices.length()-2);
 		}
 		
 		

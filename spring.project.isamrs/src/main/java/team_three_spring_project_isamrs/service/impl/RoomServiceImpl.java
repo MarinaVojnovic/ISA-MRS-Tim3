@@ -19,6 +19,11 @@ public class RoomServiceImpl implements RoomService {
 	public Room getOne(long id) {
 		return roomRepository.findOne(id);
 	}
+	
+	@Override
+	public Room findByRoomNumberAndHotel(Integer roomNumber, Hotel hotel) {
+		return roomRepository.findByRoomNumberAndHotel(roomNumber, hotel);
+	}
 
 	@Override
 	public List<Room> getAll() {

@@ -14,6 +14,8 @@ var urlRootSaveEditedBranch="http://localhost:8080/saveEditedBranch";
 var urlRootFindBranch = "http://localhost:8080/findBranch";
 var urlRootPutCarOnFastRes="http://localhost:8080/putCarOnFastRes";
 var urlRootFindSuitCarsFast =  "http://localhost:8080/findSuitCarsFast";
+var urlRootReportRentacarAttendance="http://localhost:8080/reportRentacarAttendance";
+var urlRootFindRentacarAmount="http://localhost:8080/findRentacarAmount";
 
 var TOKEN_KEY = 'jwtToken';
 
@@ -53,6 +55,36 @@ window.onload = function(e) {
 
 	})
 }
+
+$(document).on('click', '#findAmountRentacar', function(e) {
+	e.preventDefault();
+	var startDate = document.getElementById("amountSearchStartDate").value;
+	var endDate = document.getElementById("amountSearchEndDate").value;
+	if (startDate == "") {
+		startDate = "0000-00-00"
+	}
+	if (endDate == "") {
+		endDate = "0000-00-00"
+	}
+	var finalPath = urlRootFindRentacarAmount + "/" + startDate + "/" + endDate;
+	// popuni za report 4
+	$.ajax({
+		type : 'GET',
+		url : finalPath,
+		headers : createAuthorizationTokenHeader(TOKEN_KEY),
+		dataType : "json",
+		success : function(data) {
+			$("#amountRentacarValue").html(data.toFixed(2));
+		},
+		error : function(jqXHR, textStatus, errorThrown) {
+			alert(jqXHR.status);
+			alert(textStatus);
+			alert(errorThrown);
+		}
+
+	})
+
+});
 
 function saveSubmitFast(id){
 	console.log('save submit fast called '+id);
@@ -170,6 +202,56 @@ function showGrades(){
 			}
 
 	})
+	$.ajax({
+		type : 'GET',
+		url : urlRootReportRentacarAttendance,
+		headers : createAuthorizationTokenHeader(TOKEN_KEY),
+		dataType : "json",
+		success : function(data) {
+			// napravi chart myChart1
+			createChart("myChart1", data.dailyLabels, data.dailyValues)
+			createChart("myChart2", data.weeklyLabels, data.weeklyValues)
+			createChart("myChart3", data.monthlyLabels, data.monthlyValues)
+		},
+		error : function(jqXHR, textStatus, errorThrown) {
+			alert(jqXHR.status);
+			alert(textStatus);
+			alert(errorThrown);
+		}
+
+	})
+	/*createChart("myChart1", [ 'Red', 'Blue', 'Yellow', 'Green',
+		'Purple', 'Orange' ], [ 12, 19, 3, 5, 2, 3 ]);
+	createChart("myChart2", [ 'Red', 'Blue', 'Yellow', 'Green',
+		'Purple', 'Orange' ], [ 12, 19, 3, 5, 2, 3 ]);
+	createChart("myChart3", [ 'Red', 'Blue', 'Yellow', 'Green',
+		'Purple', 'Orange' ], [ 12, 19, 3, 5, 2, 3 ]);*/
+}
+
+function createChart(canvasId, labelNames, data) {
+	var ctx = document.getElementById(canvasId).getContext('2d');
+	var myChart = new Chart(ctx, {
+		type : 'bar',
+		data : {
+			labels : labelNames,
+			datasets : [ {
+				label : 'attendance',
+				data : data,
+				backgroundColor : Array(data.length).fill(' #0099ff'),
+				borderColor : Array(data.length).fill('black'),
+				borderWidth : 1
+			} ]
+		},
+		options : {
+			scales : {
+				yAxes : [ {
+					ticks : {
+						beginAtZero : true
+					}
+				} ]
+			}
+		}
+	});
 }
 
 function passwordValidation() {
@@ -917,15 +999,10 @@ $(document).on('click', '#buttonSubmitEditBranch', function(e) {
 $(document).on('click', '#reportsButton', function(e) {
 	console.log('reports button clicked');
 	openCity(e, 'reports');
-	
-	/*createChart("myChart1", [ 'Red', 'Blue', 'Yellow', 'Green',
-		'Purple', 'Orange' ], [ 12, 19, 3, 5, 2, 3 ]);
-	createChart("myChart2", [ 'Red', 'Blue', 'Yellow', 'Green',
-		'Purple', 'Orange' ], [ 12, 19, 3, 5, 2, 3 ]);
-	createChart("myChart3", [ 'Red', 'Blue', 'Yellow', 'Green',
-		'Purple', 'Orange' ], [ 12, 19, 3, 5, 2, 3 ]);*/
-	
 	showGrades();
+	
+	
+	
 	
 
 });

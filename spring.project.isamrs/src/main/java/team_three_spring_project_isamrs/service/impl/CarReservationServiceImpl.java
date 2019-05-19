@@ -20,6 +20,10 @@ public class CarReservationServiceImpl implements CarReservationService {
 	public CarReservation getOne(long id) {
 		return carReservationRepository.findOne(id);
 	}
+	
+	public List<CarReservation> findByFlightId(long flightId) {
+		return carReservationRepository.findByFlightId(flightId);
+	}
 
 	public List<CarReservation> getAll() {
 		return carReservationRepository.findAll();

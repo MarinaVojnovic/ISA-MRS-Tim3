@@ -107,6 +107,21 @@ public class CarReservationController {
 		System.out.println("Uslo u creating car reservation");
 		RegularUser user = (RegularUser) this.userDetailsService
 				.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+		
+		Integer numberOfRes = user.getCarReservations().size()+user.getFlightReservations().size()+user.getRoomReservations().size();
+		Integer discount;
+		if (numberOfRes==3) {
+			discount=5;
+		}else if(numberOfRes==10) {
+			discount=10;
+		}else if (numberOfRes==30) {
+			discount=20;
+		}else if(numberOfRes==100) {
+			discount=40;
+		}else {
+			discount=0;
+		}
+		
 		@SuppressWarnings("deprecation")
 		Date startDatee = new Date(Integer.parseInt(startDate.split("\\-")[0]) - 1900,
 				Integer.parseInt(startDate.split("\\-")[1]) - 1,
@@ -118,17 +133,27 @@ public class CarReservationController {
 		
 		List<FlightReservation> flightRes=user.getFlightReservations();
 		System.out.println("AA");
-		/*
-		 * FlightReservation last=flightRes.get(0); for (FlightReservation f :
-		 * flightRes) { if (f.getId()> last.getId()) { last=f; } }
-		 */
+		FlightReservation lastRes=flightRes.get(0);
+		for (FlightReservation fr : flightRes) {
+			if (fr.getId() > lastRes.getId()) {
+				lastRes=fr;
+			}
+		}
 		System.out.println("BB");
 		CarReservationDTO dto = new CarReservationDTO(carId,startDatee,endDatee,passengers);
 		CarReservation newCarRes = new CarReservation(dto);
 		Car car = carService.getOne(dto.getCarId());
+		newCarRes.setFlightId(lastRes.getId());
 		newCarRes.setCar(car);
-		newCarRes.setPrice(car.getPrice());
+		if (discount==0) {
+			newCarRes.setPrice(car.getPrice());
+		}else {
+			newCarRes.setPrice(car.getPrice()*(100-discount)/100);
+		}
+		
 		newCarRes.setRegularUser(user);
+		newCarRes.setNumOfPass(passengers);
+		newCarRes.setDiscount(discount);
 		System.out.println("CC");
 		//newCarRes.setResFlight(last);
 		System.out.println("DD");
@@ -169,10 +194,18 @@ public class CarReservationController {
 		Date endDatee = new Date(Integer.parseInt(endDate.split("\\-")[0]) - 1900,
 				Integer.parseInt(endDate.split("\\-")[1]) - 1,
 				Integer.parseInt(endDate.split("\\-")[2]));
-		
+		List<FlightReservation> flightRes=user.getFlightReservations();
+		System.out.println("AA");
+		FlightReservation lastRes=flightRes.get(0);
+		for (FlightReservation fr : flightRes) {
+			if (fr.getId() > lastRes.getId()) {
+				lastRes=fr;
+			}
+		}
 		
 		CarReservation newCarRes = new CarReservation(startDatee,endDatee);
 		Car car = carService.getOne(carId);
+		newCarRes.setFlightId(lastRes.getId());
 		newCarRes.setCar(car);
 		newCarRes.setPrice(car.getFastResPrice());
 		newCarRes.setRegularUser(user);

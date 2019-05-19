@@ -1,6 +1,7 @@
 package team_three_spring_project_isamrs.controller;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -24,21 +25,26 @@ import team_three_spring_project_isamrs.dto.HotelDTO;
 import team_three_spring_project_isamrs.model.Airline;
 import team_three_spring_project_isamrs.model.Hotel;
 import team_three_spring_project_isamrs.model.HotelAdmin;
+import team_three_spring_project_isamrs.model.Room;
 import team_three_spring_project_isamrs.service.HotelService;
+import team_three_spring_project_isamrs.service.RoomService;
 import team_three_spring_project_isamrs.service.impl.CustomUserDetailsService;
 
 @RestController
 public class HotelController {
 	@Autowired
 	HotelService hotelService;
+	
+	@Autowired
+	RoomService roomService;
 
 	@Autowired
 	private CustomUserDetailsService userDetailsService;
 
 
-	@GetMapping(value = "/gradeHotel/{id}/{grade}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value = "/gradeHotel/{id}/{grade}/{roomsGrades}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ROLE_USER')")
-	public ResponseEntity<Hotel> gradeHotel(@PathVariable Long id, @PathVariable Integer grade) {
+	public ResponseEntity<Hotel> gradeHotel(@PathVariable Long id, @PathVariable Integer grade, @PathVariable String roomsGrades) {
 		System.out.println("Uslo u grade hotel     "+id);
 		Hotel hotel = hotelService.getOne(id);
 		System.out.println(hotel.getName());
@@ -47,8 +53,19 @@ public class HotelController {
 		System.out.println("B");
 		hotel.setGradeNumber(hotel.getGradeNumber()+1);
 		System.out.println("C");
-		hotelService.save(hotel);
+		
 		System.out.println("D");
+		String[] lista = roomsGrades.split("\\|");
+		List<String> array = new ArrayList(Arrays.asList(lista));
+		for (String par : array) {
+			Room room = roomService.findByRoomNumberAndHotel(Integer.parseInt(par.split("\\,")[0].trim()), hotel);
+			
+			room.setGradeNumber(room.getGradeNumber()+1);
+			room.setScore(room.getScore()+Double.parseDouble(par.split("\\,")[1]));
+			roomService.save(room);
+		}
+		
+		hotelService.save(hotel);
 		return new ResponseEntity<>(hotel, HttpStatus.CREATED);
 	}
 	

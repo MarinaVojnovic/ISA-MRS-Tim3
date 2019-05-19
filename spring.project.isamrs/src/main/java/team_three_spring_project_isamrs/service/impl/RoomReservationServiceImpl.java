@@ -23,6 +23,7 @@ public class RoomReservationServiceImpl implements RoomReservationService {
 		return roomReservationRepository.findOne(id);
 	}
 
+	
 	@Override
 	public List<RoomReservation> getAll() {
 		return roomReservationRepository.findAll();

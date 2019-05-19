@@ -1,10 +1,77 @@
 package team_three_spring_project_isamrs.dto;
 
+import java.util.Date;
+
+import team_three_spring_project_isamrs.model.FlightReservation;
+
 public class FlightReservationDTO {
 	String seats;
 	String users;
 	String flight;
 	String passportNum;
+	
+	//Marina dodala
+	Long id;
+	Double price;
+	String startAirport;
+	String endAirport;
+	Date startDate;
+	Date endDate;
+	Integer discount;
+	
+	public Integer getDiscount() {
+		return discount;
+	}
+	public void setDiscount(Integer discount) {
+		this.discount = discount;
+	}
+	public FlightReservationDTO(FlightReservation res) {
+		this.id=res.getId();
+		this.price=res.getPrice();
+		this.passportNum=String.valueOf(res.getPassportNum());
+		this.startAirport=res.getFlightReservation().getStartAirline().getName();
+		this.endAirport=res.getFlightReservation().getFinalAirline().getName();
+		this.seats=String.valueOf(res.getSeat().getId());
+		this.startDate=res.getFlightReservation().getDateOfStart();
+		this.endDate=res.getFlightReservation().getDateOfEnd();
+		this.discount=res.getDiscount();
+	}
+	public Date getStartDate() {
+		return startDate;
+	}
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+	public Date getEndDate() {
+		return endDate;
+	}
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
+	}
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public Double getPrice() {
+		return price;
+	}
+	public void setPrice(Double price) {
+		this.price = price;
+	}
+	public String getStartAirport() {
+		return startAirport;
+	}
+	public void setStartAirport(String startAirport) {
+		this.startAirport = startAirport;
+	}
+	public String getEndAirport() {
+		return endAirport;
+	}
+	public void setEndAirport(String endAirport) {
+		this.endAirport = endAirport;
+	}
 	public String getSeats() {
 		return seats;
 	}
