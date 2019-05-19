@@ -157,6 +157,20 @@ public class FlightReservation {
 	}
 
 	public FlightReservation(Double price, RegularUser regularUserFlightReservation, Flight flightReservation,
+			Seat seat, Boolean confirmed, int passportNum, Date dateSold, String name, String lastName, Integer discount) {
+		super();
+		this.price = price;
+		this.regularUserFlightReservation = regularUserFlightReservation;
+		this.flightReservation = flightReservation;
+		this.seat = seat;
+		this.confirmed = confirmed;
+		this.passportNum = passportNum;
+		this.dateSold = dateSold;
+		this.name = name;
+		this.lastName = lastName;
+		this.discount=discount;
+	}
+	public FlightReservation(Double price, RegularUser regularUserFlightReservation, Flight flightReservation,
 			Seat seat, Boolean confirmed, int passportNum, Date dateSold, String name, String lastName) {
 		super();
 		this.price = price;
@@ -168,6 +182,7 @@ public class FlightReservation {
 		this.dateSold = dateSold;
 		this.name = name;
 		this.lastName = lastName;
+		this.discount=0;
 	}
 
 	public Date getDateSold() {

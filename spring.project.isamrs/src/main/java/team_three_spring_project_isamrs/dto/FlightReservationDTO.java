@@ -15,8 +15,8 @@ public class FlightReservationDTO {
 	Double price;
 	String startAirport;
 	String endAirport;
-	Date startDate;
-	Date endDate;
+	String startDate;
+	String endDate;
 	Integer discount;
 	
 	public Integer getDiscount() {
@@ -36,16 +36,16 @@ public class FlightReservationDTO {
 		this.endDate=res.getFlightReservation().getDateOfEnd();
 		this.discount=res.getDiscount();
 	}
-	public Date getStartDate() {
+	public String getStartDate() {
 		return startDate;
 	}
-	public void setStartDate(Date startDate) {
+	public void setStartDate(String startDate) {
 		this.startDate = startDate;
 	}
-	public Date getEndDate() {
+	public String getEndDate() {
 		return endDate;
 	}
-	public void setEndDate(Date endDate) {
+	public void setEndDate(String endDate) {
 		this.endDate = endDate;
 	}
 	public Long getId() {

@@ -582,8 +582,8 @@ function showMyReservationsFlights() {
 							cell3.innerHTML = list[res].startAirport;
 							cell4.innerHTML = list[res].endAirport;
 							cell5.innerHTML = list[res].seats;
-							cell6.innerHTML = new Date(list[res].startDate).toLocaleString();
-							cell7.innerHTML = new Date(list[res].endDate).toLocaleString();
+							cell6.innerHTML = list[res].startDate;
+							cell7.innerHTML = list[res].endDate;
 							
 							cell8.innerHTML = Math.round(list[res].price*(100+list[res].discount)/100);
 							cell9.innerHTML = list[res].discount;
@@ -704,6 +704,12 @@ function takeCarFast(id) {
 					})
 		}
 	}
+	$("#fastResDateDiv")
+	.append(
+			'<br><br><button type="submit" style="background: #cc0033;align: center; color: white" id="offerHotelsButton" style="float: left;/">Reserve hotel</button>');
+	$("#fastResDateDiv")
+	.append(
+			'<br><button type="submit" style="background: #cc0033;align: center; color: white" id="finishReservation" style="float: left;/">Finish reservation </button>');
 
 }
 
@@ -783,8 +789,11 @@ function showCarsForFastRes() {
 						cell7.innerHTML = response[counter].brand;
 						cell8.innerHTML = response[counter].model;
 						cell6.innerHTML = response[counter].seats;
-						cell10.innerHTML = response[counter].score
-								/ response[counter].number;
+						var grade= Math.round(response[counter].score / response[counter].number);
+						if (response[counter].number==0){
+							grade="";
+						}
+						cell10.innerHTML = grade;
 						cell9.innerHTML = response[counter].price * 20;
 						cell12.innerHTML = new Date(
 								response[counter].fastResStartDate).toLocaleString();;
@@ -1026,6 +1035,10 @@ function showMyReservationsCars() {
 							
 							var oneDay = 24*60*60*1000;
 							var days = Math.round(Math.abs((new Date(list[res].endDate).getTime() - new Date(list[res].startDate).getTime())/(oneDay)));
+							console.log("days"+days);
+							if (days==0){
+								days=1;
+							}
 							
 							cell1.innerHTML = list[res].id;
 							cell2.innerHTML = new Date(list[res].startDate).toLocaleString();
@@ -2430,8 +2443,11 @@ function searchForCars(rentacarId) {
 							cell7.innerHTML = response[counter].brand;
 							cell8.innerHTML = response[counter].model;
 							cell6.innerHTML = response[counter].seats;
-							cell10.innerHTML = response[counter].score
-									/ response[counter].number;
+							var grade= response[counter].score / response[counter].number;
+							if (response[counter].number==0){
+								grade="";
+							}
+							cell10.innerHTML = grade;
 							cell9.innerHTML = response[counter].price * 20;
 
 						}
@@ -3318,7 +3334,7 @@ $(document).on('click','#inviteMore',function(e){
 							'<button type="submit" style="background: #cc0033; color: white" id="offerRentacarsButton" style="float: left;">Rentacars</button><br><br>');
 		    		$("#inviteFriend")
 					.append(
-							'<button type="submit" style="background: #cc0033; color: white" id="offerHottelsButton" style="float: left;/">Hotels</button>');
+							'<button type="submit" style="background: #cc0033; color: white" id="offerHotelsButton" style="float: left;/">Hotels</button>');
 		    		$("#inviteFriend")
 					.append(
 							'<button type="submit" style="background: #cc0033; color: white" id="finishReservation" style="float: left;/">Finish reservation</button>');
@@ -3391,7 +3407,7 @@ $(document).on('click',"#nextButton",function(e){
 							'<button type="submit" style="background: #cc0033; color: white" id="offerRentacarsButton" style="float: left;">Rentacars</button><br><br>');
 		    		$("#inviteFriend")
 					.append(
-							'<button type="submit" style="background: #cc0033; color: white" id="offerHottelsButton" style="float: left;/">Hotels</button>');
+							'<button type="submit" style="background: #cc0033; color: white" id="offerHotelsButton" style="float: left;/">Hotels</button>');
 		    		$("#inviteFriend")
 					.append(
 							'<button type="submit" style="background: #cc0033; color: white" id="finishReservation" style="float: left;/">Finish reservation</button>');
@@ -3415,7 +3431,16 @@ $(document)
 				'#reserveFlight',
 				function(e) {
 					e.preventDefault();
+					
+					var destination = document.getElementById("destinationId").value;
+					var startDate = document.getElementById("startDateId").value;
+					var endDate = document.getElementById("endDateId").value;
+
 					openCity(e, 'inviteFriend');
+					document.getElementById("destinationId").value=destination;
+					document.getElementById("startDateId").value=startDate;
+					document.getElementById("endDateId").value=endDate;
+					
 					// $("#reserveFlightInfoDiv").empty();
 					var tabela = $('<table align="center"></table>');
 					var i = 1;
@@ -3598,7 +3623,7 @@ function showRentacarsDest(data, startDate, endDate) {
 		cell1.innerHTML = response[counter].name;
 		cell2.innerHTML = response[counter].address;
 		cell3.innerHTML = response[counter].promotionalDescription;
-		cell4.innerHTML = response[counter].grade;
+		cell4.innerHTML = response[counter].score/response[counter].number;
 		cell6.innerHTML = '<button style="background: #cc0033; color: white" id=\"'
 				+ response[counter].id
 				+ '\" class=\"chooseRentacar\" class="btn btn-primary">Choose</button>';
