@@ -71,7 +71,8 @@ var urlRootCancelHotelRes="http://localhost:8080/cancelHotelReservation";
 var finishReservationUrl="http://localhost:8080/api/finishReservation";
 var fastReservationAirline="http://localhost:8080/api/fastReservationAirline";
 var myReservationUrl="http://localhost:8080/myReservation";
-var reserveForFriendUrl="http://localhost:8080/reserveForFriend"
+var reserveForFriendUrl="http://localhost:8080/reserveForFriend";
+var reserveFastFlight="http://localhost:8080/api/reserveFastFlight";
 
 $(document).on('click', '#editProfileButton', function(e) {
 	getLogged();
@@ -1667,10 +1668,11 @@ function fillTableFlightFastReservations(data, table) {
 	var tabela = document.getElementById(table);
 
 	var indeks = 0;
+	var indeks2=1;
 	for ( var counter in response) {
 		if (!response[counter].reserved) {
 			var row = tabela.insertRow(indeks++);
-			var cell0 = row.insertCell(0)
+			var cell0 = row.insertCell(0);
 			var cell1 = row.insertCell(1);
 			var cell2 = row.insertCell(2);
 			var cell3 = row.insertCell(3);
@@ -1680,18 +1682,20 @@ function fillTableFlightFastReservations(data, table) {
 			var cell7 = row.insertCell(7);
 			var cell8 = row.insertCell(8);
 			var cell9 = row.insertCell(9);
-
-			cell0.innerHTML = response[counter].flightNumber;
-			cell1.innerHTML = response[counter].startDestination;
-			cell2.innerHTML = response[counter].finalDestination;
-			cell3.innerHTML = response[counter].dateOfFlight;
-			cell4.innerHTML = response[counter].dateOfArrival;
-			cell5.innerHTML = response[counter].length;
-			cell6.innerHTML = response[counter].price;
-			cell7.innerHTML = response[counter].discount +" %";
-			cell8.innerHTML = response[counter].total ;
-			cell9.innerHTML = "<button class=\"reserveFastFlight\" id=\""
-					+ response[counter].id + "\">Reserve</button>"
+			var cell10=row.insertCell(10);
+			cell0.innerHTML="<p>"+indeks2+"</p>";
+			cell1.innerHTML = response[counter].flightNumber;
+			cell2.innerHTML = response[counter].startDestination;
+			cell3.innerHTML = response[counter].finalDestination;
+			cell4.innerHTML = response[counter].dateOfFlight;
+			cell5.innerHTML = response[counter].dateOfArrival;
+			cell6.innerHTML = response[counter].length;
+			cell7.innerHTML = response[counter].price;
+			cell8.innerHTML = response[counter].discout +" %";
+			cell9.innerHTML = response[counter].total ;
+			cell10.innerHTML = "<button class=\"reserveFastFlight\" name=\""
+					+ response[counter].id + "\">Reserve</button>";
+			indeks2++;
 		}
 
 	}
@@ -1706,18 +1710,41 @@ function fillTableFlightFastReservations(data, table) {
 	var cell7 = row.insertCell(7);
 	var cell8 = row.insertCell(8);
 	var cell9=row.insertCell(9);
-
-	cell0.innerHTML = '<p style= "color:#002699;">Flight number</p>';
-	cell1.innerHTML = '<p style= "color:#002699;">Start destinationr</p>';
-	cell2.innerHTML = '<p style= "color:#002699;">Final destination</p>';
-	cell3.innerHTML = '<p style= "color:#002699;">Date of flight</p>';
-	cell4.innerHTML = '<p style= "color:#002699; ">Date of arrival</p>';
-	cell5.innerHTML = '<p style= "color:#002699;">Length</p>';
-	cell6.innerHTML = '<p style= "color:#002699;">Price</p>';
-	cell7.innerHTML = '<p style= "color:#002699;">Discount</p>';
-	cell8.innerHTML = '<p style= "color:#002699;">Total</p>';
+	var cell10=row.insertCell(10);
+	cell0.innerHTML='<p "color:#002699;">#</p>';
+	cell1.innerHTML = '<p style= "color:#002699;">Flight number</p>';
+	cell2.innerHTML = '<p style= "color:#002699;">Start destination</p>';
+	cell3.innerHTML = '<p style= "color:#002699;">Final destination</p>';
+	cell4.innerHTML = '<p style= "color:#002699;">Date of flight</p>';
+	cell5.innerHTML = '<p style= "color:#002699; ">Date of arrival</p>';
+	cell6.innerHTML = '<p style= "color:#002699;">Length</p>';
+	cell7.innerHTML = '<p style= "color:#002699;">Price</p>';
+	cell8.innerHTML = '<p style= "color:#002699;">Discount</p>';
 	cell9.innerHTML = '<p style= "color:#002699;">Total</p>';
+	cell10.innerHTML = '<p style= "color:#002699;">    </p>';
 }
+
+$(document).on('click','.reserveFastFlight',function(e){
+	e.preventDefault();
+	var id=$(this).attr("name");
+	$.ajax({
+		type: 'POST',
+		url:  reserveFastFlight+"/"+id,
+		headers : createAuthorizationTokenHeader(TOKEN_KEY),
+		dataType : "json",
+		success : function(data) {
+			alert("Successfully booked ticket from quick booking.");
+			openCity(e, 'airlines');
+		},
+		error : function(jqXHR, textStatus, errorThrown) {
+			alert(jqXHR.status);
+			alert(textStatus);
+			alert(errorThrown);
+		}
+
+		
+	})
+})
 
 $(document)
 		.on(
@@ -3177,7 +3204,7 @@ $(document)
 										} else if (list2[fr].quickBooking == true) {
 											tr
 													.append('<td><div class="foo yellow" id="'
-															+ list[fr].id
+															+ list2[fr].id
 															+ '">'
 															+ i
 															+ '</div></td>');
@@ -3218,7 +3245,7 @@ $(document)
 										} else if (list3[fr].quickBooking == true) {
 											tr
 													.append('<td><div class="foo yellow" id="'
-															+ list[fr].id
+															+ list3[fr].id
 															+ '">'
 															+ i
 															+ '</div></td>');

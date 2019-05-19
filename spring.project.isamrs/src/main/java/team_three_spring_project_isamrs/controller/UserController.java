@@ -473,11 +473,29 @@ public class UserController {
 		List<FastReservationDTO> brza=new ArrayList<FastReservationDTO>();
 		for(Seat s: sedista) {
 			if(s.getFlight().getAirline().getId()==id) {
-				
-				brza.add(new FastReservationDTO(s.getFlight().getNumber(),s.getFlight().getStartAirline().getCity(),s.getFlight().getFinalAirline().getCity(),s.getFlight().getDateOfStart().toString(),s.getFlight().getDateOfEnd().toString(),s.getFlight().getLengthOfFlight(),s.getFlight().getCost(),s.getDiscount()));
+				System.out.println(s.getDiscount());
+				System.out.println(s.getFlight().getCost());
+				brza.add(new FastReservationDTO(s.getId(),s.getFlight().getNumber(),s.getFlight().getStartAirline().getCity(),s.getFlight().getFinalAirline().getCity(),s.getFlight().getDateOfStart().toString(),s.getFlight().getDateOfEnd().toString(),s.getFlight().getLengthOfFlight(),s.getFlight().getCost(),s.getDiscount()));
 			}
 		}
 		return new ResponseEntity<List<FastReservationDTO>>(brza, HttpStatus.OK);
+		
+	}
+	
+	
+	@PostMapping(value="/reserveFastFlight/{id}")
+	@PreAuthorize("hasRole('ROLE_USER')")
+	public ResponseEntity<FlightReservation> reserveFastFlight(@PathVariable Long id) {
+		Seat s=this.seatService.getOne(id);
+		RegularUser user = (RegularUser) this.userDetailsService
+				.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+		FlightReservation fr=this.flightReservationService.create(new FlightReservation(s.getFlight().getCost(),user,s.getFlight(),s,true,0,new Date(),user.getFirstName(),user.getLastName(),s.getDiscount()));
+		s.setTaken(true);
+		s.setQuickBooking(false);
+		this.seatService.save(s);
+		
+		
+		return new ResponseEntity<FlightReservation>(fr, HttpStatus.OK);
 		
 	}
 	
