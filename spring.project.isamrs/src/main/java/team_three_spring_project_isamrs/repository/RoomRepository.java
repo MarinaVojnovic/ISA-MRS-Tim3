@@ -13,5 +13,6 @@ public interface RoomRepository extends JpaRepository<Room, Long>{
 	
 	public Room findById(Long id);
 	public List<Room> findByHotel(Hotel hotel);
+	public Room findByRoomNumberAndHotel(Integer roomNumber, Hotel hotel);
 
 }

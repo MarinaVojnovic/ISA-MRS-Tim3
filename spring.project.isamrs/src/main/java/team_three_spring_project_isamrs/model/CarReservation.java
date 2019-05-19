@@ -21,16 +21,11 @@ public class CarReservation {
 	@GeneratedValue
 	private Long id;
 	
-
-	/*
-	 * public FlightReservation getResFlight() { return resFlight; }
-	 * 
-	 * public void setResFlight(FlightReservation resFlight) { this.resFlight =
-	 * resFlight; }
-	 */
-
 	@Column(name = "price")
 	private Double price;
+	
+	@Column (name="discount")
+	private Integer discount;
 	
 	@Column(name = "start_date")
 	private Date startDate;
@@ -44,9 +39,8 @@ public class CarReservation {
 	@ManyToOne(fetch = FetchType.EAGER)
 	RegularUser regularUser;
 	
-	/*
-	 * @ManyToOne(fetch=FetchType.EAGER) FlightReservation resFlight;
-	 */
+	@Column(name="flightId")
+	Long flightId;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	Car car;
@@ -62,6 +56,14 @@ public class CarReservation {
 		this.startDate=startDate;
 		this.endDate=endDate;
 	}
+	public Long getFlightId() {
+		return flightId;
+	}
+
+	public void setFlightId(Long flightId) {
+		this.flightId = flightId;
+	}
+
 	public CarReservation(CarReservationDTO dto) {
 		this.startDate=dto.getStartDate();
 		this.endDate=dto.getEndDate();
@@ -113,6 +115,14 @@ public class CarReservation {
 		return startDate;
 	}
 
+
+	public Integer getDiscount() {
+		return discount;
+	}
+
+	public void setDiscount(Integer discount) {
+		this.discount = discount;
+	}
 
 	public void setStartDate(Date startDate) {
 		this.startDate = startDate;

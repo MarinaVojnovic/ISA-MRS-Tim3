@@ -1,5 +1,7 @@
 package team_three_spring_project_isamrs.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -18,6 +20,8 @@ import team_three_spring_project_isamrs.model.Flight;
 import team_three_spring_project_isamrs.model.FlightReservation;
 import team_three_spring_project_isamrs.model.RegularUser;
 import team_three_spring_project_isamrs.model.Seat;
+import team_three_spring_project_isamrs.service.CarReservationService;
+import team_three_spring_project_isamrs.service.CarService;
 import team_three_spring_project_isamrs.service.FlightReservationService;
 import team_three_spring_project_isamrs.service.FlightService;
 import team_three_spring_project_isamrs.service.SeatService;
@@ -27,6 +31,12 @@ import team_three_spring_project_isamrs.service.impl.CustomUserDetailsService;
 public class FlightReservationController {
 	@Autowired
 	FlightReservationService flightReservationService;
+	
+	@Autowired
+	CarReservationService carReservationService;
+	
+	@Autowired
+	CarService carService;
 
 	@Autowired
 	FlightService flightService;
@@ -113,6 +123,27 @@ public class FlightReservationController {
 		Long seatId = flightRes.getSeat().getId(); Seat seat =
 		seatService.getOne(seatId); seat.setTaken(false); seatService.save(seat);
 		System.out.println("M");
+		
+		
+		List<CarReservation> carReservations = carReservationService.findByFlightId(resId);
+		if (carReservations!=null) {
+			for (CarReservation carRes : carReservations) {
+				Car car = carRes.getCar();
+				int brojac2=-1;
+				  for (CarReservation cr : car.getReservations())
+				  { 
+					  brojac2++;
+					  if (cr.getId()==carRes.getId()) {
+				  car.getReservations().remove(brojac2); } }
+				  System.out.println("C");
+				carService.save(car);
+				System.out.println("D");
+				carReservationService.delete(carRes.getId());
+				System.out.println("F");
+			}
+			
+		}
+		
 				 
 		return new ResponseEntity<>(flightRes, HttpStatus.OK);
 

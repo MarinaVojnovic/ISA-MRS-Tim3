@@ -257,13 +257,19 @@ public class UserController {
 
 	@GetMapping(value = "/getMyResFlights")
 	@PreAuthorize("hasRole('ROLE_USER')")
-	public ResponseEntity<List<FlightReservation>> getMyResFlights() {
+	public ResponseEntity<List<FlightReservationDTO>> getMyResFlights() {
 		RegularUser logged = (RegularUser) this.userDetailsService
 				.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
 
 		List<FlightReservation> res = flightReservationService.findByNameAndLastName(logged.getFirstName(),
 				logged.getLastName());
-		return new ResponseEntity<>(res, HttpStatus.OK);
+		
+		List<FlightReservationDTO> resDTO = new ArrayList<>();
+		for (FlightReservation fr : res) {
+			FlightReservationDTO dto=new FlightReservationDTO(fr);
+			resDTO.add(dto);
+		}
+		return new ResponseEntity<>(resDTO, HttpStatus.OK);
 
 	}
 
@@ -340,13 +346,37 @@ public class UserController {
 		Long let = Long.valueOf(flightReservation.getFlight());
 		User logged = (User) this.userDetailsService
 				.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+		
+		RegularUser user = (RegularUser) this.userDetailsService
+				.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+		
+		
+		Integer numberOfRes = user.getCarReservations().size()+user.getFlightReservations().size()+user.getRoomReservations().size();
+		Integer discount;
+		if (numberOfRes==3) {
+			discount=5;
+		}else if(numberOfRes==10) {
+			discount=10;
+		}else if (numberOfRes==30) {
+			discount=20;
+		}else if(numberOfRes==100) {
+			discount=40;
+		}else {
+			discount=0;
+		}
+		
 		Flight fl = this.flightService.getOne(let);
 		List<FlightReservation> flightReservations = new ArrayList<>();
 		List<InvitedFriendDTO> invited = new ArrayList<>();
 		FlightReservation fr = this.flightReservationService.create(new FlightReservation(fl.getCost(),
 				(RegularUser) logged, fl, this.seatService.getOne(Long.parseLong(sedista.split(" ")[0])), true,
 				brPasosa, logged.getFirstName(), logged.getLastName()));
-
+		fr.setDiscount(discount);
+		Double newPrice=0.0;
+		if (discount!=0) {
+			newPrice=fl.getCost()*(100-discount)/100;
+			fr.setPrice(newPrice);
+		}
 		flightReservations.add(fr);
 		String[] idjevi = idjeviPutnika.split(" ");
 		String[] sed = sedista.split(" ");

@@ -23,4 +23,6 @@ public interface RoomReservationService {
 	public List<RoomReservation> findByRegularUser(RegularUser regularUser);
 	
 	public List<RoomReservation> findByHotel(Hotel hotel);
+	
+	
 }

@@ -17,4 +17,6 @@ public interface RoomService {
 	public Room save(Room room);
 
 	public List<Room> findByHotel(Hotel h);
+	
+	public Room findByRoomNumberAndHotel(Integer roomNumber, Hotel hotel);
 }

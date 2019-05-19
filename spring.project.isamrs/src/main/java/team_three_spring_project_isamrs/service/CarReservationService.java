@@ -9,6 +9,7 @@ import team_three_spring_project_isamrs.model.Rentacar;
 
 public interface CarReservationService {
 	public CarReservation getOne(long id);
+	public List<CarReservation> findByFlightId(long flightId);
 	public List<CarReservation> getAll();
 	public CarReservation create(CarReservation car);
 	public void delete(long id);

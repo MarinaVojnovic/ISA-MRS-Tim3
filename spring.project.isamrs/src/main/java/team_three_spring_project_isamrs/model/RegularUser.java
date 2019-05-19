@@ -26,6 +26,14 @@ public class RegularUser extends User {
 	@OneToMany(mappedBy = "received", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
 	private List<FriendRequest> received = new ArrayList<>();
 
+	public Set<RoomReservation> getRoomReservations() {
+		return roomReservations;
+	}
+
+	public void setRoomReservations(Set<RoomReservation> roomReservations) {
+		this.roomReservations = roomReservations;
+	}
+
 	// vise zahteva moze biti poslato od jednog korisnika
 	@JsonIgnore
 	@OneToMany(mappedBy = "sent", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)

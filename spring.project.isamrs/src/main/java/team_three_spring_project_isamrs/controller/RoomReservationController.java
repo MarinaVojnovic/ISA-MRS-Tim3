@@ -88,6 +88,8 @@ public class RoomReservationController {
 		Hotel hotel = res.getHotel();
 		return new ResponseEntity<>(hotel, HttpStatus.OK);
 	}
+	
+	
 
 	@PostMapping(value = "/createRoomReservationRegular", consumes = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ROLE_USER')")

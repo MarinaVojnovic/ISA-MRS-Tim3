@@ -19,21 +19,19 @@ public class FlightReservation {
 	@GeneratedValue
 	private Long id;
 
-	
-	/*
-	 * @OneToMany(mappedBy = "resFlight", fetch = FetchType.LAZY, cascade =
-	 * CascadeType.REFRESH) private Set<CarReservation> carReservations = new
-	 * HashSet<>();
-	 */
-	
-	/*
-	 * public Set<CarReservation> getCarReservations() { return carReservations; }
-	 * 
-	 * public void setCarReservations(Set<CarReservation> carReservations) {
-	 * this.carReservations = carReservations; }
-	 */
 	@Column(name = "price")
 	private Double price;
+	
+	public Integer getDiscount() {
+		return discount;
+	}
+
+	public void setDiscount(Integer discount) {
+		this.discount = discount;
+	}
+
+	@Column(name="discount")
+	private Integer discount;
 
 	// vise rezervacija za let moze da ima jedan korisnik
 	@ManyToOne(fetch = FetchType.EAGER)

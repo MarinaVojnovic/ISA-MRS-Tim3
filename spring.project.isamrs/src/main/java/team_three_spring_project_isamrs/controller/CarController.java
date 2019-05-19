@@ -72,6 +72,8 @@ public class CarController {
 				.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
 		Car newCar = new Car(carDTO);
 		newCar.setRentacar(user.getRentacar());
+		newCar.setScore(0.0);
+		newCar.setNumber(0);
 		Car retVal = carService.create(newCar);
 		user.getRentacar().getCars().add(retVal);
 		return new ResponseEntity<>(retVal, HttpStatus.CREATED);
