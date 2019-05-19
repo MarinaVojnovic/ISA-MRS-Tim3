@@ -850,7 +850,7 @@ $(document)
 										} else if (list2[fr].quickBooking == true) {
 											tr
 													.append('<td><div class="foo yellow" id="'
-															+ list[fr].id
+															+ list2[fr].id
 															+ '">'
 															+ i
 															+ '</div></td>');
@@ -891,7 +891,7 @@ $(document)
 										} else if (list3[fr].quickBooking == true) {
 											tr
 													.append('<td><div class="foo yellow" id="'
-															+ list[fr].id
+															+ list3[fr].id
 															+ '">'
 															+ i
 															+ '</div></td>');

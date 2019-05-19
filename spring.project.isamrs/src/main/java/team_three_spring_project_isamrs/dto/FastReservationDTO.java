@@ -1,6 +1,7 @@
 package team_three_spring_project_isamrs.dto;
 
 public class FastReservationDTO {
+	long id;
 	String flightNumber;
 	String startDestination;
 	String finalDestination;
@@ -10,7 +11,15 @@ public class FastReservationDTO {
 	int length;
 	double price;
 	int discout;
+	
 	double total;
+	
+	public long getId() {
+		return id;
+	}
+	public void setId(long id) {
+		this.id = id;
+	}
 	public String getFlightNumber() {
 		return flightNumber;
 	}
@@ -53,12 +62,25 @@ public class FastReservationDTO {
 	public void setDiscout(int discout) {
 		this.discout = discout;
 	}
+	public double getPrice() {
+		return price;
+	}
+	public void setPrice(double price) {
+		this.price = price;
+	}
+	public double getTotal() {
+		return total;
+	}
+	public void setTotal(double total) {
+		this.total = total;
+	}
 	public FastReservationDTO() {
 		super();
 	}
-	public FastReservationDTO(String flightNumber, String startDestination, String finalDestination,
+	public FastReservationDTO(long id,String flightNumber, String startDestination, String finalDestination,
 			String dateOfFlight, String dateOfArrival, int length,double price, int discout) {
 		super();
+		this.id=id;
 		this.flightNumber = flightNumber;
 		this.startDestination = startDestination;
 		this.finalDestination = finalDestination;
