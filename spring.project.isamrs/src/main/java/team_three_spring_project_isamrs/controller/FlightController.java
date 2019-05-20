@@ -53,7 +53,7 @@ public class FlightController {
 
 	@Autowired
 	private SeatService seatService;
-	
+
 	@GetMapping(value = "/gradeFlight/{id}/{grade}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ROLE_USER')")
 	public ResponseEntity<Flight> gradeFlight(@PathVariable Long id, @PathVariable Integer grade) {
@@ -64,7 +64,7 @@ public class FlightController {
 		flightService.save(flight);
 		return new ResponseEntity<>(flight, HttpStatus.CREATED);
 	}
-	
+
 	@GetMapping(value = "/findConcreteFlights/{airlineId}")
 	public ResponseEntity<Set<Flight>> findConcreteFlights(@PathVariable String airlineId) {
 		Airline retVal = airlineService.getOne(Long.parseLong(airlineId));
@@ -80,8 +80,8 @@ public class FlightController {
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		Date dateOfFlight = new Date(df.parse(flightDTO.getDateOfFlight()).getTime());
 		Date dateOfArrival = new Date(df.parse(flightDTO.getDateOfArrival()).getTime());
-		long l=(dateOfArrival.getTime()-dateOfFlight.getTime())/60000;
-		int length=(int)l;
+		long l = (dateOfArrival.getTime() - dateOfFlight.getTime()) / 60000;
+		int length = (int) l;
 		Flight fl = this.flightService.create(new Flight(new AddFlightDTO(flightDTO.getFlightNumberRegister(),
 				this.airlineService.getOne(Long.parseLong(flightDTO.getStartDestinationRegister())),
 				this.airlineService.getOne(Long.parseLong(flightDTO.getFinalDestinationRegister())), air,
@@ -110,15 +110,14 @@ public class FlightController {
 			@PathVariable String endDate, @PathVariable Long startDestination, @PathVariable Long endDestination) {
 		List<Flight> allFlights = flightService.getAll();
 		List<Flight> retVal = new ArrayList<>();
-		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 		String startDatee = "";
 		String endDatee = "";
 		for (Flight flight : allFlights) {
-			startDatee = df.format(flight.getDateOfStart());
+			startDatee = flight.getDateOfStart().substring(0, 10);
 			if (!startDate.equals("0000-00-00") && !startDate.equals(startDatee)) {
 				continue;
 			}
-			endDatee = df.format(flight.getDateOfEnd());
+			endDatee = flight.getDateOfEnd().substring(0, 10);
 			if (!endDate.equals("0000-00-00") && !endDate.equals(endDatee)) {
 				continue;
 			}
@@ -145,23 +144,23 @@ public class FlightController {
 			dateOfArr = df.parse(dateOfArrival);
 		}
 		List<Flight> flights;
-		List<Flight> returnFlights=new ArrayList<>();
-		flights = this.flightService.findByStartAirlineAndFinalAirline(
-				this.airlineService.getOne(startDestination), this.airlineService.getOne(finalDestination));
+		List<Flight> returnFlights = new ArrayList<>();
+		flights = this.flightService.findByStartAirlineAndFinalAirline(this.airlineService.getOne(startDestination),
+				this.airlineService.getOne(finalDestination));
 		if (!dateOfArrival.equals("noDate")) {
 			returnFlights = this.flightService.findByStartAirlineAndFinalAirline(
 					this.airlineService.getOne(finalDestination), this.airlineService.getOne(startDestination));
 		}
-		List<Flight> flights2=new ArrayList<>();
-		List<Flight> returnFLights2=new ArrayList<>();
-		for(Flight f: flights) {
-			if(df.parse(f.getDateOfStart()).equals(dateOfFl)) {
+		List<Flight> flights2 = new ArrayList<>();
+		List<Flight> returnFLights2 = new ArrayList<>();
+		for (Flight f : flights) {
+			if (df.parse(f.getDateOfStart()).equals(dateOfFl)) {
 				flights2.add(f);
 			}
 		}
-		if(!dateOfArrival.equals("noDate")) {
-			for(Flight f: returnFlights) {
-				if(df.parse(f.getDateOfStart()).equals(dateOfArr)) {
+		if (!dateOfArrival.equals("noDate")) {
+			for (Flight f : returnFlights) {
+				if (df.parse(f.getDateOfStart()).equals(dateOfArr)) {
 					returnFLights2.add(f);
 				}
 			}
@@ -247,15 +246,13 @@ public class FlightController {
 		Seat s = this.seatService.getOne(id);
 		return new ResponseEntity<>(s, HttpStatus.OK);
 	}
-	
-	@GetMapping(value="getFlights")
-	public ResponseEntity<List<Flight>> getFlights(){
+
+	@GetMapping(value = "getFlights")
+	public ResponseEntity<List<Flight>> getFlights() {
 		User logged = (User) this.userDetailsService
 				.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
-		List<Flight> flights=this.flightService.findByStartAirline(((AirlineAdmin) logged).getAirline());
-		return new ResponseEntity<>(flights,HttpStatus.OK);
+		List<Flight> flights = this.flightService.findByStartAirline(((AirlineAdmin) logged).getAirline());
+		return new ResponseEntity<>(flights, HttpStatus.OK);
 	}
-	
-	
 
 }

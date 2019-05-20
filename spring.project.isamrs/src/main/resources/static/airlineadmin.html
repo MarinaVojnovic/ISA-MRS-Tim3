@@ -6,6 +6,8 @@
 <meta charset="utf-8">
 <link rel="stylesheet" href="bootstrap.min.css">
 <script src="jquery.min.js"></script>
+<link href="toastr.css" rel="stylesheet" />
+<script type="text/javascript" src="toastr.js"></script>
 <script src="auth.js"></script>
 <script src="airlineadmin.js"></script>
 <script src="bootstrap.min.js"></script>
@@ -234,16 +236,18 @@ body {
 					<label class="control-label col-sm-2" for="dateOfFlight">Date
 						of flight: </label>
 					<div class="col-sm-10">
-						<input type="datetime-local" class="form-control" id="dateOfFlight"
-							placeholder="Insert date of the flight" name="dateOfFlight">
+						<input type="datetime-local" class="form-control"
+							id="dateOfFlight" placeholder="Insert date of the flight"
+							name="dateOfFlight">
 					</div>
 				</div>
 				<div class="form-group">
 					<label class="control-label col-sm-2" for="dateOfArrival">Date
 						of arrival: </label>
 					<div class="col-sm-10">
-						<input type="datetime-local" class="form-control" id="dateOfArrival"
-							placeholder="Insert date of the flight" name="dateOfArrival">
+						<input type="datetime-local" class="form-control"
+							id="dateOfArrival" placeholder="Insert date of the flight"
+							name="dateOfArrival">
 					</div>
 				</div>
 				<div class="form-group" id="aaa">
@@ -432,7 +436,7 @@ body {
 			<br>
 		</div>
 	</div>
-	
+
 	<div id="report" class="tabcontent">
 		<div class="container">
 			<h2>Reports:</h2>
@@ -457,15 +461,15 @@ body {
 			<div class="container">
 				<h3>3) Graphic show of sold tickets of this airline:</h3>
 				<br>
-				<h4 style="margin-left: 6%">A) Daily </h4>
+				<h4 style="margin-left: 6%">A) Daily</h4>
 				<canvas id="myChart1" width="400" height="400"
 					style="max-width: 400px; max-height: 400px; margin-left: 12%"></canvas>
 				<br>
-				<h4 style="margin-left: 6%">B) Weekly </h4>
+				<h4 style="margin-left: 6%">B) Weekly</h4>
 				<canvas id="myChart2" width="400" height="400"
 					style="max-width: 400px; max-height: 400px; margin-left: 12%"></canvas>
 				<br>
-				<h4 style="margin-left: 6%">C) Monthly </h4>
+				<h4 style="margin-left: 6%">C) Monthly</h4>
 				<canvas id="myChart3" width="400" height="400"
 					style="max-width: 400px; max-height: 400px; margin-left: 12%"></canvas>
 

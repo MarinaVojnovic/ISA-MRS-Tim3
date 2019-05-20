@@ -13,11 +13,35 @@ var urlRoot15 = "http://localhost:8080/getSeat";
 var urlRoot16 = "http://localhost:8080/addQuickBooking";
 var urlRoot17 = "http://localhost:8080/deleteSeats";
 var urlChangePassword = "http://localhost:8080/api/changePasswordFirstTime";
-var urlRoot18="http://localhost:8080/getFlights";
+var urlRoot18 = "http://localhost:8080/getFlights";
 var urlRoot19 = "http://localhost:8080/reportFlightAttendance";
 var urlRoot20 = "http://localhost:8080/findAirlineAmount";
 
 var TOKEN_KEY = 'jwtToken';
+
+function showMessage(message, type) {
+	if (type != "success" && type != "error" && type != "warning"
+			&& type != "info") {
+		type = "info";
+	}
+	toastr.options = {
+		"closeButton" : true,
+		"debug" : false,
+		"newestOnTop" : false,
+		"progressBar" : false,
+		"positionClass" : "toast-top-right",
+		"preventDuplicates" : false,
+		"showDuration" : "300",
+		"hideDuration" : "1000",
+		"timeOut" : "5000",
+		"extendedTimeOut" : "1000",
+		"showEasing" : "swing",
+		"hideEasing" : "linear",
+		"showMethod" : "fadeIn",
+		"hideMethod" : "fadeOut"
+	}
+	toastr[type](message);
+}
 
 $(document).on('click', '#editAirlineButton', function(e) {
 	findAirline();
@@ -31,12 +55,9 @@ $(document).on('click', '#addDestinationButton', function(e) {
 	getAllAirlines();
 })
 
-$(document).on(
-		'click',
-		'#reportsButton',
-		function(e) {
-			fillDatas();
-		});
+$(document).on('click', '#reportsButton', function(e) {
+	fillDatas();
+});
 
 window.onload = function(e) {
 	console.log('window loades');
@@ -63,9 +84,9 @@ window.onload = function(e) {
 
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
-			alert(jqXHR.status);
-			alert(textStatus);
-			alert(errorThrown);
+			showMessage(jqXHR.status, "error");
+			showMessage(textStatus, "error");
+			showMessage(errorThrown, "error");
 		}
 
 	})
@@ -90,22 +111,23 @@ function fillDatas() {
 						}
 					},
 					error : function(jqXHR, textStatus, errorThrown) {
-						alert(jqXHR.status);
-						alert(textStatus);
-						alert(errorThrown);
+						showMessage(jqXHR.status, "error");
+						showMessage(textStatus, "error");
+						showMessage(errorThrown, "error");
 					}
 
 				})
-				if(data.gradeNumber!=0){
-				$("#reportAirlineAverageGrade").html((data.score/data.gradeNumber).toFixed(2));
+				if (data.gradeNumber != 0) {
+					$("#reportAirlineAverageGrade").html(
+							(data.score / data.gradeNumber).toFixed(2));
 				}
 				$("#reportAirlineAverageGrade").html((data.score).toFixed(2))
 			}
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
-			alert(jqXHR.status);
-			alert(textStatus);
-			alert(errorThrown);
+			showMessage(jqXHR.status, "error");
+			showMessage(textStatus, "error");
+			showMessage(errorThrown, "error");
 		}
 
 	})
@@ -121,9 +143,9 @@ function fillDatas() {
 			createChart("myChart3", data.monthlyLabels, data.monthlyValues)
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
-			alert(jqXHR.status);
-			alert(textStatus);
-			alert(errorThrown);
+			showMessage(jqXHR.status, "error");
+			showMessage(textStatus, "error");
+			showMessage(errorThrown, "error");
 		}
 
 	})
@@ -153,12 +175,13 @@ function fillTableFlights(data, table) {
 		cell4.innerHTML = response[counter].dateOfStart;
 		cell5.innerHTML = response[counter].dateOfEnd;
 		cell6.innerHTML = response[counter].cost;
-		if(response[counter].gradeNumber!=0){
-		cell7.innerHTML = (response[counter].score/response[counter].gradeNumber).toFixed(2);
-		}else{
+		if (response[counter].gradeNumber != 0) {
+			cell7.innerHTML = (response[counter].score / response[counter].gradeNumber)
+					.toFixed(2);
+		} else {
 			cell7.innerHTML = (response[counter].score).toFixed(2);
 		}
-		}
+	}
 	var row = tabela.insertRow(0);
 	var cell0 = row.insertCell(0);
 	var cell1 = row.insertCell(1);
@@ -178,7 +201,6 @@ function fillTableFlights(data, table) {
 	cell6.innerHTML = '<p style= "color:#002699;">Cost</p>';
 	cell7.innerHTML = '<p style= "color:#002699;">Score</p>';
 }
-
 
 function createChart(canvasId, labelNames, data) {
 	var ctx = document.getElementById(canvasId).getContext('2d');
@@ -212,9 +234,9 @@ function passwordValidation() {
 	var password2 = document.getElementById("newPasswordTwo").value;
 
 	if (password1 == "" || password2 == "") {
-		alert('You have to fill both fields');
+		showMessage('You have to fill both fields', "warning");
 	} else if (password1 != password2) {
-		alert('Passwords must match!');
+		showMessage('Passwords must match!', "warning");
 	} else {
 		$.ajax({
 			type : 'PUT',
@@ -226,18 +248,20 @@ function passwordValidation() {
 			success : function(data) {
 				if (data) {
 					setJwtToken(TOKEN_KEY, data.accessToken);
-					alert("Successful changing password, congratulations!");
+					showMessage(
+							"Successful changing password, congratulations!",
+							"success");
 					$('.tab').show();
 					$('#passwordValidation').hide();
 				} else {
-					alert("Error while changing password!");
+					showMessage("Error while changing password!", "warning");
 				}
 
 			},
 			error : function(jqXHR, textStatus, errorThrown) {
-				alert(jqXHR.status);
-				alert(textStatus);
-				alert(errorThrown);
+				showMessage(jqXHR.status, "error");
+				showMessage(textStatus, "error");
+				showMessage(errorThrown, "error");
 
 			}
 		})
@@ -270,9 +294,9 @@ function findAirline() {
 					}
 				},
 				error : function(jqXHR, textStatus, errorThrown) {
-					alert(jqXHR.status);
-					alert(textStatus);
-					alert(errorThrown);
+					showMessage(jqXHR.status, "error");
+					showMessage(textStatus, "error");
+					showMessage(errorThrown, "error");
 
 				}
 
@@ -292,41 +316,43 @@ function addFlight() {
 	var numOfSeatsBusiness = document.getElementById("numberOfSeatsBusiness").value;
 	var numOfSeatsFirst = document.getElementById("numberOfSeatsFirst").value;
 	var numOfStops = document.getElementById("numberOfFlightStops").value;
-	dateOfFlight=dateOfFlight.replace("T", " ");
-	dateOfArrival=dateOfArrival.replace("T"," ");
+	dateOfFlight = dateOfFlight.replace("T", " ");
+	dateOfArrival = dateOfArrival.replace("T", " ");
 	var stops = "";
 	var i = 0
 	if (flightNumberRegister == "" || costOfFlight == "" || dateOfFlight == ""
 			|| dateOfArrival == "" || numOfSeatsEconomy == ""
 			|| numOfSeatsBusiness == "" || numOfSeatsFirst == ""
 			|| numOfStops == "") {
-		alert("You must fill in all of the fields");
+		showMessage("You must fill in all of the fields", "warning");
 		i = 1;
 	}
-	if (isNaN(costOfFlight) || costOfFlight < 0 
-			|| isNaN(numOfSeatsEconomy) || numOfSeatsEconomy < 0
-			|| isNaN(numOfSeatsBusiness) || numOfSeatsBusiness < 0
-			|| isNaN(numOfSeatsFirst) || numOfSeatsFirst < 0
-			|| isNaN(numOfStops) || numOfStops < 0) {
-		alert("You must insert positive number for cost of flight,number of seats and stops!");
+	if (isNaN(costOfFlight) || costOfFlight < 0 || isNaN(numOfSeatsEconomy)
+			|| numOfSeatsEconomy < 0 || isNaN(numOfSeatsBusiness)
+			|| numOfSeatsBusiness < 0 || isNaN(numOfSeatsFirst)
+			|| numOfSeatsFirst < 0 || isNaN(numOfStops) || numOfStops < 0) {
+		showMessage(
+				"You must insert positive number for cost of flight,number of seats and stops!",
+				"warning");
 		i = 1;
 	}
 	if (startDestinationRegister == finalDestinationRegister) {
-		alert("Start and final destination of flight cannot be same!");
+		showMessage("Start and final destination of flight cannot be same!",
+				"warning");
 		i = 1;
 	}
 	if (new Date(dateOfFlight) > new Date(dateOfArrival)) {
-		alert("Date of flight cannot be after date of arrival");
+		showMessage("Date of flight cannot be after date of arrival", "warning");
 		i = 1;
 	}
 	if (new Date() > new Date(dateOfFlight)
 			|| new Date() > new Date(dateOfArrival)) {
-		alert("You cannot put dates in the past");
+		showMessage("You cannot put dates in the past", "warning");
 		i = 1;
 	}
 	if (new Date() > new Date(dateOfFlight)
 			&& new Date() > new Date(dateOfArrival)) {
-		alert("You cannot put dates in the past");
+		showMessage("You cannot put dates in the past", "warning");
 		i = 1;
 	}
 	if (i == 0) {
@@ -352,12 +378,13 @@ function addFlight() {
 					numOfSeatsEconomy, numOfSeatsBusiness, numOfSeatsFirst,
 					numOfStops, stops),
 			success : function(data) {
-				alert("Successful added flight, congratulations!");
+				showMessage("Successful added flight, congratulations!",
+						"success");
 			},
 			error : function(jqXHR, textStatus, errorThrown) {
-				alert(jqXHR.status);
-				alert(textStatus);
-				alert(errorThrown);
+				showMessage(jqXHR.status, "error");
+				showMessage(textStatus, "error");
+				showMessage(errorThrown, "error");
 
 			}
 		})
@@ -390,15 +417,16 @@ $(document)
 							.getElementById("numberOfSeatsFirst").value;
 					var numOfStops = document
 							.getElementById("numberOfFlightStops").value;
-					dateOfFlight=dateOfFlight.replace("T", " ");
-					dateOfArrival=dateOfArrival.replace("T"," ");
+					dateOfFlight = dateOfFlight.replace("T", " ");
+					dateOfArrival = dateOfArrival.replace("T", " ");
 					var i = 0
 					if (flightNumberRegister == "" || costOfFlight == ""
 							|| dateOfFlight == "" || dateOfArrival == ""
 							|| numOfSeatsEconomy == ""
 							|| numOfSeatsBusiness == ""
 							|| numOfSeatsFirst == "" || numOfStops == "") {
-						alert("You must fill in all of the fields");
+						showMessage("You must fill in all of the fields",
+								"warning");
 						i = 1;
 					}
 					if (isNaN(costOfFlight) || costOfFlight < 0
@@ -408,25 +436,33 @@ $(document)
 							|| numOfSeatsBusiness < 0 || isNaN(numOfSeatsFirst)
 							|| numOfSeatsFirst < 0 || isNaN(numOfStops)
 							|| numOfStops < 0) {
-						alert("You must insert positive number for cost of flight,number of seats and stops!");
+						showMessage(
+								"You must insert positive number for cost of flight,number of seats and stops!",
+								"warning");
 						i = 1;
 					}
 					if (startDestination == finalDestination) {
-						alert("Start and final destination of flight cannot be same!");
+						showMessage(
+								"Start and final destination of flight cannot be same!",
+								"warning");
 						i = 1;
 					}
 					if (new Date(dateOfFlight) > new Date(dateOfArrival)) {
-						alert("Date of flight cannot be after date of arrival");
+						showMessage(
+								"Date of flight cannot be after date of arrival",
+								"warning");
 						i = 1;
 					}
 					if (new Date() > new Date(dateOfFlight)
 							|| new Date() > new Date(dateOfArrival)) {
-						alert("You cannot put dates in the past");
+						showMessage("You cannot put dates in the past",
+								"warning");
 						i = 1;
 					}
 					if (new Date() > new Date(dateOfFlight)
 							&& new Date() > new Date(dateOfArrival)) {
-						alert("You cannot put dates in the past");
+						showMessage("You cannot put dates in the past",
+								"warning");
 						i = 1;
 					}
 					if (i == 0 && numOfStops > 0) {
@@ -486,9 +522,9 @@ $(document)
 									},
 									error : function(jqXHR, textStatus,
 											errorThrown) {
-										alert(jqXHR.status);
-										alert(textStatus);
-										alert(errorThrown);
+										showMessage(jqXHR.status, "error");
+										showMessage(textStatus, "error");
+										showMessage(errorThrown, "error");
 
 									}
 								})
@@ -518,7 +554,8 @@ $(document).on(
 
 			if (name == "" || address == "" || promotionalDescription == ""
 					|| city == "") {
-				alert('None of the fields is allowed to be empty!');
+				showMessage('None of the fields is allowed to be empty!',
+						"warning");
 			} else {
 
 				$.ajax({
@@ -530,13 +567,14 @@ $(document).on(
 					dataType : "json",
 					contentType : 'application/json',
 					success : function(data) {
-						alert("Successful editing, congratulations!");
+						showMessage("Successful editing, congratulations!",
+								"success");
 
 					},
 					error : function(jqXHR, textStatus, errorThrown) {
-						alert(jqXHR.status);
-						alert(textStatus);
-						alert(errorThrown);
+						showMessage(jqXHR.status, "error");
+						showMessage(textStatus, "error");
+						showMessage(errorThrown, "error");
 
 					}
 
@@ -556,7 +594,8 @@ function getLogged() {
 					dataType : "json",
 					success : function(data) {
 						if (data == null) {
-							alert('Error while finding loged one!');
+							showMessage('Error while finding loged one!',
+									"warning");
 						} else {
 							document.getElementById("airlineAdminUsernameEdit").value = data.username;
 							document
@@ -568,9 +607,9 @@ function getLogged() {
 						}
 					},
 					error : function(jqXHR, textStatus, errorThrown) {
-						alert(jqXHR.status);
-						alert(textStatus);
-						alert(errorThrown);
+						showMessage(jqXHR.status, "error");
+						showMessage(textStatus, "error");
+						showMessage(errorThrown, "error");
 					}
 
 				})
@@ -600,9 +639,12 @@ $(document)
 					if (username == "" || password1 == "" || password2 == ""
 							|| firstName == "" || lastName == "" || email == ""
 							|| phoneNumber == "") {
-						alert('At least one field is blank, please fill it up with proper information!');
+						showMessage(
+								'At least one field is blank, please fill it up with proper information!',
+								"warning");
 					} else if (password1 != password2) {
-						alert("Password must match, try again!");
+						showMessage("Password must match, try again!",
+								"warning");
 					} else {
 						$
 								.ajax({
@@ -618,17 +660,20 @@ $(document)
 										if (data) {
 											setJwtToken(TOKEN_KEY,
 													data.accessToken);
-											alert("Successful editing, congratulations!");
+											showMessage(
+													"Successful editing, congratulations!",
+													"success");
 										} else {
-											alert("Error while editing!");
+											showMessage("Error while editing!",
+													"warning");
 										}
 
 									},
 									error : function(jqXHR, textStatus,
 											errorThrown) {
-										alert(jqXHR.status);
-										alert(textStatus);
-										alert(errorThrown);
+										showMessage(jqXHR.status, "error");
+										showMessage(textStatus, "error");
+										showMessage(errorThrown, "error");
 
 									}
 								})
@@ -656,9 +701,9 @@ function getAllAirlines() {
 			}
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
-			alert(jqXHR.status);
-			alert(textStatus);
-			alert(errorThrown);
+			showMessage(jqXHR.status, "error");
+			showMessage(textStatus, "error");
+			showMessage(errorThrown, "error");
 
 		}
 	})
@@ -702,10 +747,8 @@ $(document)
 											cell2.innerHTML = list[flight].startAirline.name;
 											cell3.innerHTML = list[flight].finalAirline.name;
 											cell4.innerHTML = list[flight].cost;
-											cell5.innerHTML = 
-													list[flight].dateOfStart;
-											cell6.innerHTML =
-													list[flight].dateOfEnd;
+											cell5.innerHTML = list[flight].dateOfStart;
+											cell6.innerHTML = list[flight].dateOfEnd;
 											cell7.innerHTML = list[flight].numOfStops;
 											cell8.innerHTML = list[flight].lengthOfFlight;
 											cell9.innerHTML = '<button name=\"'
@@ -738,9 +781,9 @@ $(document)
 
 								},
 								error : function(jqXHR, textStatus, errorThrown) {
-									alert(jqXHR.status);
-									alert(textStatus);
-									alert(errorThrown);
+									showMessage(jqXHR.status, "error");
+									showMessage(textStatus, "error");
+									showMessage(errorThrown, "error");
 
 								}
 							})
@@ -924,9 +967,9 @@ $(document)
 
 								},
 								error : function(jqXHR, textStatus, errorThrown) {
-									alert(jqXHR.status);
-									alert(textStatus);
-									alert(errorThrown);
+									showMessage(jqXHR.status, "error");
+									showMessage(textStatus, "error");
+									showMessage(errorThrown, "error");
 
 								}
 							})
@@ -941,27 +984,25 @@ $(document).on(
 		function(e) {
 			e.preventDefault();
 			$.ajax({
-				type: 'GET',
-				url: urlRoot2 ,
+				type : 'GET',
+				url : urlRoot2,
 				headers : createAuthorizationTokenHeader(TOKEN_KEY),
-				success: function(data){
+				success : function(data) {
 					var list = data == null ? []
-					: (data instanceof Array ? data : [ data ]);
-				if (data == null) {
-	
-				} else {
-					var option=$('<option name="'
-							+ data.id + '">'
-							+ data.name
-							+ '</option>');
-					$("#startDestinationRegister").append(option);
-				}
-					
+							: (data instanceof Array ? data : [ data ]);
+					if (data == null) {
+
+					} else {
+						var option = $('<option name="' + data.id + '">'
+								+ data.name + '</option>');
+						$("#startDestinationRegister").append(option);
+					}
+
 				},
 				error : function(jqXHR, textStatus, errorThrown) {
-					alert(jqXHR.status);
-					alert(textStatus);
-					alert(errorThrown);
+					showMessage(jqXHR.status, "error");
+					showMessage(textStatus, "error");
+					showMessage(errorThrown, "error");
 
 				}
 			})
@@ -980,13 +1021,13 @@ $(document).on(
 								: (data instanceof Array ? data : [ data ]);
 						if (list.length > 0) {
 							var i = 0
-//							$.each(list, function(index, destination) {
-//								var option = $('<option name="'
-//										+ destination.worksWith.id + '">'
-//										+ destination.worksWith.name
-//										+ '</option>')
-//								$("#startDestinationRegister").append(option);
-//							})
+							// $.each(list, function(index, destination) {
+							// var option = $('<option name="'
+							// + destination.worksWith.id + '">'
+							// + destination.worksWith.name
+							// + '</option>')
+							// $("#startDestinationRegister").append(option);
+							// })
 							$.each(list, function(index, destination) {
 								var option = $('<option name="'
 										+ destination.worksWith.id + '">'
@@ -1000,9 +1041,9 @@ $(document).on(
 					}
 				},
 				error : function(jqXHR, textStatus, errorThrown) {
-					alert(jqXHR.status);
-					alert(textStatus);
-					alert(errorThrown);
+					showMessage(jqXHR.status, "error");
+					showMessage(textStatus, "error");
+					showMessage(errorThrown, "error");
 
 				}
 			})
@@ -1060,9 +1101,9 @@ $(document)
 										},
 										error : function(jqXHR, textStatus,
 												errorThrown) {
-											alert(jqXHR.status);
-											alert(textStatus);
-											alert(errorThrown);
+											showMessage(jqXHR.status, "error");
+											showMessage(textStatus, "error");
+											showMessage(errorThrown, "error");
 										}
 
 									})
@@ -1079,40 +1120,46 @@ $(document)
 					}
 				})
 
-$(document).on('click', '#book', function(e) {
-	e.preventDefault();
-	var popust = document.getElementById("discount").value;
-	console.log("popust", popust);
-	if (isNaN(popust) || popust < 0 || popust > 70) {
-		alert("Discount must be number between 0 and 70");
-	} else {
-		sed = "";
-		var sedista = JSON.parse(sessionStorage["choosenSeats"]);
-		for ( var s in sedista) {
-			sed += sedista[s] + "*";
-		}
-		console.log(sed);
-		sed.substring(0, sed.length - 1);
-		sessionStorage.removeItem("choosenSeats");
-		$.ajax({
-			type : 'POST',
-			url : urlRoot16 + "/" + sed + "/" + popust,
-			headers : createAuthorizationTokenHeader(TOKEN_KEY),
-			contentType : 'application/json',
-			success : function(data) {
-				alert("Successful added to quick booking tickets!");
-				openCity(event, 'allFlights');
+$(document).on(
+		'click',
+		'#book',
+		function(e) {
+			e.preventDefault();
+			var popust = document.getElementById("discount").value;
+			console.log("popust", popust);
+			if (isNaN(popust) || popust < 0 || popust > 70) {
+				showMessage("Discount must be number between 0 and 70",
+						"warning");
+			} else {
+				sed = "";
+				var sedista = JSON.parse(sessionStorage["choosenSeats"]);
+				for ( var s in sedista) {
+					sed += sedista[s] + "*";
+				}
+				console.log(sed);
+				sed.substring(0, sed.length - 1);
+				sessionStorage.removeItem("choosenSeats");
+				$.ajax({
+					type : 'POST',
+					url : urlRoot16 + "/" + sed + "/" + popust,
+					headers : createAuthorizationTokenHeader(TOKEN_KEY),
+					contentType : 'application/json',
+					success : function(data) {
+						showMessage(
+								"Successful added to quick booking tickets!",
+								"success");
+						openCity(event, 'allFlights');
 
-			},
-			error : function(jqXHR, textStatus, errorThrown) {
-				alert(jqXHR.status);
-				alert(textStatus);
-				alert(errorThrown);
+					},
+					error : function(jqXHR, textStatus, errorThrown) {
+						showMessage(jqXHR.status, "error");
+						showMessage(textStatus, "error");
+						showMessage(errorThrown, "error");
+					}
+				})
 			}
-		})
-	}
 
-})
+		})
 
 $(document).on('click', '#findAmountAirline', function(e) {
 	e.preventDefault();
@@ -1135,9 +1182,9 @@ $(document).on('click', '#findAmountAirline', function(e) {
 			$("#amountAirlineValue").html(data.toFixed(2));
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
-			alert(jqXHR.status);
-			alert(textStatus);
-			alert(errorThrown);
+			showMessage(jqXHR.status, "error");
+			showMessage(textStatus, "error");
+			showMessage(errorThrown, "error");
 		}
 
 	})
@@ -1174,14 +1221,15 @@ $(document)
 					// headers : createAuthorizationTokenHeader(TOKEN_KEY),
 					// contentType : 'application/json',
 					// success : function(data) {
-					// alert("Successful added to quick booking tickets!");
+					// showMessage("Successful added to quick booking
+					// tickets!");
 					// openCity(event, 'allFlights');
 					//	
 					// },
 					// error : function(jqXHR, textStatus, errorThrown) {
-					// alert(jqXHR.status);
-					// alert(textStatus);
-					// alert(errorThrown);
+					// showMessage(jqXHR.status);
+					// showMessage(textStatus);
+					// showMessage(errorThrown);
 					// }
 					// })
 
@@ -1202,14 +1250,14 @@ $(document).on('click', "#deleteSeats", function(e) {
 		headers : createAuthorizationTokenHeader(TOKEN_KEY),
 		contentType : 'application/json',
 		success : function(data) {
-			alert("Successful deleted seats!");
+			showMessage("Successful deleted seats!", "success");
 			openCity(event, 'allFlights');
 
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
-			alert(jqXHR.status);
-			alert(textStatus);
-			alert(errorThrown);
+			showMessage(jqXHR.status, "error");
+			showMessage(textStatus, "error");
+			showMessage(errorThrown, "error");
 		}
 	})
 })
@@ -1222,7 +1270,7 @@ $(document).on(
 			var destination = $('option:selected', "#chooseDestination").attr(
 					'name');
 			if (destination == undefined) {
-				alert("There is no destination to add!");
+				showMessage("There is no destination to add!", "warning");
 			} else {
 				$.ajax({
 					type : 'POST',
@@ -1230,15 +1278,16 @@ $(document).on(
 					headers : createAuthorizationTokenHeader(TOKEN_KEY),
 					contentType : 'application/json',
 					success : function(data) {
-						alert("Successfully added destination.");
+						showMessage("Successfully added destination.",
+								"success");
 						$(
 								"#chooseDestination option[value='"
 										+ destination + "']").remove();
 					},
 					error : function(jqXHR, textStatus, errorThrown) {
-						alert(jqXHR.status);
-						alert(textStatus);
-						alert(errorThrown);
+						showMessage(jqXHR.status, "error");
+						showMessage(textStatus, "error");
+						showMessage(errorThrown, "error");
 
 					}
 				})
@@ -1261,8 +1310,8 @@ function passwordDTOJson(password1) {
 
 function createFlightToJSON(flightNumberRegister, startDestinationRegister,
 		finalDestinationRegister, costOfFlight, dateOfFlight, dateOfArrival,
-		numOfSeatsEconomy, numOfSeatsBusiness, numOfSeatsFirst,
-		numOfStops, stops) {
+		numOfSeatsEconomy, numOfSeatsBusiness, numOfSeatsFirst, numOfStops,
+		stops) {
 	return JSON.stringify({
 		"flightNumberRegister" : flightNumberRegister,
 		"startDestinationRegister" : startDestinationRegister,

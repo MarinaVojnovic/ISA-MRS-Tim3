@@ -19,6 +19,30 @@ var urlRootReportHotelAttendance = "http://localhost:8080/reportHotelAttendance"
 
 var TOKEN_KEY = 'jwtToken';
 
+function showMessage(message, type) {
+	if (type != "success" && type != "error" && type != "warning"
+			&& type != "info") {
+		type = "info";
+	}
+	toastr.options = {
+		"closeButton" : true,
+		"debug" : false,
+		"newestOnTop" : false,
+		"progressBar" : false,
+		"positionClass" : "toast-top-right",
+		"preventDuplicates" : false,
+		"showDuration" : "300",
+		"hideDuration" : "1000",
+		"timeOut" : "5000",
+		"extendedTimeOut" : "1000",
+		"showEasing" : "swing",
+		"hideEasing" : "linear",
+		"showMethod" : "fadeIn",
+		"hideMethod" : "fadeOut"
+	}
+	toastr[type](message);
+}
+
 $(document).on('click', '#editHotelButton', function(e) {
 	findHotel();
 });
@@ -52,9 +76,9 @@ window.onload = function(e) {
 
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
-			alert(jqXHR.status);
-			alert(textStatus);
-			alert(errorThrown);
+			showMessage(jqXHR.status, "error");
+			showMessage(textStatus, "error");
+			showMessage(errorThrown, "error");
 		}
 
 	})
@@ -98,9 +122,9 @@ function fillDatasAddRoomFastReservation() {
 			}
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
-			alert(jqXHR.status);
-			alert(textStatus);
-			alert(errorThrown);
+			showMessage(jqXHR.status, "error");
+			showMessage(textStatus, "error");
+			showMessage(errorThrown, "error");
 		}
 
 	})
@@ -116,9 +140,9 @@ function fillDatasAddRoomFastReservation() {
 			}
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
-			alert(jqXHR.status);
-			alert(textStatus);
-			alert(errorThrown);
+			showMessage(jqXHR.status, "error");
+			showMessage(textStatus, "error");
+			showMessage(errorThrown, "error");
 		}
 
 	})
@@ -137,9 +161,9 @@ function fillDatasDeleteRoomFastReservation() {
 			}
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
-			alert(jqXHR.status);
-			alert(textStatus);
-			alert(errorThrown);
+			showMessage(jqXHR.status, "error");
+			showMessage(textStatus, "error");
+			showMessage(errorThrown, "error");
 		}
 
 	})
@@ -158,9 +182,9 @@ function fillHotelCustomerServices() {
 			}
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
-			alert(jqXHR.status);
-			alert(textStatus);
-			alert(errorThrown);
+			showMessage(jqXHR.status, "error");
+			showMessage(textStatus, "error");
+			showMessage(errorThrown, "error");
 		}
 
 	})
@@ -185,9 +209,9 @@ function fillDatas() {
 						}
 					},
 					error : function(jqXHR, textStatus, errorThrown) {
-						alert(jqXHR.status);
-						alert(textStatus);
-						alert(errorThrown);
+						showMessage(jqXHR.status, "error");
+						showMessage(textStatus, "error");
+						showMessage(errorThrown, "error");
 					}
 
 				})
@@ -196,9 +220,9 @@ function fillDatas() {
 			}
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
-			alert(jqXHR.status);
-			alert(textStatus);
-			alert(errorThrown);
+			showMessage(jqXHR.status, "error");
+			showMessage(textStatus, "error");
+			showMessage(errorThrown, "error");
 		}
 
 	})
@@ -214,9 +238,9 @@ function fillDatas() {
 			createChart("myChart3", data.monthlyLabels, data.monthlyValues)
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
-			alert(jqXHR.status);
-			alert(textStatus);
-			alert(errorThrown);
+			showMessage(jqXHR.status, "error");
+			showMessage(textStatus, "error");
+			showMessage(errorThrown, "error");
 		}
 
 	})
@@ -418,9 +442,9 @@ function passwordValidation() {
 	var password2 = document.getElementById("newPasswordTwo").value;
 
 	if (password1 == "" || password2 == "") {
-		alert('You have to fill both fields');
+		showMessage('You have to fill both fields', "warning");
 	} else if (password1 != password2) {
-		alert('Passwords must match!');
+		showMessage('Passwords must match!', "warning");
 	} else {
 		$.ajax({
 			type : 'PUT',
@@ -432,18 +456,20 @@ function passwordValidation() {
 			success : function(data) {
 				if (data) {
 					setJwtToken(TOKEN_KEY, data.accessToken);
-					alert("Successful changing password, congratulations!");
+					showMessage(
+							"Successful changing password, congratulations!",
+							"success");
 					$('.tab').show();
 					$('#passwordValidation').hide();
 				} else {
-					alert("Error while changing password!");
+					showMessage("Error while changing password!", "warning");
 				}
 
 			},
 			error : function(jqXHR, textStatus, errorThrown) {
-				alert(jqXHR.status);
-				alert(textStatus);
-				alert(errorThrown);
+				showMessage(jqXHR.status, "error");
+				showMessage(textStatus, "error");
+				showMessage(errorThrown, "error");
 
 			}
 		})
@@ -473,9 +499,9 @@ function checkFirstTime() {
 
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
-			alert(jqXHR.status);
-			alert(textStatus);
-			alert(errorThrown);
+			showMessage(jqXHR.status, "error");
+			showMessage(textStatus, "error");
+			showMessage(errorThrown, "error");
 		}
 
 	})
@@ -492,7 +518,8 @@ function getLogged() {
 					dataType : "json",
 					success : function(data) {
 						if (data == null) {
-							alert('Error while finding loged one!');
+							showMessage('Error while finding loged one!',
+									"warning");
 						} else {
 							document.getElementById("hotelAdminUsernameEdit").value = data.username;
 							document.getElementById("hotelAdminFirstNameEdit").value = data.firstName;
@@ -503,9 +530,9 @@ function getLogged() {
 						}
 					},
 					error : function(jqXHR, textStatus, errorThrown) {
-						alert(jqXHR.status);
-						alert(textStatus);
-						alert(errorThrown);
+						showMessage(jqXHR.status, "error");
+						showMessage(textStatus, "error");
+						showMessage(errorThrown, "error");
 					}
 
 				})
@@ -534,9 +561,12 @@ $(document)
 					if (username == "" || password1 == "" || password2 == ""
 							|| firstName == "" || lastName == "" || email == ""
 							|| phoneNumber == "") {
-						alert('At least one field is blank, please fill it up with proper information!');
+						showMessage(
+								'At least one field is blank, please fill it up with proper information!',
+								"warning");
 					} else if (password1 != password2) {
-						alert("Password must match, try again!");
+						showMessage("Password must match, try again!",
+								"warning");
 					} else {
 						$
 								.ajax({
@@ -550,14 +580,16 @@ $(document)
 											email, phoneNumber),
 									success : function(data) {
 										setJwtToken(TOKEN_KEY, data.accessToken);
-										alert("Successful editing, congratulations!");
+										showMessage(
+												"Successful editing, congratulations!",
+												"success");
 
 									},
 									error : function(jqXHR, textStatus,
 											errorThrown) {
-										alert(jqXHR.status);
-										alert(textStatus);
-										alert(errorThrown);
+										showMessage(jqXHR.status, "error");
+										showMessage(textStatus, "error");
+										showMessage(errorThrown, "error");
 
 									}
 								})
@@ -577,7 +609,8 @@ $(document).on(
 
 			if (name == "" || address == "" || promotionalDescription == ""
 					|| city == "") {
-				alert('None of the fields is allowed to be empty!');
+				showMessage('None of the fields is allowed to be empty!',
+						"warning");
 			} else {
 
 				$.ajax({
@@ -589,13 +622,14 @@ $(document).on(
 					dataType : "json",
 					contentType : 'application/json',
 					success : function(data) {
-						alert("Successful editing, congratulations!");
+						showMessage("Successful editing, congratulations!",
+								"success");
 
 					},
 					error : function(jqXHR, textStatus, errorThrown) {
-						alert(jqXHR.status);
-						alert(textStatus);
-						alert(errorThrown);
+						showMessage(jqXHR.status, "error");
+						showMessage(textStatus, "error");
+						showMessage(errorThrown, "error");
 
 					}
 
@@ -623,9 +657,9 @@ function findHotel() {
 					}
 				},
 				error : function(jqXHR, textStatus, errorThrown) {
-					alert(jqXHR.status);
-					alert(textStatus);
-					alert(errorThrown);
+					showMessage(jqXHR.status, "error");
+					showMessage(textStatus, "error");
+					showMessage(errorThrown, "error");
 				}
 
 			})
@@ -642,34 +676,40 @@ function saveEditedRoom() {
 	console.log(roomNumber + ' ' + price + ' ' + numberPeople);
 
 	if (roomNumber == "" || price == "" || numberPeople == "") {
-		alert('None of the fields is allowed to be empty!');
+		showMessage('None of the fields is allowed to be empty!', "warning");
 	} else if (roomNumber <= 0 || roomNumber >= 1000) {
-		alert('Number of room must be in a range [1, 999] !');
+		showMessage('Number of room must be in a range [1, 999] !', "warning");
 	} else if (price <= 0) {
-		alert('Price must be positive number!');
+		showMessage('Price must be positive number!', "warning");
 	} else if (numberPeople <= 0 || numberPeople >= 6) {
-		alert('Number of people in room must be in a range [1, 5] !');
+		showMessage('Number of people in room must be in a range [1, 5] !',
+				"warning");
 	} else {
 
-		$.ajax({
-			type : 'PUT',
-			url : urlRoot5,
-			headers : createAuthorizationTokenHeader(TOKEN_KEY),
-			data : roomToJson(id, roomNumber, price, numberPeople),
-			dataType : "json",
-			contentType : 'application/json',
-			success : function(data) {
-				showRooms("forEdit");
-				alert(data.message);
-			},
-			error : function(jqXHR, textStatus, errorThrown) {
-				alert(jqXHR.status);
-				alert(textStatus);
-				alert(errorThrown);
+		$
+				.ajax({
+					type : 'PUT',
+					url : urlRoot5,
+					headers : createAuthorizationTokenHeader(TOKEN_KEY),
+					data : roomToJson(id, roomNumber, price, numberPeople),
+					dataType : "json",
+					contentType : 'application/json',
+					success : function(data) {
+						showRooms("forEdit");
+						if (data.message == "Room successfully edited, congratulations!") {
+							showMessage(data.message, "success")
+						} else {
+							showMessage(data.message, "warning");
+						}
+					},
+					error : function(jqXHR, textStatus, errorThrown) {
+						showMessage(jqXHR.status, "error");
+						showMessage(textStatus, "error");
+						showMessage(errorThrown, "error");
 
-			}
+					}
 
-		})
+				})
 	}
 
 }
@@ -702,9 +742,9 @@ function editRoom(roomId) {
 					showRooms("forEdit");
 				},
 				error : function(jqXHR, textStatus, errorThrown) {
-					alert(jqXHR.status);
-					alert(textStatus);
-					alert(errorThrown);
+					showMessage(jqXHR.status, "error");
+					showMessage(textStatus, "error");
+					showMessage(errorThrown, "error");
 
 				}
 
@@ -722,15 +762,19 @@ function deleteRoom(roomId) {
 		headers : createAuthorizationTokenHeader(TOKEN_KEY),
 		dataType : "json",
 		success : function(data) {
-			alert(data.message);
+			if (data.message == "Successfully deleted room!") {
+				showMessage(data.message, "success");
+			} else {
+				showMessage(data.message, "warning");
+			}
 
 			urlRoot3 = "http://localhost:8080/deleteRoom";
 			showRooms("forDelete");
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
-			alert(jqXHR.status);
-			alert(textStatus);
-			alert(errorThrown);
+			showMessage(jqXHR.status, "error");
+			showMessage(textStatus, "error");
+			showMessage(errorThrown, "error");
 		}
 
 	})
@@ -812,9 +856,9 @@ function showRooms(type) {
 					}
 				},
 				error : function(jqXHR, textStatus, errorThrown) {
-					alert(jqXHR.status);
-					alert(textStatus);
-					alert(errorThrown);
+					showMessage(jqXHR.status, "error");
+					showMessage(textStatus, "error");
+					showMessage(errorThrown, "error");
 				}
 
 			})
@@ -845,15 +889,21 @@ $(document)
 					if (roomNumberRegister == ""
 							|| roomPeopleNumberRegister == ""
 							|| roomPriceRegister == "") {
-						alert('At least one field is blank, please fill it up with proper information!');
+						showMessage(
+								'At least one field is blank, please fill it up with proper information!',
+								"warning");
 					} else if (roomNumberRegister <= 0
 							|| roomNumberRegister >= 1000) {
-						alert('Number of room must be in a range [1, 999] !');
+						showMessage(
+								'Number of room must be in a range [1, 999] !',
+								"warning");
 					} else if (roomPriceRegister <= 0) {
-						alert('Price must be positive number!');
+						showMessage('Price must be positive number!', "warning");
 					} else if (roomPeopleNumberRegister <= 0
 							|| roomPeopleNumberRegister >= 6) {
-						alert('Number of people in room must be in a range [1, 5] !');
+						showMessage(
+								'Number of people in room must be in a range [1, 5] !',
+								"warning");
 					} else {
 						$
 								.ajax({
@@ -866,13 +916,17 @@ $(document)
 											roomPeopleNumberRegister,
 											roomPriceRegister),
 									success : function(data) {
-										alert(data.message);
+										if (data.message == "Successful adding room, congratulations!") {
+											showMessage(data.message, "success");
+										} else {
+											showMessage(data.message, "warning");
+										}
 									},
 									error : function(jqXHR, textStatus,
 											errorThrown) {
-										alert(jqXHR.status);
-										alert(textStatus);
-										alert(errorThrown);
+										showMessage(jqXHR.status, "error");
+										showMessage(textStatus, "error");
+										showMessage(errorThrown, "error");
 
 									}
 								})
@@ -904,19 +958,30 @@ $(document)
 					}
 					if (roomId == undefined || startDate == "" || endDate == ""
 							|| discount == "") {
-						alert('At least one field is blank, please fill it up with proper information!');
+						showMessage(
+								'At least one field is blank, please fill it up with proper information!',
+								"warning");
 					} else if (discount < 20 || discount > 70) {
-						alert('Discount must be in a range [20, 70] !');
+						showMessage('Discount must be in a range [20, 70] !',
+								"warning");
 					} else if (new Date() >= new Date(startDate)) {
-						alert('You cannot put for fast reserving in past!');
+						showMessage(
+								'You cannot put for fast reserving in past!',
+								"warning");
 					} else if (new Date(startDate) >= new Date(endDate)) {
-						alert('End date cant be before or equal to start date!');
+						showMessage(
+								'End date cant be before or equal to start date!',
+								"warning");
 					} else if ((new Date(startDate)).getTime() + 3024000000 < (new Date(
 							endDate)).getTime()) {
-						alert('You cant reserve room for more than 5 weeks or 35 days!');
+						showMessage(
+								'You cant reserve room for more than 5 weeks or 35 days!',
+								"warning");
 					} else if ((new Date(startDate)).getTime() + 7200000 > (new Date(
 							endDate)).getTime()) {
-						alert('You cant reserve room for less than 2 hours!');
+						showMessage(
+								'You cant reserve room for less than 2 hours!',
+								"warning");
 					} else {
 						$
 								.ajax({
@@ -929,13 +994,18 @@ $(document)
 											roomId, startDate, endDate,
 											discount, hcsIds),
 									success : function(data) {
-										alert(data.message);
+										if (data.message == "Succesfully added this room on fast reservation!") {
+											showMessage(data.message, "success");
+										} else {
+											showMessage(data.message, "warning");
+										}
+
 									},
 									error : function(jqXHR, textStatus,
 											errorThrown) {
-										alert(jqXHR.status);
-										alert(textStatus);
-										alert(errorThrown);
+										showMessage(jqXHR.status, "error");
+										showMessage(textStatus, "error");
+										showMessage(errorThrown, "error");
 
 									}
 								})
@@ -953,9 +1023,11 @@ $(document)
 					var price = document
 							.getElementById("hotelCustomerServicePrice").value;
 					if (name == "" || price == "") {
-						alert('At least one field is blank, please fill it up with proper information!');
+						showMessage(
+								'At least one field is blank, please fill it up with proper information!',
+								"warning");
 					} else if (price <= 0) {
-						alert('Price must be positive number!');
+						showMessage('Price must be positive number!', "warning");
 					} else {
 						$
 								.ajax({
@@ -967,14 +1039,16 @@ $(document)
 									data : createHotelCustomerServiceToJSON(
 											name, price),
 									success : function(data) {
-										alert("Succesfully added new extra service!");
+										showMessage(
+												"Succesfully added new extra service!",
+												"success");
 										fillHotelCustomerServices();
 									},
 									error : function(jqXHR, textStatus,
 											errorThrown) {
-										alert(jqXHR.status);
-										alert(textStatus);
-										alert(errorThrown);
+										showMessage(jqXHR.status, "error");
+										showMessage(textStatus, "error");
+										showMessage(errorThrown, "error");
 
 									}
 								})
@@ -982,37 +1056,29 @@ $(document)
 				});
 
 $(document).on('click', '.deleteRoomButton', function(e) {
-	// e.preventDefault();
 	var _this = $(this);
 
 	console.log('room number' + '   ' + this.id);
 	deleteRoom(this.id);
 });
 
-$(document).on(
-		'click',
-		'#reportHotelButton',
-		function(e) {
-			fillDatas();
-		});
+$(document).on('click', '#reportHotelButton', function(e) {
+	fillDatas();
+});
 
 $(document).on('click', '#addHotelCustomerServiceButton', function(e) {
-	// e.preventDefault();
 	fillHotelCustomerServices();
 });
 
 $(document).on('click', '#addRoomFastReservationButton', function(e) {
-	// e.preventDefault();
 	fillDatasAddRoomFastReservation();
 });
 
 $(document).on('click', '#deleteRoomFastReservationButton', function(e) {
-	// e.preventDefault();
 	fillDatasDeleteRoomFastReservation();
 });
 
 $(document).on('click', '.editRoomButton', function(e) {
-	// e.preventDefault();
 	var _this = $(this);
 
 	console.log('room number' + '   ' + this.id);
@@ -1041,7 +1107,6 @@ $(document).on('click', '#findAmountHotel', function(e) {
 		endDate = "0000-00-00"
 	}
 	var finalPath = urlRootFindHotelAmount + "/" + startDate + "/" + endDate;
-	// popuni za report 4
 	$.ajax({
 		type : 'GET',
 		url : finalPath,
@@ -1051,9 +1116,9 @@ $(document).on('click', '#findAmountHotel', function(e) {
 			$("#amountHotelValue").html(data.toFixed(2));
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
-			alert(jqXHR.status);
-			alert(textStatus);
-			alert(errorThrown);
+			showMessage(jqXHR.status);
+			showMessage(textStatus);
+			showMessage(errorThrown);
 		}
 
 	})
@@ -1068,37 +1133,41 @@ $(document).on(
 			var hotelDiscountNumber = document
 					.getElementById("hotelDiscountNumber").value;
 			if (hotelDiscountNumber == "") {
-				alert("Number cant be empty field!");
+				showMessage("Number cant be empty field!", "warning");
 			} else if (hotelDiscountNumber < 1 || hotelDiscountNumber > 5) {
-				alert("Number must be in range [1, 5]");
+				showMessage("Number must be in range [1, 5]", "warning");
 			} else {
 				setHotelDiscount(hotelDiscountNumber);
-				alert("Succesfully set new discount number!");
+				showMessage("Succesfully set new discount number!", "success");
 			}
 
 		});
 
-$(document).on('click', '.deleteRFR', function(e) {
-	e.preventDefault();
-	var ID = this.id;
-	var finalPath = urlRoot13 + "/" + ID;
-	$.ajax({
-		type : 'DELETE',
-		url : finalPath,
-		headers : createAuthorizationTokenHeader(TOKEN_KEY),
-		dataType : "json",
-		success : function(data) {
-			alert("Succesfully deleted room fast reservation!")
-			fillDatasDeleteRoomFastReservation();
-		},
-		error : function(jqXHR, textStatus, errorThrown) {
-			alert(jqXHR.status);
-			alert(textStatus);
-			alert(errorThrown);
-		}
+$(document).on(
+		'click',
+		'.deleteRFR',
+		function(e) {
+			e.preventDefault();
+			var ID = this.id;
+			var finalPath = urlRoot13 + "/" + ID;
+			$.ajax({
+				type : 'DELETE',
+				url : finalPath,
+				headers : createAuthorizationTokenHeader(TOKEN_KEY),
+				dataType : "json",
+				success : function(data) {
+					showMessage("Succesfully deleted room fast reservation!",
+							"success")
+					fillDatasDeleteRoomFastReservation();
+				},
+				error : function(jqXHR, textStatus, errorThrown) {
+					showMessage(jqXHR.status, "error");
+					showMessage(textStatus, "error");
+					showMessage(errorThrown, "error");
+				}
 
-	})
-});
+			})
+		});
 
 function createRoomToJSON(roomNumberRegister, roomPeopleNumberRegister,
 		roomPriceRegister) {

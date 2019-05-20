@@ -19,6 +19,30 @@ var urlRoot18 = "http://localhost:8080/searchCarUnregistered";
 
 var TOKEN_KEY = 'jwtToken';
 
+function showMessage(message, type) {
+	if (type != "success" && type != "error" && type != "warning"
+			&& type != "info") {
+		type = "info";
+	}
+	toastr.options = {
+		"closeButton" : true,
+		"debug" : false,
+		"newestOnTop" : false,
+		"progressBar" : false,
+		"positionClass" : "toast-top-right",
+		"preventDuplicates" : false,
+		"showDuration" : "300",
+		"hideDuration" : "1000",
+		"timeOut" : "5000",
+		"extendedTimeOut" : "1000",
+		"showEasing" : "swing",
+		"hideEasing" : "linear",
+		"showMethod" : "fadeIn",
+		"hideMethod" : "fadeOut"
+	}
+	toastr[type](message);
+}
+
 function register() {
 	$(".lokacija").html("");
 	$("#airlineProfile").hide();
@@ -60,9 +84,9 @@ function showAirlines() {
 
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
-			alert(jqXHR.status);
-			alert(textStatus);
-			alert(errorThrown);
+			showMessage(jqXHR.status,"error");
+			showMessage(textStatus,"error");
+			showMessage(errorThrown,"error");
 		}
 
 	})
@@ -84,9 +108,9 @@ function showHotels() {
 
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
-			alert(jqXHR.status);
-			alert(textStatus);
-			alert(errorThrown);
+			showMessage(jqXHR.status,"error");
+			showMessage(textStatus,"error");
+			showMessage(errorThrown,"error");
 		}
 
 	})
@@ -108,9 +132,9 @@ function showRentacars() {
 
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
-			alert(jqXHR.status);
-			alert(textStatus);
-			alert(errorThrown);
+			showMessage(jqXHR.status,"error");
+			showMessage(textStatus,"error");
+			showMessage(errorThrown,"error");
 		}
 
 	})
@@ -134,9 +158,9 @@ function showFlights() {
 
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
-			alert(jqXHR.status);
-			alert(textStatus);
-			alert(errorThrown);
+			showMessage(jqXHR.status,"error");
+			showMessage(textStatus,"error");
+			showMessage(errorThrown,"error");
 		}
 
 	})
@@ -169,9 +193,9 @@ function showFlights() {
 			}
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
-			alert(jqXHR.status);
-			alert(textStatus);
-			alert(errorThrown);
+			showMessage(jqXHR.status,"error");
+			showMessage(textStatus,"error");
+			showMessage(errorThrown,"error");
 		}
 
 	})
@@ -193,9 +217,9 @@ function showRooms() {
 
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
-			alert(jqXHR.status);
-			alert(textStatus);
-			alert(errorThrown);
+			showMessage(jqXHR.status,"error");
+			showMessage(textStatus,"error");
+			showMessage(errorThrown,"error");
 		}
 
 	})
@@ -217,9 +241,9 @@ function showCars() {
 
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
-			alert(jqXHR.status);
-			alert(textStatus);
-			alert(errorThrown);
+			showMessage(jqXHR.status,"error");
+			showMessage(textStatus,"error");
+			showMessage(errorThrown,"error");
 		}
 
 	})
@@ -625,9 +649,9 @@ $(document).on(
 								}
 							},
 							error : function(jqXHR, textStatus, errorThrown) {
-								alert(jqXHR.status);
-								alert(textStatus);
-								alert(errorThrown);
+								showMessage(jqXHR.status,"error");
+								showMessage(textStatus,"error");
+								showMessage(errorThrown,"error");
 							}
 
 						})
@@ -650,9 +674,9 @@ $(document).on(
 								}
 							},
 							error : function(jqXHR, textStatus, errorThrown) {
-								alert(jqXHR.status);
-								alert(textStatus);
-								alert(errorThrown);
+								showMessage(jqXHR.status,"error");
+								showMessage(textStatus,"error");
+								showMessage(errorThrown,"error");
 							}
 
 						})
@@ -660,9 +684,9 @@ $(document).on(
 					}
 				},
 				error : function(jqXHR, textStatus, errorThrown) {
-					alert(jqXHR.status);
-					alert(textStatus);
-					alert(errorThrown);
+					showMessage(jqXHR.status,"error");
+					showMessage(textStatus,"error");
+					showMessage(errorThrown,"error");
 				}
 
 			})
@@ -710,9 +734,9 @@ $(document)
 
 						},
 						error : function(jqXHR, textStatus, errorThrown) {
-							alert(jqXHR.status);
-							alert(textStatus);
-							alert(errorThrown);
+							showMessage(jqXHR.status,"error");
+							showMessage(textStatus,"error");
+							showMessage(errorThrown,"error");
 						}
 
 					})
@@ -744,9 +768,9 @@ $(document).on(
 								}
 							},
 							error : function(jqXHR, textStatus, errorThrown) {
-								alert(jqXHR.status);
-								alert(textStatus);
-								alert(errorThrown);
+								showMessage(jqXHR.status,"error");
+								showMessage(textStatus,"error");
+								showMessage(errorThrown,"error");
 							}
 
 						})
@@ -769,9 +793,9 @@ $(document).on(
 								}
 							},
 							error : function(jqXHR, textStatus, errorThrown) {
-								alert(jqXHR.status);
-								alert(textStatus);
-								alert(errorThrown);
+								showMessage(jqXHR.status,"error");
+								showMessage(textStatus,"error");
+								showMessage(errorThrown,"error");
 							}
 
 						})
@@ -779,9 +803,9 @@ $(document).on(
 					}
 				},
 				error : function(jqXHR, textStatus, errorThrown) {
-					alert(jqXHR.status);
-					alert(textStatus);
-					alert(errorThrown);
+					showMessage(jqXHR.status,"error");
+					showMessage(textStatus,"error");
+					showMessage(errorThrown,"error");
 				}
 
 			})
@@ -829,9 +853,9 @@ $(document)
 
 						},
 						error : function(jqXHR, textStatus, errorThrown) {
-							alert(jqXHR.status);
-							alert(textStatus);
-							alert(errorThrown);
+							showMessage(jqXHR.status,"error");
+							showMessage(textStatus,"error");
+							showMessage(errorThrown,"error");
 						}
 
 					})
@@ -863,9 +887,9 @@ $(document).on(
 								}
 							},
 							error : function(jqXHR, textStatus, errorThrown) {
-								alert(jqXHR.status);
-								alert(textStatus);
-								alert(errorThrown);
+								showMessage(jqXHR.status,"error");
+								showMessage(textStatus,"error");
+								showMessage(errorThrown,"error");
 							}
 
 						})
@@ -888,18 +912,18 @@ $(document).on(
 								}
 							},
 							error : function(jqXHR, textStatus, errorThrown) {
-								alert(jqXHR.status);
-								alert(textStatus);
-								alert(errorThrown);
+								showMessage(jqXHR.status,"error");
+								showMessage(textStatus,"error");
+								showMessage(errorThrown,"error");
 							}
 
 						})
 					}
 				},
 				error : function(jqXHR, textStatus, errorThrown) {
-					alert(jqXHR.status);
-					alert(textStatus);
-					alert(errorThrown);
+					showMessage(jqXHR.status,"error");
+					showMessage(textStatus,"error");
+					showMessage(errorThrown,"error");
 				}
 
 			})
@@ -945,9 +969,9 @@ $(document)
 
 						},
 						error : function(jqXHR, textStatus, errorThrown) {
-							alert(jqXHR.status);
-							alert(textStatus);
-							alert(errorThrown);
+							showMessage(jqXHR.status,"error");
+							showMessage(textStatus,"error");
+							showMessage(errorThrown,"error");
 						}
 
 					})

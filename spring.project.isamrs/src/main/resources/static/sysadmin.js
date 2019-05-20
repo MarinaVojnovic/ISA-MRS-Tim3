@@ -11,6 +11,30 @@ var urlRoot10 = "http://localhost:8080/getAllRentacars";
 
 var TOKEN_KEY = 'jwtToken';
 
+function showMessage(message, type) {
+	if (type != "success" && type != "error" && type != "warning"
+			&& type != "info") {
+		type = "info";
+	}
+	toastr.options = {
+		"closeButton" : true,
+		"debug" : false,
+		"newestOnTop" : false,
+		"progressBar" : false,
+		"positionClass" : "toast-top-right",
+		"preventDuplicates" : false,
+		"showDuration" : "300",
+		"hideDuration" : "1000",
+		"timeOut" : "5000",
+		"extendedTimeOut" : "1000",
+		"showEasing" : "swing",
+		"hideEasing" : "linear",
+		"showMethod" : "fadeIn",
+		"hideMethod" : "fadeOut"
+	}
+	toastr[type](message);
+}
+
 $(document).on('click', '#registerAirlineAdminButton', function(e) {
 	getAirlineWithoutAdmin();
 })
@@ -49,9 +73,9 @@ function getAirlineWithoutAdmin() {
 			}
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
-			alert(jqXHR.status);
-			alert(textStatus);
-			alert(errorThrown);
+			showMessage(jqXHR.status, "error");
+			showMessage(textStatus, "error");
+			showMessage(errorThrown, "error");
 
 		}
 
@@ -78,9 +102,9 @@ function getHotelWithoutAdmin() {
 			}
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
-			alert(jqXHR.status);
-			alert(textStatus);
-			alert(errorThrown);
+			showMessage(jqXHR.status, "error");
+			showMessage(textStatus, "error");
+			showMessage(errorThrown, "error");
 
 		}
 
@@ -108,9 +132,9 @@ function getRentacarWithoutAdmin() {
 			}
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
-			alert(jqXHR.status);
-			alert(textStatus);
-			alert(errorThrown);
+			showMessage(jqXHR.status, "error");
+			showMessage(textStatus, "error");
+			showMessage(errorThrown, "error");
 
 		}
 
@@ -134,7 +158,9 @@ $(document)
 							|| airlineAddressRegister == ""
 							|| airlinePromotionalDescription == ""
 							|| city == "") {
-						alert('At least one field is blank, please fill it up with proper information!');
+						showMessage(
+								'At least one field is blank, please fill it up with proper information!',
+								"warning");
 					} else {
 						$
 								.ajax({
@@ -149,13 +175,15 @@ $(document)
 											airlinePromotionalDescription, city),
 									success : function(data) {
 										getAirlineWithoutAdmin();
-										alert("Successful registration, congratulations!");
+										showMessage(
+												"Successful registration, congratulations!",
+												"success");
 									},
 									error : function(jqXHR, textStatus,
 											errorThrown) {
-										alert(jqXHR.status);
-										alert(textStatus);
-										alert(errorThrown);
+										showMessage(jqXHR.status, "error");
+										showMessage(textStatus, "error");
+										showMessage(errorThrown, "error");
 
 									}
 								})
@@ -177,7 +205,9 @@ $(document)
 							.getElementById("hotelPromotionalDescription").value;
 					if (hotelNameRegister == "" || hotelAddressRegister == ""
 							|| hotelPromotionalDescription == "" || city == "") {
-						alert('At least one field is blank, please fill it up with proper information!');
+						showMessage(
+								'At least one field is blank, please fill it up with proper information!',
+								"warning");
 					} else {
 						$
 								.ajax({
@@ -191,13 +221,15 @@ $(document)
 											hotelPromotionalDescription, city),
 									success : function(data) {
 										getHotelWithoutAdmin();
-										alert("Successful registration, congratulations!");
+										showMessage(
+												"Successful registration, congratulations!",
+												"success");
 									},
 									error : function(jqXHR, textStatus,
 											errorThrown) {
-										alert(jqXHR.status);
-										alert(textStatus);
-										alert(errorThrown);
+										showMessage(jqXHR.status, "error");
+										showMessage(textStatus, "error");
+										showMessage(errorThrown, "error");
 
 									}
 								})
@@ -221,7 +253,9 @@ $(document)
 							|| rentacarAddressRegister == ""
 							|| rentacarPromotionalDescription == ""
 							|| city == "") {
-						alert('At least one field is blank, please fill it up with proper information!');
+						showMessage(
+								'At least one field is blank, please fill it up with proper information!',
+								"warning");
 					} else {
 						$
 								.ajax({
@@ -237,13 +271,15 @@ $(document)
 											city),
 									success : function(data) {
 										getRentacarWithoutAdmin();
-										alert("Successful registration, congratulations!");
+										showMessage(
+												"Successful registration, congratulations!",
+												"success");
 									},
 									error : function(jqXHR, textStatus,
 											errorThrown) {
-										alert(jqXHR.status);
-										alert(textStatus);
-										alert(errorThrown);
+										showMessage(jqXHR.status, "error");
+										showMessage(textStatus, "error");
+										showMessage(errorThrown, "error");
 
 									}
 								})
@@ -278,15 +314,20 @@ $(document)
 						var adminId = "";
 					}
 					if (adminId == "") {
-						alert("You must pick some airline object. Maybe there is not even"
-								+ " one for you, be sure to first create one airline.")
+						showMessage(
+								"You must pick some airline object. Maybe there is not even"
+										+ " one for you, be sure to first create one airline.",
+								"warning")
 					} else if (username == "" || password1 == ""
 							|| password2 == "" || firstName == ""
 							|| lastName == "" || email == ""
 							|| phoneNumber == "") {
-						alert('At least one field is blank, please fill it up with proper information!');
+						showMessage(
+								'At least one field is blank, please fill it up with proper information!',
+								"warning");
 					} else if (password1 != password2) {
-						alert("Password must match, try again!");
+						showMessage("Password must match, try again!",
+								"warning");
 					} else {
 						$
 								.ajax({
@@ -300,22 +341,26 @@ $(document)
 											email, phoneNumber, adminId),
 									success : function(data) {
 										if (data.message != undefined) {
-											alert(data.message);
+											showMessage(data.message, "warning");
 										} else {
 											if (data) {
 												getAirlineWithoutAdmin();
-												alert("Successful registration, congratulations!");
+												showMessage(
+														"Successful registration, congratulations!",
+														"success");
 											} else {
-												alert("Error while registrating!");
+												showMessage(
+														"Error while registrating!",
+														"warning");
 											}
 										}
 
 									},
 									error : function(jqXHR, textStatus,
 											errorThrown) {
-										alert(jqXHR.status);
-										alert(textStatus);
-										alert(errorThrown);
+										showMessage(jqXHR.status, "error");
+										showMessage(textStatus, "error");
+										showMessage(errorThrown, "error");
 
 									}
 								})
@@ -350,15 +395,20 @@ $(document)
 						var adminId = "";
 					}
 					if (adminId == "") {
-						alert("You must pick some hotel object. Maybe there is not even"
-								+ " one for you, be sure to first create one hotel.")
+						showMessage(
+								"You must pick some hotel object. Maybe there is not even"
+										+ " one for you, be sure to first create one hotel.",
+								"warning")
 					} else if (username == "" || password1 == ""
 							|| password2 == "" || firstName == ""
 							|| lastName == "" || email == ""
 							|| phoneNumber == "") {
-						alert('At least one field is blank, please fill it up with proper information!');
+						showMessage(
+								'At least one field is blank, please fill it up with proper information!',
+								"warning");
 					} else if (password1 != password2) {
-						alert("Password must match, try again!");
+						showMessage("Password must match, try again!",
+								"warning");
 					} else {
 						$
 								.ajax({
@@ -372,22 +422,26 @@ $(document)
 											email, phoneNumber, adminId),
 									success : function(data) {
 										if (data.message != undefined) {
-											alert(data.message);
+											showMessage(data.message, "warning");
 										} else {
 											if (data) {
 												getHotelWithoutAdmin();
-												alert("Successful registration, congratulations!");
+												showMessage(
+														"Successful registration, congratulations!",
+														"success");
 											} else {
-												alert("Error while registrating!");
+												showMessage(
+														"Error while registrating!",
+														"warning");
 											}
 										}
 
 									},
 									error : function(jqXHR, textStatus,
 											errorThrown) {
-										alert(jqXHR.status);
-										alert(textStatus);
-										alert(errorThrown);
+										showMessage(jqXHR.status, "error");
+										showMessage(textStatus, "error");
+										showMessage(errorThrown, "error");
 
 									}
 								})
@@ -422,15 +476,20 @@ $(document)
 						var adminId = "";
 					}
 					if (adminId == "") {
-						alert("You must pick some rentacar object. Maybe there is not even"
-								+ " one for you, be sure to first create one rentacar.")
+						showMessage(
+								"You must pick some rentacar object. Maybe there is not even"
+										+ " one for you, be sure to first create one rentacar.",
+								"warning")
 					} else if (username == "" || password1 == ""
 							|| password2 == "" || firstName == ""
 							|| lastName == "" || email == ""
 							|| phoneNumber == "") {
-						alert('At least one field is blank, please fill it up with proper information!');
+						showMessage(
+								'At least one field is blank, please fill it up with proper information!',
+								"warning");
 					} else if (password1 != password2) {
-						alert("Password must match, try again!");
+						showMessage("Password must match, try again!",
+								"warning");
 					} else {
 						$
 								.ajax({
@@ -444,22 +503,26 @@ $(document)
 											email, phoneNumber, adminId),
 									success : function(data) {
 										if (data.message != undefined) {
-											alert(data.message);
+											showMessage(data.message, "warning");
 										} else {
 											if (data) {
 												getRentacarWithoutAdmin();
-												alert("Successful registration, congratulations!");
+												showMessage(
+														"Successful registration, congratulations!",
+														"success");
 											} else {
-												alert("Error while registrating!");
+												showMessage(
+														"Error while registrating!",
+														"warning");
 											}
 										}
 
 									},
 									error : function(jqXHR, textStatus,
 											errorThrown) {
-										alert(jqXHR.status);
-										alert(textStatus);
-										alert(errorThrown);
+										showMessage(jqXHR.status, "error");
+										showMessage(textStatus, "error");
+										showMessage(errorThrown, "error");
 
 									}
 								})
@@ -489,9 +552,12 @@ $(document)
 					if (username == "" || password1 == "" || password2 == ""
 							|| firstName == "" || lastName == "" || email == ""
 							|| phoneNumber == "") {
-						alert('At least one field is blank, please fill it up with proper information!');
+						showMessage(
+								'At least one field is blank, please fill it up with proper information!',
+								"warning");
 					} else if (password1 != password2) {
-						alert("Password must match, try again!");
+						showMessage("Password must match, try again!",
+								"warning");
 					} else {
 						$
 								.ajax({
@@ -505,21 +571,25 @@ $(document)
 											email, phoneNumber),
 									success : function(data) {
 										if (data.message != undefined) {
-											alert(data.message);
+											showMessage(data.message, "warning");
 										} else {
 											if (data) {
-												alert("Successful registration, congratulations!");
+												showMessage(
+														"Successful registration, congratulations!",
+														"success");
 											} else {
-												alert("Error while registrating!");
+												showMessage(
+														"Error while registrating!",
+														"warning");
 											}
 										}
 
 									},
 									error : function(jqXHR, textStatus,
 											errorThrown) {
-										alert(jqXHR.status);
-										alert(textStatus);
-										alert(errorThrown);
+										showMessage(jqXHR.status, "error");
+										showMessage(textStatus, "error");
+										showMessage(errorThrown, "error");
 
 									}
 								})

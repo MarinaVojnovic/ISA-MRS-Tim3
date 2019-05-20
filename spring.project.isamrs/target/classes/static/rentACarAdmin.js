@@ -19,6 +19,30 @@ var urlRootFindRentacarAmount="http://localhost:8080/findRentacarAmount";
 
 var TOKEN_KEY = 'jwtToken';
 
+function showMessage(message, type) {
+	if (type != "success" && type != "error" && type != "warning"
+			&& type != "info") {
+		type = "info";
+	}
+	toastr.options = {
+		"closeButton" : true,
+		"debug" : false,
+		"newestOnTop" : false,
+		"progressBar" : false,
+		"positionClass" : "toast-top-right",
+		"preventDuplicates" : false,
+		"showDuration" : "300",
+		"hideDuration" : "1000",
+		"timeOut" : "5000",
+		"extendedTimeOut" : "1000",
+		"showEasing" : "swing",
+		"hideEasing" : "linear",
+		"showMethod" : "fadeIn",
+		"hideMethod" : "fadeOut"
+	}
+	toastr[type](message);
+}
+
 $(document).on('click', '#editRentacarButton', function(e) {
 	findRentacar();
 });
@@ -48,9 +72,9 @@ window.onload = function(e) {
 
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
-			alert(jqXHR.status);
-			alert(textStatus);
-			alert(errorThrown);
+			showMessage(jqXHR.status,"error");
+			showMessage(textStatus,"error");
+			showMessage(errorThrown,"error");
 		}
 
 	})
@@ -98,11 +122,11 @@ function saveSubmitFast(id){
 	console.log(price);
 	
 	if (startDate=="" || endDate == "" || price==""){
-		alert('None of the fields is allowed to be empty');
+		showMessage('None of the fields is allowed to be empty',"warning");
 	}else if (price < 0){
-		alert('Price is not allowed to be null');
+		showMessage('Price is not allowed to be null',"warning");
 	}else if(new Date > new Date(startDate) || new Date() > new Date(endDate)) {
-		alert('Date is not allowed to be in the past');
+		showMessage('Date is not allowed to be in the past',"warning");
 	}else {
 		$.ajax({
 			type : 'PUT',
@@ -112,9 +136,9 @@ function saveSubmitFast(id){
 			success : function(data) {
 				
 					if (data.message != undefined) {
-						alert(data.message);
+						showMessage(data.message,"warning");
 					}else{
-						alert("successful");
+						showMessage("successful","success");
 						document.getElementById("priceFast").value="";
 						document.getElementById("endDateFast").value="";
 						document.getElementById("startDateFast").value="";
@@ -122,9 +146,9 @@ function saveSubmitFast(id){
 
 			},
 			error : function(jqXHR, textStatus, errorThrown) {
-				alert(jqXHR.status);
-				alert(textStatus);
-				alert(errorThrown);
+				showMessage(jqXHR.status,"error");
+				showMessage(textStatus,"error");
+				showMessage(errorThrown,"error");
 			}
 
 		})
@@ -144,9 +168,9 @@ function showGrades(){
 			$("#globalScore").append('<h2>Global score: '+data.score/data.number+'</h2>')
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
-			alert(jqXHR.status);
-			alert(textStatus);
-			alert(errorThrown);
+			showMessage(jqXHR.status,"error");
+			showMessage(textStatus,"error");
+			showMessage(errorThrown,"error");
 		}
 		
 	})
@@ -196,9 +220,9 @@ function showGrades(){
 				
 			},
 			error : function(jqXHR, textStatus, errorThrown) {
-				alert(jqXHR.status);
-				alert(textStatus);
-				alert(errorThrown);
+				showMessage(jqXHR.status,"error");
+				showMessage(textStatus,"error");
+				showMessage(errorThrown,"error");
 			}
 
 	})
@@ -260,9 +284,9 @@ function passwordValidation() {
 	var password2 = document.getElementById("newPasswordTwo").value;
 
 	if (password1 == "" || password2 == "") {
-		alert('You have to fill both fields');
+		showMessage('You have to fill both fields',"warning");
 	} else if (password1 != password2) {
-		alert('Passwords must match!');
+		showMessage('Passwords must match!',"warning");
 	} else {
 		$.ajax({
 			type : 'PUT',
@@ -274,18 +298,18 @@ function passwordValidation() {
 			success : function(data) {
 				if (data) {
 					setJwtToken(TOKEN_KEY, data.accessToken);
-					alert("Successful changing password, congratulations!");
+					showMessage("Successful changing password, congratulations!","success");
 					$('.tab').show();
 					$('#passwordValidation').hide();
 				} else {
-					alert("Error while changing password!");
+					showMessage("Error while changing password!","warning");
 				}
 
 			},
 			error : function(jqXHR, textStatus, errorThrown) {
-				alert(jqXHR.status);
-				alert(textStatus);
-				alert(errorThrown);
+				showMessage(jqXHR.status,"error");
+				showMessage(textStatus,"error");
+				showMessage(errorThrown,"error");
 
 			}
 		})
@@ -312,13 +336,13 @@ function saveEditedCar() {
 	console.log(name + ' ' + price + ' ' + year);
 
 	if (name == "" || price == "" || year == "" || brand=="" || model=="" || seats=="") {
-		alert('None of the fields is allowed to be empty!');
+		showMessage('None of the fields is allowed to be empty!',"warning");
 	} else if (price <= 0) {
-		alert('Price of car must be positive number!');
+		showMessage('Price of car must be positive number!',"warning");
 	} else if (year < 1900 || year > 2019) {
-		alert('Year must be in a range [1900, 2019] !');
+		showMessage('Year must be in a range [1900, 2019] !',"warning");
 	} else if (seats < 0) {
-		alert('Number of seats must be postiive !');
+		showMessage('Number of seats must be postiive !',"warning");
 	} else {
 
 		$.ajax({
@@ -329,12 +353,15 @@ function saveEditedCar() {
 			dataType : "json",
 			contentType : 'application/json',
 			success : function(data) {
-				alert("Car successfully edited, congratulations!");
+				showMessage("Car successfully edited, congratulations!","success");
 				showCars("forEdit");
 
 			},
-			error : function(XMLHttpRequest) {
-				alert("Error while editing car! ");
+			error : function(jqXHR, textStatus, errorThrown) {
+				showMessage(jqXHR.status,"error");
+				showMessage(textStatus,"error");
+				showMessage(errorThrown,"error");
+
 			}
 
 		})
@@ -351,7 +378,7 @@ function saveEditedBranch() {
 	
 
 	if (branchCityEdit == "" || branchAddressEdit == "" ) {
-		alert('None of the fields is allowed to be empty!');
+		showMessage('None of the fields is allowed to be empty!',"warning");
 	}  else {
 
 		$.ajax({
@@ -366,8 +393,11 @@ function saveEditedBranch() {
 				showBranches("branchesForEdit");
 
 			},
-			error : function(XMLHttpRequest) {
-				alert("Error while editing branch! ");
+			error : function(jqXHR, textStatus, errorThrown) {
+				showMessage(jqXHR.status,"error");
+				showMessage(textStatus,"error");
+				showMessage(errorThrown,"error");
+
 			}
 
 		})
@@ -405,8 +435,11 @@ function editCar(carId) {
 			urlRoot6 = "http://localhost:8080/findCar";
 			showCars("forEdit");
 		},
-		error : function(XMLHttpRequest) {
-			alert("Error while deleting flight");
+		error : function(jqXHR, textStatus, errorThrown) {
+			showMessage(jqXHR.status,"error");
+			showMessage(textStatus,"error");
+			showMessage(errorThrown,"error");
+
 		}
 
 	})
@@ -437,8 +470,11 @@ function editBranch(id) {
 			
 			showBranches("branchesForEdit");
 		},
-		error : function(XMLHttpRequest) {
-			alert("Error while editing branch");
+		error : function(jqXHR, textStatus, errorThrown) {
+			showMessage(jqXHR.status,"error");
+			showMessage(textStatus,"error");
+			showMessage(errorThrown,"error");
+
 		}
 
 	})
@@ -456,19 +492,20 @@ function deleteCar(carId) {
 		headers : createAuthorizationTokenHeader(TOKEN_KEY),
 		success : function(data) {
 			if (data.message != undefined) {
-				alert(data.message);
-				console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
+				showMessage(data.message,"warning");
 			}  else {
-				alert('Car successfully deleted.');
-				console.log('bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb');
+				showMessage('Car successfully deleted.',"success");
 			}
 
 			urlRoot5 = "http://localhost:8080/deleteCar";
 			showCars("forDelete");
 
 		},
-		error : function(XMLHttpRequest) {
-			alert("Error while deleting car");
+		error : function(jqXHR, textStatus, errorThrown) {
+			showMessage(jqXHR.status,"error");
+			showMessage(textStatus,"error");
+			showMessage(errorThrown,"error");
+
 		}
 
 	})
@@ -495,8 +532,11 @@ function deleteBranch(id){
 			showBranches("branchesForDelete");
 
 		},
-		error : function(XMLHttpRequest) {
-			alert("Error while deleting branch");
+		error : function(jqXHR, textStatus, errorThrown) {
+			showMessage(jqXHR.status,"error");
+			showMessage(textStatus,"error");
+			showMessage(errorThrown,"error");
+
 		}
 
 	})
@@ -521,9 +561,9 @@ function findRentacar() {
 					}
 				},
 				error : function(jqXHR, textStatus, errorThrown) {
-					alert(jqXHR.status);
-					alert(textStatus);
-					alert(errorThrown);
+					showMessage(jqXHR.status,"error");
+					showMessage(textStatus,"error");
+					showMessage(errorThrown,"error");
 				}
 
 			})
@@ -545,8 +585,8 @@ $(document)
 							.getElementById("rentacarPromotionalDescriptionEdit").value;
 
 					if (name == "" || address == ""
-							|| promotionalDescription == "") {
-						alert('None of the fields is allowed to be empty!');
+							|| promotionalDescription == "" || city=="") {
+						showMessage('None of the fields is allowed to be empty!',"warning");
 					} else {
 
 						$
@@ -559,11 +599,13 @@ $(document)
 									dataType : "json",
 									contentType : 'application/json',
 									success : function(data) {
-										alert("Successful editing, congratulations!");
+										showMessage("Successful editing, congratulations!","success");
 
 									},
-									error : function(XMLHttpRequest) {
-										alert("Error while changing profile information ");
+									error : function(jqXHR, textStatus, errorThrown) {
+										showMessage(jqXHR.status,"error");
+										showMessage(textStatus,"error");
+										showMessage(errorThrown,"error");
 									}
 
 								})
@@ -679,9 +721,9 @@ function showCars(type) {
 
 				},
 				error : function(jqXHR, textStatus, errorThrown) {
-					alert(jqXHR.status);
-					alert(textStatus);
-					alert(errorThrown);
+					showMessage(jqXHR.status,"error");
+					showMessage(textStatus,"error");
+					showMessage(errorThrown,"error");
 				}
 
 			})
@@ -765,9 +807,9 @@ function showBranches(type) {
 
 				},
 				error : function(jqXHR, textStatus, errorThrown) {
-					alert(jqXHR.status);
-					alert(textStatus);
-					alert(errorThrown);
+					showMessage(jqXHR.status,"error");
+					showMessage(textStatus,"error");
+					showMessage(errorThrown,"error");
 				}
 
 			})
@@ -794,13 +836,13 @@ $(document).on("submit", "#form2", function(e) {
 	var seats = document.getElementById("addCarSeats").value;
 	console.log("Car type:"+carType);
 	if (name == "" || price == "" || year == "" || brand=="" || model=="" || seats=="") {
-		alert('None of the fields is allowed to be empty!');
+		showMessage('None of the fields is allowed to be empty!',"warning");
 	} else if (price <= 0) {
-		alert('Price of car must be positive number!');
+		showMessage('Price of car must be positive number!',"warning");
 	} else if (year < 1900 || year > 2019) {
-		alert('Year must be in a range [1900, 2019] !');
+		showMessage('Year must be in a range [1900, 2019] !',"warning");
 	} else if (seats<0) {
-		alert('Number of seats must be positive number !');
+		showMessage('Number of seats must be positive number !',"warning");
 	}else {
 
 		$.ajax({
@@ -811,7 +853,7 @@ $(document).on("submit", "#form2", function(e) {
 			data : createCarDTOToJson(name, price, year, carType, brand, model, seats),
 			headers : createAuthorizationTokenHeader(TOKEN_KEY),
 			success : function(data) {
-				alert("Successful adding car, congratulations!");
+				showMessage("Successful adding car, congratulations!","success");
 				document.getElementById("addCarName").value = "";
 				document.getElementById("addCarPrice").value = "";
 				document.getElementById("addCarYear").value = "";
@@ -821,9 +863,9 @@ $(document).on("submit", "#form2", function(e) {
 				openCity(e, 'addCar');
 			},
 			error : function(jqXHR, textStatus, errorThrown) {
-				alert(jqXHR.status);
-				alert(textStatus);
-				alert(errorThrown);
+				showMessage(jqXHR.status,"error");
+				showMessage(textStatus,"error");
+				showMessage(errorThrown,"error");
 
 			}
 		})
@@ -838,7 +880,7 @@ function saveBranch(){
 	var branchAddress = document.getElementById("branchAddress").value
 	
 	if (branchCity=="" || branchAddress==""){
-		alert('Branch city and branch address cannot be empty');
+		showMessage('Branch city and branch address cannot be empty',"warning");
 	}else {
 		console.log(branchCity + ' '+ branchAddress);
 
@@ -850,16 +892,16 @@ function saveBranch(){
 			data : createBranchDTO(1, branchCity, branchAddress),
 			headers : createAuthorizationTokenHeader(TOKEN_KEY),
 			success : function(data) {
-				alert("Successful adding car, congratulations!");
+				showMessage("Successful adding car, congratulations!","success");
 				document.getElementById("branchCity").value = "";
 				document.getElementById("branchAddress").value = "";
 				
 				
 			},
 			error : function(jqXHR, textStatus, errorThrown) {
-				alert(jqXHR.status);
-				alert(textStatus);
-				alert(errorThrown);
+				showMessage(jqXHR.status,"error");
+				showMessage(textStatus,"error");
+				showMessage(errorThrown,"error");
 
 			}
 		})
