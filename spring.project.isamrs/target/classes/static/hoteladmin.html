@@ -7,6 +7,8 @@
 <link rel="stylesheet" href="bootstrap.min.css">
 <script src="auth.js"></script>
 <script src="jquery.min.js"></script>
+<link href="toastr.css" rel="stylesheet" />
+<script type="text/javascript" src="toastr.js"></script>
 <script src="hoteladmin.js"></script>
 <script src="bootstrap.min.js"></script>
 <script src="hoteldiscount.js"></script>
@@ -61,16 +63,16 @@ body {
 <body>
 
 	<div class="tab">
-		<button id="editHotelButton" class="tablinks" onclick="openCity(event, 'editHotel')">Edit
-			hotel</button>
+		<button id="editHotelButton" class="tablinks"
+			onclick="openCity(event, 'editHotel')">Edit hotel</button>
 		<button class="tablinks" onclick="openCity(event, 'addRoom')">Add
 			room</button>
 		<button id="removeRoomsButton" class="tablinks"
 			onclick="openCity(event, 'deleteRoom')">Delete room</button>
 		<button id="editRoomsButton" class="tablinks"
 			onclick="openCity(event, 'editRoom')">Edit room</button>
-		<button id="editProfileButton" class="tablinks" onclick="openCity(event, 'editProfile')">Edit
-			profile</button>
+		<button id="editProfileButton" class="tablinks"
+			onclick="openCity(event, 'editProfile')">Edit profile</button>
 		<button id="reportHotelButton" class="tablinks"
 			onclick="openCity(event, 'report')">Reports</button>
 		<button id="addHotelCustomerServiceButton" class="tablinks"

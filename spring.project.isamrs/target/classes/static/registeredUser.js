@@ -71,6 +71,30 @@ var urlRootCancelHotelRes="http://localhost:8080/cancelHotelReservation";
 var finishReservationUrl="http://localhost:8080/api/finishReservation";
 var fastReservationAirline="http://localhost:8080/api/fastReservationAirline";
 
+function showMessage(message, type) {
+	if (type != "success" && type != "error" && type != "warning"
+			&& type != "info") {
+		type = "info";
+	}
+	toastr.options = {
+		"closeButton" : true,
+		"debug" : false,
+		"newestOnTop" : false,
+		"progressBar" : false,
+		"positionClass" : "toast-top-right",
+		"preventDuplicates" : false,
+		"showDuration" : "300",
+		"hideDuration" : "1000",
+		"timeOut" : "5000",
+		"extendedTimeOut" : "1000",
+		"showEasing" : "swing",
+		"hideEasing" : "linear",
+		"showMethod" : "fadeIn",
+		"hideMethod" : "fadeOut"
+	}
+	toastr[type](message);
+}
+
 $(document).on('click', '#editProfileButton', function(e) {
 	getLogged();
 })
@@ -91,14 +115,15 @@ function cancelHotelReservation(id){
 		headers : createAuthorizationTokenHeader(TOKEN_KEY),
 		success : function(data) {
 
-			alert('Reservation successfully deleted.');
-			console.log('bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb');
+			showMessage('Reservation successfully deleted.',"success");
 
 			showMyReservationsHotels();
 
 		},
-		error : function(XMLHttpRequest) {
-			alert("Error while deleting car");
+		error : function(jqXHR, textStatus, errorThrown) {
+			showMessage(jqXHR.status,"error");
+			showMessage(textStatus,"error");
+			showMessage(errorThrown,"error");
 		}
 
 	})
@@ -109,19 +134,19 @@ function saveGradedHotel() {
 
 	sessionStorage.removeItem("choosenSeats");
 	var hotelId = document.getElementById("hotelId").value;
-	//var flightId = document.getElementById("flightId").value
+	// var flightId = document.getElementById("flightId").value
 	var hotelGrade = document.getElementById("hotelGrade").value;
-	//var flightGrade = document.getElementById("flightGrade").value;
+	// var flightGrade = document.getElementById("flightGrade").value;
 
-	/*console.log(airlineId);
-	console.log(flightId);
-	console.log(airlineGrade);
-	console.log(flightGrade);*/
+	/*
+	 * console.log(airlineId); console.log(flightId); console.log(airlineGrade);
+	 * console.log(flightGrade);
+	 */
 
 	if (hotelGrade != "") {
 		console.log('hotel grade nije 0');
 		if (hotelGrade < 1 || hotelGrade > 5) {
-			alert('Grade must be between 1 and 5');
+			showMessage('Grade must be between 1 and 5',"warning");
 		} else {
 			$.ajax({
 				type : 'GET',
@@ -130,40 +155,17 @@ function saveGradedHotel() {
 				headers : createAuthorizationTokenHeader(TOKEN_KEY),
 				dataType : "json",
 				success : function(data) {
-					alert('hotel successfully graded');
+					showMessage('hotel successfully graded',"success");
 				},
 				error : function(jqXHR, textStatus, errorThrown) {
-					alert(jqXHR.status);
-					alert(textStatus);
-					alert(errorThrown);
+					showMessage(jqXHR.status,"error");
+					showMessage(textStatus,"error");
+					showMessage(errorThrown,"error");
 				}
 
 			})
 		}
 	}
-
-	/*if (flightGrade != "") {
-		console.log('flight grade nije 0');
-		if (flightGrade < 1 || flightGrade > 5) {
-			alert('Grade must be between 1 and 5');
-		} else {
-			$.ajax({
-				type : 'GET',
-				url : urlRootGradeFlight + "/" + flightId + "/" + flightGrade,
-				headers : createAuthorizationTokenHeader(TOKEN_KEY),
-				dataType : "json",
-				success : function(data) {
-					alert('flight successfully graded');
-				},
-				error : function(jqXHR, textStatus, errorThrown) {
-					alert(jqXHR.status);
-					alert(textStatus);
-					alert(errorThrown);
-				}
-
-			})
-		}
-	}*/
 
 }
 
@@ -184,7 +186,7 @@ function saveGradedAirline() {
 	if (airlineGrade != "") {
 		console.log('airline grade nije 0');
 		if (airlineGrade < 1 || airlineGrade > 5) {
-			alert('Grade must be between 1 and 5');
+			showMessage('Grade must be between 1 and 5',"warning");
 		} else {
 			$.ajax({
 				type : 'GET',
@@ -193,12 +195,12 @@ function saveGradedAirline() {
 				headers : createAuthorizationTokenHeader(TOKEN_KEY),
 				dataType : "json",
 				success : function(data) {
-					alert('airline successfully graded');
+					showMessage('airline successfully graded',"success");
 				},
 				error : function(jqXHR, textStatus, errorThrown) {
-					alert(jqXHR.status);
-					alert(textStatus);
-					alert(errorThrown);
+					showMessage(jqXHR.status,"error");
+					showMessage(textStatus,"error");
+					showMessage(errorThrown,"error");
 				}
 
 			})
@@ -208,7 +210,7 @@ function saveGradedAirline() {
 	if (flightGrade != "") {
 		console.log('flight grade nije 0');
 		if (flightGrade < 1 || flightGrade > 5) {
-			alert('Grade must be between 1 and 5');
+			showMessage('Grade must be between 1 and 5',"warning");
 		} else {
 			$.ajax({
 				type : 'GET',
@@ -216,12 +218,12 @@ function saveGradedAirline() {
 				headers : createAuthorizationTokenHeader(TOKEN_KEY),
 				dataType : "json",
 				success : function(data) {
-					alert('flight successfully graded');
+					showMessage('flight successfully graded',"success");
 				},
 				error : function(jqXHR, textStatus, errorThrown) {
-					alert(jqXHR.status);
-					alert(textStatus);
-					alert(errorThrown);
+					showMessage(jqXHR.status,"error");
+					showMessage(textStatus,"error");
+					showMessage(errorThrown,"error");
 				}
 
 			})
@@ -250,38 +252,13 @@ function fillGradeHotelForm(id){
 
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
-			alert(jqXHR.status);
-			alert(textStatus);
-			alert(errorThrown);
+			showMessage(jqXHR.status,"error");
+			showMessage(textStatus,"error");
+			showMessage(errorThrown,"error");
 		}
 
 	})
-	$("#roomGradeName").append('<h2> Room service: </h2>');
-
-	/*$.ajax({
-		type : 'GET',
-		url : urlRootFindRoomFromRes + "/" + id,
-		headers : createAuthorizationTokenHeader(TOKEN_KEY),
-		dataType : "json",
-		success : function(data) {
-			console.log(data.name);
-			roomName = data.name;
-			$("#roomGradeName").append('<h2> Room ' + roomName + '</h2>');
-
-			document.getElementById("roomId").value = data.id;
-
-		},
-		error : function(jqXHR, textStatus, errorThrown) {
-			alert(jqXHR.status);
-			alert(textStatus);
-			alert(errorThrown);
-		}
-
-	})*/
-	
-	
-
-	
+	$("#roomGradeName").append('<h2> Room service: </h2>');	
 }
 
 function fillGradeFlightForm(id) {
@@ -304,9 +281,9 @@ function fillGradeFlightForm(id) {
 
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
-			alert(jqXHR.status);
-			alert(textStatus);
-			alert(errorThrown);
+			showMessage(jqXHR.status,"error");
+			showMessage(textStatus,"error");
+			showMessage(errorThrown,"error");
 		}
 
 	})
@@ -325,9 +302,9 @@ function fillGradeFlightForm(id) {
 
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
-			alert(jqXHR.status);
-			alert(textStatus);
-			alert(errorThrown);
+			showMessage(jqXHR.status,"error");
+			showMessage(textStatus,"error");
+			showMessage(errorThrown,"error");
 		}
 
 	})
@@ -343,13 +320,15 @@ function cancelFlightReservation(id) {
 		headers : createAuthorizationTokenHeader(TOKEN_KEY),
 		success : function(data) {
 
-			alert('Reservation of flight successfully deleted.');
+			showMessage('Reservation of flight successfully deleted.',"success");
 
 			showMyReservationsFlights();
 
 		},
-		error : function(XMLHttpRequest) {
-			alert("Error while deleting car");
+		error : function(jqXHR, textStatus, errorThrown) {
+			showMessage(jqXHR.status,"error");
+			showMessage(textStatus,"error");
+			showMessage(errorThrown,"error");
 		}
 
 	})
@@ -403,21 +382,22 @@ function showMyReservationsHotels() {
 							
 							cell9.innerHTML = list[res].roomNumbers;
 							console.log('roooom numbeeeeeeeeeers'+list[res].roomNumbers);
-							/*var listOfRooms = data == null ? []
-							: (list[res].rooms instanceof Set ? list[res].rooms : [ list[res].rooms ]);
-							console.log('treba sada da udje u rooms' + listOfRooms.length);
-							listOfRooms = Array.from(listOfRooms);
-							console.log(listOfRooms.length);
-							var soba = listOfRooms[0];
-							console.log(soba.id);*/
 							/*
-							for (var room in listOfRooms){
-								console.log('uslo '+room);
-			
-								console.log('room number: '+listOfRooms[room]);
-								rooms+=listOfRooms[room].id+", ";
-								
-							}*/
+							 * var listOfRooms = data == null ? [] :
+							 * (list[res].rooms instanceof Set ? list[res].rooms : [
+							 * list[res].rooms ]); console.log('treba sada da
+							 * udje u rooms' + listOfRooms.length); listOfRooms =
+							 * Array.from(listOfRooms);
+							 * console.log(listOfRooms.length); var soba =
+							 * listOfRooms[0]; console.log(soba.id);
+							 */
+							/*
+							 * for (var room in listOfRooms){ console.log('uslo
+							 * '+room);
+							 * 
+							 * console.log('room number: '+listOfRooms[room]);
+							 * rooms+=listOfRooms[room].id+", "; }
+							 */
 							
 							if (list[res].hotelCustomerServices==null){
 								cell8.innerHTML="";
@@ -468,9 +448,9 @@ function showMyReservationsHotels() {
 					}
 				},
 				error : function(jqXHR, textStatus, errorThrown) {
-					alert(jqXHR.status);
-					alert(textStatus);
-					alert(errorThrown);
+					showMessage(jqXHR.status,"error");
+					showMessage(textStatus,"error");
+					showMessage(errorThrown,"error");
 
 				}
 			})
@@ -549,9 +529,9 @@ function showMyReservationsFlights() {
 					}
 				},
 				error : function(jqXHR, textStatus, errorThrown) {
-					alert(jqXHR.status);
-					alert(textStatus);
-					alert(errorThrown);
+					showMessage(jqXHR.status,"error");
+					showMessage(textStatus,"error");
+					showMessage(errorThrown,"error");
 
 				}
 			})
@@ -570,17 +550,17 @@ function takeCarFast(id) {
 	var dozvola = 1;
 
 	if (startDate == "" || endDate == "") {
-		alert('None of the fields is allowed to be empty!');
+		showMessage('None of the fields is allowed to be empty!',"warning");
 	} else {
 		if (new Date(startDate) < new Date(mainStartDate)) {
-			alert('start date must be after your holiday starts');
+			showMessage('start date must be after your holiday starts',"warning");
 			dozvola = 0;
 		}
 
 		if (mainEndDate != "") {
 			if (new Date(startDate) > new Date(mainEndDate)
 					|| new Date(endDate) > new Date(mainEndDate)) {
-				alert('start date must be after your holiday starts');
+				showMessage('start date must be after your holiday starts',"warning");
 				dozvola = 0;
 			}
 		}
@@ -600,13 +580,13 @@ function takeCarFast(id) {
 						dataType : "json",
 						headers : createAuthorizationTokenHeader(TOKEN_KEY),
 						success : function(data) {
-							alert("Successful fast reservation of a car, congratulations!");
+							showMessage("Successful fast reservation of a car, congratulations!","success");
 
 						},
 						error : function(jqXHR, textStatus, errorThrown) {
-							alert(jqXHR.status);
-							alert(textStatus);
-							alert(errorThrown);
+							showMessage(jqXHR.status,"error");
+							showMessage(textStatus,"error");
+							showMessage(errorThrown,"error");
 
 						}
 					})
@@ -634,7 +614,7 @@ function showCarsForFastRes() {
 				dataType : "json",
 				headers : createAuthorizationTokenHeader(TOKEN_KEY),
 				success : function(data) {
-					alert('success');
+					showMessage('success',"success");
 					var response = data;
 					$(".messageSuitableCarsFast").children().remove();
 
@@ -743,9 +723,9 @@ function showCarsForFastRes() {
 
 				},
 				error : function(jqXHR, textStatus, errorThrown) {
-					alert(jqXHR.status);
-					alert(textStatus);
-					alert(errorThrown);
+					showMessage(jqXHR.status,"error");
+					showMessage(textStatus,"error");
+					showMessage(errorThrown,"error");
 				}
 
 			})
@@ -766,7 +746,7 @@ function saveGradedRentacar() {
 	if (rentacarGrade != "") {
 		console.log('rentacar grade nije 0');
 		if (rentacarGrade < 1 || rentacarGrade > 5) {
-			alert('Grade must be between 1 and 5');
+			showMessage('Grade must be between 1 and 5',"warning");
 		} else {
 			$.ajax({
 				type : 'GET',
@@ -775,12 +755,12 @@ function saveGradedRentacar() {
 				headers : createAuthorizationTokenHeader(TOKEN_KEY),
 				dataType : "json",
 				success : function(data) {
-					alert('rentacar successfully graded');
+					showMessage('rentacar successfully graded',"success");
 				},
 				error : function(jqXHR, textStatus, errorThrown) {
-					alert(jqXHR.status);
-					alert(textStatus);
-					alert(errorThrown);
+					showMessage(jqXHR.status,"error");
+					showMessage(textStatus,"error");
+					showMessage(errorThrown,"error");
 				}
 
 			})
@@ -790,7 +770,7 @@ function saveGradedRentacar() {
 	if (carGrade != "") {
 		console.log('car grade nije 0');
 		if (carGrade < 1 || carGrade > 5) {
-			alert('Grade must be between 1 and 5');
+			showMessage('Grade must be between 1 and 5',"warning");
 		} else {
 			$.ajax({
 				type : 'GET',
@@ -798,12 +778,12 @@ function saveGradedRentacar() {
 				headers : createAuthorizationTokenHeader(TOKEN_KEY),
 				dataType : "json",
 				success : function(data) {
-					alert('car successfully graded');
+					showMessage('car successfully graded',"success");
 				},
 				error : function(jqXHR, textStatus, errorThrown) {
-					alert(jqXHR.status);
-					alert(textStatus);
-					alert(errorThrown);
+					showMessage(jqXHR.status,"error");
+					showMessage(textStatus,"error");
+					showMessage(errorThrown,"error");
 				}
 
 			})
@@ -831,9 +811,9 @@ function fillGradeRentacarForm(id) {
 
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
-			alert(jqXHR.status);
-			alert(textStatus);
-			alert(errorThrown);
+			showMessage(jqXHR.status,"error");
+			showMessage(textStatus,"error");
+			showMessage(errorThrown,"error");
 		}
 
 	})
@@ -852,9 +832,9 @@ function fillGradeRentacarForm(id) {
 
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
-			alert(jqXHR.status);
-			alert(textStatus);
-			alert(errorThrown);
+			showMessage(jqXHR.status,"error");
+			showMessage(textStatus,"error");
+			showMessage(errorThrown,"error");
 		}
 
 	})
@@ -873,14 +853,15 @@ function cancelCarReservation(id) {
 		headers : createAuthorizationTokenHeader(TOKEN_KEY),
 		success : function(data) {
 
-			alert('Reservation successfully deleted.');
-			console.log('bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb');
+			showMessage('Reservation successfully deleted.',"success");
 
 			showMyReservationsCars();
 
 		},
-		error : function(XMLHttpRequest) {
-			alert("Error while deleting car");
+		error : function(jqXHR, textStatus, errorThrown) {
+			showMessage(jqXHR.status,"error");
+			showMessage(textStatus,"error");
+			showMessage(errorThrown,"error");
 		}
 
 	})
@@ -958,9 +939,9 @@ function showMyReservationsCars() {
 					}
 				},
 				error : function(jqXHR, textStatus, errorThrown) {
-					alert(jqXHR.status);
-					alert(textStatus);
-					alert(errorThrown);
+					showMessage(jqXHR.status,"error");
+					showMessage(textStatus,"error");
+					showMessage(errorThrown,"error");
 
 				}
 			})
@@ -1074,7 +1055,7 @@ function findAirlines() {
 	var field = document.getElementById("nameLocationAirline").value;
 	console.log('Field: ' + field);
 	if (field == "") {
-		alert("Field is not allowed to be empty, fill it!");
+		showMessage("Field is not allowed to be empty, fill it!","warning");
 	} else {
 
 		$.ajax({
@@ -1087,9 +1068,9 @@ function findAirlines() {
 
 			},
 			error : function(jqXHR, textStatus, errorThrown) {
-				alert(jqXHR.status);
-				alert(textStatus);
-				alert(errorThrown);
+				showMessage(jqXHR.status,"error");
+				showMessage(textStatus,"error");
+				showMessage(errorThrown,"error");
 			}
 
 		})
@@ -1102,7 +1083,7 @@ function findHotels() {
 	var field = document.getElementById("nameLocationHotel").value;
 	console.log('Field: ' + field);
 	if (field == "") {
-		alert("Field is not allowed to be empty, fill it!");
+		showMessage("Field is not allowed to be empty, fill it!","warning");
 	} else {
 
 		$.ajax({
@@ -1115,9 +1096,9 @@ function findHotels() {
 
 			},
 			error : function(jqXHR, textStatus, errorThrown) {
-				alert(jqXHR.status);
-				alert(textStatus);
-				alert(errorThrown);
+				showMessage(jqXHR.status,"error");
+				showMessage(textStatus,"error");
+				showMessage(errorThrown,"error");
 			}
 
 		})
@@ -1136,9 +1117,9 @@ function showAirlines(criteria) {
 
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
-			alert(jqXHR.status);
-			alert(textStatus);
-			alert(errorThrown);
+			showMessage(jqXHR.status,"error");
+			showMessage(textStatus,"error");
+			showMessage(errorThrown,"error");
 		}
 
 	})
@@ -1157,9 +1138,9 @@ function showHotels(criteria) {
 
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
-			alert(jqXHR.status);
-			alert(textStatus);
-			alert(errorThrown);
+			showMessage(jqXHR.status,"error");
+			showMessage(textStatus,"error");
+			showMessage(errorThrown,"error");
 		}
 
 	})
@@ -1177,9 +1158,9 @@ function showRentacars(criteria) {
 
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
-			alert(jqXHR.status);
-			alert(textStatus);
-			alert(errorThrown);
+			showMessage(jqXHR.status,"error");
+			showMessage(textStatus,"error");
+			showMessage(errorThrown,"error");
 		}
 
 	})
@@ -1241,7 +1222,7 @@ function findRentacars() {
 	var field = document.getElementById("nameLocationRentACar").value;
 	console.log('Field: ' + field);
 	if (field == "") {
-		alert("Field is not allowed to be empty, fill it!");
+		showMessage("Field is not allowed to be empty, fill it!","warning");
 	} else {
 
 		$.ajax({
@@ -1254,9 +1235,9 @@ function findRentacars() {
 
 			},
 			error : function(jqXHR, textStatus, errorThrown) {
-				alert(jqXHR.status);
-				alert(textStatus);
-				alert(errorThrown);
+				showMessage(jqXHR.status,"error");
+				showMessage(textStatus,"error");
+				showMessage(errorThrown,"error");
 			}
 
 		})
@@ -1269,7 +1250,7 @@ function findFriends() {
 	var surname = document.getElementById("friendRequestSurname").value;
 	$("#foundFriends").empty();
 	if (name == "" && surname == "") {
-		alert("Please enter name and/or surname")
+		showMessage("Please enter name and/or surname","warning")
 	} else {
 		if (surname == "") {
 			surname = "no_surname"
@@ -1377,17 +1358,17 @@ function findFriends() {
 									},
 									error : function(jqXHR, textStatus,
 											errorThrown) {
-										alert(jqXHR.status);
-										alert(textStatus);
-										alert(errorThrown);
+										showMessage(jqXHR.status,"error");
+										showMessage(textStatus,"error");
+										showMessage(errorThrown,"error");
 									}
 								})
 
 					},
 					error : function(jqXHR, textStatus, errorThrown) {
-						alert(jqXHR.status);
-						alert(textStatus);
-						alert(errorThrown);
+						showMessage(jqXHR.status,"error");
+						showMessage(textStatus,"error");
+						showMessage(errorThrown,"error");
 					}
 
 				})
@@ -1407,14 +1388,14 @@ $(document).on('click', '#addFriend', function(e) {
 		headers : createAuthorizationTokenHeader(TOKEN_KEY),
 		contentType : 'application/json',
 		success : function(data) {
-			alert("Successful sending friend request, congratulations!");
+			showMessage("Successful sending friend request, congratulations!","success");
 			$("button[name='" + name + "']").attr('disabled', 'disabled');
 			$("button[name='" + name + "']").text('Request sent');
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
-			alert(jqXHR.status);
-			alert(textStatus);
-			alert(errorThrown);
+			showMessage(jqXHR.status,"error");
+			showMessage(textStatus,"error");
+			showMessage(errorThrown,"error");
 		}
 
 	})
@@ -1471,9 +1452,9 @@ function searchFilter() {
 			}
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
-			alert(jqXHR.status);
-			alert(textStatus);
-			alert(errorThrown);
+			showMessage(jqXHR.status,"error");
+			showMessage(textStatus,"error");
+			showMessage(errorThrown,"error");
 
 		}
 	})
@@ -1501,9 +1482,9 @@ $(document).on(
 					}
 				},
 				error : function(jqXHR, textStatus, errorThrown) {
-					alert(jqXHR.status);
-					alert(textStatus);
-					alert(errorThrown);
+					showMessage(jqXHR.status,"error");
+					showMessage(textStatus,"error");
+					showMessage(errorThrown,"error");
 				}
 
 			})
@@ -1592,10 +1573,10 @@ $(document)
 					if (startDestination == "" || finalDestination == ""
 							|| dateOfFlight == "") {
 						i = 1;
-						alert("All fields must be filled in.")
+						showMessage("All fields must be filled in.","warning")
 					}
 					if (startDestination == finalDestination) {
-						alert("Start and final destination cannot be the same");
+						showMessage("Start and final destination cannot be the same","warning");
 						i = 1;
 					}
 					if (from == "") {
@@ -1616,22 +1597,22 @@ $(document)
 					if (dateOfArrival != "") {
 						if (new Date(dateOfFlight) > new Date(dateOfArrival)) {
 							i = 1;
-							alert("Date of flight cannot be after date of return!");
+							showMessage("Date of flight cannot be after date of return!","warning");
 						}
 						if (new Date() > new Date(dateOfFlight)
 								|| new Date() > new Date(dateOfArrival)) {
 							i = 1;
-							alert("Dates cannot be in the past");
+							showMessage("Dates cannot be in the past","warning");
 						}
 						if (new Date() > new Date(dateOfFlight)
 								&& new Date() > new Date(dateOfArrival)) {
 							i = 1;
-							alert("Dates cannot be in the past");
+							showMessage("Dates cannot be in the past","warning");
 						}
 					} else {
 						if (new Date() > new Date(dateOfFlight)) {
 							i = 1;
-							alert("Dates cannot be in the past");
+							showMessage("Dates cannot be in the past","warning");
 						}
 					}
 					if (i == 0) {
@@ -1799,9 +1780,9 @@ $(document)
 									},
 									error : function(jqXHR, textStatus,
 											errorThrown) {
-										alert(jqXHR.status);
-										alert(textStatus);
-										alert(errorThrown);
+										showMessage(jqXHR.status,"error");
+										showMessage(textStatus,"error");
+										showMessage(errorThrown,"error");
 
 									}
 								})
@@ -1823,7 +1804,7 @@ function getLogged() {
 					dataType : "json",
 					success : function(data) {
 						if (data == null) {
-							alert('Error while finding loged one!');
+							showMessage('Error while finding loged one!',"warning");
 						} else {
 							document.getElementById('userUsernameEdit').value = data.username;
 							document.getElementById('userFirstNameEdit').value = data.firstName;
@@ -1833,9 +1814,9 @@ function getLogged() {
 						}
 					},
 					error : function(jqXHR, textStatus, errorThrown) {
-						alert(jqXHR.status);
-						alert(textStatus);
-						alert(errorThrown);
+						showMessage(jqXHR.status,"error");
+						showMessage(textStatus,"error");
+						showMessage(errorThrown,"error");
 					}
 
 				})
@@ -1863,9 +1844,9 @@ $(document)
 					if (username == "" || password1 == "" || password2 == ""
 							|| firstName == "" || lastName == "" || email == ""
 							|| phoneNumber == "") {
-						alert('At least one field is blank, please fill it up with proper information!');
+						showMessage('At least one field is blank, please fill it up with proper information!',"warning");
 					} else if (password1 != password2) {
-						alert("Password must match, try again!");
+						showMessage("Password must match, try again!","warning");
 					} else {
 						$
 								.ajax({
@@ -1879,14 +1860,14 @@ $(document)
 											phoneNumber),
 									success : function(data) {
 										setJwtToken(TOKEN_KEY, data.accessToken);
-										alert("Successful editing, congratulations!");
+										showMessage("Successful editing, congratulations!","success");
 
 									},
 									error : function(jqXHR, textStatus,
 											errorThrown) {
-										alert(jqXHR.status);
-										alert(textStatus);
-										alert(errorThrown);
+										showMessage(jqXHR.status,"error");
+										showMessage(textStatus,"error");
+										showMessage(errorThrown,"error");
 
 									}
 								});
@@ -1948,9 +1929,9 @@ function seeFriendRequests() {
 					}
 				},
 				error : function(jqXHR, textStatus, errorThrown) {
-					alert(jqXHR.status);
-					alert(textStatus);
-					alert(errorThrown);
+					showMessage(jqXHR.status,"error");
+					showMessage(textStatus,"error");
+					showMessage(errorThrown,"error");
 
 				}
 			})
@@ -2001,9 +1982,9 @@ function showAllFriends() {
 					}
 				},
 				error : function(jqXHR, textStatus, errorThrown) {
-					alert(jqXHR.status);
-					alert(textStatus);
-					alert(errorThrown);
+					showMessage(jqXHR.status,"error");
+					showMessage(textStatus,"error");
+					showMessage(errorThrown,"error");
 
 				}
 			})
@@ -2021,14 +2002,14 @@ $(document).on('click', '#removeFriend', function(e) {
 		headers : createAuthorizationTokenHeader(TOKEN_KEY),
 		contentType : 'application/json',
 		success : function(data) {
-			alert("Successfully removed friend from a friend list");
+			showMessage("Successfully removed friend from a friend list","success");
 			document.getElementById("friendList").deleteRow(num);
 
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
-			alert(jqXHR.status);
-			alert(textStatus);
-			alert(errorThrown);
+			showMessage(jqXHR.status,"error");
+			showMessage(textStatus,"error");
+			showMessage(errorThrown,"error");
 
 		}
 	})
@@ -2052,14 +2033,14 @@ $(document).on('click', '#acceptFriend', function(e) {
 		headers : createAuthorizationTokenHeader(TOKEN_KEY),
 		contentType : 'application/json',
 		success : function(data) {
-			alert("Successfully accepted friend request.");
+			showMessage("Successfully accepted friend request.","success");
 			document.getElementById("friendRequestTable").deleteRow(num);
 
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
-			alert(jqXHR.status);
-			alert(textStatus);
-			alert(errorThrown);
+			showMessage(jqXHR.status,"error");
+			showMessage(textStatus,"error");
+			showMessage(errorThrown,"error");
 
 		}
 	})
@@ -2077,14 +2058,14 @@ $(document).on('click', '#rejectFriend', function(e) {
 		headers : createAuthorizationTokenHeader(TOKEN_KEY),
 		contentType : 'application/json',
 		success : function(data) {
-			alert("Successfully rejected friend request.");
+			showMessage("Successfully rejected friend request.","success");
 			document.getElementById("friendRequestTable").deleteRow(num);
 
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
-			alert(jqXHR.status);
-			alert(textStatus);
-			alert(errorThrown);
+			showMessage(jqXHR.status,"error");
+			showMessage(textStatus,"error");
+			showMessage(errorThrown,"error");
 
 		}
 	})
@@ -2159,36 +2140,36 @@ function searchForCars(rentacarId) {
 
 	var dozvola = 1;
 	if (new Date(startDate) < new Date(mainStartDate)) {
-		alert("Pickup date must be after (or same day) the first day of reservation of flight");
+		showMessage("Pickup date must be after (or same day) the first day of reservation of flight","warning");
 		dozvola = 0;
 	}
 
 	if (new Date(endDate) < new Date(mainStartDate)) {
-		alert("End date cannot be before the first day of holiday");
+		showMessage("End date cannot be before the first day of holiday","warning");
 		dozvola = 0;
 	}
 	if (new Date(endDate) < new Date(mainStartDate)) {
-		alert("End date cannot be before the first day of holiday");
+		showMessage("End date cannot be before the first day of holiday","warning");
 		dozvola = 0;
 	}
 	if (new Date(endDate) < new Date(mainStartDate)) {
-		alert("End date cannot be before the first day of holiday");
+		showMessage("End date cannot be before the first day of holiday","warning");
 		dozvola = 0;
 	}
 
 	if (new Date(endDate) < new Date(mainStartDate)) {
-		alert("End date cannot be before the first day of holiday");
+		showMessage("End date cannot be before the first day of holiday","warning");
 		dozvola = 0;
 	}
 
 	if (mainEndDate != "") {
 		if (new Date(startDate) > new Date(mainEndDate)) {
-			alert("You cannot rent a car after the holiday ends!");
+			showMessage("You cannot rent a car after the holiday ends!","warning");
 			dozvola = 0;
 		}
 
 		if (new Date(endDate) > new Date(mainEndDate)) {
-			alert("You cannot rent a car after the holiday ends!");
+			showMessage("You cannot rent a car after the holiday ends!","warning");
 			dozvola = 0;
 		}
 
@@ -2196,7 +2177,7 @@ function searchForCars(rentacarId) {
 
 	if (fromPrice < 0 || toPrice < 0) {
 		dozvola = 0;
-		alert('Prices must be positive');
+		showMessage('Prices must be positive',"warning");
 	}
 	if (dozvola == 1) {
 
@@ -2206,7 +2187,7 @@ function searchForCars(rentacarId) {
 		var passengers = document.getElementById("passengers").value;
 		if (startDate == "" || endDate == "" || startCity == ""
 				|| endCity == "" || carType == "" || passengers == "") {
-			alert('None of obligational fileds is allowed to be empty');
+			showMessage('None of obligational fileds is allowed to be empty',"warning");
 		}
 		var fromPrice = document.getElementById("fromPrice").value;
 		var toPrice = document.getElementById("toPrice").value;
@@ -2345,9 +2326,9 @@ function searchForCars(rentacarId) {
 
 					},
 					error : function(jqXHR, textStatus, errorThrown) {
-						alert(jqXHR.status);
-						alert(textStatus);
-						alert(errorThrown);
+						showMessage(jqXHR.status,"error");
+						showMessage(textStatus,"error");
+						showMessage(errorThrown,"error");
 					}
 
 				})
@@ -2377,13 +2358,13 @@ function takeCar(id, startDate, endDate, passengers) {
 		dataType : "json",
 		headers : createAuthorizationTokenHeader(TOKEN_KEY),
 		success : function(data) {
-			alert("Successful reservation of a car, congratulations!");
+			showMessage("Successful reservation of a car, congratulations!","success");
 
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
-			alert(jqXHR.status);
-			alert(textStatus);
-			alert(errorThrown);
+			showMessage(jqXHR.status,"error");
+			showMessage(textStatus,"error");
+			showMessage(errorThrown,"error");
 
 		}
 	})
@@ -2498,17 +2479,17 @@ $(document)
 					endDate = endDate.replace("T", " ");
 					if (hotelId == "" || startDate == "" || endDate == ""
 							|| lowestPrice == "" || highestPrice == "") {
-						alert('At least one field is blank, please fill it up with proper information!');
-					} else if (false) { //new Date() >= new Date(startDate)
-						alert('You cannot put for reserving in past!');
+						showMessage('At least one field is blank, please fill it up with proper information!',"warning");
+					} else if (false) { // new Date() >= new Date(startDate)
+						showMessage('You cannot put for reserving in past!',"warning");
 					} else if (new Date(startDate) >= new Date(endDate)) {
-						alert('End date cant be before or equal to start date!');
+						showMessage('End date cant be before or equal to start date!',"warning");
 					} else if ((new Date(startDate)).getTime() + 3024000000 < (new Date(
 							endDate)).getTime()) {
-						alert('You cant reserve room for more than 5 weeks or 35 days!');
+						showMessage('You cant reserve room for more than 5 weeks or 35 days!',"warning");
 					} else if ((new Date(startDate)).getTime() + 7200000 > (new Date(
 							endDate)).getTime()) {
-						alert('You cant reserve room for less than 2 hours!');
+						showMessage('You cant reserve room for less than 2 hours!',"warning");
 					} else {
 						var finalPathh = urlRootSearchRoomToReserve + "/"
 								+ startDate + "/" + endDate + "/" + lowestPrice
@@ -2522,7 +2503,7 @@ $(document)
 									headers : createAuthorizationTokenHeader(TOKEN_KEY),
 									success : function(data) {
 										if (data.message) {
-											alert(data.message);
+											showMessage(data.message,"warning");
 										} else if (data.length != 0) {
 											fillTableRoomPick(data,
 													"roomReservationRoomTable");
@@ -2544,9 +2525,9 @@ $(document)
 														error : function(jqXHR,
 																textStatus,
 																errorThrown) {
-															alert(jqXHR.status);
-															alert(textStatus);
-															alert(errorThrown);
+															showMessage(jqXHR.status,"error");
+															showMessage(textStatus,"error");
+															showMessage(errorThrown,"error");
 														}
 
 													})
@@ -2569,15 +2550,15 @@ $(document)
 													.prop('disabled', false);
 											$("#roomReservationHighestPrice")
 													.prop('disabled', false);
-											alert("There is no room that satisfies your dates and price in this hotel!")
+											showMessage("There is no room that satisfies your dates and price in this hotel!","warning")
 										}
 
 									},
 									error : function(jqXHR, textStatus,
 											errorThrown) {
-										alert(jqXHR.status);
-										alert(textStatus);
-										alert(errorThrown);
+										showMessage(jqXHR.status,"error");
+										showMessage(textStatus,"error");
+										showMessage(errorThrown,"error");
 
 									}
 								})
@@ -2616,7 +2597,7 @@ $(document)
 					endDate = endDate.replace("T", " ");
 					var numberHotelDiscount = getHotelDiscountValue();
 					if (roomIds == "") {
-						alert('You must pick at least one room!');
+						showMessage('You must pick at least one room!',"warning");
 					} else {
 						$
 								.ajax({
@@ -2629,7 +2610,7 @@ $(document)
 											numberHotelDiscount),
 									headers : createAuthorizationTokenHeader(TOKEN_KEY),
 									success : function(data) {
-										alert(data.message)
+										showMessage(data.message,"success")
 										openCity(e, 'hotels');
 										$("#pickRoomAndHcs").hide();
 										$("#roomReservationStartDate").prop(
@@ -2643,9 +2624,9 @@ $(document)
 									},
 									error : function(jqXHR, textStatus,
 											errorThrown) {
-										alert(jqXHR.status);
-										alert(textStatus);
-										alert(errorThrown);
+										showMessage(jqXHR.status,"error");
+										showMessage(textStatus,"error");
+										showMessage(errorThrown,"error");
 
 									}
 								})
@@ -2717,7 +2698,7 @@ $(document).on('click', '.reserveRFR', function(e) {
 		headers : createAuthorizationTokenHeader(TOKEN_KEY),
 		dataType : "json",
 		success : function(data) {
-			alert("Succesfully reserved this room on special offer!")
+			showMessage("Succesfully reserved this room on special offer!","success")
 			openCity(e, 'hotels');
 			$("#pickRoomAndHcs").hide();
 			$("#roomReservationStartDate").prop('disabled', false);
@@ -2726,9 +2707,9 @@ $(document).on('click', '.reserveRFR', function(e) {
 			$("#roomReservationHighestPrice").prop('disabled', false);
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
-			alert(jqXHR.status);
-			alert(textStatus);
-			alert(errorThrown);
+			showMessage(jqXHR.status,"error");
+			showMessage(textStatus,"error");
+			showMessage(errorThrown,"error");
 		}
 
 	})
@@ -2862,9 +2843,9 @@ $(document).on(
 					}
 				},
 				error : function(jqXHR, textStatus, errorThrown) {
-					alert(jqXHR.status);
-					alert(textStatus);
-					alert(errorThrown);
+					showMessage(jqXHR.status,"error");
+					showMessage(textStatus,"error");
+					showMessage(errorThrown,"error");
 				}
 
 			})
@@ -3090,9 +3071,9 @@ $(document)
 
 								},
 								error : function(jqXHR, textStatus, errorThrown) {
-									alert(jqXHR.status);
-									alert(textStatus);
-									alert(errorThrown);
+									showMessage(jqXHR.status,"error");
+									showMessage(textStatus,"error");
+									showMessage(errorThrown,"error");
 
 								}
 							})
@@ -3166,9 +3147,9 @@ $(document)
 									},
 									error : function(jqXHR, textStatus,
 											errorThrown) {
-										alert(jqXHR.status);
-										alert(textStatus);
-										alert(errorThrown);
+										showMessage(jqXHR.status,"error");
+										showMessage(textStatus,"error");
+										showMessage(errorThrown,"error");
 
 									}
 								})
@@ -3238,13 +3219,13 @@ $(document)
 									if (list != []) {
 										sendEmail(list);
 									}
-									alert("Successful reservation of a flight, congratulations!");
+									showMessage("Successful reservation of a flight, congratulations!","success");
 
 								},
 								error : function(jqXHR, textStatus, errorThrown) {
-									alert(jqXHR.status);
-									alert(textStatus);
-									alert(errorThrown);
+									showMessage(jqXHR.status,"error");
+									showMessage(textStatus,"error");
+									showMessage(errorThrown,"error");
 								}
 							})
 
@@ -3253,7 +3234,7 @@ $(document)
 									'<button type="submit" style="background: #cc0033; color: white" id="offerRentacarsButton" style="float: left;">Rentacars</button><br><br>');
 					$("#flightReservation")
 							.append(
-									'<button type="submit" style="background: #cc0033; color: white" id="offerHottelsButton" style="float: left;/">Hotels</button>');
+									'<button type="submit" style="background: #cc0033; color: white" id="offerHotelsButton" style="float: left;/">Hotels</button>');
 					$("#flightReservation")
 							.append(
 									'<button type="submit" style="background: #cc0033; color: white" id="finishReservation" style="float: left;/">Finish reservation</button>');
@@ -3272,16 +3253,16 @@ $(document).on('click', "#finishReservation", function(e) {
 		success : function(data) {
 			if (data) {
 				sendEmailReservation(data.message, data.email);
-				alert("Successfully finished reservation.");
+				showMessage("Successfully finished reservation.","success");
 				openCity(e, 'searchAndFilterFlight');
 			} else {
 
 			}
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
-			alert(jqXHR.status);
-			alert(textStatus);
-			alert(errorThrown);
+			showMessage(jqXHR.status,"error");
+			showMessage(textStatus,"error");
+			showMessage(errorThrown,"error");
 		}
 
 	})
@@ -3299,9 +3280,9 @@ function sendEmail(list) {
 
 			},
 			error : function(jqXHR, textStatus, errorThrown) {
-				alert(jqXHR.status);
-				alert(textStatus);
-				alert(errorThrown);
+				showMessage(jqXHR.status,"error");
+				showMessage(textStatus,"error");
+				showMessage(errorThrown,"error");
 
 			}
 		})
@@ -3319,9 +3300,9 @@ function sendEmailReservation(message, email) {
 
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
-			alert(jqXHR.status);
-			alert(textStatus);
-			alert(errorThrown);
+			showMessage(jqXHR.status,"error");
+			showMessage(textStatus,"error");
+			showMessage(errorThrown,"error");
 
 		}
 	})
@@ -3379,9 +3360,9 @@ $(document)
 										},
 										error : function(jqXHR, textStatus,
 												errorThrown) {
-											alert(jqXHR.status);
-											alert(textStatus);
-											alert(errorThrown);
+											showMessage(jqXHR.status,"error");
+											showMessage(textStatus,"error");
+											showMessage(errorThrown,"error");
 										}
 
 									})
@@ -3633,9 +3614,9 @@ $(document).on('click', '#offerRentacarsButton', function(e) {
 						}
 					},
 					error : function(jqXHR, textStatus, errorThrown) {
-						alert(jqXHR.status);
-						alert(textStatus);
-						alert(errorThrown);
+						showMessage(jqXHR.status,"error");
+						showMessage(textStatus,"error");
+						showMessage(errorThrown,"error");
 					}
 
 				})
@@ -3643,9 +3624,9 @@ $(document).on('click', '#offerRentacarsButton', function(e) {
 			}
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
-			alert(jqXHR.status);
-			alert(textStatus);
-			alert(errorThrown);
+			showMessage(jqXHR.status,"error");
+			showMessage(textStatus,"error");
+			showMessage(errorThrown,"error");
 		}
 
 	})
@@ -3694,9 +3675,9 @@ $(document).on('click', '#offerHotelsButton', function(e) {
 						}
 					},
 					error : function(jqXHR, textStatus, errorThrown) {
-						alert(jqXHR.status);
-						alert(textStatus);
-						alert(errorThrown);
+						showMessage(jqXHR.status,"error");
+						showMessage(textStatus,"error");
+						showMessage(errorThrown,"error");
 					}
 
 				})
@@ -3704,9 +3685,9 @@ $(document).on('click', '#offerHotelsButton', function(e) {
 			}
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
-			alert(jqXHR.status);
-			alert(textStatus);
-			alert(errorThrown);
+			showMessage(jqXHR.status,"error");
+			showMessage(textStatus,"error");
+			showMessage(errorThrown,"error");
 		}
 
 	})
@@ -3805,9 +3786,9 @@ $(document).on(
 								}
 							},
 							error : function(jqXHR, textStatus, errorThrown) {
-								alert(jqXHR.status);
-								alert(textStatus);
-								alert(errorThrown);
+								showMessage(jqXHR.status,"error");
+								showMessage(textStatus,"error");
+								showMessage(errorThrown,"error");
 							}
 
 						})
@@ -3830,18 +3811,18 @@ $(document).on(
 								}
 							},
 							error : function(jqXHR, textStatus, errorThrown) {
-								alert(jqXHR.status);
-								alert(textStatus);
-								alert(errorThrown);
+								showMessage(jqXHR.status,"error");
+								showMessage(textStatus,"error");
+								showMessage(errorThrown,"error");
 							}
 
 						})
 					}
 				},
 				error : function(jqXHR, textStatus, errorThrown) {
-					alert(jqXHR.status);
-					alert(textStatus);
-					alert(errorThrown);
+					showMessage(jqXHR.status,"error");
+					showMessage(textStatus,"error");
+					showMessage(errorThrown,"error");
 				}
 
 			})
@@ -3872,9 +3853,9 @@ $(document).on(
 								}
 							},
 							error : function(jqXHR, textStatus, errorThrown) {
-								alert(jqXHR.status);
-								alert(textStatus);
-								alert(errorThrown);
+								showMessage(jqXHR.status,"error");
+								showMessage(textStatus,"error");
+								showMessage(errorThrown,"error");
 							}
 
 						})
@@ -3897,9 +3878,9 @@ $(document).on(
 								}
 							},
 							error : function(jqXHR, textStatus, errorThrown) {
-								alert(jqXHR.status);
-								alert(textStatus);
-								alert(errorThrown);
+								showMessage(jqXHR.status,"error");
+								showMessage(textStatus,"error");
+								showMessage(errorThrown,"error");
 							}
 
 						})
@@ -3907,9 +3888,9 @@ $(document).on(
 					}
 				},
 				error : function(jqXHR, textStatus, errorThrown) {
-					alert(jqXHR.status);
-					alert(textStatus);
-					alert(errorThrown);
+					showMessage(jqXHR.status,"error");
+					showMessage(textStatus,"error");
+					showMessage(errorThrown,"error");
 				}
 
 			})
@@ -3940,9 +3921,9 @@ $(document).on(
 								}
 							},
 							error : function(jqXHR, textStatus, errorThrown) {
-								alert(jqXHR.status);
-								alert(textStatus);
-								alert(errorThrown);
+								showMessage(jqXHR.status,"error");
+								showMessage(textStatus,"error");
+								showMessage(errorThrown,"error");
 							}
 
 						})
@@ -3965,9 +3946,9 @@ $(document).on(
 								}
 							},
 							error : function(jqXHR, textStatus, errorThrown) {
-								alert(jqXHR.status);
-								alert(textStatus);
-								alert(errorThrown);
+								showMessage(jqXHR.status,"error");
+								showMessage(textStatus,"error");
+								showMessage(errorThrown,"error");
 							}
 
 						})
@@ -3975,9 +3956,9 @@ $(document).on(
 					}
 				},
 				error : function(jqXHR, textStatus, errorThrown) {
-					alert(jqXHR.status);
-					alert(textStatus);
-					alert(errorThrown);
+					showMessage(jqXHR.status,"error");
+					showMessage(textStatus,"error");
+					showMessage(errorThrown,"error");
 				}
 
 			})
