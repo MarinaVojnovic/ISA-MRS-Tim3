@@ -1,7 +1,5 @@
 package team_three_spring_project_isamrs.dto;
 
-import java.util.Date;
-
 import team_three_spring_project_isamrs.model.FlightReservation;
 
 public class FlightReservationDTO {

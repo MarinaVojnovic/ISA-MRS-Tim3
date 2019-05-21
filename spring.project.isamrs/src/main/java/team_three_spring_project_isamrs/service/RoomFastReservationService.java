@@ -2,11 +2,17 @@ package team_three_spring_project_isamrs.service;
 
 import java.util.List;
 
+import javax.persistence.LockModeType;
+
+import org.springframework.data.jpa.repository.Lock;
+
 import team_three_spring_project_isamrs.model.Hotel;
 import team_three_spring_project_isamrs.model.Room;
 import team_three_spring_project_isamrs.model.RoomFastReservation;
 
 public interface RoomFastReservationService {
+	
+	@Lock(LockModeType.PESSIMISTIC_WRITE)
 	public RoomFastReservation getOne(long id);
 
 	public List<RoomFastReservation> getAll();

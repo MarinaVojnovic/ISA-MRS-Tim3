@@ -1,7 +1,5 @@
 package team_three_spring_project_isamrs.dto;
 
-import java.sql.Date;
-
 import team_three_spring_project_isamrs.model.Airline;
 
 public class AddFlightDTO {

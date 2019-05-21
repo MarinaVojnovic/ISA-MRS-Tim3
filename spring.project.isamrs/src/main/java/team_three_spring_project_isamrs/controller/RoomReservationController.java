@@ -23,12 +23,8 @@ import org.springframework.web.bind.annotation.RestController;
 import team_three_spring_project_isamrs.dto.MessageDTO;
 import team_three_spring_project_isamrs.dto.ReportHotelAttendanceDTO;
 import team_three_spring_project_isamrs.dto.RoomReservationDTO;
-import team_three_spring_project_isamrs.model.HotelAdmin;
-import team_three_spring_project_isamrs.model.Car;
-import team_three_spring_project_isamrs.model.CarReservation;
-import team_three_spring_project_isamrs.model.Flight;
-import team_three_spring_project_isamrs.model.FlightReservation;
 import team_three_spring_project_isamrs.model.Hotel;
+import team_three_spring_project_isamrs.model.HotelAdmin;
 import team_three_spring_project_isamrs.model.HotelCustomerService;
 import team_three_spring_project_isamrs.model.RegularUser;
 import team_three_spring_project_isamrs.model.Room;
@@ -56,14 +52,14 @@ public class RoomReservationController {
 
 	@Autowired
 	private CustomUserDetailsService userDetailsService;
-	
+
 	@DeleteMapping(value = "/cancelHotelReservation/{resId}")
 	@PreAuthorize("hasRole('ROLE_USER')")
 	public ResponseEntity<?> cancelHotelReservation(@PathVariable Long resId) {
 		System.out.println("Uslo u cancel hotel reservation");
 		RegularUser user = (RegularUser) this.userDetailsService
 				.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
-		int brojac=-1;
+		int brojac = -1;
 		System.out.println("A");
 		/*
 		 * for (CarReservation cr : user.getCarReservations()) { brojac++; if
@@ -72,24 +68,17 @@ public class RoomReservationController {
 		System.out.println("B");
 		RoomReservation roomRes = roomReservationService.getOne(resId);
 		roomReservationService.delete(resId);
-		
-		
-		
-	
+
 		return new ResponseEntity<>(roomRes, HttpStatus.OK);
-		
-		
-		
+
 	}
-	
+
 	@GetMapping(value = "/findHotelFromRes/{resId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Hotel> findHotelFromRes(@PathVariable Long resId) {
 		RoomReservation res = roomReservationService.getOne(resId);
 		Hotel hotel = res.getHotel();
 		return new ResponseEntity<>(hotel, HttpStatus.OK);
 	}
-	
-	
 
 	@PostMapping(value = "/createRoomReservationRegular", consumes = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ROLE_USER')")
@@ -152,7 +141,15 @@ public class RoomReservationController {
 
 		RegularUser user = (RegularUser) this.userDetailsService
 				.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
-		RoomFastReservation rfr = roomFastReservationService.getOne(roomFastReservationId);
+		RoomFastReservation rfr = null;
+		try {
+			rfr = roomFastReservationService.getOne(roomFastReservationId);
+		} catch (Exception e) {
+			return new ResponseEntity<>(
+					new MessageDTO("This reservation have just been reserved or deleted, you were so close :(",
+							"warning"),
+					HttpStatus.OK);
+		}
 		rfr.setReserved(true);
 		RoomReservation retVal = new RoomReservation();
 		retVal.setRegularUser(user);
@@ -170,7 +167,8 @@ public class RoomReservationController {
 		retVal.setDiscount(rfr.getDiscount());
 		roomReservationService.create(retVal);
 		roomFastReservationService.save(rfr);
-		return new ResponseEntity<>(new MessageDTO("Succesfully made fast reservation!", "Error"), HttpStatus.CREATED);
+		return new ResponseEntity<>(new MessageDTO("Succesfully made fast reservation!", "success"),
+				HttpStatus.CREATED);
 	}
 
 	@GetMapping(value = "/getRoomReservations", consumes = MediaType.APPLICATION_JSON_VALUE)
