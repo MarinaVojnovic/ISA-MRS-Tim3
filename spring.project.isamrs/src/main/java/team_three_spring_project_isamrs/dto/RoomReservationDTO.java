@@ -89,47 +89,31 @@ public class RoomReservationDTO {
 	public void setHotelCustomerServices(String hotelCustomerServices) {
 		this.hotelCustomerServices = hotelCustomerServices;
 	}
-	
+
 	public RoomReservationDTO(RoomReservation room) {
 		super();
-		System.out.println("aaa");
-		this.id=room.getId();
-		System.out.println("bbb");
-		this.hotelName=room.getHotel().getName();
-		System.out.println("ccc");
-		this.startDate=room.getStartDate();
-		System.out.println("ddd");
-		this.endDate=room.getEndDate();
-		System.out.println("eee");
-		this.price=room.getPrice();
-		System.out.println("fff");
-		this.numOfPass=room.getNumOfPass();
-		System.out.println("ggg");
-		this.discount=room.getDiscount();
-		System.out.println("hhh");
-		this.roomNumbers="";
-		this.hotelCustomerServices="";
+		this.id = room.getId();
+		this.hotelName = room.getHotel().getName();
+		this.startDate = room.getStartDate();
+		this.endDate = room.getEndDate();
+		this.price = room.getPrice();
+		this.numOfPass = room.getNumOfPass();
+		this.discount = room.getDiscount();
+		this.roomNumbers = "";
+		this.hotelCustomerServices = "";
 		for (Room r : room.getRooms()) {
-			System.out.println("jjj");
-			System.out.println(r.getRoomNumber());
-			this.roomNumbers+=r.getRoomNumber()+", ";
-			System.out.println("kkk");
+			this.roomNumbers += r.getRoomNumber() + ", ";
 		}
-		System.out.println("lll");
-		this.roomNumbers=this.roomNumbers.substring(0, this.roomNumbers.length()-2);
-		System.out.println("mmm");
+		this.roomNumbers = this.roomNumbers.substring(0, this.roomNumbers.length() - 2);
 		for (HotelCustomerService cs : room.getHotelCustomerServices()) {
-			System.out.println("nnn");
-			this.hotelCustomerServices+=cs.getName()+", ";
-			System.out.println("vvv");
+			this.hotelCustomerServices += cs.getName() + ", ";
 		}
-		System.out.println("rrr");
-		
-		if (this.hotelCustomerServices!="") {
-			this.hotelCustomerServices=this.hotelCustomerServices.substring(0, this.hotelCustomerServices.length()-2);
+
+		if (!this.hotelCustomerServices.equals("")) {
+			this.hotelCustomerServices = this.hotelCustomerServices.substring(0,
+					this.hotelCustomerServices.length() - 2);
 		}
-		
-		
+
 	}
 
 	public String getRoomNumbers() {

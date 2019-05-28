@@ -57,7 +57,6 @@ public class FlightController {
 	@GetMapping(value = "/gradeFlight/{id}/{grade}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ROLE_USER')")
 	public ResponseEntity<Flight> gradeFlight(@PathVariable Long id, @PathVariable Integer grade) {
-		System.out.println("Uslo u grade car");
 		Flight flight = flightService.getOne(id);
 		flight.setScore(flight.getScore() + grade);
 		flight.setNumber(flight.getNumber() + 1);

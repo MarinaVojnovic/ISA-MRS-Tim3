@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 import team_three_spring_project_isamrs.comparator.HotelsComparatorAddress;
 import team_three_spring_project_isamrs.comparator.HotelsComparatorName;
 import team_three_spring_project_isamrs.dto.HotelDTO;
-import team_three_spring_project_isamrs.model.Airline;
 import team_three_spring_project_isamrs.model.Hotel;
 import team_three_spring_project_isamrs.model.HotelAdmin;
 import team_three_spring_project_isamrs.model.Room;
@@ -34,42 +33,35 @@ import team_three_spring_project_isamrs.service.impl.CustomUserDetailsService;
 public class HotelController {
 	@Autowired
 	HotelService hotelService;
-	
+
 	@Autowired
 	RoomService roomService;
 
 	@Autowired
 	private CustomUserDetailsService userDetailsService;
 
-
 	@GetMapping(value = "/gradeHotel/{id}/{grade}/{roomsGrades}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ROLE_USER')")
-	public ResponseEntity<Hotel> gradeHotel(@PathVariable Long id, @PathVariable Integer grade, @PathVariable String roomsGrades) {
-		System.out.println("Uslo u grade hotel     "+id);
+	public ResponseEntity<Hotel> gradeHotel(@PathVariable Long id, @PathVariable Integer grade,
+			@PathVariable String roomsGrades) {
 		Hotel hotel = hotelService.getOne(id);
-		System.out.println(hotel.getName());
-		System.out.println("A");
-		hotel.setScore(hotel.getScore()+grade);
-		System.out.println("B");
-		hotel.setGradeNumber(hotel.getGradeNumber()+1);
-		System.out.println("C");
-		
-		System.out.println("D");
+		hotel.setScore(hotel.getScore() + grade);
+		hotel.setGradeNumber(hotel.getGradeNumber() + 1);
+
 		String[] lista = roomsGrades.split("\\|");
 		List<String> array = new ArrayList(Arrays.asList(lista));
 		for (String par : array) {
 			Room room = roomService.findByRoomNumberAndHotel(Integer.parseInt(par.split("\\,")[0].trim()), hotel);
-			
-			room.setGradeNumber(room.getGradeNumber()+1);
-			room.setScore(room.getScore()+Double.parseDouble(par.split("\\,")[1]));
+
+			room.setGradeNumber(room.getGradeNumber() + 1);
+			room.setScore(room.getScore() + Double.parseDouble(par.split("\\,")[1]));
 			roomService.save(room);
 		}
-		
+
 		hotelService.save(hotel);
 		return new ResponseEntity<>(hotel, HttpStatus.CREATED);
 	}
-	
-	
+
 	@GetMapping(value = "/findConcreteHotel/{id}")
 	public ResponseEntity<Hotel> findConcreteHotel(@PathVariable String id) {
 		Hotel retVal = hotelService.getOne(Long.parseLong(id));
@@ -149,17 +141,7 @@ public class HotelController {
 
 	@GetMapping(value = "/findHotelByDestination/{address}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Hotel>> findHotelsByDestination(@PathVariable String address) {
-		List<Hotel> allHotels = hotelService.getAll();
-		List<Hotel> hotels = new ArrayList<Hotel>();
-
-		/*
-		 * for (Hotel h : allHotels) { if (h.getCity() != null) { if
-		 * (h.getCity().equalsIgnoreCase(address)) { hotels.add(h); } }
-		 * 
-		 * }
-		 */
-		
-		hotels=hotelService.findByCity(address);
+		List<Hotel> hotels = hotelService.findByCity(address);
 		return new ResponseEntity<>(hotels, HttpStatus.OK);
 	}
 }
