@@ -744,8 +744,8 @@ $(document)
 											var cell8 = row.insertCell(7);
 											var cell9 = row.insertCell(8);
 											cell1.innerHTML = list[flight].number;
-											cell2.innerHTML = list[flight].startAirline.name;
-											cell3.innerHTML = list[flight].finalAirline.name;
+											cell2.innerHTML = list[flight].startAirline.city;
+											cell3.innerHTML = list[flight].finalAirline.city;
 											cell4.innerHTML = list[flight].cost;
 											cell5.innerHTML = list[flight].dateOfStart;
 											cell6.innerHTML = list[flight].dateOfEnd;

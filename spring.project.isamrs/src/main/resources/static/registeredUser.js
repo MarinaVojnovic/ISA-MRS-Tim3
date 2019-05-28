@@ -1471,10 +1471,13 @@ function findFriends() {
 	var surname = document.getElementById("friendRequestSurname").value;
 	$("#foundFriends").empty();
 	if (name == "" && surname == "") {
-		showMessage("Please enter name and/or surname","warning")
+		showMessage("Please enter name and/or surname","warning");
 	} else {
 		if (surname == "") {
-			surname = "no_surname"
+			surname = "no_surname";
+		}
+		if(name==""){
+			name="no_name";
 		}
 		$
 				.ajax({

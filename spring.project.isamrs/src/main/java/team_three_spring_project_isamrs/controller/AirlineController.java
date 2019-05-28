@@ -220,11 +220,13 @@ public class AirlineController {
 		List<Flight> flights = this.flightService.findByStartAirline(air);
 		List<Flight> returnFlights=new ArrayList<Flight>();
 		for(Flight f: flights) {
-			if(df.parse(f.getDateOfStart()).after(new Date())) {
+			Date date=df.parse(f.getDateOfStart());
+			Date today=new Date();
+			if(date.getTime() > today.getTime()) {
 				returnFlights.add(f);
 			}
 		}
-		return new ResponseEntity<>(flights, HttpStatus.OK);
+		return new ResponseEntity<>(returnFlights, HttpStatus.OK);
 	}
 	
 	@PostMapping(value="/addQuickBooking/{sed}/{popust}")
