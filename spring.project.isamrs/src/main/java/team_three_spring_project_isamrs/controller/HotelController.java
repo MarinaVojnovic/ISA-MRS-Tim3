@@ -141,7 +141,7 @@ public class HotelController {
 	public ResponseEntity<List<Hotel>> findHotels(@PathVariable String field) {
 		List<Hotel> hotels = hotelService.findByName(field);
 		if (hotels.isEmpty()) {
-			hotels = hotelService.findByAddress(field);
+			hotels = hotelService.findByCity(field);
 		}
 
 		return new ResponseEntity<>(hotels, HttpStatus.OK);
@@ -152,15 +152,14 @@ public class HotelController {
 		List<Hotel> allHotels = hotelService.getAll();
 		List<Hotel> hotels = new ArrayList<Hotel>();
 
-		for (Hotel h : allHotels) {
-			if (h.getCity() != null) {
-				if (h.getCity().equalsIgnoreCase(address)) {
-					hotels.add(h);
-				}
-			}
-
-		}
-
+		/*
+		 * for (Hotel h : allHotels) { if (h.getCity() != null) { if
+		 * (h.getCity().equalsIgnoreCase(address)) { hotels.add(h); } }
+		 * 
+		 * }
+		 */
+		
+		hotels=hotelService.findByCity(address);
 		return new ResponseEntity<>(hotels, HttpStatus.OK);
 	}
 }

@@ -43,4 +43,7 @@ public class AirlineServiceImpl implements AirlineService {
 		return airlineRepository.findByAddress(address);
 	}
 
+	public List<Airline> findByCity(String city) {
+		return airlineRepository.findByCity(city);
+	}
 }

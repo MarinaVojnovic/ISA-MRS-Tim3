@@ -100,10 +100,10 @@ public class CarReservationController {
 	}
 	
 	@SuppressWarnings("deprecation")
-	@PostMapping(value = "/createCarReservation/{carId}/{startDate}/{endDate}/{passengers}", consumes = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value = "/createCarReservation/{carId}/{startDate}/{endDate}/{passengers}/{flight_res}", consumes = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ROLE_USER')")
 	public ResponseEntity<CarReservation> create(@PathVariable Long carId, @PathVariable String startDate,
-			 @PathVariable String endDate, @PathVariable Integer passengers) {
+			 @PathVariable String endDate, @PathVariable Integer passengers, @PathVariable String flight_res) {
 		System.out.println("Uslo u creating car reservation");
 		RegularUser user = (RegularUser) this.userDetailsService
 				.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
@@ -151,17 +151,27 @@ public class CarReservationController {
 		
 		List<FlightReservation> flightRes=user.getFlightReservations();
 		System.out.println("AA");
-		FlightReservation lastRes=flightRes.get(0);
-		for (FlightReservation fr : flightRes) {
-			if (fr.getId() > lastRes.getId()) {
-				lastRes=fr;
+		
+		FlightReservation lastRes= null;
+		if (flight_res.equals("1")) {
+			lastRes = flightRes.get(0);
+			for (FlightReservation fr : flightRes) {
+				if (fr.getId() > lastRes.getId()) {
+					lastRes=fr;
+				}
 			}
 		}
+		
 		System.out.println("BB");
 		CarReservationDTO dto = new CarReservationDTO(carId,startDatee,endDatee,passengers);
 		CarReservation newCarRes = new CarReservation(dto);
 		Car car = carService.getOne(dto.getCarId());
-		newCarRes.setFlightId(lastRes.getId());
+		if (flight_res.equals("1")) {
+			newCarRes.setFlightId(lastRes.getId());
+		}else {
+			newCarRes.setFlightId(Long.parseLong("-1"));
+		}
+		
 		newCarRes.setCar(car);
 		if (discount==0) {
 			newCarRes.setPrice(car.getPrice());
@@ -197,33 +207,50 @@ public class CarReservationController {
 	}
 	
 	@SuppressWarnings("deprecation")
-	@PostMapping(value = "/createCarReservationFast/{carId}/{startDate}/{endDate}", consumes = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value = "/createCarReservationFast/{carId}/{startDate}/{endDate}/{flight_res}", consumes = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ROLE_USER')")
 	public ResponseEntity<CarReservation> createCarReservationFast(@PathVariable Long carId, @PathVariable String startDate,
-			 @PathVariable String endDate) {
+			 @PathVariable String endDate, @PathVariable String flight_res) {
 		System.out.println("Uslo u creating car reservation fast");
 		RegularUser user = (RegularUser) this.userDetailsService
 				.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
-		@SuppressWarnings("deprecation")
+		 
+		
+			@SuppressWarnings("deprecation")
 		Date startDatee = new Date(Integer.parseInt(startDate.split("\\-")[0]) - 1900,
-				Integer.parseInt(startDate.split("\\-")[1]) - 1,
-				Integer.parseInt(startDate.split("\\-")[2]));
-		@SuppressWarnings("deprecation")
-		Date endDatee = new Date(Integer.parseInt(endDate.split("\\-")[0]) - 1900,
-				Integer.parseInt(endDate.split("\\-")[1]) - 1,
-				Integer.parseInt(endDate.split("\\-")[2]));
+					Integer.parseInt(startDate.split("\\-")[1]) - 1,
+					Integer.parseInt(startDate.split("\\-")[2]));
+		
+		
+			@SuppressWarnings("deprecation")
+			Date endDatee = new Date(Integer.parseInt(endDate.split("\\-")[0]) - 1900,
+					Integer.parseInt(endDate.split("\\-")[1]) - 1,
+					Integer.parseInt(endDate.split("\\-")[2]));
+		
+		
+		
 		List<FlightReservation> flightRes=user.getFlightReservations();
 		System.out.println("AA");
-		FlightReservation lastRes=flightRes.get(0);
-		for (FlightReservation fr : flightRes) {
-			if (fr.getId() > lastRes.getId()) {
-				lastRes=fr;
+		
+		FlightReservation lastRes=null;
+		if (flight_res.equals("1")) {
+			lastRes=flightRes.get(0);
+			for (FlightReservation fr : flightRes) {
+				if (fr.getId() > lastRes.getId()) {
+					lastRes=fr;
+				}
 			}
 		}
 		
+		
 		CarReservation newCarRes = new CarReservation(startDatee,endDatee);
 		Car car = carService.getOne(carId);
-		newCarRes.setFlightId(lastRes.getId());
+		if (flight_res.equals("1")) {
+			newCarRes.setFlightId(lastRes.getId());
+		}else {
+			newCarRes.setFlightId(Long.parseLong("-1"));
+		}
+		
 		newCarRes.setCar(car);
 		newCarRes.setPrice(car.getFastResPrice());
 		newCarRes.setRegularUser(user);

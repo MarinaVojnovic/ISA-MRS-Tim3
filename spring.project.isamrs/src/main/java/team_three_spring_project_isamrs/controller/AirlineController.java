@@ -137,7 +137,7 @@ public class AirlineController {
 	public ResponseEntity<List<Airline>> findAirlines(@PathVariable String field) {
 		List<Airline> airlines = airlineService.findByName(field);
 		if (airlines.isEmpty()) {
-			airlines = airlineService.findByAddress(field);
+			airlines = airlineService.findByCity(field);
 		}
 
 		return new ResponseEntity<>(airlines, HttpStatus.OK);

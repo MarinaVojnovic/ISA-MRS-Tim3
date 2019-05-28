@@ -47,4 +47,8 @@ public class HotelServiceImpl implements HotelService {
 	public List<Hotel> findByAddress(String address) {
 		return hotelRepository.findByAddress(address);
 	}
+	
+	public List<Hotel> findByCity(String city) {
+		return hotelRepository.findByCity(city);
+	}
 }

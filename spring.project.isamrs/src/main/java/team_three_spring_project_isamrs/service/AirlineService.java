@@ -11,5 +11,6 @@ public interface AirlineService {
 	public Airline create(Airline airline);
 	public Airline save(Airline airline);
 	public List<Airline> findByName(String name);
+	public List<Airline> findByCity(String city);
 	public List<Airline> findByAddress(String address);
 }

@@ -11,5 +11,6 @@ import team_three_spring_project_isamrs.model.Airline;
 public interface AirlineRepository extends JpaRepository<Airline, Long> {
 
 	public List<Airline> findByName(String name);
+	public List<Airline> findByCity(String city);
 	public List<Airline> findByAddress(String name);
 }
