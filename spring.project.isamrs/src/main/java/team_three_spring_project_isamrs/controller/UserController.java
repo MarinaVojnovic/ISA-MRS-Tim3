@@ -78,7 +78,7 @@ public class UserController {
 
 	@Autowired
 	private FlightReservationService flightReservationService;
-	
+
 	@Autowired
 	private RoomReservationService roomReservationService;
 
@@ -132,7 +132,10 @@ public class UserController {
 		List<RegularUser> users;
 		if (surname.equals("no_surname")) {
 			users = this.userService.findByFirstName(name);
+		} else if (name.equals("no_name")) {
+			users = this.userService.findByLastName(surname);
 		} else {
+
 			users = this.userService.findByFirstNameAndLastName(name, surname);
 		}
 		User logged = (User) this.userDetailsService
@@ -231,7 +234,6 @@ public class UserController {
 		res = carReservationService.findByRegularUser(logged);
 		return new ResponseEntity<List<CarReservation>>(res, HttpStatus.OK);
 	}
-	
 
 	@GetMapping(value = "/getMyResHotels")
 	@PreAuthorize("hasRole('ROLE_USER')")
@@ -241,12 +243,12 @@ public class UserController {
 		List<RoomReservation> res = new ArrayList<RoomReservation>();
 		res = roomReservationService.findByRegularUser(logged);
 		System.out.println("AAA");
-		List<RoomReservationDTO> resDto=new ArrayList<>();
+		List<RoomReservationDTO> resDto = new ArrayList<>();
 		System.out.println("BBB");
 		System.out.println(res.size());
 		for (RoomReservation r : res) {
 			System.out.println("CCC");
-			RoomReservationDTO dto=new RoomReservationDTO(r);
+			RoomReservationDTO dto = new RoomReservationDTO(r);
 			System.out.println(dto.getRoomNumbers());
 			System.out.println("DDD");
 			resDto.add(dto);
@@ -264,10 +266,10 @@ public class UserController {
 
 		List<FlightReservation> res = flightReservationService.findByNameAndLastName(logged.getFirstName(),
 				logged.getLastName());
-		
+
 		List<FlightReservationDTO> resDTO = new ArrayList<>();
 		for (FlightReservation fr : res) {
-			FlightReservationDTO dto=new FlightReservationDTO(fr);
+			FlightReservationDTO dto = new FlightReservationDTO(fr);
 			resDTO.add(dto);
 		}
 		return new ResponseEntity<>(resDTO, HttpStatus.OK);
@@ -348,56 +350,51 @@ public class UserController {
 		Long let = Long.valueOf(flightReservation.getFlight());
 		User logged = (User) this.userDetailsService
 				.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
-		
+
 		RegularUser user = (RegularUser) this.userDetailsService
 				.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
-		
-		
-		Integer flights =0;
-		if (user.getFlightReservations()!=null && user.getFlightReservations().size() !=0) {
-			System.out.println("Uslo u flight "+user.getFlightReservations().size());
-			flights=user.getFlightReservations().size();
-			
+
+		Integer flights = 0;
+		if (user.getFlightReservations() != null && user.getFlightReservations().size() != 0) {
+			System.out.println("Uslo u flight " + user.getFlightReservations().size());
+			flights = user.getFlightReservations().size();
+
 		}
-		Integer cars=0;
-		if (user.getCarReservations()!=null && user.getCarReservations().size() !=0) {
-			System.out.println("Uslo u cars "+user.getCarReservations().size());
-			cars=user.getCarReservations().size();
+		Integer cars = 0;
+		if (user.getCarReservations() != null && user.getCarReservations().size() != 0) {
+			System.out.println("Uslo u cars " + user.getCarReservations().size());
+			cars = user.getCarReservations().size();
 		}
-		Integer hotels=0;
-		if (user.getRoomReservations()!=null && user.getRoomReservations().size() !=0) {
-			System.out.println("Uslo u hotels "+user.getRoomReservations().size());
-			hotels=user.getRoomReservations().size();
+		Integer hotels = 0;
+		if (user.getRoomReservations() != null && user.getRoomReservations().size() != 0) {
+			System.out.println("Uslo u hotels " + user.getRoomReservations().size());
+			hotels = user.getRoomReservations().size();
 		}
-		
+
 		Integer discount;
-		Integer numberOfRes = flights+cars+hotels;
-		if (numberOfRes>=3 && numberOfRes < 10) {
-			discount=5;
-		}else if(numberOfRes>=10 && numberOfRes <30) {
-			discount=10;
-		}else if (numberOfRes>=30 && numberOfRes < 100) {
-			discount=20;
-		}else if(numberOfRes>=100) {
-			discount=40;
-		}else {
-			discount=0;
+		Integer numberOfRes = flights + cars + hotels;
+		if (numberOfRes >= 3 && numberOfRes < 10) {
+			discount = 5;
+		} else if (numberOfRes >= 10 && numberOfRes < 30) {
+			discount = 10;
+		} else if (numberOfRes >= 30 && numberOfRes < 100) {
+			discount = 20;
+		} else if (numberOfRes >= 100) {
+			discount = 40;
+		} else {
+			discount = 0;
 		}
-		
-		
+
 		Flight fl = this.flightService.getOne(let);
 		List<FlightReservation> flightReservations = new ArrayList<>();
 		List<InvitedFriendDTO> invited = new ArrayList<>();
 		FlightReservation fr = this.flightReservationService.create(new FlightReservation(fl.getCost(),
 				(RegularUser) logged, fl, this.seatService.getOne(Long.parseLong(sedista.split(" ")[0])), true,
-				brPasosa,new Date(), logged.getFirstName(), logged.getLastName(), discount));
+				brPasosa, new Date(), logged.getFirstName(), logged.getLastName(), discount));
 
-			
-		
-		
-		Double newPrice=0.0;
-		if (discount!=0) {
-			newPrice=fl.getCost()*(100-discount)/100;
+		Double newPrice = 0.0;
+		if (discount != 0) {
+			newPrice = fl.getCost() * (100 - discount) / 100;
 			fr.setPrice(newPrice);
 		}
 		flightReservations.add(fr);
@@ -452,52 +449,57 @@ public class UserController {
 		}
 		return null;
 	}
-	
-	@GetMapping(value="/finishReservation/{id}")
+
+	@GetMapping(value = "/finishReservation/{id}")
 	@PreAuthorize("hasRole('ROLE_USER')")
 	public ResponseEntity<FinishedReservationDTO> finishReservation(@PathVariable Long id) {
-		FlightReservation fr=this.flightReservationService.getOne(id);
-		//CarReservation cr=this.carReservationService.findByFlight(id);
-		//HotelReservation hr=this.hotelReservationService.findByHotel(id);
-		String message="You have successfully reserved flight from: "+ fr.getFlightReservation().getStartAirline().getCity()+" to " +fr.getFlightReservation().getFinalAirline().getCity()+" on "+fr.getFlightReservation().getDateOfStart();
-		String email=fr.getRegularUserFlightReservation().getEmail();
-		FinishedReservationDTO dto=new FinishedReservationDTO(fr,new CarReservation(),new HotelReservation(),message,email);
+		FlightReservation fr = this.flightReservationService.getOne(id);
+		// CarReservation cr=this.carReservationService.findByFlight(id);
+		// HotelReservation hr=this.hotelReservationService.findByHotel(id);
+		String message = "You have successfully reserved flight from: "
+				+ fr.getFlightReservation().getStartAirline().getCity() + " to "
+				+ fr.getFlightReservation().getFinalAirline().getCity() + " on "
+				+ fr.getFlightReservation().getDateOfStart();
+		String email = fr.getRegularUserFlightReservation().getEmail();
+		FinishedReservationDTO dto = new FinishedReservationDTO(fr, new CarReservation(), new HotelReservation(),
+				message, email);
 		return new ResponseEntity<>(dto, HttpStatus.OK);
-		
+
 	}
-	
-	@GetMapping(value="/fastReservationAirline/{id}")
+
+	@GetMapping(value = "/fastReservationAirline/{id}")
 	@PreAuthorize("hasRole('ROLE_USER')")
 	public ResponseEntity<List<FastReservationDTO>> fastReservationAirline(@PathVariable Long id) {
-		List<Seat> sedista=this.seatService.findByQuickBooking(true);
-		List<FastReservationDTO> brza=new ArrayList<FastReservationDTO>();
-		for(Seat s: sedista) {
-			if(s.getFlight().getAirline().getId()==id) {
+		List<Seat> sedista = this.seatService.findByQuickBooking(true);
+		List<FastReservationDTO> brza = new ArrayList<FastReservationDTO>();
+		for (Seat s : sedista) {
+			if (s.getFlight().getAirline().getId() == id) {
 				System.out.println(s.getDiscount());
 				System.out.println(s.getFlight().getCost());
-				brza.add(new FastReservationDTO(s.getId(),s.getFlight().getNumber(),s.getFlight().getStartAirline().getCity(),s.getFlight().getFinalAirline().getCity(),s.getFlight().getDateOfStart().toString(),s.getFlight().getDateOfEnd().toString(),s.getFlight().getLengthOfFlight(),s.getFlight().getCost(),s.getDiscount()));
+				brza.add(new FastReservationDTO(s.getId(), s.getFlight().getNumber(),
+						s.getFlight().getStartAirline().getCity(), s.getFlight().getFinalAirline().getCity(),
+						s.getFlight().getDateOfStart().toString(), s.getFlight().getDateOfEnd().toString(),
+						s.getFlight().getLengthOfFlight(), s.getFlight().getCost(), s.getDiscount()));
 			}
 		}
 		return new ResponseEntity<List<FastReservationDTO>>(brza, HttpStatus.OK);
-		
+
 	}
-	
-	
-	@PostMapping(value="/reserveFastFlight/{id}")
+
+	@PostMapping(value = "/reserveFastFlight/{id}")
 	@PreAuthorize("hasRole('ROLE_USER')")
 	public ResponseEntity<FlightReservation> reserveFastFlight(@PathVariable Long id) {
-		Seat s=this.seatService.getOne(id);
+		Seat s = this.seatService.getOne(id);
 		RegularUser user = (RegularUser) this.userDetailsService
 				.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
-		FlightReservation fr=this.flightReservationService.create(new FlightReservation(s.getFlight().getCost(),user,s.getFlight(),s,true,0,new Date(),user.getFirstName(),user.getLastName(),s.getDiscount()));
+		FlightReservation fr = this.flightReservationService.create(new FlightReservation(s.getFlight().getCost(), user,
+				s.getFlight(), s, true, 0, new Date(), user.getFirstName(), user.getLastName(), s.getDiscount()));
 		s.setTaken(true);
 		s.setQuickBooking(false);
 		this.seatService.save(s);
-		
-		
+
 		return new ResponseEntity<FlightReservation>(fr, HttpStatus.OK);
-		
+
 	}
-	
-	
+
 }
