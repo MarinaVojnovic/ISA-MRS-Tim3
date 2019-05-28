@@ -24,13 +24,10 @@ import org.springframework.web.bind.annotation.RestController;
 import team_three_spring_project_isamrs.comparator.RentACarComparatorAddress;
 import team_three_spring_project_isamrs.comparator.RentACarComparatorName;
 import team_three_spring_project_isamrs.dto.RentacarDTO;
-import team_three_spring_project_isamrs.dto.ReportHotelAttendanceDTO;
 import team_three_spring_project_isamrs.dto.ReportRentacarAttendanceDTO;
 import team_three_spring_project_isamrs.model.CarReservation;
-import team_three_spring_project_isamrs.model.HotelAdmin;
 import team_three_spring_project_isamrs.model.Rentacar;
 import team_three_spring_project_isamrs.model.RentacarAdmin;
-import team_three_spring_project_isamrs.model.RoomReservation;
 import team_three_spring_project_isamrs.service.CarReservationService;
 import team_three_spring_project_isamrs.service.RentacarService;
 import team_three_spring_project_isamrs.service.impl.CustomUserDetailsService;
@@ -40,17 +37,16 @@ public class RentacarController {
 
 	@Autowired
 	RentacarService rentacarService;
-	
+
 	@Autowired
 	CarReservationService carReservationService;
 
 	@Autowired
 	private CustomUserDetailsService userDetailsService;
-	
+
 	@GetMapping(value = "/reportRentacarAttendance")
 	@PreAuthorize("hasRole('ROLE_RENTACAR_ADMIN')")
 	public ResponseEntity<ReportRentacarAttendanceDTO> reportRentacarAttendance() throws ParseException {
-		System.out.println("report rentacar attendance called");
 		ReportRentacarAttendanceDTO retVal = new ReportRentacarAttendanceDTO();
 		long DAY_IN_MILI = 86400000;
 		Date currentDate = new Date();
@@ -234,27 +230,14 @@ public class RentacarController {
 			rentACars = (List<Rentacar>) rentacarService.findByCity(field);
 		}
 
-		
 		return new ResponseEntity<>(rentACars, HttpStatus.OK);
 	}
 
 	@GetMapping(value = "/findRentacar/{address}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<Rentacar>> searchFlights(@PathVariable String address) {
-		List<Rentacar> allRentacars = rentacarService.getAll();
-		List<Rentacar> rentacars = new ArrayList<Rentacar>();
-		/*
-		 * String grad = address.split(", ")[1].split(" ")[1]; System.out.println(grad);
-		 * for (Rentacar rent : allRentacars) { if (rent.getAddress().contains(grad)) {
-		 * rentacars.add(rent); } }
-		 */
-		/*
-		 * for (Rentacar r : allRentacars) { if (r.getCity() != null) { if
-		 * (r.getCity().equalsIgnoreCase(address)) { rentacars.add(r); } }
-		 * 
-		 * }
-		 */
-		
-		rentacars=rentacarService.findByCity(address);
+		List<Rentacar> rentacars = new ArrayList<>();
+
+		rentacars = rentacarService.findByCity(address);
 
 		return new ResponseEntity<>(rentacars, HttpStatus.OK);
 	}

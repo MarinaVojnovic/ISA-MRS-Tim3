@@ -56,19 +56,8 @@ public class RoomReservationController {
 	@DeleteMapping(value = "/cancelHotelReservation/{resId}")
 	@PreAuthorize("hasRole('ROLE_USER')")
 	public ResponseEntity<?> cancelHotelReservation(@PathVariable Long resId) {
-		System.out.println("Uslo u cancel hotel reservation");
-		RegularUser user = (RegularUser) this.userDetailsService
-				.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
-		int brojac = -1;
-		System.out.println("A");
-		/*
-		 * for (CarReservation cr : user.getCarReservations()) { brojac++; if
-		 * (cr.getId()==resId) { user.getCarReservations().remove(brojac); } }
-		 */
-		System.out.println("B");
 		RoomReservation roomRes = roomReservationService.getOne(resId);
 		roomReservationService.delete(resId);
-
 		return new ResponseEntity<>(roomRes, HttpStatus.OK);
 
 	}

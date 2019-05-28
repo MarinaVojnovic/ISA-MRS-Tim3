@@ -48,29 +48,23 @@ public class AirlineController {
 
 	@Autowired
 	private CustomUserDetailsService userDetailsService;
-	
+
 	@Autowired
 	private FlightService flightService;
-	
+
 	@Autowired
 	private SeatService seatService;
 
 	@GetMapping(value = "/gradeAirline/{id}/{grade}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ROLE_USER')")
 	public ResponseEntity<Airline> gradeAirline(@PathVariable Long id, @PathVariable Integer grade) {
-		System.out.println("Uslo u grade airline     "+id);
 		Airline airline = airlineService.getOne(id);
-		System.out.println(airline.getName());
-		System.out.println("A");
-		airline.setScore(airline.getScore()+grade);
-		System.out.println("B");
-		airline.setGradeNumber(airline.getGradeNumber()+1);
-		System.out.println("C");
+		airline.setScore(airline.getScore() + grade);
+		airline.setGradeNumber(airline.getGradeNumber() + 1);
 		airlineService.save(airline);
-		System.out.println("D");
 		return new ResponseEntity<>(airline, HttpStatus.CREATED);
 	}
-	
+
 	@GetMapping(value = "/findConcreteAirline/{id}")
 	public ResponseEntity<Airline> findConcreteAirline(@PathVariable String id) {
 		Airline retVal = airlineService.getOne(Long.parseLong(id));
@@ -155,12 +149,12 @@ public class AirlineController {
 		List<Airline> back = new ArrayList<>();
 		for (Airline a : airlines) {
 			int i = 0;
-			if(a.getId()==air.getId()) {
-				i=1;
+			if (a.getId().equals(air.getId())) {
+				i = 1;
 			}
-			
+
 			for (AirlineWorkingDestinations awd : airlineWorkingDestinations) {
-				if (awd.getWorksWith().getId().equals(a.getId()) || a.getId()==air.getId()) {
+				if (awd.getWorksWith().getId().equals(a.getId()) || a.getId().equals(air.getId())) {
 					i = 1;
 				}
 			}
@@ -209,8 +203,8 @@ public class AirlineController {
 		Airline a = airlineService.getOne(id);
 		return new ResponseEntity<>(a, HttpStatus.OK);
 	}
-	
-	@GetMapping(value="/getAllFlightsAirline")
+
+	@GetMapping(value = "/getAllFlightsAirline")
 	@PreAuthorize("hasRole('ROLE_AIRLINE_ADMIN')")
 	public ResponseEntity<List<Flight>> getAllFlightsAirline() throws ParseException {
 		User logged = (User) this.userDetailsService
@@ -218,7 +212,7 @@ public class AirlineController {
 		Airline air = ((AirlineAdmin) logged).getAirline();
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		List<Flight> flights = this.flightService.findByStartAirline(air);
-		List<Flight> returnFlights=new ArrayList<Flight>();
+		List<Flight> returnFlights=new ArrayList<>();
 		for(Flight f: flights) {
 			Date date=df.parse(f.getDateOfStart());
 			Date today=new Date();
@@ -228,33 +222,30 @@ public class AirlineController {
 		}
 		return new ResponseEntity<>(returnFlights, HttpStatus.OK);
 	}
-	
-	@PostMapping(value="/addQuickBooking/{sed}/{popust}")
+
+	@PostMapping(value = "/addQuickBooking/{sed}/{popust}")
 	@PreAuthorize("hasRole('ROLE_AIRLINE_ADMIN')")
-	public ResponseEntity<Boolean> addQuickBooking(@PathVariable String sed,@PathVariable int popust) {
-		String [] sedista=sed.split("\\*");
-		for(String st: sedista) {
-			Seat s=this.seatService.getOne(Long.parseLong(st));
+	public ResponseEntity<Boolean> addQuickBooking(@PathVariable String sed, @PathVariable int popust) {
+		String[] sedista = sed.split("\\*");
+		for (String st : sedista) {
+			Seat s = this.seatService.getOne(Long.parseLong(st));
 			s.setQuickBooking(true);
 			s.setDiscount(popust);
 			this.seatService.save(s);
-			
+
 		}
 		return new ResponseEntity<>(true, HttpStatus.OK);
 	}
-	
-	@DeleteMapping(value="/deleteSeats/{sed}")
+
+	@DeleteMapping(value = "/deleteSeats/{sed}")
 	@PreAuthorize("hasRole('ROLE_AIRLINE_ADMIN')")
 	public ResponseEntity<Boolean> deleteSeats(@PathVariable String sed) {
-		String [] sedista=sed.split("\\*");
-		for(String st: sedista) {
+		String[] sedista = sed.split("\\*");
+		for (String st : sedista) {
 			this.seatService.delete(Long.parseLong(st));
-			
+
 		}
 		return new ResponseEntity<>(true, HttpStatus.OK);
 	}
-	
-	
 
-	
 }
