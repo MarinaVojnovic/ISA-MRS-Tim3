@@ -34,6 +34,11 @@ public class RentacarServiceImpl implements RentacarService {
 	public List<Rentacar> findByName(String name) {
 		return rentacarRepository.findByName(name);
 	}
+	
+	@Override
+	public List<Rentacar> findByCity(String city) {
+		return rentacarRepository.findByCity(city);
+	}
 
 	@Override
 	public List<Rentacar> findByAddress(String address) {

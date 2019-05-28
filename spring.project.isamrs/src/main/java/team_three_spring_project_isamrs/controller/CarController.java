@@ -260,8 +260,15 @@ public class CarController {
 		
 		List<Car> theFinalList = new ArrayList<>();
 		Date endDatee=null;
-		Date startDatee = new Date(Integer.parseInt(startDate.split("\\-")[0]) - 1900,
-				Integer.parseInt(startDate.split("\\-")[1]) - 1, Integer.parseInt(startDate.split("\\-")[2]));
+		Date startDatee =null;
+		
+		if (!startDate.equals("-1")) {
+			startDatee = new Date(Integer.parseInt(startDate.split("\\-")[0]) - 1900,
+					Integer.parseInt(startDate.split("\\-")[1]) - 1, Integer.parseInt(startDate.split("\\-")[2]));
+		}else {
+			startDatee=new Date();
+		}
+		
 		if (!endDate.equals("-1")) {
 			endDatee = new Date(Integer.parseInt(endDate.split("\\-")[0]) - 1900,
 					Integer.parseInt(endDate.split("\\-")[1]) - 1, Integer.parseInt(endDate.split("\\-")[2]));

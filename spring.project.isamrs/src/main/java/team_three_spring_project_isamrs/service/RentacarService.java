@@ -14,6 +14,8 @@ public interface RentacarService {
 	public Rentacar save(Rentacar rentacar);
 
 	public List<Rentacar> findByName(String name);
+	
+	public List<Rentacar> findByCity(String city);
 
 	public List<Rentacar> findByAddress(String address);
 }

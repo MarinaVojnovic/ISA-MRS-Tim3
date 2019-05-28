@@ -14,6 +14,8 @@ public interface HotelService {
 	public Hotel save(Hotel hotel);
 
 	public List<Hotel> findByName(String name);
+	
+	public List<Hotel> findByCity(String city);
 
 	public List<Hotel> findByAddress(String address);
 }

@@ -231,7 +231,7 @@ public class RentacarController {
 	public ResponseEntity<List<Rentacar>> findRentacars(@PathVariable String field) {
 		List<Rentacar> rentACars = (List<Rentacar>) rentacarService.findByName(field);
 		if (rentACars.size() == 0) {
-			rentACars = (List<Rentacar>) rentacarService.findByAddress(field);
+			rentACars = (List<Rentacar>) rentacarService.findByCity(field);
 		}
 
 		
@@ -247,14 +247,14 @@ public class RentacarController {
 		 * for (Rentacar rent : allRentacars) { if (rent.getAddress().contains(grad)) {
 		 * rentacars.add(rent); } }
 		 */
-		for (Rentacar r : allRentacars) {
-			if (r.getCity() != null) {
-				if (r.getCity().equalsIgnoreCase(address)) {
-					rentacars.add(r);
-				}
-			}
-
-		}
+		/*
+		 * for (Rentacar r : allRentacars) { if (r.getCity() != null) { if
+		 * (r.getCity().equalsIgnoreCase(address)) { rentacars.add(r); } }
+		 * 
+		 * }
+		 */
+		
+		rentacars=rentacarService.findByCity(address);
 
 		return new ResponseEntity<>(rentacars, HttpStatus.OK);
 	}

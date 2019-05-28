@@ -11,8 +11,7 @@ import team_three_spring_project_isamrs.model.Rentacar;
 public interface RentacarRepository extends JpaRepository<Rentacar, Long> {
 	
     public List<Rentacar> findByName(String name);
-	
-	
+    public List<Rentacar> findByCity(String city);
 	public List<Rentacar> findByAddress(String address);
 
 	

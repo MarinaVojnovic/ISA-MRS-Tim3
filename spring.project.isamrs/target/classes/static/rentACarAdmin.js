@@ -17,6 +17,7 @@ var urlRootFindSuitCarsFast =  "http://localhost:8080/findSuitCarsFast";
 var urlRootReportRentacarAttendance="http://localhost:8080/reportRentacarAttendance";
 var urlRootFindRentacarAmount="http://localhost:8080/findRentacarAmount";
 
+
 var TOKEN_KEY = 'jwtToken';
 
 function showMessage(message, type) {
@@ -168,9 +169,9 @@ function showGrades(){
 			$("#globalScore").append('<h2>Global score: '+data.score/data.number+'</h2>')
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
-			showMessage(jqXHR.status,"error");
-			showMessage(textStatus,"error");
-			showMessage(errorThrown,"error");
+			alert(jqXHR.status);
+			alert(textStatus);
+			alert(errorThrown);
 		}
 		
 	})
@@ -220,9 +221,9 @@ function showGrades(){
 				
 			},
 			error : function(jqXHR, textStatus, errorThrown) {
-				showMessage(jqXHR.status,"error");
-				showMessage(textStatus,"error");
-				showMessage(errorThrown,"error");
+				alert(jqXHR.status);
+				alert(textStatus);
+				alert(errorThrown);
 			}
 
 	})
@@ -1041,10 +1042,16 @@ $(document).on('click', '#buttonSubmitEditBranch', function(e) {
 $(document).on('click', '#reportsButton', function(e) {
 	console.log('reports button clicked');
 	openCity(e, 'reports');
+	
+	/*
+	 * createChart("myChart1", [ 'Red', 'Blue', 'Yellow', 'Green', 'Purple',
+	 * 'Orange' ], [ 12, 19, 3, 5, 2, 3 ]); createChart("myChart2", [ 'Red',
+	 * 'Blue', 'Yellow', 'Green', 'Purple', 'Orange' ], [ 12, 19, 3, 5, 2, 3 ]);
+	 * createChart("myChart3", [ 'Red', 'Blue', 'Yellow', 'Green', 'Purple',
+	 * 'Orange' ], [ 12, 19, 3, 5, 2, 3 ]);
+	 */
+	
 	showGrades();
-	
-	
-	
 	
 
 });
