@@ -772,24 +772,24 @@ function showCarsForFastRes() {
 						console.log(row);
 						var cell1 = row.insertCell(0);
 						var cell2 = row.insertCell(1);
-						cell2.id = "name";
+						
 						var cell3 = row.insertCell(2);
-						cell3.id = "price";
+						
 						var cell4 = row.insertCell(3);
-						cell3.id = "year";
+						
 						var cell5 = row.insertCell(4);
 						var cell6 = row.insertCell(5);
-						cell5.id = "carType";
+						
 						var cell7 = row.insertCell(6);
-						cell7.id = "brand";
+						
 						var cell8 = row.insertCell(7);
-						cell8.id = "model";
+						
 						var cell9 = row.insertCell(8);
 						cell9.id = "totalPrice";
-						cell6.id = "seats";
+						
 
 						var cell10 = row.insertCell(9);
-						cell10.id = "grade";
+						
 						var cell11 = row.insertCell(10);
 						var cell12 = row.insertCell(11);
 						var cell13 = row.insertCell(12);
@@ -814,7 +814,7 @@ function showCarsForFastRes() {
 						cell6.innerHTML = response[counter].seats;
 						var grade= Math.round(response[counter].score / response[counter].number);
 						if (response[counter].number==0){
-							grade="";
+							grade="No grade";
 						}
 						cell10.innerHTML = grade;
 						cell9.innerHTML = response[counter].price * 20;
@@ -2450,7 +2450,8 @@ function searchForCars(rentacarId) {
 		if (toPrice == "") {
 			toPrice = -1;
 		}
-		var typeOfRes=document.getElementById("typeOfRes");
+		var typeOfRes=document.getElementById("typeOfRes").value;
+		alert('type of res 2: '+typeOfRes);
 
 		console.log('Start date: ' + startDate);
 		console.log('End date: ' + endDate);
@@ -2476,7 +2477,7 @@ function searchForCars(rentacarId) {
 					success : function(data) {
 
 						var response = data;
-						$(".messageSuitableCars").children().remove();
+					
 
 						$("#showSuitableCars").find("tr").remove();
 						var tabela = document
@@ -2491,24 +2492,23 @@ function searchForCars(rentacarId) {
 							console.log(row);
 							var cell1 = row.insertCell(0);
 							var cell2 = row.insertCell(1);
-							cell2.id = "name";
+							
 							var cell3 = row.insertCell(2);
-							cell3.id = "price";
+							
 							var cell4 = row.insertCell(3);
-							cell3.id = "year";
+							
 							var cell5 = row.insertCell(4);
 							var cell6 = row.insertCell(5);
-							cell5.id = "carType";
+							
 							var cell7 = row.insertCell(6);
-							cell7.id = "brand";
+							
 							var cell8 = row.insertCell(7);
-							cell8.id = "model";
+						
 							var cell9 = row.insertCell(8);
-							cell9.id = "totalPrice";
-							cell6.id = "seats";
+							
 
 							var cell10 = row.insertCell(9);
-							cell10.id = "grade";
+							
 							var cell11 = row.insertCell(10);
 
 							cell1.innerHTML = response[counter].id;
@@ -2530,7 +2530,7 @@ function searchForCars(rentacarId) {
 							cell6.innerHTML = response[counter].seats;
 							var grade= response[counter].score / response[counter].number;
 							if (response[counter].number==0){
-								grade="";
+								grade="No grade";
 							}
 							cell10.innerHTML = grade;
 							cell9.innerHTML = response[counter].price * 20;
@@ -2564,6 +2564,7 @@ function searchForCars(rentacarId) {
 							cell10.innerHTML = '<p style= " font-weight: 200%; font-size:150%">Grade</p>';
 							cell9.innerHTML = '<p style= " font-weight: 200%; font-size:150%">Total price</p>';
 							;
+							/*
 							if (typeOfRes=="1"){
 								$(".messageSuitableCars")
 								.append(
@@ -2572,8 +2573,10 @@ function searchForCars(rentacarId) {
 								.append(
 										'<br><button type="submit" style="background: #cc0033; align: center; color: white" id="finishReservation" style="float: left;/">Finish reservation </button>');
 							}
+							*/
 							
 						} else {
+							/*
 							if (typeOfRes=="1") {
 								$(".messageSuitableCars")
 								.append(
@@ -2582,7 +2585,9 @@ function searchForCars(rentacarId) {
 								.append(
 										'<br><button type="submit" style="background: #cc0033;align: center; color: white" id="finishReservation" style="float: left;/">Finish reservation </button>');
 							}
-							$(".messageSuitableCars")
+							*/
+							$(".messageSuitableCarsTwo").children().remove();
+							$(".messageSuitableCarsTwo")
 									.append(
 											'<h3>No cars found to satisfy your criteria.</p>');
 							
@@ -2624,7 +2629,7 @@ function takeCar(id, startDate, endDate, passengers, typeOfRes) {
 		headers : createAuthorizationTokenHeader(TOKEN_KEY),
 		success : function(data) {
 			showMessage("Successful reservation of a car, congratulations!","success");
-			if (typeOfRes=="1") {
+			/*if (typeOfRes=="1") {
 				$(".messageSuitableCars")
 				.append(
 						'<br><br><button type="submit" style="background: #cc0033;align: center; color: white" id="offerHotelsButton" style="float: left;/">Reserve hotel</button>');
@@ -2632,7 +2637,7 @@ function takeCar(id, startDate, endDate, passengers, typeOfRes) {
 				.append(
 						'<br><button type="submit" style="background: #cc0033;align: center; color: white" id="finishReservation" style="float: left;/">Finish reservation </button>');
 			
-			}
+			}*/
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
 			showMessage(jqXHR.status,"error");
@@ -3094,11 +3099,34 @@ $(document).on('click', '.chooseRentacar', function(e) {
 	var mainStartDate3 = document.getElementById("mainStartDate2").value;
 	var mainEndDate3 = document.getElementById("mainEndDate2").value;
 	openCity(e, 'rentacarReservation');
+	$("#singleRentacar").children().remove();
+	$(".messageSuitableCars").children().remove();
+	$(".messageSuitableCarsTwo").children().remove();
 	var rentacarId = this.id;
 	document.getElementById("mainStartDate3").value = mainStartDate3
 	document.getElementById("mainEndDate3").value = mainEndDate3;
 	document.getElementById("rentacarId").value = rentacarId;
 	document.getElementById("typeOfRes").value="1";
+	
+	document.getElementById("pickupDateCar").value="";
+	document.getElementById("endDateCar").value="";
+	document.getElementById("pickupCity").value="";
+	document.getElementById("endCity").value="";
+	document.getElementById("passengers").value="";
+	document.getElementById("fromPrice").value="";
+	document.getElementById("toPrice").value="";
+	
+	$("#singleRentacar").children().remove();
+	$(".messageSuitableCars").children().remove();
+	$(".messageSuitableCars").append('<button style=\"background: #cc0033; color: white\" type=\"submit\" class=\"btn btn-default\" id=\"offerRentacarsButton\">Back</button>');
+		$(".messageSuitableCars")
+		.append(
+				'<br><br><button type="submit" style="background: #cc0033;align: center; color: white" id="offerHotelsButton" style="float: left;/">Reserve hotel</button>');
+		$(".messageSuitableCars")
+		.append(
+				'<br><button type="submit" style="background: #cc0033;align: center; color: white" id="finishReservation" style="float: left;/">Finish reservation </button>');
+	
+	alert('type of res '+document.getElementById("typeOfRes").value)
 
 });
 
@@ -3112,8 +3140,34 @@ $(document).on('click', '.chooseRentacarSingle', function(e) {
 	openCity(e, 'rentacarReservation');
 	document.getElementById("rentacarId").value = rentacarId;
 	document.getElementById("typeOfRes").value="0";
-	
+	document.getElementById("pickupDateCar").value="";
+	document.getElementById("endDateCar").value="";
+	document.getElementById("pickupCity").value="";
+	document.getElementById("endCity").value="";
+	document.getElementById("passengers").value="";
+	document.getElementById("fromPrice").value="";
+	document.getElementById("toPrice").value="";
+	$("#singleRentacar").children().remove();
+	$(".messageSuitableCars").children().remove();
+	$("#singleRentacar").append('<br><button type="submit" style="background: #cc0033;align: center; color: white" id="backToSingleResList" style="float: left;/">Back</button>');
 
+});
+
+$(document).on('click', '#backToSingleResList', function(e) {
+	document.getElementById("pickupDateCar").value="";
+	document.getElementById("endDateCar").value="";
+	document.getElementById("pickupCity").value="";
+	document.getElementById("endCity").value="";
+	document.getElementById("passengers").value="";
+	document.getElementById("fromPrice").value="";
+	document.getElementById("toPrice").value="";
+	
+	
+	openCity(e, 'rentACars');
+	$(".sortByNameRentACars").show();
+	$(".sortByAddressRentACars").show();
+	document.getElementById("nameLocationRentACar").value="";
+	showRentacars("bez");
 });
 
 $(document).on(
@@ -3822,7 +3876,11 @@ function showRentacarsDest(data, startDate, endDate) {
 		cell1.innerHTML = response[counter].name;
 		cell2.innerHTML = response[counter].address;
 		cell3.innerHTML = response[counter].promotionalDescription;
-		cell4.innerHTML = response[counter].score/response[counter].number;
+		var grade="No grade";
+		if (response[counter].number!=0){
+			grade=response[counter].score/response[counter].number;
+		}
+		cell4.innerHTML = grade;
 		cell6.innerHTML = '<button style="background: #cc0033; color: white" id=\"'
 				+ response[counter].id
 				+ '\" class=\"chooseRentacar\" class="btn btn-primary">Choose</button>';
@@ -3871,6 +3929,7 @@ function showHotelsDest(data) {
 		cell1.innerHTML = response[counter].name;
 		cell2.innerHTML = response[counter].address;
 		cell3.innerHTML = response[counter].promotionalDescription;
+		
 		cell4.innerHTML = response[counter].grade;
 		cell6.innerHTML = '<button style="background: #cc0033; color: white" id=\"'
 				+ response[counter].id
@@ -3984,6 +4043,8 @@ $(document).on('click', '.cancelFlightResButton', function(e) {
 	cancelFlightReservation(this.id);
 
 });
+
+
 
 $(document).on('click', '#offerRentacarsButton', function(e) {
 	console.log('offer rentacars clicked');
@@ -4193,6 +4254,19 @@ $(document).on("click", "#rentacarBack", function(e) {
 	openCity(event, 'rentACars')
 });
 
+$(document).on("click", "#backToRentacarReservation", function(e) {
+	e.preventDefault();
+	openCity(event, 'rentacarReservation');
+	
+	document.getElementById("pickupDateCar").value="";
+	document.getElementById("endDateCar").value="";
+	document.getElementById("pickupCity").value="";
+	document.getElementById("endCity").value="";
+	document.getElementById("passengers").value="";
+	document.getElementById("fromPrice").value="";
+	document.getElementById("toPrice").value="";
+	
+});
 $(document).on(
 		"click",
 		".showRentacarProfile",

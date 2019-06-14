@@ -217,6 +217,7 @@ public class CarController {
 				theFinalList.remove(i);
 			}
 		}
+		System.out.println("The final list sizeeeee: "+theFinalList.size());
 		return new ResponseEntity<>(theFinalList, HttpStatus.OK);
 
 	}
