@@ -762,7 +762,7 @@ function takeCarFast(id) {
 								document.getElementById("endDateFast").value="";
 								
 							}else {
-								showMessage("Successful fast reservation of a car, congratulations!","success");
+								showMessage("Car successfully reserved!","success");
 								document.getElementById("pickupDateFast").value="";
 								document.getElementById("endDateFast").value="";
 							}
@@ -3587,13 +3587,13 @@ $(document).on('click','#inviteMore',function(e){
 		    		$("#inviteFriend").empty();
 		    		$("#inviteFriend")
 					.append(
-							'<button type="submit" style="background: #cc0033; color: white" id="offerRentacarsButton" style="float: left;">Rentacars</button><br><br>');
+							'<button type="submit" style="background: #cc0033; color: white" id="offerRentacarsButton" style="float: left;">Rentacars</button>');
 		    		$("#inviteFriend")
 					.append(
-							'<button type="submit" style="background: #cc0033; color: white" id="offerHotelsButton" style="float: left;/">Hotels</button>');
+							'<br><button type="submit" style="background: #cc0033; color: white" id="offerHotelsButton" style="float: left;/">Hotels</button>');
 		    		$("#inviteFriend")
 					.append(
-							'<button type="submit" style="background: #cc0033; color: white" id="finishReservation" style="float: left;/">Finish reservation</button>');
+							'<br><button type="submit" style="background: #cc0033; color: white" id="finishReservation" style="float: left;/">Finish reservation</button>');
 		    		
 		    	}
 		    },
@@ -3662,13 +3662,13 @@ $(document).on('click',"#nextButton",function(e){
 		    		$("#inviteFriend").empty();
 		    		$("#inviteFriend")
 					.append(
-							'<button type="submit" style="background: #cc0033; color: white" id="offerRentacarsButton" style="float: left;">Rentacars</button><br><br>');
+							'<br><button type="submit" style="background: #cc0033; color: white" id="offerRentacarsButton" style="float: left;">Rentacars</button>');
 		    		$("#inviteFriend")
 					.append(
-							'<button type="submit" style="background: #cc0033; color: white" id="offerHotelsButton" style="float: left;/">Hotels</button>');
+							'<br><button type="submit" style="background: #cc0033; color: white" id="offerHotelsButton" style="float: left;/">Hotels</button>');
 		    		$("#inviteFriend")
 					.append(
-							'<button type="submit" style="background: #cc0033; color: white" id="finishReservation" style="float: left;/">Finish reservation</button>');
+							'<br><button type="submit" style="background: #cc0033; color: white" id="finishReservation" style="float: left;/">Finish reservation</button>');
 		    		
 	    	}
 	    },
@@ -3779,13 +3779,13 @@ $(document)
 
 					$("#flightReservation")
 							.append(
-									'<button type="submit" style="background: #cc0033; color: white" id="offerRentacarsButton" style="float: left;">Rentacars</button><br><br>');
+									'<button type="submit" style="background: #cc0033; color: white" id="offerRentacarsButton" style="float: left;">Rentacars</button>');
 					$("#flightReservation")
 							.append(
-									'<button type="submit" style="background: #cc0033; color: white" id="offerHotelsButton" style="float: left;/">Hotels</button>');
+									'<br><button type="submit" style="background: #cc0033; color: white" id="offerHotelsButton" style="float: left;/">Hotels</button>');
 					$("#flightReservation")
 							.append(
-									'<button type="submit" style="background: #cc0033; color: white" id="finishReservation" style="float: left;/">Finish reservation</button>');
+									'<br><button type="submit" style="background: #cc0033; color: white" id="finishReservation" style="float: left;/">Finish reservation</button>');
 
 				})
 
@@ -4169,12 +4169,6 @@ $(document).on('click', '#offerRentacarsButton', function(e) {
 							console.log('rentacar not found');
 							$("#tableOfRentacarsDest").find("tr").remove();
 							$("#tableOfRentacarsDest").append('<p>No rentacars found in your final destination.</p>')
-							$("#tableOfRentacarsDest")
-							.append(
-									'<br><br><button type="submit" style="background: #cc0033; align: center; color: white" id="offerHotelsButton" style="float: left;/">Reserve hotel</button>');
-					$("#tableOfRentacarsDest")
-							.append(
-									'<br><button type="submit" style="background: #cc0033; align: center; color: white" id="finishReservation" style="float: left;/">Finish reservation </button>');
 							
 						} else {
 							console.log('retnacar found');

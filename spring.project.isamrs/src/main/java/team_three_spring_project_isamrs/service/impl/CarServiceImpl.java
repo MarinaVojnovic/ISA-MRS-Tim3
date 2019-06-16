@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import team_three_spring_project_isamrs.model.Car;
 import team_three_spring_project_isamrs.model.Rentacar;
@@ -11,6 +13,7 @@ import team_three_spring_project_isamrs.repository.CarRepository;
 import team_three_spring_project_isamrs.service.CarService;
 
 @Service
+@Transactional(readOnly=true)
 public class CarServiceImpl implements CarService {
 	@Autowired
 	CarRepository carRepository;
@@ -26,17 +29,20 @@ public class CarServiceImpl implements CarService {
 	}
 
 	@Override
+	@Transactional(readOnly=false, propagation=Propagation.REQUIRES_NEW)
 	public Car create(Car car) {
 		return carRepository.save(car);
 	}
 
 	@Override
+	@Transactional(readOnly=false, propagation=Propagation.REQUIRES_NEW)
 	public void delete(long id) {
 		carRepository.delete(id);
 
 	}
 
 	@Override
+	@Transactional(readOnly=false, propagation=Propagation.REQUIRES_NEW)
 	public Car save(Car car) {
 		return carRepository.save(car);
 	}

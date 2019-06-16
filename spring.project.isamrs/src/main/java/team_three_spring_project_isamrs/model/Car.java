@@ -14,6 +14,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.springframework.data.annotation.Version;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import team_three_spring_project_isamrs.dto.CarDTO;
@@ -48,6 +50,9 @@ public class Car {
 	
 	@Column(name="fast_res_end_date")
 	private Date fastResEndDate;
+	
+	@Version
+	private Long version;
 	
 	public Date getFastResStartDate() {
 		return fastResStartDate;

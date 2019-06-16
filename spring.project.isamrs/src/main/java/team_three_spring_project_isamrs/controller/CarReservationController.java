@@ -162,7 +162,13 @@ public class CarReservationController {
 
 		CarReservationDTO dto = new CarReservationDTO(carId, startDatee, endDatee, passengers);
 		CarReservation newCarRes = new CarReservation(dto);
-		Car car = carService.getOne(dto.getCarId());
+		Car car = null;
+		try {
+			car = carService.getOne(dto.getCarId());
+		}catch(Exception e) {
+			return null;
+		}
+				
 		if (flight_res.equals("1")) {
 			newCarRes.setFlightId(lastRes.getId());
 		} else {
@@ -221,7 +227,15 @@ public class CarReservationController {
 		}
 
 		CarReservation newCarRes = new CarReservation(startDatee, endDatee);
-		Car car = carService.getOne(carId);
+		Car car = null;
+		try {
+			System.out.println("Okejjjj jee");
+			car = carService.getOne(carId);
+		}catch(Exception e) {
+			System.out.println("Nije okejjjjj");
+			return new ResponseEntity<>(null, HttpStatus.OK);
+		}
+				
 		
 		
 		boolean dozvola=true;
