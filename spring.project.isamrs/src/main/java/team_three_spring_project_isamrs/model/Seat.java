@@ -10,6 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 
 @Entity
@@ -35,6 +36,17 @@ public class Seat {
 	@Column(name="discount")
 	int discount;
 	
+	@Version
+	private Long version;
+	
+	public Long getVersion() {
+		return version;
+	}
+
+	public void setVersion(Long version) {
+		this.version = version;
+	}
+
 	@OneToOne(mappedBy = "seat", cascade = CascadeType.ALL,
             fetch = FetchType.LAZY)
 	private FlightReservation flightReservation;

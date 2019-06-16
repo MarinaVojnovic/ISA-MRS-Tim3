@@ -1856,7 +1856,7 @@ $(document).on('click','.reserveFastFlight',function(e){
 		headers : createAuthorizationTokenHeader(TOKEN_KEY),
 		dataType : "json",
 		success : function(data) {
-			alert("Successfully booked ticket from quick booking.");
+			showMessage(data.message, data.header)
 			openCity(e, 'airlines');
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
@@ -3635,7 +3635,7 @@ $(document).on('click',"#nextButton",function(e){
 	    		openCity(e, 'inviteFriend');
 	    		$("#inviteFriend").children().remove();
 	    		$("#inviteFriend").append("<h2 align='center'>" +
-	    				" friend number "+1+": <h2>");
+	    				" Friend number "+1+": <h2>");
 	    		var table=$('<table align="center"></table>');
 	    		var tr=$('<tr></tr>');
 	    		tr.append('<td><p>  Name:  </p></td>');
@@ -3753,6 +3753,10 @@ $(document)
 								data : createReservationToJSON(sed,
 										idjeviPutnika, l, brojPasosa),
 								success : function(data) {
+									if(data.message!=undefined){
+										showMessage(data.message, data.header)
+										
+									}else{
 									sessionStorage
 											.setItem(
 													"flightReservationId",
@@ -3768,7 +3772,7 @@ $(document)
 										sendEmail(list);
 									}
 									showMessage("Successful reservation of a flight, congratulations!","success");
-
+									}
 								},
 								error : function(jqXHR, textStatus, errorThrown) {
 									showMessage(jqXHR.status,"error");

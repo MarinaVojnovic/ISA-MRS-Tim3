@@ -1,5 +1,8 @@
 package team_three_spring_project_isamrs.controller;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -28,6 +31,7 @@ import team_three_spring_project_isamrs.dto.FlightReservationDTO;
 import team_three_spring_project_isamrs.dto.FlightReservationReturnDTO;
 import team_three_spring_project_isamrs.dto.FriendRequestDTO;
 import team_three_spring_project_isamrs.dto.InvitedFriendDTO;
+import team_three_spring_project_isamrs.dto.MessageDTO;
 import team_three_spring_project_isamrs.dto.PasswordDTO;
 import team_three_spring_project_isamrs.dto.RoomReservationDTO;
 import team_three_spring_project_isamrs.dto.UserDTO;
@@ -331,7 +335,7 @@ public class UserController {
 
 	@PostMapping(value = "/makeReservation")
 	@PreAuthorize("hasRole('ROLE_USER')")
-	public ResponseEntity<FlightReservationReturnDTO> makeReservation(
+	public ResponseEntity<?> makeReservation(
 			@RequestBody FlightReservationDTO flightReservation) {
 		int brPasosa = Integer.parseInt(flightReservation.getPassportNum());
 		String idjeviPutnika = flightReservation.getUsers();
@@ -374,10 +378,20 @@ public class UserController {
 		Flight fl = this.flightService.getOne(let);
 		List<FlightReservation> flightReservations = new ArrayList<>();
 		List<InvitedFriendDTO> invited = new ArrayList<>();
-		FlightReservation fr = this.flightReservationService.create(new FlightReservation(fl.getCost(),
-				(RegularUser) logged, fl, this.seatService.getOne(Long.parseLong(sedista.split(" ")[0])), true,
-				brPasosa, new Date(), logged.getFirstName(), logged.getLastName(), discount));
-
+		Seat s=null;
+		try {
+			s=this.seatService.getOne(Long.parseLong(sedista.split(" ")[0]));
+			s.setTaken(true);
+			this.seatService.save(s);
+		}
+		catch(Exception e) {
+			return new ResponseEntity<>(new MessageDTO("This reservation has just been deleted or reserved","warning"),HttpStatus.OK);
+		}
+		FlightReservation fr = new FlightReservation(fl.getCost(),
+				(RegularUser) logged, fl, s, true,
+				brPasosa, new Date(), logged.getFirstName(), logged.getLastName(), discount);
+		ArrayList<FlightReservation> reservations=new ArrayList<>();
+		reservations.add(fr);
 		Double newPrice = 0.0;
 		if (discount != 0) {
 			newPrice = fl.getCost() * (100 - discount) / 100;
@@ -386,41 +400,35 @@ public class UserController {
 		flightReservations.add(fr);
 		String[] idjevi = idjeviPutnika.split(" ");
 		String[] sed = sedista.split(" ");
-		Seat s = this.seatService.getOne(Long.parseLong(sed[0]));
-		s.setTaken(true);
-		this.seatService.save(s);
 		if (!idjeviPutnika.equals("")) {
 			for (int i = 0; i < idjevi.length; i++) {
-				FlightReservation fri = this.flightReservationService.create(
+				Seat prijatelji=null;
+				try {
+					prijatelji=this.seatService.getOne(Long.parseLong(sed[i + 1]));
+					prijatelji.setTaken(true);
+					this.seatService.save(prijatelji);
+				}catch(Exception e) {
+					return new ResponseEntity<>(new MessageDTO("This reservation has just been deleted or reserved","warning"),HttpStatus.OK);
+				}
+				FlightReservation fri = 
 						new FlightReservation(fl.getCost(), this.regularUserService.findById(Long.parseLong(idjevi[i])),
-								fl, this.seatService.getOne(Long.parseLong(sed[i + 1])), false, 0, new Date(),
+								fl, prijatelji, false, 0, new Date(),
 								this.regularUserService.findById(Long.parseLong(idjevi[i])).getFirstName(),
-								this.regularUserService.findById(Long.parseLong(idjevi[i])).getLastName()));
+								this.regularUserService.findById(Long.parseLong(idjevi[i])).getLastName());
+				reservations.add(fri);
 				flightReservations.add(fr);
-				Seat friendSeat = this.seatService.getOne(Long.parseLong(sed[i + 1]));
-				friendSeat.setTaken(true);
-				this.seatService.save(friendSeat);
 				InvitedFriendDTO inv = new InvitedFriendDTO(
 						(this.regularUserService.findById(Long.parseLong(idjevi[i]))).getEmail(), fri.getId());
 				invited.add(inv);
 
 			}
 		}
+		for(FlightReservation f: reservations) {
+			FlightReservation res=this.flightReservationService.create(f);
+		}
 		FlightReservationReturnDTO frd = new FlightReservationReturnDTO(invited, fr.getId());
 		return new ResponseEntity<>(frd, HttpStatus.CREATED);
 
-	}
-
-	@GetMapping(value = "/acceptFlightReservation/{id}")
-	public RedirectView acceptFlightReservation(@PathVariable Long id) {
-		FlightReservation res = this.flightReservationService.getOne(id);
-
-		if (res != null) {
-			res.setConfirmed(true);
-			this.flightReservationService.save(res);
-			return new RedirectView("http://localhost:8080/acceptedReservation.html");
-		}
-		return null;
 	}
 
 	@GetMapping(value = "/rejectFlightReservation/{id}")
@@ -453,11 +461,12 @@ public class UserController {
 
 	@GetMapping(value = "/fastReservationAirline/{id}")
 	@PreAuthorize("hasRole('ROLE_USER')")
-	public ResponseEntity<List<FastReservationDTO>> fastReservationAirline(@PathVariable Long id) {
+	public ResponseEntity<List<FastReservationDTO>> fastReservationAirline(@PathVariable Long id) throws ParseException {
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		List<Seat> sedista = this.seatService.findByQuickBooking(true);
 		List<FastReservationDTO> brza = new ArrayList<FastReservationDTO>();
 		for (Seat s : sedista) {
-			if (s.getFlight().getAirline().getId().equals(id)) {
+			if (s.getFlight().getAirline().getId().equals(id) && df.parse(s.getFlight().getDateOfStart()).after(new Date())){
 				brza.add(new FastReservationDTO(s.getId(), s.getFlight().getNumber(),
 						s.getFlight().getStartAirline().getCity(), s.getFlight().getFinalAirline().getCity(),
 						s.getFlight().getDateOfStart().toString(), s.getFlight().getDateOfEnd().toString(),
@@ -470,17 +479,22 @@ public class UserController {
 
 	@PostMapping(value = "/reserveFastFlight/{id}")
 	@PreAuthorize("hasRole('ROLE_USER')")
-	public ResponseEntity<FlightReservation> reserveFastFlight(@PathVariable Long id) {
-		Seat s = this.seatService.getOne(id);
+	public ResponseEntity<MessageDTO> reserveFastFlight(@PathVariable Long id) {
+		Seat s=null;
+		try {
+		s = this.seatService.getOne(id);
+		s.setTaken(true);
+		s.setQuickBooking(false);
+		this.seatService.save(s);
+		}catch(Exception e){
+			return new ResponseEntity<>(new MessageDTO("This reservation has just been deleted or reserved","warning"),HttpStatus.OK);
+			
+		}
 		RegularUser user = (RegularUser) this.userDetailsService
 				.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
 		FlightReservation fr = this.flightReservationService.create(new FlightReservation(s.getFlight().getCost(), user,
 				s.getFlight(), s, true, 0, new Date(), user.getFirstName(), user.getLastName(), s.getDiscount()));
-		s.setTaken(true);
-		s.setQuickBooking(false);
-		this.seatService.save(s);
-
-		return new ResponseEntity<>(fr, HttpStatus.OK);
+		return new ResponseEntity<>(new MessageDTO("Successfully made fast reservation!","success"),HttpStatus.CREATED);
 
 	}
 
