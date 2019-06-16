@@ -16,6 +16,8 @@ var urlRootPutCarOnFastRes="http://localhost:8080/putCarOnFastRes";
 var urlRootFindSuitCarsFast =  "http://localhost:8080/findSuitCarsFast";
 var urlRootReportRentacarAttendance="http://localhost:8080/reportRentacarAttendance";
 var urlRootFindRentacarAmount="http://localhost:8080/findRentacarAmount";
+var showCarsOnFastRes="http://localhost:8080/showCarsOnFastRes";
+var urlRootDeleteCarOnFast="http://localhost:8080/removeCarOnFastRes";
 
 
 var TOKEN_KEY = 'jwtToken';
@@ -143,6 +145,8 @@ function saveSubmitFast(id){
 						document.getElementById("priceFast").value="";
 						document.getElementById("endDateFast").value="";
 						document.getElementById("startDateFast").value="";
+						
+						
 					}
 
 			},
@@ -482,6 +486,38 @@ function editBranch(id) {
 
 }
 
+function deleteCarOnFastRes(carId) {
+	console.log('Delete car on fast res called');
+
+	
+	$.ajax({
+		type : 'PUT',
+		url : urlRootDeleteCarOnFast+"/"+carId,
+		dataType: "json",
+		headers : createAuthorizationTokenHeader(TOKEN_KEY),
+		success : function(data) {
+			if (data.message != undefined) {
+				showMessage(data.message,"warning");
+			}  else {
+				showMessage('Car is no longer on fast reservation!.',"success");
+			}
+
+			
+			showCarsOnFastReservation();
+
+		},
+		error : function(jqXHR, textStatus, errorThrown) {
+			showMessage(jqXHR.status,"error");
+			showMessage(textStatus,"error");
+			showMessage(errorThrown,"error");
+
+		}
+
+	})
+
+}
+
+
 function deleteCar(carId) {
 	console.log('Delete cars called');
 
@@ -614,6 +650,93 @@ $(document)
 
 				});
 
+function showCarsOnFastReservation(){
+	console.log('showing cars on fast reservation');
+	
+	$
+	.ajax({
+		type : 'GET',
+		url : showCarsOnFastRes,
+		dataType : "json",
+		headers : createAuthorizationTokenHeader(TOKEN_KEY),
+		success : function(data) {
+
+			var response = data;
+			$(".message").children().remove();
+								
+			
+			$("#tableOfCarsOnFastRes").find("tr").remove();
+			var	tabela = document.getElementById("tableOfCarsOnFastRes");
+			
+			var broj = 0;
+			for ( var counter in response) {
+				broj++;
+				
+				var row = tabela.insertRow(counter);
+				
+				var cell1 = row.insertCell(0);
+				var cell2 = row.insertCell(1);
+				var cell3 = row.insertCell(2);
+				var cell4 = row.insertCell(3);
+				var cell5 = row.insertCell(4);
+				var cell6 = row.insertCell(5);
+				var cell7 = row.insertCell(6);
+				var cell8 = row.insertCell(7);
+				var cell9 = row.insertCell(8);
+
+				cell1.innerHTML = response[counter].id;
+				cell2.innerHTML = response[counter].name;
+				cell3.innerHTML = response[counter].price;
+				cell4.innerHTML = response[counter].year;
+				
+				cell9.innerHTML = '<button style="background: #cc0033; color: white"id=\"'
+							+ response[counter].id
+							+ '\" class=\"deleteCarOnFastResButton\" class="btn btn-primary">Delete</button>';
+				
+				
+				cell5.innerHTML = response[counter].carType;
+				cell7.innerHTML = response[counter].brand;
+				cell8.innerHTML = response[counter].model;
+				cell6.innerHTML = response[counter].seats;
+
+			}
+
+			if (broj != 0) {
+				var row = tabela.insertRow(0);
+				var cell1 = row.insertCell(0);
+				var cell2 = row.insertCell(1);
+				var cell3 = row.insertCell(2);
+				var cell4 = row.insertCell(3);
+				var cell5 = row.insertCell(4);
+				var cell6 = row.insertCell(5);
+				var cell7 = row.insertCell(6);
+				var cell8 = row.insertCell(7);
+				var cell9 = row.insertCell(8);
+
+				cell1.innerHTML = '<p style= "font-weight: 200%; font-size:150%">Id</p>';
+				cell2.innerHTML = '<p style= " font-weight: 200%; font-size:150%">Name</p>';
+				;
+				cell3.innerHTML = '<p style= "font-weight: 200%; font-size:150%">Price</p>';
+				;
+				cell4.innerHTML = '<p style= " font-weight: 200%; font-size:150%">Year</p>';
+				cell5.innerHTML = '<p style= " font-weight: 200%; font-size:150%">Car type</p>';
+				cell7.innerHTML = '<p style= " font-weight: 200%; font-size:150%">Brand</p>';
+				cell8.innerHTML = '<p style= " font-weight: 200%; font-size:150%">Model</p>';
+				cell6.innerHTML = '<p style= " font-weight: 200%; font-size:150%">Seats</p>';
+				;
+			} else {
+				$(".message").append('<h3>No cars on fast reservation.</p>')
+			}
+
+		},
+		error : function(jqXHR, textStatus, errorThrown) {
+			showMessage(jqXHR.status,"error");
+			showMessage(textStatus,"error");
+			showMessage(errorThrown,"error");
+		}
+
+	})
+}
 function showCars(type) {
 	console.log('show cars for deleting called');
 
@@ -962,6 +1085,15 @@ $(document).on('click', '.deleteCarButton', function(e) {
 
 });
 
+$(document).on('click', '.deleteCarOnFastResButton', function(e) {
+	// e.preventDefault();
+	var _this = $(this);
+
+	console.log('car number' + '   ' + this.id);
+	deleteCarOnFastRes(this.id);
+
+});
+
 $(document).on('click', '.editCarButton', function(e) {
 	// e.preventDefault();
 	var _this = $(this);
@@ -1061,15 +1193,32 @@ $(document).on('click', '#fastResButton', function(e) {
 	console.log('fast res button clicked');
 	
 	openCity(e, 'fastRes');
+	
 	showCars("forFastRes");
 	
 
 });
 
+
+
+$(document).on('click', '#backToFastResCars', function(e) {
+	console.log('fast res button clicked');
+	document.getElementById("priceFast").value="";
+	document.getElementById("endDateFast").value="";
+	document.getElementById("startDateFast").value="";
+	openCity(e, 'fastRes');
+	
+	showCars("forFastRes");
+	
+
+});
 $(document).on('click', '.fastResCarButton', function(e) {
 	console.log('fast res car button clicked');
 	var idCar = this.id
 	openCity(e, 'fastResFormular');
+	document.getElementById("priceFast").value="";
+	document.getElementById("endDateFast").value="";
+	document.getElementById("startDateFast").value="";
 	document.getElementById("carId").value = idCar;
 	console.log('CAAAAAAAAAR ID'+document.getElementById("carId").value);
 	
@@ -1081,6 +1230,13 @@ $(document).on('click', '.fastResCarButton', function(e) {
 $(document).on('click', '#submitFastFormular', function(e) {
 	console.log('button submit fast formular clicked');
 	saveSubmitFast(document.getElementById("carId").value);
+});
+
+
+
+$(document).on('click', '#showCarsOnFastResButton', function(e) {
+	openCity(e, 'carsOnFastRes');
+	showCarsOnFastReservation();
 });
 
 function passwordDTOJson(password1) {

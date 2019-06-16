@@ -78,6 +78,8 @@ body {
 			onclick="openCity(event, 'editBranch')">Edit branch</button>
 		<button id="fastResButton" class="tablinks"
 			onclick="openCity(event, 'fastRes')">Put car on fast reservation</button>
+		<button id="showCarsOnFastResButton" class="tablinks"
+			onclick="openCity(event, 'carsOnFastRes')">Cars on fast reservation</button>
 		<button id="reportsButton" class="tablinks"
 			onclick="openCity(event, 'reports')">Reports</button>
 		<button id="logoutClicked" class="tablinks"
@@ -120,14 +122,32 @@ body {
 							class="btn btn-default" id="submitFastFormular">Save</button>
 					</div>
 				</div>
-		
+		<div class="form-group">
+					
+						<button style="background: #cc0033; color: white" type="submit"
+							class="btn btn-default" id="backToFastResCars">Back</button>
+				
+				</div>
 		</div>
+		
+		
 	</div>
 	<div id="fastRes" class="tabcontent">
 		<div class="container">
 		
 			<h2>Cars</h2>
 			<table  class="table table-hover"  id = "tableOfCarsForFastRes">
+				
+			</table>
+			<p class="message"></p>
+		</div>
+	</div>
+	
+	<div id="carsOnFastRes" class="tabcontent">
+		<div class="container">
+		
+			<h2>Cars on fast reservation</h2>
+			<table  class="table table-hover"  id = "tableOfCarsOnFastRes">
 				
 			</table>
 			<p class="message"></p>
