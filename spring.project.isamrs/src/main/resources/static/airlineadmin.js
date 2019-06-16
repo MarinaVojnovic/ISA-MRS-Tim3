@@ -502,7 +502,7 @@ $(document)
 																		var option = $('<option value="'
 																				+ destination.id
 																				+ '">'
-																				+ destination.worksWith.name
+																				+ destination.worksWith.city
 																				+ '</option>');
 																		select
 																				.append(option);
@@ -695,7 +695,7 @@ function getAllAirlines() {
 				$.each(list, function(index, destination) {
 					var option = $('<option name="' + destination.id
 							+ '" value="' + destination.id + '">'
-							+ destination.name + '</option>')
+							+ destination.city + '</option>')
 					$("#chooseDestination").append(option);
 				})
 			}
@@ -994,7 +994,7 @@ $(document).on(
 
 					} else {
 						var option = $('<option name="' + data.id + '">'
-								+ data.name + '</option>');
+								+ data.city + '</option>');
 						$("#startDestinationRegister").append(option);
 					}
 
@@ -1031,7 +1031,7 @@ $(document).on(
 							$.each(list, function(index, destination) {
 								var option = $('<option name="'
 										+ destination.worksWith.id + '">'
-										+ destination.worksWith.name
+										+ destination.worksWith.city
 										+ '</option>')
 								$("#finalDestinationRegister").append(option);
 							})
