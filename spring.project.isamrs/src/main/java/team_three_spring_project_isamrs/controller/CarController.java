@@ -85,6 +85,20 @@ public class CarController {
 		List<Car> cars = carService.findByRentacar(ra.getRentacar());
 		return new ResponseEntity<>(cars, HttpStatus.OK);
 	}
+	
+	@GetMapping(value = "/showCarsOnFastRes")
+	public ResponseEntity<List<Car>> showCarsOnFastRes() {
+		RentacarAdmin ra = (RentacarAdmin) this.userDetailsService
+				.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+		List<Car> cars = carService.findByRentacar(ra.getRentacar());
+		List<Car> carsOnFast = new ArrayList<>();
+		for (Car car : cars) {
+			if (car.getOnFastRes()==true) {
+				carsOnFast.add(car);
+			}
+		}
+		return new ResponseEntity<>(carsOnFast, HttpStatus.OK);
+	}
 
 	@DeleteMapping(value = "/deleteCar/{carId}")
 	@PreAuthorize("hasRole('ROLE_RENTACAR_ADMIN')")
@@ -105,6 +119,33 @@ public class CarController {
 		if (dozvola) {
 			ra.getRentacar().getCars().remove(car);
 			carService.delete(Long.parseLong(carId));
+			return new ResponseEntity<>(car, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(new MessageDTO("Car is reserved, it cannot be deleted.", "Error"),
+					HttpStatus.OK);
+		}
+
+	}
+
+	@PutMapping(value = "/removeCarOnFastRes/{carId}")
+	@PreAuthorize("hasRole('ROLE_RENTACAR_ADMIN')")
+	public ResponseEntity<?> removeCarOnFastRes(@PathVariable String carId) {
+		RentacarAdmin ra = (RentacarAdmin) this.userDetailsService
+				.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+		Car car = carService.getOne(Long.parseLong(carId));
+		if (car == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		Date now = new Date();
+		Boolean dozvola = true;
+		for (CarReservation r : car.getReservations()) {
+			if (r.getEndDate().compareTo(now) > 0) {
+				dozvola = false;
+			}
+		}
+		if (dozvola) {
+			car.setOnFastRes(false);
+			carService.save(car);
 			return new ResponseEntity<>(car, HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(new MessageDTO("Car is reserved, it cannot be deleted.", "Error"),
@@ -210,15 +251,18 @@ public class CarController {
 				}
 			}
 		}
+		
+		ArrayList<Car> forReturn = new ArrayList<>();
+		
 
 		for (int i = 0; i < theFinalList.size(); i++) {
 
-			if (theFinalList.get(i).getOnFastRes()) {
-				theFinalList.remove(i);
+			if (theFinalList.get(i).getOnFastRes()==false) {
+				forReturn.add(theFinalList.get(i));
 			}
 		}
 		System.out.println("The final list sizeeeee: "+theFinalList.size());
-		return new ResponseEntity<>(theFinalList, HttpStatus.OK);
+		return new ResponseEntity<>(forReturn, HttpStatus.OK);
 
 	}
 

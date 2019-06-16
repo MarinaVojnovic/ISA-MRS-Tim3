@@ -51,35 +51,43 @@ public class CarReservationController {
 		@SuppressWarnings("deprecation")
 		Date startDatee = new Date(Integer.parseInt(startDate.split("\\-")[0]) - 1900,
 				Integer.parseInt(startDate.split("\\-")[1]) - 1, Integer.parseInt(startDate.split("\\-")[2]));
+		System.out.println("AAAAA");
 		@SuppressWarnings("deprecation")
 		Date endDatee = new Date(Integer.parseInt(endDate.split("\\-")[0]) - 1900,
 				Integer.parseInt(endDate.split("\\-")[1]) - 1, Integer.parseInt(endDate.split("\\-")[2]));
 
+		System.out.println("BBBB");
 		Car c = carService.getOne(carId);
+		System.out.println("CCCC");
 		Boolean dozvola = true;
+		System.out.println("DDDD");
 		for (CarReservation res : c.getReservations()) {
-			if (res.getStartDate().compareTo(startDatee) < 0 && res.getEndDate().compareTo(startDatee) < 0) {
+			if (res.getStartDate().compareTo(startDatee) <= 0 && res.getEndDate().compareTo(endDatee) >= 0 && startDatee.compareTo(res.getEndDate())<= 0) {
 				dozvola = false;
 			}
-			if (res.getStartDate().compareTo(endDatee) < 0 && res.getEndDate().compareTo(endDatee) > 0) {
+			if (res.getStartDate().compareTo(endDatee) <= 0 && res.getEndDate().compareTo(endDatee) >= 0) {
 				dozvola = false;
 			}
-			if (res.getStartDate().compareTo(endDatee) < 0 && res.getEndDate().compareTo(endDatee) < 0) {
+			if (startDatee.compareTo(res.getStartDate()) <= 0 && endDatee.compareTo(res.getEndDate())<= 0 && endDatee.compareTo(res.getStartDate())>= 0) {
 				dozvola = false;
 			}
 		}
 
+		System.out.println("EEEE");
 		if (dozvola) {
 			c.setOnFastRes(true);
 			c.setFastResStartDate(startDatee);
 			c.setFastResEndDate(endDatee);
 			c.setFastResPrice(price);
 			carService.save(c);
+			System.out.println("a");
 			return new ResponseEntity<>(c, HttpStatus.OK);
 		} else {
+			System.out.println("b");
 			return new ResponseEntity<>(new MessageDTO("Car is reserved, it cannot be put on fast res.", "Error"),
 					HttpStatus.OK);
 		}
+		
 
 	}
 
@@ -214,24 +222,48 @@ public class CarReservationController {
 
 		CarReservation newCarRes = new CarReservation(startDatee, endDatee);
 		Car car = carService.getOne(carId);
-		if (flightRes.equals("1")) {
-			newCarRes.setFlightId(lastRes.getId());
-		} else {
-			newCarRes.setFlightId(Long.parseLong("-1"));
+		
+		
+		boolean dozvola=true;
+		for (CarReservation res : car.getReservations()) {
+			
+				if (res.getStartDate().compareTo(startDatee) <= 0 && res.getEndDate().compareTo(endDatee) >= 0 && startDatee.compareTo(res.getEndDate())<= 0) {
+					dozvola = false;
+				}
+				if (res.getStartDate().compareTo(endDatee) <= 0 && res.getEndDate().compareTo(endDatee) >= 0) {
+					dozvola = false;
+				}
+				if (startDatee.compareTo(res.getStartDate()) <= 0 && endDatee.compareTo(res.getEndDate())<= 0 && endDatee.compareTo(res.getStartDate())>= 0) {
+					dozvola = false;
+				}
+			
+
+		}
+		if (dozvola == true) {
+			if (flightRes.equals("1")) {
+				newCarRes.setFlightId(lastRes.getId());
+			} else {
+				newCarRes.setFlightId(Long.parseLong("-1"));
+			}
+
+			newCarRes.setCar(car);
+			newCarRes.setPrice(car.getFastResPrice());
+			newCarRes.setRegularUser(user);
+			Rentacar rentacar = rentacarService.getOne(car.getRentacar().getId());
+			newCarRes.setRentacarRes(rentacar);
+
+			carReservationService.save(newCarRes);
+			user.getCarReservations().add(newCarRes);
+			rentacar.getCarReservations().add(newCarRes);
+			car.getReservations().add(newCarRes);
+			return new ResponseEntity<>(newCarRes, HttpStatus.CREATED);
+		}else {
+			System.out.println("USLO U DOZVOLA JEDNAKO FALSE");
+			newCarRes=null;
+			return new ResponseEntity<>(null, HttpStatus.OK);
 		}
 
-		newCarRes.setCar(car);
-		newCarRes.setPrice(car.getFastResPrice());
-		newCarRes.setRegularUser(user);
-		Rentacar rentacar = rentacarService.getOne(car.getRentacar().getId());
-		newCarRes.setRentacarRes(rentacar);
-
-		carReservationService.save(newCarRes);
-		user.getCarReservations().add(newCarRes);
-		rentacar.getCarReservations().add(newCarRes);
-		car.getReservations().add(newCarRes);
-
-		return new ResponseEntity<>(newCarRes, HttpStatus.CREATED);
+		
 	}
 
 	@DeleteMapping(value = "/cancelCarReservation/{resId}")

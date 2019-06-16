@@ -599,11 +599,11 @@ function showMyReservationsFlights() {
 							
 							
 
-							/*
-							 * var ms = new Date().getTime() + 3*86400000; var
-							 * granica = new Date(ms);
-							 */
-							if (new Date(list[res].startDate) >= new Date()) {
+							
+							 var ms = new Date().getTime() + 3*86400000; var
+							 granica = new Date(ms);
+							 
+							if (new Date(list[res].startDate) >=granica) {
 								cell11.innerHTML = '<button style="background: #cc0033; color: white" id=\"'
 										+ list[res].id
 										+ '\" class=\"cancelFlightResButton\" class="btn btn-primary">Cancel reservation</button>';
@@ -663,28 +663,79 @@ function takeCarFast(id) {
 	var mainStartDate = document.getElementById("mainStartDate").value;
 	var mainEndDate = document.getElementById("mainEndDate").value;
 	var id = document.getElementById("carId").value;
-
+	var startDateFast = document.getElementById("startDateFastt").value;
+	var endDateFast=document.getElementById("endDateFastt").value;
+	
+	console.log("*****");
+	console.log("start date fast:  "+startDateFast);
+	console.log("end date fast:  "+startDateFast);
+	console.log("****");
+	
 	var startDate = document.getElementById("pickupDateFast").value;
 	var endDate = document.getElementById("endDateFast").value;
 	var typeOfRes = document.getElementById("typeOfRes").value;
+	
+	console.log("start date mine: "+startDate);
+	console.log("end date mine: "+endDate);
+	console.log("***");
 
 	var dozvola = 1;
-
+	
 	if (startDate == "" || endDate == "") {
 		showMessage('None of the fields is allowed to be empty!',"warning");
 	} else {
-		if (new Date(startDate) < new Date(mainStartDate)) {
-			showMessage('start date must be after your holiday starts',"warning");
-			dozvola = 0;
-		}
-
-		if (mainEndDate != "") {
-			if (new Date(startDate) > new Date(mainEndDate)
-					|| new Date(endDate) > new Date(mainEndDate)) {
+		if (typeOfRes=="1"){
+			if (new Date(startDate) < new Date(mainStartDate)) {
 				showMessage('start date must be after your holiday starts',"warning");
 				dozvola = 0;
 			}
+
+			if (mainEndDate != "") {
+				if (new Date(startDate) > new Date(mainEndDate)
+						|| new Date(endDate) > new Date(mainEndDate)) {
+					showMessage('start date must be after your holiday starts',"warning");
+					dozvola = 0;
+				}
+			}
+			if (new Date(startDate) > new Date(endDate)){
+				showMessage('Start date cannot be after end date.', "warining");
+				dozvola=0;
+			}
+			
+			if (new Date(startDate) < new Date(startDateFast)){
+				showMessage('Start date cannot be before period of fast reservation of this car starts', "warning");
+				dozvola=0;
+			}
+			
+			if (new Date(endDate) > new Date(endDateFast)){
+				showMessage('End date cannot be after period of fast reservation of this car ends', "warning");
+				dozvola=0;
+			}
+		}else {
+			if (new Date(startDate) < new Date()){
+				showMessage('Start date cannot be in past', "warning");
+				dozvola=0;
+			}
+			if (new Date(endDate) < new Date()){
+				showMessage('End date cannot be in the past', "warning");
+				dozvola=0;
+			}
+			if (new Date(startDate) > new Date(endDate)){
+				showMessage('Start date cannot be after end date.', "warining");
+				dozvola=0;
+			}
+			
+			if (new Date(startDate) < new Date(startDateFast)){
+				showMessage('Start date cannot be before period of fast reservation of this car starts', "warning");
+				dozvola=0;
+			}
+			
+			if (new Date(endDate) > new Date(endDateFast)){
+				showMessage('End date cannot be after period of fast reservation of this car ends', "warning");
+				dozvola=0;
+			}
 		}
+		
 
 		console.log('Main start date: ' + mainStartDate);
 		console.log('Main end date: ' + mainEndDate);
@@ -699,13 +750,27 @@ function takeCarFast(id) {
 						url : urlRootCreateCarResFast + "/" + id + "/"
 								+ startDate + "/" + endDate+"/"+typeOfRes,
 						contentType : 'application/json',
-						dataType : "json",
+						
 						headers : createAuthorizationTokenHeader(TOKEN_KEY),
 						success : function(data) {
-							showMessage("Successful fast reservation of a car, congratulations!","success");
+							console.log("-------");
+							console.log(data);
+							console.log("-------");
+							if (!data){
+								showMessage("Sorry, car already reserved in specified period!","warning");
+								document.getElementById("pickupDateFast").value="";
+								document.getElementById("endDateFast").value="";
+								
+							}else {
+								showMessage("Successful fast reservation of a car, congratulations!","success");
+								document.getElementById("pickupDateFast").value="";
+								document.getElementById("endDateFast").value="";
+							}
+							
 
 						},
 						error : function(jqXHR, textStatus, errorThrown) {
+							alert('hellloooo');
 							showMessage(jqXHR.status,"error");
 							showMessage(textStatus,"error");
 							showMessage(errorThrown,"error");
@@ -715,7 +780,7 @@ function takeCarFast(id) {
 		}
 	}
 	if (typeOfRes=="1"){
-		console.log('Uslo u type of res =1 ');
+		
 		$("#buttonsDiv").children().remove();
 		$("#buttonsDiv")
 		.append(
@@ -818,10 +883,15 @@ function showCarsForFastRes() {
 						}
 						cell10.innerHTML = grade;
 						cell9.innerHTML = response[counter].price * 20;
+						var startName="startDateFastt"+ response[counter].id;
+						console.log('Start nameee: '+startName);
 						cell12.innerHTML = new Date(
-								response[counter].fastResStartDate).toLocaleString();;
+								response[counter].fastResStartDate).toLocaleString();
+						cell12.id=startName;
+						
 						cell13.innerHTML = new Date(
-								response[counter].fastResEndDate).toLocaleString();;
+								response[counter].fastResEndDate).toLocaleString();
+						cell13.id="endDateFastt"+response[counter].id;
 						cell11.innerHTML = response[counter].fastResPrice;
 
 					}
@@ -2451,7 +2521,7 @@ function searchForCars(rentacarId) {
 			toPrice = -1;
 		}
 		var typeOfRes=document.getElementById("typeOfRes").value;
-		alert('type of res 2: '+typeOfRes);
+		
 
 		console.log('Start date: ' + startDate);
 		console.log('End date: ' + endDate);
@@ -3126,7 +3196,7 @@ $(document).on('click', '.chooseRentacar', function(e) {
 		.append(
 				'<br><button type="submit" style="background: #cc0033;align: center; color: white" id="finishReservation" style="float: left;/">Finish reservation </button>');
 	
-	alert('type of res '+document.getElementById("typeOfRes").value)
+	
 
 });
 
@@ -3226,11 +3296,18 @@ $(document).on('click', '.takeCarButtonFast', function(e) {
 	var mainStartDate = $("#mainStartDate3").val();
 	var mainEndDate = $("#mainEndDate3").val();
 	var carId = this.id;
+	
+	var ime = "startDateFastt"+carId;
+	var startDateFastt= document.getElementById(ime).innerHTML;
+	console.log('start date faaast: '+startDateFastt);
+	var endDateFastt= document.getElementById("endDateFastt"+carId).innerHTML;
 	sessionStorage.removeItem("choosenSeats");
 	openCity(e, 'fastResDateDiv');
 	document.getElementById("mainStartDate").value = mainStartDate;
 	document.getElementById("mainEndDate").value = mainEndDate;
 	document.getElementById("carId").value = carId;
+	document.getElementById("startDateFastt").value = startDateFastt;
+	document.getElementById("endDateFastt").value = endDateFastt;
 });
 
 $(document).on('click', '#buttonDateFast', function(e) {
@@ -4256,6 +4333,9 @@ $(document).on("click", "#rentacarBack", function(e) {
 
 $(document).on("click", "#backToRentacarReservation", function(e) {
 	e.preventDefault();
+	
+	document.getElementById("pickupDateFast").value="";
+	document.getElementById("endDateFast").value="";
 	openCity(event, 'rentacarReservation');
 	
 	document.getElementById("pickupDateCar").value="";
