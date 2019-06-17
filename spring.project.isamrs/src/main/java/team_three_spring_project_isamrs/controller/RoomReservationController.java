@@ -57,6 +57,11 @@ public class RoomReservationController {
 	@PreAuthorize("hasRole('ROLE_USER')")
 	public ResponseEntity<?> cancelHotelReservation(@PathVariable Long resId) {
 		RoomReservation roomRes = roomReservationService.getOne(resId);
+		if (roomRes.getFastReserved()) {
+			RoomFastReservation rfr = roomFastReservationService.getOne(roomRes.getRoomFastReservationId());
+			rfr.setReserved(false);
+			roomFastReservationService.save(rfr);
+		}
 		roomReservationService.delete(resId);
 		return new ResponseEntity<>(roomRes, HttpStatus.OK);
 
@@ -135,7 +140,7 @@ public class RoomReservationController {
 			rfr = roomFastReservationService.getOne(roomFastReservationId);
 		} catch (Exception e) {
 			return new ResponseEntity<>(
-					new MessageDTO("This reservation have just been reserved or deleted, you were so close :(",
+					new MessageDTO("This reservation has just been reserved or deleted, you were so close :(",
 							"warning"),
 					HttpStatus.OK);
 		}

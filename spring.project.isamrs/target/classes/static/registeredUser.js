@@ -1860,9 +1860,9 @@ $(document).on('click','.reserveFastFlight',function(e){
 			openCity(e, 'airlines');
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
-			alert(jqXHR.status);
-			alert(textStatus);
-			alert(errorThrown);
+			showMessage(jqXHR.status,"error");
+			showMessage(textStatus,"error");
+			showMessage(errorThrown,"error");
 		}
 
 		
@@ -2521,7 +2521,6 @@ function searchForCars(rentacarId) {
 			toPrice = -1;
 		}
 		var typeOfRes=document.getElementById("typeOfRes").value;
-		
 
 		console.log('Start date: ' + startDate);
 		console.log('End date: ' + endDate);
@@ -2635,27 +2634,31 @@ function searchForCars(rentacarId) {
 							cell9.innerHTML = '<p style= " font-weight: 200%; font-size:150%">Total price</p>';
 							;
 							/*
-							if (typeOfRes=="1"){
-								$(".messageSuitableCars")
-								.append(
-										'<br><br><button type="submit" style="background: #cc0033; align: center; color: white" id="offerHotelsButton" style="float: left;/">Reserve hotel</button>');
-						$(".messageSuitableCars")
-								.append(
-										'<br><button type="submit" style="background: #cc0033; align: center; color: white" id="finishReservation" style="float: left;/">Finish reservation </button>');
-							}
-							*/
+							 * if (typeOfRes=="1"){ $(".messageSuitableCars")
+							 * .append( '<br><br><button type="submit"
+							 * style="background: #cc0033; align: center; color:
+							 * white" id="offerHotelsButton" style="float:
+							 * left;/">Reserve hotel</button>');
+							 * $(".messageSuitableCars") .append( '<br><button
+							 * type="submit" style="background: #cc0033; align:
+							 * center; color: white" id="finishReservation"
+							 * style="float: left;/">Finish reservation
+							 * </button>'); }
+							 */
 							
 						} else {
 							/*
-							if (typeOfRes=="1") {
-								$(".messageSuitableCars")
-								.append(
-										'<br><br><button type="submit" style="background: #cc0033;align: center; color: white" id="offerHotelsButton" style="float: left;/">Reserve hotel</button>');
-						$(".messageSuitableCars")
-								.append(
-										'<br><button type="submit" style="background: #cc0033;align: center; color: white" id="finishReservation" style="float: left;/">Finish reservation </button>');
-							}
-							*/
+							 * if (typeOfRes=="1") { $(".messageSuitableCars")
+							 * .append( '<br><br><button type="submit"
+							 * style="background: #cc0033;align: center; color:
+							 * white" id="offerHotelsButton" style="float:
+							 * left;/">Reserve hotel</button>');
+							 * $(".messageSuitableCars") .append( '<br><button
+							 * type="submit" style="background: #cc0033;align:
+							 * center; color: white" id="finishReservation"
+							 * style="float: left;/">Finish reservation
+							 * </button>'); }
+							 */
 							$(".messageSuitableCarsTwo").children().remove();
 							$(".messageSuitableCarsTwo")
 									.append(
@@ -2699,15 +2702,16 @@ function takeCar(id, startDate, endDate, passengers, typeOfRes) {
 		headers : createAuthorizationTokenHeader(TOKEN_KEY),
 		success : function(data) {
 			showMessage("Successful reservation of a car, congratulations!","success");
-			/*if (typeOfRes=="1") {
-				$(".messageSuitableCars")
-				.append(
-						'<br><br><button type="submit" style="background: #cc0033;align: center; color: white" id="offerHotelsButton" style="float: left;/">Reserve hotel</button>');
-		$(".messageSuitableCars")
-				.append(
-						'<br><button type="submit" style="background: #cc0033;align: center; color: white" id="finishReservation" style="float: left;/">Finish reservation </button>');
-			
-			}*/
+			/*
+			 * if (typeOfRes=="1") { $(".messageSuitableCars") .append( '<br><br><button
+			 * type="submit" style="background: #cc0033;align: center; color:
+			 * white" id="offerHotelsButton" style="float: left;/">Reserve hotel</button>');
+			 * $(".messageSuitableCars") .append( '<br><button type="submit"
+			 * style="background: #cc0033;align: center; color: white"
+			 * id="finishReservation" style="float: left;/">Finish reservation
+			 * </button>');
+			 *  }
+			 */
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
 			showMessage(jqXHR.status,"error");
@@ -3195,8 +3199,6 @@ $(document).on('click', '.chooseRentacar', function(e) {
 		$(".messageSuitableCars")
 		.append(
 				'<br><button type="submit" style="background: #cc0033;align: center; color: white" id="finishReservation" style="float: left;/">Finish reservation </button>');
-	
-	
 
 });
 
@@ -3536,9 +3538,9 @@ $(document).on('click','#inviteMore',function(e){
 		cekiran=false;
 	}
 	if(friendName=="" || lastName=="" || passportNumber==""){
-		alert("All fields must be filled in.")
+		showMessage("All fields must be filled in.","warning")
 	}else if(isNaN(passportNumber)){
-		alert("Passport number must be number!");
+		showMessage("Passport number must be number!","warning");
 	}else{
 		var choosenSeats=JSON.parse(sessionStorage["choosenSeats"]);
 		var idSedista=choosenSeats.shift();
@@ -3598,9 +3600,9 @@ $(document).on('click','#inviteMore',function(e){
 		    	}
 		    },
 			error : function(jqXHR, textStatus,errorThrown) {
-				alert(jqXHR.status);
-				alert(textStatus);
-				alert(errorThrown);
+				showMessage(jqXHR.status,"error");
+				showMessage(textStatus,"error");
+				showMessage(errorThrown,"error");
 			
 			}
 		})
@@ -3612,7 +3614,7 @@ $(document).on('click',"#nextButton",function(e){
 	e.preventDefault();
 	var passportNumber=document.getElementById("passportNumber").value;
 	if(passportNumber=="" || isNaN(passportNumber)){
-		alert("Passport number must be number!")
+		showMessage("Passport number must be number!","warning")
 	}else{
 	var choosenSeats=JSON.parse(sessionStorage["choosenSeats"]);
 	var idSedista=choosenSeats.shift();
@@ -3673,9 +3675,9 @@ $(document).on('click',"#nextButton",function(e){
 	    	}
 	    },
 		error : function(jqXHR, textStatus,errorThrown) {
-			alert(jqXHR.status);
-			alert(textStatus);
-			alert(errorThrown);
+			showMessage(jqXHR.status,"error");
+			showMessage(textStatus,"error");
+			showMessage(errorThrown,"error");
 		
 		}
 	})
