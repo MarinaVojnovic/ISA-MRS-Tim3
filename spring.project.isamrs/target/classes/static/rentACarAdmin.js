@@ -102,9 +102,9 @@ $(document).on('click', '#findAmountRentacar', function(e) {
 			$("#amountRentacarValue").html(data.toFixed(2));
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
-			alert(jqXHR.status);
-			alert(textStatus);
-			alert(errorThrown);
+			showMessage(jqXHR.status,"error");
+			showMessage(textStatus,"error");
+			showMessage(errorThrown,"error");
 		}
 
 	})
@@ -169,9 +169,9 @@ function showGrades(){
 			$("#globalScore").append('<h2>Global score: '+data.score/data.number+'</h2>')
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
-			alert(jqXHR.status);
-			alert(textStatus);
-			alert(errorThrown);
+			showMessage(jqXHR.status,"error");
+			showMessage(textStatus,"error");
+			showMessage(errorThrown,"error");
 		}
 		
 	})
@@ -221,9 +221,9 @@ function showGrades(){
 				
 			},
 			error : function(jqXHR, textStatus, errorThrown) {
-				alert(jqXHR.status);
-				alert(textStatus);
-				alert(errorThrown);
+				showMessage(jqXHR.status,"error");
+				showMessage(textStatus,"error");
+				showMessage(errorThrown,"error");
 			}
 
 	})
@@ -239,18 +239,12 @@ function showGrades(){
 			createChart("myChart3", data.monthlyLabels, data.monthlyValues)
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
-			alert(jqXHR.status);
-			alert(textStatus);
-			alert(errorThrown);
+			showMessage(jqXHR.status,"error");
+			showMessage(textStatus,"error");
+			showMessage(errorThrown,"error");
 		}
 
 	})
-	/*createChart("myChart1", [ 'Red', 'Blue', 'Yellow', 'Green',
-		'Purple', 'Orange' ], [ 12, 19, 3, 5, 2, 3 ]);
-	createChart("myChart2", [ 'Red', 'Blue', 'Yellow', 'Green',
-		'Purple', 'Orange' ], [ 12, 19, 3, 5, 2, 3 ]);
-	createChart("myChart3", [ 'Red', 'Blue', 'Yellow', 'Green',
-		'Purple', 'Orange' ], [ 12, 19, 3, 5, 2, 3 ]);*/
 }
 
 function createChart(canvasId, labelNames, data) {
