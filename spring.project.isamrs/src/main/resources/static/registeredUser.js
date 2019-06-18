@@ -1732,12 +1732,12 @@ function searchFilter() {
 					var i = 0
 					$.each(list, function(index, destination) {
 						var option = $('<option value="' + destination.id
-								+ '">' + destination.name + '</option>')
+								+ '">' + destination.city + '</option>')
 						$("#startDestination").append(option);
 					})
 					$.each(list, function(index, destination) {
 						var option = $('<option value="' + destination.id
-								+ '">' + destination.name + '</option>')
+								+ '">' + destination.city + '</option>')
 						$("#finalDestination").append(option);
 					})
 
