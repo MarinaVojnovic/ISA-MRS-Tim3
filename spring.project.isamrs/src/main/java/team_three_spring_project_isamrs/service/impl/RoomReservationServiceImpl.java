@@ -59,5 +59,9 @@ public class RoomReservationServiceImpl implements RoomReservationService {
 	public List<RoomReservation> findByHotel(Hotel hotel) {
 		return roomReservationRepository.findByHotel(hotel);
 	}
+	@Override
+	public List<RoomReservation> findByFlightId(Long flightId){
+		return roomReservationRepository.findByFlightId(flightId);
+	}
 
 }
