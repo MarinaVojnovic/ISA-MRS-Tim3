@@ -270,7 +270,11 @@ function fillTableAirlines(data, table) {
 		cell2.innerHTML = response[counter].address;
 		cell3.innerHTML = response[counter].city;
 		cell4.innerHTML = response[counter].promotionalDescription;
-		cell5.innerHTML = response[counter].score;
+		if(response[counter].gradeNumber!=0){
+		cell5.innerHTML = (response[counter].score/response[counter].gradeNumber).toFixed(2);
+		}else{
+			cell5.innerHTML = response[counter].score;
+		}
 		cell6.innerHTML = '<button id=\"'
 				+ response[counter].id
 				+ '\" class=\" showAirlineProfile\" value=\"Show profile\">Show profile</button>';
@@ -344,7 +348,11 @@ function fillTableHotels(data) {
 		cell2.innerHTML = response[counter].address;
 		cell3.innerHTML = response[counter].city;
 		cell4.innerHTML = response[counter].promotionalDescription;
-		cell5.innerHTML = response[counter].score;
+		if(response[counter].gradeNumber!=0){
+			cell5.innerHTML = (response[counter].score/response[counter].gradeNumber).toFixed(2);
+			}else{
+				cell5.innerHTML = response[counter].score;
+			}
 		cell6.innerHTML = '<button id=\"'
 				+ response[counter].id
 				+ '\" class=\" showHotelProfile\" value=\"Show profile\">Show profile</button>';
@@ -418,7 +426,11 @@ function fillTableRentacars(data) {
 		cell2.innerHTML = response[counter].address;
 		cell3.innerHTML = response[counter].city;
 		cell4.innerHTML = response[counter].promotionalDescription;
-		cell5.innerHTML = response[counter].score;
+		if(response[counter].number!=0){
+			cell5.innerHTML = (response[counter].score/response[counter].number).toFixed(2);
+			}else{
+				cell5.innerHTML = response[counter].score;
+			}
 		cell6.innerHTML = '<button id=\"'
 				+ response[counter].id
 				+ '\" class=\" showRentacarProfile\" value=\"Show profile\">Show profile</button>';
@@ -500,7 +512,11 @@ function fillTableFlights(data, table) {
 		cell7.innerHTML = response[counter].dateOfEnd;
 		cell8.innerHTML = response[counter].numOfStops;
 		cell9.innerHTML = response[counter].lengthOfFlight;
-		cell10.innerHTML = response[counter].score;
+		if(response[counter].gradeNumber!=0){
+			cell10.innerHTML = (response[counter].score/response[counter].gradeNumber).toFixed(2);
+			}else{
+				cell10.innerHTML = response[counter].score;
+			}
 
 	}
 	var row = tabela.insertRow(0);
@@ -549,7 +565,11 @@ function fillTableRooms(data, table) {
 		cell2.innerHTML = response[counter].roomNumber;
 		cell3.innerHTML = response[counter].price;
 		cell4.innerHTML = response[counter].numberPeople;
-		cell5.innerHTML = response[counter].score;
+		if(response[counter].gradeNumber!=0){
+			cell5.innerHTML = (response[counter].score/response[counter].gradeNumber).toFixed(2);
+			}else{
+				cell5.innerHTML = response[counter].score;
+			}
 
 	}
 	var row = tabela.insertRow(0);
@@ -596,7 +616,11 @@ function fillTableCars(data, table) {
 		cell6.innerHTML = response[counter].carType;
 		cell7.innerHTML = response[counter].brand;
 		cell8.innerHTML = response[counter].model;
-		cell9.innerHTML = response[counter].score;
+		if(response[counter].number!=0){
+			cell9.innerHTML = (response[counter].score/response[counter].number).toFixed(2);
+			}else{
+				cell9.innerHTML = response[counter].score;
+			}
 
 	}
 	var row = tabela.insertRow(0);
@@ -660,7 +684,11 @@ $(document).on(
 						$("#airlineProfileAddress").html(data.address);
 						$("#airlineProfilePromoDescription").html(
 								data.promotionalDescription);
-						$("#airlineProfileScore").html(data.score);
+						if(data.gradeNumber!=0){
+						$("#airlineProfileScore").html(data.score/data.gradeNumber).toFixed(2);
+						}else{
+							$("#airlineProfileScore").html(data.score);
+						}
 
 						var finalPath3 = urlRoot13 + "/" + ID;
 						$.ajax({
@@ -779,7 +807,11 @@ $(document).on(
 						$("#hotelProfileAddress").html(data.address);
 						$("#hotelProfilePromoDescription").html(
 								data.promotionalDescription);
-						$("#hotelProfileScore").html(data.score);
+						if(data.gradeNumber!=0){
+						$("#hotelProfileScore").html(data.score/data.gradeNumber).toFixed(2);
+						}else{
+							$("#hotelProfileScore").html(data.score);
+						}
 
 						var finalPath3 = urlRoot14 + "/" + ID;
 						$.ajax({
@@ -898,7 +930,11 @@ $(document).on(
 						$("#rentacarProfileAddress").html(data.address);
 						$("#rentacarProfilePromoDescription").html(
 								data.promotionalDescription);
-						$("#rentacarProfileScore").html(data.score);
+						if(data.number!=0){
+						$("#rentacarProfileScore").html(data.score/data.number).toFixed(2);
+						}else{
+							$("#rentacarProfileScore").html(data.score);
+						}
 
 						var finalPath3 = urlRoot15 + "/" + ID;
 						$.ajax({

@@ -97,7 +97,7 @@ public class Room {
 
 	public Room(RoomDTO roomDTO) {
 		this.roomNumber = roomDTO.getRoomNumberRegister();
-		this.numberPeople = roomDTO.getRoomNumberRegister();
+		this.numberPeople = roomDTO.getRoomPeopleNumberRegister();
 		this.price = roomDTO.getRoomPriceRegister();
 		this.score = 0.0;
 		this.gradeNumber = 0;

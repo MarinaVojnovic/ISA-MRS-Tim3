@@ -263,8 +263,10 @@ public class UserController {
 
 		List<FlightReservationDTO> resDTO = new ArrayList<>();
 		for (FlightReservation fr : res) {
-			FlightReservationDTO dto = new FlightReservationDTO(fr);
-			resDTO.add(dto);
+			if(fr.getConfirmed()==true) {
+				FlightReservationDTO dto = new FlightReservationDTO(fr);
+				resDTO.add(dto);
+			}
 		}
 		return new ResponseEntity<>(resDTO, HttpStatus.OK);
 
@@ -461,10 +463,26 @@ public class UserController {
 	@PreAuthorize("hasRole('ROLE_USER')")
 	public ResponseEntity<FinishedReservationDTO> finishReservation(@PathVariable Long id) {
 		FlightReservation fr = this.flightReservationService.getOne(id);
+		List<CarReservation> cr=this.carReservationService.findByFlightId(id);
+		List<RoomReservation> rr=this.roomReservationService.findByFlightId(id);
+		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		String message = "You have successfully reserved flight from: "
 				+ fr.getFlightReservation().getStartAirline().getCity() + " to "
 				+ fr.getFlightReservation().getFinalAirline().getCity() + " on "
 				+ fr.getFlightReservation().getDateOfStart();
+		if(cr.size()!=0) {
+			for(CarReservation c: cr) {
+			message+= "\nYou have successfully reserved car: "+ c.getCar().getBrand()+" "+c.getCar().getName() + " from "+df.format(c.getStartDate()) + " to "+df.format(c.getEndDate());
+			break;
+			}
+			}
+		if(rr.size()!=0) {
+			for(RoomReservation r: rr) {
+			message+="\nYou have successfully reserved room in hotel: "+r.getHotel().getName()+" from "+ r.getStartDate()+" to " + r.getEndDate(); 
+		}
+		}
+		
+		
 		String email = fr.getRegularUserFlightReservation().getEmail();
 		FinishedReservationDTO dto = new FinishedReservationDTO(fr, new CarReservation(), new HotelReservation(),
 				message, email);

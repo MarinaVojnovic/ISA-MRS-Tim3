@@ -130,6 +130,10 @@ function saveSubmitFast(id){
 		showMessage('Price is not allowed to be null',"warning");
 	}else if(new Date > new Date(startDate) || new Date() > new Date(endDate)) {
 		showMessage('Date is not allowed to be in the past',"warning");
+	}
+	else if (new Date(startDate) > new Date(endDate)){
+		showMessage('Date cannot be in past',"warning");
+		
 	}else {
 		$.ajax({
 			type : 'PUT',
@@ -170,7 +174,13 @@ function showGrades(){
 		headers : createAuthorizationTokenHeader(TOKEN_KEY),
 		dataType : "json",
 		success : function(data) {
-			$("#globalScore").append('<h2>Global score: '+data.score/data.number+'</h2>')
+			var ocena=0;
+			console.log('**********'+data.number+'****');
+			
+			if (data.number!=0){
+				ocena=Math.round(data.score/data.number);
+			}
+			$("#globalScore").append('<h2>Global score: '+ocena+'</h2>')
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
 			showMessage(jqXHR.status,"error");
@@ -205,7 +215,11 @@ function showGrades(){
 					
 
 					cell1.innerHTML = response[counter].name;
-					cell2.innerHTML = response[counter].score/response[counter].number;
+					var ocena=0;
+					if (response[counter].number!=0){
+						ocena=Math.round(response[counter].score/response[counter].number);
+					}
+					cell2.innerHTML =ocena;
 					
 
 				}

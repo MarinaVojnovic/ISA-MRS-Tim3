@@ -17,7 +17,7 @@ ON DUPLICATE KEY UPDATE id = 3;
 
 -- Inserting default hotels in database
 INSERT INTO hotel (id, address, name, promotional_description, grade_number, score, city, version) 
-VALUES (1, 'Kneza Milosa 1, Bijeljina 76300', 'Hotel Drina', 'Hotel da spavas i jedes', 0, 0.0, 'Paris', 0)
+VALUES (1, 'Aerodrom Beograd 59, 11180 Beograd', 'Hotel Drina', 'Hotel da spavas i jedes', 0, 0.0, 'Beograd', 0)
 ON DUPLICATE KEY UPDATE id = 1;
 
 insert INTO room(id, grade_number,number_people, price, room_number, score, hotel_id)
@@ -29,7 +29,7 @@ values (102, 0, 3, 70, 2, 0, 1) ON DUPLICATE KEY UPDATE id = 102;
 -- Inserting default rent-a-car services in database
 INSERT INTO rentacar (id, address, name, promotional_description, number, score, city) 
 VALUES (1, '9, 21000, Dr Svetislava Kasapinovica, Novi Sad', 'RENTACAR NOVI SAD DDM COMPANY'
-		, 'Rentacar da uzmes auto i vozis', 0, 0.0, 'Novi Sad')
+		, 'Rentacar da uzmes auto i vozis', 0, 0.0, 'Beograd')
 ON DUPLICATE KEY UPDATE id = 1;
 
 insert INTO car(id, brand, car_type, fast_res_end_date, fast_res_price, fast_res_start_date, model, name, number, on_fast_res, price, score, seats, version, car_year, rentacar_id)

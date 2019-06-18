@@ -59,7 +59,7 @@ public class FlightController {
 	public ResponseEntity<Flight> gradeFlight(@PathVariable Long id, @PathVariable Integer grade) {
 		Flight flight = flightService.getOne(id);
 		flight.setScore(flight.getScore() + grade);
-		flight.setNumber(flight.getNumber() + 1);
+		flight.setGradeNumber(flight.getGradeNumber() + 1);
 		flightService.save(flight);
 		return new ResponseEntity<>(flight, HttpStatus.CREATED);
 	}

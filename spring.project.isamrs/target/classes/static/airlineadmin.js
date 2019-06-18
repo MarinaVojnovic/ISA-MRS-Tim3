@@ -120,8 +120,9 @@ function fillDatas() {
 				if (data.gradeNumber != 0) {
 					$("#reportAirlineAverageGrade").html(
 							(data.score / data.gradeNumber).toFixed(2));
+				}else{
+				$("#reportAirlineAverageGrade").html((data.score).toFixed(2));
 				}
-				$("#reportAirlineAverageGrade").html((data.score).toFixed(2))
 			}
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
