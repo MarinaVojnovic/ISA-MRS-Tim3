@@ -430,6 +430,19 @@ public class UserController {
 		return new ResponseEntity<>(frd, HttpStatus.CREATED);
 
 	}
+	
+
+	@GetMapping(value = "/acceptFlightReservation/{id}")
+	public RedirectView acceptFlightReservation(@PathVariable Long id) {
+			FlightReservation res = this.flightReservationService.getOne(id);
+	
+			if (res != null) {
+				res.setConfirmed(true);
+				this.flightReservationService.save(res);
+				return new RedirectView("http://localhost:8080/acceptedReservation.html");
+			}
+			return null;
+	}
 
 	@GetMapping(value = "/rejectFlightReservation/{id}")
 	public RedirectView rejectFlightReservation(@PathVariable Long id) {
