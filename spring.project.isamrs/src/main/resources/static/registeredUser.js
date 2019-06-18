@@ -3813,6 +3813,7 @@ $(document).on('click', "#finishReservation", function(e) {
 			if (data) {
 				sendEmailReservation(data.message, data.email);
 				showMessage("Successfully finished reservation.","success");
+				sessionStorage.removeItem("flightReservationId");
 				openCity(e, 'searchAndFilterFlight');
 			} else {
 
