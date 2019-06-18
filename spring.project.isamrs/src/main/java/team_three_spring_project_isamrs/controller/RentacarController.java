@@ -26,6 +26,7 @@ import team_three_spring_project_isamrs.comparator.RentACarComparatorName;
 import team_three_spring_project_isamrs.dto.RentacarDTO;
 import team_three_spring_project_isamrs.dto.ReportRentacarAttendanceDTO;
 import team_three_spring_project_isamrs.model.CarReservation;
+import team_three_spring_project_isamrs.model.Hotel;
 import team_three_spring_project_isamrs.model.Rentacar;
 import team_three_spring_project_isamrs.model.RentacarAdmin;
 import team_three_spring_project_isamrs.service.CarReservationService;
@@ -190,6 +191,14 @@ public class RentacarController {
 		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
+	}
+	
+	@GetMapping(value = "/findRentacarByDestination/{address}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<Rentacar>> findHotelsByDestination(@PathVariable String address) {
+		List<Rentacar> rentacars = rentacarService.findByCity(address);
+		System.out.println("VELICINAAAA: "+rentacars.size());
+		System.out.println("city: "+address);
+		return new ResponseEntity<>(rentacars, HttpStatus.OK);
 	}
 
 	@PutMapping(value = "/saveChangesRentACar", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
