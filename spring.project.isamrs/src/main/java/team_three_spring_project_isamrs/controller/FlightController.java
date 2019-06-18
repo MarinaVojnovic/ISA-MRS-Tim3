@@ -120,10 +120,10 @@ public class FlightController {
 			if (!endDate.equals("0000-00-00") && !endDate.equals(endDatee)) {
 				continue;
 			}
-			if (startDestination != 0 && startDestination.equals(flight.getStartAirline().getId())) {
+			if (startDestination != 0 && !startDestination.equals(flight.getStartAirline().getId())) {
 				continue;
 			}
-			if (endDestination != 0 && endDestination.equals(flight.getFinalAirline().getId())) {
+			if (endDestination != 0 && !endDestination.equals(flight.getFinalAirline().getId())) {
 				continue;
 			}
 			retVal.add(flight);

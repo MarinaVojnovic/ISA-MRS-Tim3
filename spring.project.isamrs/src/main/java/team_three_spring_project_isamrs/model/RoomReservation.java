@@ -47,6 +47,9 @@ public class RoomReservation {
 	@Column(name = "fast_reserved")
 	private Boolean fastReserved;
 
+	@Column(name = "flight_id")
+	private Long flightId;
+
 	@ManyToOne(fetch = FetchType.EAGER)
 	Hotel hotel;
 
@@ -176,5 +179,13 @@ public class RoomReservation {
 
 	public void setEndDate(String endDate) {
 		this.endDate = endDate;
+	}
+
+	public Long getFlightId() {
+		return flightId;
+	}
+
+	public void setFlightId(Long flightId) {
+		this.flightId = flightId;
 	}
 }

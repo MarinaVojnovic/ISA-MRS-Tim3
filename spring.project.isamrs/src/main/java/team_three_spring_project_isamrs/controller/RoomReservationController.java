@@ -92,6 +92,7 @@ public class RoomReservationController {
 			return new ResponseEntity<>(new MessageDTO("Bad format of dates!", "Error"), HttpStatus.OK);
 		}
 		RoomReservation retVal = new RoomReservation();
+		retVal.setFlightId(roomReservationDTO.getFlightId());
 		retVal.setRegularUser(user);
 		retVal.setFastReserved(false);
 		retVal.setRoomFastReservationId(0L);
@@ -129,9 +130,9 @@ public class RoomReservationController {
 		return new ResponseEntity<>(new MessageDTO("Succesfully made reservation!", "Error"), HttpStatus.CREATED);
 	}
 
-	@PostMapping(value = "/createRoomReservationFast/{roomFastReservationId}", consumes = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value = "/createRoomReservationFast/{roomFastReservationId}/{flightId}", consumes = MediaType.APPLICATION_JSON_VALUE)
 	@PreAuthorize("hasRole('ROLE_USER')")
-	public ResponseEntity<MessageDTO> create(@PathVariable Long roomFastReservationId) throws ParseException {
+	public ResponseEntity<MessageDTO> create(@PathVariable Long roomFastReservationId, @PathVariable Long flightId) throws ParseException {
 
 		RegularUser user = (RegularUser) this.userDetailsService
 				.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
@@ -151,6 +152,7 @@ public class RoomReservationController {
 		for (HotelCustomerService hcsss : rfr.getHotelCustomerServices()) {
 			retVal.getHotelCustomerServices().add(hcsss);
 		}
+		retVal.setFlightId(flightId);
 		retVal.getRooms().add(rfr.getRoom());
 		retVal.setFastReserved(true);
 		retVal.setRoomFastReservationId(roomFastReservationId);

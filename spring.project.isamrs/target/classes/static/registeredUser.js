@@ -2639,8 +2639,7 @@ function takeCar(id, startDate, endDate, passengers, typeOfRes) {
 			 * $(".messageSuitableCars") .append( '<br><button type="submit"
 			 * style="background: #cc0033;align: center; color: white"
 			 * id="finishReservation" style="float: left;/">Finish reservation
-			 * </button>');
-			 *  }
+			 * </button>'); }
 			 */
 		},
 		error : function(jqXHR, textStatus, errorThrown) {
@@ -2881,6 +2880,10 @@ $(document)
 					startDate = startDate.replace("T", " ");
 					endDate = endDate.replace("T", " ");
 					var numberHotelDiscount = getHotelDiscountValue();
+					var flightId = sessionStorage.getItem("flightReservationId");
+					if (!flightId){
+						flightId = -1;
+					}
 					if (roomIds == "") {
 						showMessage('You must pick at least one room!',"warning");
 					} else {
@@ -2892,7 +2895,7 @@ $(document)
 									dataType : "json",
 									data : roomReservationToJSON(startDate,
 											endDate, discount, hcsIds, roomIds,
-											numberHotelDiscount),
+											numberHotelDiscount, flightId),
 									headers : createAuthorizationTokenHeader(TOKEN_KEY),
 									success : function(data) {
 										showMessage(data.message,"success")
@@ -2976,7 +2979,11 @@ function fillTableRoomFastReservations(data, table) {
 $(document).on('click', '.reserveRFR', function(e) {
 	e.preventDefault();
 	var ID = this.id;
-	var finalPath = urlRootReserveFastRoomReservation + "/" + ID;
+	var flightId = sessionStorage.getItem("flightReservationId");
+	if (!flightId){
+		flightId = -1;
+	}
+	var finalPath = urlRootReserveFastRoomReservation + "/" + ID + "/" + flightId;
 	$.ajax({
 		type : 'POST',
 		url : finalPath,
@@ -4209,7 +4216,7 @@ function createReservationToJSON(sed, idjeviPutnik, l, brojPasosa) {
 }
 
 function roomReservationToJSON(startDate, endDate, discount, hcsIds, roomIds,
-		numberHotelDiscount) {
+		numberHotelDiscount, flightId) {
 	return JSON.stringify({
 		"startDate" : startDate,
 		"endDate" : endDate,
@@ -4217,6 +4224,7 @@ function roomReservationToJSON(startDate, endDate, discount, hcsIds, roomIds,
 		"hotelCustomerServices" : hcsIds,
 		"roomIds" : roomIds,
 		"numberHotelDiscount" : numberHotelDiscount,
+		"flightId":        flightId,
 	})
 }
 
