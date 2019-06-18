@@ -17,7 +17,7 @@ ON DUPLICATE KEY UPDATE id = 3;
 
 -- Inserting default hotels in database
 INSERT INTO hotel (id, address, name, promotional_description, grade_number, score, city, version) 
-VALUES (1, 'Kneza Milosa 1, Bijeljina 76300', 'Hotel Drina', 'Hotel da spavas i jedes', 0, 0.0, 'Bijeljina', 0)
+VALUES (1, 'Kneza Milosa 1, Bijeljina 76300', 'Hotel Drina', 'Hotel da spavas i jedes', 0, 0.0, 'Paris', 0)
 ON DUPLICATE KEY UPDATE id = 1;
 
 insert INTO room(id, grade_number,number_people, price, room_number, score, hotel_id)
@@ -166,3 +166,85 @@ insert into branch_office(id, address, city, rentacar_id)
 values (101, 'Balzakova 88', 'Novi Sad', 1)
 ON DUPLICATE KEY UPDATE id = 101;
 
+insert into branch_office(id, address, city, rentacar_id)
+values (102, 'Balzakova 77', 'Paris', 1)
+ON DUPLICATE KEY UPDATE id = 102;
+
+insert INTO flight(id, cost, date_of_end,date_of_start,grade_number,length_of_flight,num_of_stops,number,score,airline_id,final_id,start_id)
+values (102, 300, '2018-06-20 03:00', '2018-06-20 01:00', 0, 120, 0, 123, 0, 2, 3, 2) on duplicate key update id=102;
+
+insert into seats(id,discount,class,quick_booking,taken,version,flight_id) values
+(31,0,2,false,true,1,102) on duplicate key update id=31;
+
+insert into flight_reservation(id,confirmed,date_sold,discount,last_name,name,passport_num,price, flight_reservation_id,regular_user_flight_reservation_id,seat_id) 
+values (1,true,'2018-06-18 12:04:05',0,'Nikolic','Nikola',123,200,102,5,31) on duplicate key update id=1;
+
+insert into car_reservation(id,discount,end_date,flight_id,num_of_pass,price,start_date,car_id,regular_user_id,rentacar_res_id)
+values (1,0,'2018-06-27',1,123,100,'2018-06-24',104,5,1) on duplicate key update id=1;
+
+insert into room_reservation(id,discount,end_date,fast_reserved,flight_id,num_of_pass,price,fast_room_id,start_date,hotel_id,regular_user_id)
+values(1,0,'2018-06-27 12:00',false,1,1,100,-1,'2018-06-24 12:00',1,5) on duplicate key update id=1;
+
+insert into room_room_reservation(room_reservation_id,room_id) values (1,101) on duplicate key update room_reservation_id=1;
+
+insert into seats(id,discount,class,quick_booking,taken,version,flight_id) values
+(1,0,1,false,false,1,100) on duplicate key update id=1;
+insert into seats(id,discount,class,quick_booking,taken,version,flight_id) values
+(2,0,1,false,false,1,100) on duplicate key update id=2;
+insert into seats(id,discount,class,quick_booking,taken,version,flight_id) values
+(3,0,1,false,false,1,100) on duplicate key update id=3;
+insert into seats(id,discount,class,quick_booking,taken,version,flight_id) values
+(4,0,1,false,false,1,100) on duplicate key update id=4;
+insert into seats(id,discount,class,quick_booking,taken,version,flight_id) values
+(5,0,1,false,false,1,100) on duplicate key update id=5;
+insert into seats(id,discount,class,quick_booking,taken,version,flight_id) values
+(6,0,0,false,false,1,100) on duplicate key update id=6;
+insert into seats(id,discount,class,quick_booking,taken,version,flight_id) values
+(7,0,0,false,false,1,100) on duplicate key update id=7;
+insert into seats(id,discount,class,quick_booking,taken,version,flight_id) values
+(8,0,0,false,false,1,100) on duplicate key update id=8;
+insert into seats(id,discount,class,quick_booking,taken,version,flight_id) values
+(9,0,0,false,false,1,100) on duplicate key update id=9;
+insert into seats(id,discount,class,quick_booking,taken,version,flight_id) values
+(10,0,0,false,false,1,100) on duplicate key update id=10;
+insert into seats(id,discount,class,quick_booking,taken,version,flight_id) values
+(11,0,2,false,false,1,100) on duplicate key update id=11;
+insert into seats(id,discount,class,quick_booking,taken,version,flight_id) values
+(12,0,2,false,false,1,100) on duplicate key update id=12;
+insert into seats(id,discount,class,quick_booking,taken,version,flight_id) values
+(13,0,2,false,false,1,100) on duplicate key update id=13;
+insert into seats(id,discount,class,quick_booking,taken,version,flight_id) values
+(14,0,2,false,false,1,100) on duplicate key update id=14;
+insert into seats(id,discount,class,quick_booking,taken,version,flight_id) values
+(15,0,2,false,false,1,100) on duplicate key update id=15;
+
+insert into seats(id,discount,class,quick_booking,taken,version,flight_id) values
+(16,0,1,false,false,1,101) on duplicate key update id=16;
+insert into seats(id,discount,class,quick_booking,taken,version,flight_id) values
+(17,0,1,false,false,1,101) on duplicate key update id=17;
+insert into seats(id,discount,class,quick_booking,taken,version,flight_id) values
+(18,0,1,false,false,1,101) on duplicate key update id=18;
+insert into seats(id,discount,class,quick_booking,taken,version,flight_id) values
+(19,0,1,false,false,1,101) on duplicate key update id=19;
+insert into seats(id,discount,class,quick_booking,taken,version,flight_id) values
+(20,0,1,false,false,1,101) on duplicate key update id=20;
+insert into seats(id,discount,class,quick_booking,taken,version,flight_id) values
+(21,0,0,false,false,1,101) on duplicate key update id=21;
+insert into seats(id,discount,class,quick_booking,taken,version,flight_id) values
+(22,0,0,false,false,1,101) on duplicate key update id=22;
+insert into seats(id,discount,class,quick_booking,taken,version,flight_id) values
+(23,0,0,false,false,1,101) on duplicate key update id=23;
+insert into seats(id,discount,class,quick_booking,taken,version,flight_id) values
+(24,0,0,false,false,1,101) on duplicate key update id=24;
+insert into seats(id,discount,class,quick_booking,taken,version,flight_id) values
+(25,0,0,false,false,1,101) on duplicate key update id=25;
+insert into seats(id,discount,class,quick_booking,taken,version,flight_id) values
+(26,0,2,false,false,1,101) on duplicate key update id=26;
+insert into seats(id,discount,class,quick_booking,taken,version,flight_id) values
+(27,0,2,false,false,1,101) on duplicate key update id=27;
+insert into seats(id,discount,class,quick_booking,taken,version,flight_id) values
+(28,0,2,false,false,1,101) on duplicate key update id=28;
+insert into seats(id,discount,class,quick_booking,taken,version,flight_id) values
+(29,0,2,false,false,1,101) on duplicate key update id=29;
+insert into seats(id,discount,class,quick_booking,taken,version,flight_id) values
+(30,0,2,false,false,1,101) on duplicate key update id=30;
