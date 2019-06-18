@@ -17,6 +17,7 @@ public class RoomReservationDTO {
 	private String hotelCustomerServices;
 	private Double discount;
 	private Integer numberHotelDiscount;
+	private Long flightId;
 
 	public String getHotelName() {
 		return hotelName;
@@ -92,6 +93,7 @@ public class RoomReservationDTO {
 
 	public RoomReservationDTO(RoomReservation room) {
 		super();
+		this.flightId = room.getFlightId();
 		this.id = room.getId();
 		this.hotelName = room.getHotel().getName();
 		this.startDate = room.getStartDate();
@@ -125,8 +127,10 @@ public class RoomReservationDTO {
 	}
 
 	public RoomReservationDTO(Long id, String roomIds, Long hotelId, String startDate, String endDate, Double price,
-			Integer numOfPass, String hotelCustomerServices, Double discount, Integer numberHotelDiscount) {
+			Integer numOfPass, String hotelCustomerServices, Double discount, Integer numberHotelDiscount,
+			Long flightId) {
 		super();
+		this.flightId = flightId;
 		this.id = id;
 		this.roomIds = roomIds;
 		this.hotelId = hotelId;
@@ -157,6 +161,14 @@ public class RoomReservationDTO {
 
 	public void setNumberHotelDiscount(Integer numberHotelDiscount) {
 		this.numberHotelDiscount = numberHotelDiscount;
+	}
+
+	public Long getFlightId() {
+		return flightId;
+	}
+
+	public void setFlightId(Long flightId) {
+		this.flightId = flightId;
 	}
 
 }
