@@ -62,7 +62,8 @@ public class FlightReservation {
 	
 	@Column(name="lastName")
 	String lastName;
-
+	
+	
 	public Long getId() {
 		return id;
 	}
