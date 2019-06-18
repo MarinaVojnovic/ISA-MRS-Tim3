@@ -1240,7 +1240,11 @@ function fillTableAirlines(data) {
 		cell2.innerHTML = response[counter].address;
 		cell3.innerHTML = response[counter].city;
 		cell4.innerHTML = response[counter].promotionalDescription;
-		cell5.innerHTML = response[counter].score;
+		var ocena = 0;
+		if (response[counter].gradeNumber!=0){
+			ocena=Math.round(response[counter].score/response[counter].gradeNumber);
+		}
+		cell5.innerHTML = ocena;
 		cell6.innerHTML = '<button id=\"'
 				+ response[counter].id
 				+ '\" class=\" showAirlineProfile\" value=\"Show profile\" style=\"background:#cc0033;color: white\">Show profile</button>';
@@ -1299,7 +1303,11 @@ function fillTableHotels(data) {
 		cell2.innerHTML = response[counter].address;
 		cell3.innerHTML = response[counter].city;
 		cell4.innerHTML = response[counter].promotionalDescription;
-		cell5.innerHTML = response[counter].score;
+		var ocena=0;
+		if (response[counter].gradeNumber != 0){
+			ocena = Math.round(response[counter].score/response[counter].gradeNumber);
+		}
+		cell5.innerHTML = ocena;
 		cell6.innerHTML = '<button id=\"'
 				+ response[counter].id
 				+ '\" class=\" showHotelProfile\" value=\"Show profile\" style=\"background:#cc0033;color: white\">Show profile</button>';
@@ -1477,7 +1485,11 @@ function fillTableRentacars(data) {
 		cell2.innerHTML = response[counter].address;
 		cell3.innerHTML = response[counter].city;
 		cell4.innerHTML = response[counter].promotionalDescription;
-		cell5.innerHTML = response[counter].score;
+		var ocena=0;
+		if (response[counter].number!=0){
+			ocena=Math.round(response[counter].score/response[counter].number);
+		}
+		cell5.innerHTML = ocena;
 		cell6.innerHTML = '<button id=\"'
 				+ response[counter].id
 				+ '\" class=\" showRentacarProfile\" value=\"Show profile\" style=\"background:#cc0033;color: white\">Show profile</button>';
@@ -2599,7 +2611,7 @@ function searchForCars(rentacarId) {
 							cell7.innerHTML = response[counter].brand;
 							cell8.innerHTML = response[counter].model;
 							cell6.innerHTML = response[counter].seats;
-							var grade= response[counter].score / response[counter].number;
+							var grade= Math.round(response[counter].score / response[counter].number);
 							if (response[counter].number==0){
 								grade="No grade";
 							}
@@ -2763,7 +2775,11 @@ function fillTableRoomPick(data, table) {
 		cell2.innerHTML = response[counter].roomNumber;
 		cell3.innerHTML = response[counter].price;
 		cell4.innerHTML = response[counter].numberPeople;
-		cell5.innerHTML = response[counter].score;
+		var ocena = 0;
+		if (response[counter].gradeNumber!=0){
+			ocena=Math.round(response[counter].score/response[counter].gradeNumber);
+		}
+		cell5.innerHTML = ocena;
 
 	}
 	var row = tabela.insertRow(0);
@@ -2967,7 +2983,7 @@ $(document)
 									headers : createAuthorizationTokenHeader(TOKEN_KEY),
 									success : function(data) {
 										showMessage(data.message,"success")
-										openCity(e, 'hotels');
+										openCity(e, 'hotelReservation');
 										$("#pickRoomAndHcs").hide();
 										$("#roomReservationStartDate").prop(
 												'disabled', false);
@@ -3594,10 +3610,8 @@ $(document).on('click','#inviteMore',function(e){
 		    		$("#inviteFriend").empty();
 		    		$("#inviteFriend")
 					.append(
-							'<button type="submit" style="background: #cc0033; color: white" id="offerRentacarsButton" style="float: left;">Rentacars</button>');
-		    		$("#inviteFriend")
-					.append(
-							'<br><button type="submit" style="background: #cc0033; color: white" id="offerHotelsButton" style="float: left;/">Hotels</button>');
+							'<button type="submit" style="background: #cc0033; color: white" id="offerRentacarsButton" style="float: left;">Rentacars and hotels</button>');
+		    		
 		    		$("#inviteFriend")
 					.append(
 							'<br><button type="submit" style="background: #cc0033; color: white" id="finishReservation" style="float: left;/">Finish reservation</button>');
@@ -3669,10 +3683,8 @@ $(document).on('click',"#nextButton",function(e){
 		    		$("#inviteFriend").empty();
 		    		$("#inviteFriend")
 					.append(
-							'<br><button type="submit" style="background: #cc0033; color: white" id="offerRentacarsButton" style="float: left;">Rentacars</button>');
-		    		$("#inviteFriend")
-					.append(
-							'<br><button type="submit" style="background: #cc0033; color: white" id="offerHotelsButton" style="float: left;/">Hotels</button>');
+							'<br><button type="submit" style="background: #cc0033; color: white" id="offerRentacarsButton" style="float: left;">Rentacars and hotels</button>');
+		    		
 		    		$("#inviteFriend")
 					.append(
 							'<br><button type="submit" style="background: #cc0033; color: white" id="finishReservation" style="float: left;/">Finish reservation</button>');
@@ -3790,10 +3802,8 @@ $(document)
 
 					$("#flightReservation")
 							.append(
-									'<button type="submit" style="background: #cc0033; color: white" id="offerRentacarsButton" style="float: left;">Rentacars</button>');
-					$("#flightReservation")
-							.append(
-									'<br><button type="submit" style="background: #cc0033; color: white" id="offerHotelsButton" style="float: left;/">Hotels</button>');
+									'<button type="submit" style="background: #cc0033; color: white" id="offerRentacarsButton" style="float: left;">Rentacars and Hotels</button>');
+				
 					$("#flightReservation")
 							.append(
 									'<br><button type="submit" style="background: #cc0033; color: white" id="finishReservation" style="float: left;/">Finish reservation</button>');
@@ -3813,7 +3823,34 @@ $(document).on('click', "#finishReservation", function(e) {
 			if (data) {
 				sendEmailReservation(data.message, data.email);
 				showMessage("Successfully finished reservation.","success");
-				sessionStorage.removeItem("flightReservationId");
+				openCity(e, 'searchAndFilterFlight');
+			} else {
+
+			}
+		},
+		error : function(jqXHR, textStatus, errorThrown) {
+			showMessage(jqXHR.status,"error");
+			showMessage(textStatus,"error");
+			showMessage(errorThrown,"error");
+		}
+
+	})
+})
+
+
+$(document).on('click', ".finishReservationButton", function(e) {
+	e.preventDefault();
+	var id = JSON.parse(sessionStorage["flightReservationId"])
+	console.log(id + "ODHHDHD");
+	$.ajax({
+		type : 'GET',
+		url : finishReservationUrl + "/" + id,
+		headers : createAuthorizationTokenHeader(TOKEN_KEY),
+		contentType : 'application/json',
+		success : function(data) {
+			if (data) {
+				sendEmailReservation(data.message, data.email);
+				showMessage("Successfully finished reservation.","success");
 				openCity(e, 'searchAndFilterFlight');
 			} else {
 
@@ -3967,7 +4004,7 @@ function showRentacarsDest(data, startDate, endDate) {
 		cell3.innerHTML = response[counter].promotionalDescription;
 		var grade="No grade";
 		if (response[counter].number!=0){
-			grade=response[counter].score/response[counter].number;
+			grade=Math.round(response[counter].score/response[counter].number);
 		}
 		cell4.innerHTML = grade;
 		cell6.innerHTML = '<button style="background: #cc0033; color: white" id=\"'
@@ -4390,7 +4427,11 @@ $(document).on(
 						$("#rentacarProfileAddress").html(data.address);
 						$("#rentacarProfilePromoDescription").html(
 								data.promotionalDescription);
-						$("#rentacarProfileScore").html(data.score);
+						var ocena=0;
+						if(data.number!=0){
+							ocena=Math.round(data.score/data.number);
+						}
+						$("#rentacarProfileScore").html(ocena);
 
 						var finalPath3 = urlRootProfile15 + "/" + ID;
 						$.ajax({
@@ -4457,7 +4498,11 @@ $(document).on(
 						$("#hotelProfileAddress").html(data.address);
 						$("#hotelProfilePromoDescription").html(
 								data.promotionalDescription);
-						$("#hotelProfileScore").html(data.score);
+						var ocena=0;
+						if (data.gradeNumber!=0){
+							ocena=Math.round(data.score/data.gradeNumber);
+						}
+						$("#hotelProfileScore").html(ocena);
 
 						var finalPath3 = urlRootProfile14 + "/" + ID;
 						$.ajax({
@@ -4525,7 +4570,11 @@ $(document).on(
 						$("#airlineProfileAddress").html(data.address);
 						$("#airlineProfilePromoDescription").html(
 								data.promotionalDescription);
-						$("#airlineProfileScore").html(data.score);
+						var ocena=0;
+						if (data.gradeNumber!=0){
+							ocena=Math.round(data.score/data.gradeNumber);
+						}
+						$("#airlineProfileScore").html(ocena);
 
 						var finalPath3 = urlRootProfile13 + "/" + ID;
 						$.ajax({
@@ -4585,7 +4634,12 @@ function fillTableCars(data, table) {
 		cell6.innerHTML = response[counter].carType;
 		cell7.innerHTML = response[counter].brand;
 		cell8.innerHTML = response[counter].model;
-		cell9.innerHTML = response[counter].score;
+		var ocena = 0;
+		
+		if (response[counter].number!=0){
+			ocena=Math.round(response[counter].score/response[counter].number);
+		}
+		cell9.innerHTML = ocena;
 
 	}
 	var row = tabela.insertRow(0);
@@ -4632,7 +4686,11 @@ function fillTableRooms(data, table) {
 		cell2.innerHTML = response[counter].roomNumber;
 		cell3.innerHTML = response[counter].price;
 		cell4.innerHTML = response[counter].numberPeople;
-		cell5.innerHTML = response[counter].score;
+		var ocena=0;
+		if(response[counter].number!=0){
+			ocena= Math.round(response[counter].score/ response[counter].number);
+		}
+		cell5.innerHTML = ocena;
 
 	}
 	var row = tabela.insertRow(0);
@@ -4680,7 +4738,11 @@ function fillTableFlights(data, table) {
 		cell7.innerHTML = response[counter].dateOfEnd;
 		cell8.innerHTML = response[counter].numOfStops;
 		cell9.innerHTML = response[counter].lengthOfFlight;
-		cell10.innerHTML = response[counter].score;
+		var ocena=0;
+		if (response[counter].number!=0){
+			ocena=Math.round(response[counter].score/response[counter].number);
+		}
+		cell10.innerHTML = ocena;
 
 	}
 	var row = tabela.insertRow(0);
