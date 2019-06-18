@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import team_three_spring_project_isamrs.model.CarReservation;
 import team_three_spring_project_isamrs.model.Hotel;
 import team_three_spring_project_isamrs.model.RegularUser;
 import team_three_spring_project_isamrs.model.RoomReservation;
@@ -19,4 +20,5 @@ public interface RoomReservationRepository extends JpaRepository<RoomReservation
 	public List<RoomReservation> findByHotel(Hotel hotel);
 
 	public List<RoomReservation> findByRegularUser(RegularUser regularUser);
+	public List<RoomReservation> findByFlightId(Long flightId);
 }

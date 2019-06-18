@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,12 +30,15 @@ import team_three_spring_project_isamrs.model.Flight;
 import team_three_spring_project_isamrs.model.FlightReservation;
 import team_three_spring_project_isamrs.model.FriendRequest;
 import team_three_spring_project_isamrs.model.RegularUser;
+import team_three_spring_project_isamrs.model.Room;
+import team_three_spring_project_isamrs.model.RoomReservation;
 import team_three_spring_project_isamrs.model.Seat;
 import team_three_spring_project_isamrs.service.CarReservationService;
 import team_three_spring_project_isamrs.service.CarService;
 import team_three_spring_project_isamrs.service.FlightReservationService;
 import team_three_spring_project_isamrs.service.FlightService;
 import team_three_spring_project_isamrs.service.FriendRequestService;
+import team_three_spring_project_isamrs.service.RoomReservationService;
 import team_three_spring_project_isamrs.service.SeatService;
 import team_three_spring_project_isamrs.service.impl.CustomUserDetailsService;
 
@@ -45,6 +49,9 @@ public class FlightReservationController {
 
 	@Autowired
 	CarReservationService carReservationService;
+	
+	@Autowired
+	RoomReservationService roomReservationService;
 
 	@Autowired
 	CarService carService;
@@ -86,6 +93,7 @@ public class FlightReservationController {
 		seatService.save(seat);
 
 		List<CarReservation> carReservations = carReservationService.findByFlightId(resId);
+	
 		if (carReservations != null) {
 			for (CarReservation carRes : carReservations) {
 				Car car = carRes.getCar();
@@ -99,6 +107,20 @@ public class FlightReservationController {
 				carService.save(car);
 				carReservationService.delete(carRes.getId());
 			}
+
+		}
+		
+		List<RoomReservation> roomReservations = roomReservationService.findByFlightId(resId);
+		System.out.println("Res id: "+resId);
+		System.out.println(roomReservations.size());
+		if (roomReservations != null) {
+			for (RoomReservation roomRess : roomReservations) {
+				roomReservationService.delete(roomRess.getId());
+			}
+			
+				
+				
+			
 
 		}
 		return new ResponseEntity<>(flightRes, HttpStatus.OK);

@@ -24,5 +24,7 @@ public interface RoomReservationService {
 	
 	public List<RoomReservation> findByHotel(Hotel hotel);
 	
+	public List<RoomReservation> findByFlightId(Long flightId);
+	
 	
 }
