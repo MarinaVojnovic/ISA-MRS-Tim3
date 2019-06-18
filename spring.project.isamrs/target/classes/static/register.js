@@ -57,7 +57,12 @@ function fire_submit() {
 			|| passwordTwo == "" || username == "" || phone == "") {
 		showMessage('None of the fields is allowed to be empty', "warning");
 	}
-
+	else if (password.length < 6) {
+		showMessage('Password must be at least 6 charachter long', "warning")
+	}
+	else if (username.length < 6) {
+		showMessage('Username must be at least 6 charachter long', "warning")
+	}
 	else if (password != passwordTwo) {
 		showMessage('Passwords must match!', "warning");
 	} else {
