@@ -33,7 +33,7 @@ VALUES (1, '9, 21000, Dr Svetislava Kasapinovica, Novi Sad', 'RENTACAR NOVI SAD 
 ON DUPLICATE KEY UPDATE id = 1;
 
 insert INTO car(id, brand, car_type, fast_res_end_date, fast_res_price, fast_res_start_date, model, name, number, on_fast_res, price, score, seats, version, car_year, rentacar_id)
-values (104, 'Renault', 'Family', '2019-06-30', 30, '2019-08-30', '5.0', 'Clio', 2, true, 100, 10, 5, 1, 2015,  1) ON DUPLICATE KEY UPDATE id = 104;
+values (104, 'Renault', 'Family', '2019-08-30', 30, '2019-06-30', '5.0', 'Clio', 2, true, 100, 10, 5, 1, 2015,  1) ON DUPLICATE KEY UPDATE id = 104;
 
 insert INTO car(id, brand, car_type, model, name, number, on_fast_res, price, score, seats, version, car_year, rentacar_id)
 values (100, 'Jaguar', 'Sports', '15.0', 'F-Pace', 2, false, 300, 10, 2, 1, 2018,  1) on duplicate key update id= 100;
