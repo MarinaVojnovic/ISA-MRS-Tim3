@@ -3812,7 +3812,12 @@ $(document)
 
 $(document).on('click', "#finishReservation", function(e) {
 	e.preventDefault();
-	var id = JSON.parse(sessionStorage["flightReservationId"])
+	var id;
+	if(sessionStorage.getItem("flightReservationId")!=null){
+		id = JSON.parse(sessionStorage["flightReservationId"]);
+	}
+	if("flightReservationId" in sessionStorage){
+	sessionStorage.removeItem("flightReservationId");
 	console.log(id + "ODHHDHD");
 	$.ajax({
 		type : 'GET',
@@ -3835,12 +3840,18 @@ $(document).on('click', "#finishReservation", function(e) {
 		}
 
 	})
+	}
 })
 
 
 $(document).on('click', ".finishReservationButton", function(e) {
 	e.preventDefault();
-	var id = JSON.parse(sessionStorage["flightReservationId"])
+	var id;
+	if(sessionStorage.getItem("flightReservationId")!=null){
+		id = JSON.parse(sessionStorage["flightReservationId"]);
+	}
+	if("flightReservationId" in sessionStorage){
+	sessionStorage.removeItem("flightReservationId");
 	console.log(id + "ODHHDHD");
 	$.ajax({
 		type : 'GET',
@@ -3861,8 +3872,10 @@ $(document).on('click', ".finishReservationButton", function(e) {
 			showMessage(textStatus,"error");
 			showMessage(errorThrown,"error");
 		}
+		
 
 	})
+	}
 })
 
 function sendEmail(f) {

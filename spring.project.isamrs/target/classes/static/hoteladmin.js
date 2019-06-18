@@ -215,7 +215,11 @@ function fillDatas() {
 					}
 
 				})
-				$("#reportHotelAverageGrade").html(data.score);
+				var ocena=0;
+				if (data.gradeNumber!=0){
+					ocena=Math.round(data.score/data.gradeNumber);
+				}
+				$("#reportHotelAverageGrade").html(ocena);
 
 			}
 		},
@@ -378,7 +382,11 @@ function fillTableRooms(data, table) {
 		cell2.innerHTML = response[counter].roomNumber;
 		cell3.innerHTML = response[counter].price;
 		cell4.innerHTML = response[counter].numberPeople;
-		cell5.innerHTML = response[counter].score;
+		var ocena=0;
+		if (response[counter].gradeNumber!=0){
+			ocena=Math.round(response[counter].score/response[counter].gradeNumber);
+		}
+		cell5.innerHTML = ocena;
 
 	}
 	var row = tabela.insertRow(0);
@@ -417,7 +425,11 @@ function fillTableRoomPick(data, table) {
 		cell2.innerHTML = response[counter].roomNumber;
 		cell3.innerHTML = response[counter].price;
 		cell4.innerHTML = response[counter].numberPeople;
-		cell5.innerHTML = response[counter].score;
+		var ocena=0;
+		if (response[counter].gradeNumber!=0){
+			ocena=Math.round(response[counter].score/response[counter].gradeNumber);
+		}
+		cell5.innerHTML = ocena;
 
 	}
 	var row = tabela.insertRow(0);
