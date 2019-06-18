@@ -26,6 +26,9 @@ public class FlightStops {
     @JoinColumn(name="airline_id")
     private Airline airlineStop;
 
+	public FlightStops() {
+		
+	}
 
 	public FlightStops(Long id, Flight flightStop, Airline airlineStop) {
 		super();

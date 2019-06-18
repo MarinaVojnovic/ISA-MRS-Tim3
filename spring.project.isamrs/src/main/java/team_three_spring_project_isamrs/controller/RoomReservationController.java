@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import team_three_spring_project_isamrs.dto.MessageDTO;
 import team_three_spring_project_isamrs.dto.ReportHotelAttendanceDTO;
 import team_three_spring_project_isamrs.dto.RoomReservationDTO;
+import team_three_spring_project_isamrs.model.FlightReservation;
 import team_three_spring_project_isamrs.model.Hotel;
 import team_three_spring_project_isamrs.model.HotelAdmin;
 import team_three_spring_project_isamrs.model.HotelCustomerService;
@@ -92,6 +93,8 @@ public class RoomReservationController {
 			return new ResponseEntity<>(new MessageDTO("Bad format of dates!", "Error"), HttpStatus.OK);
 		}
 		RoomReservation retVal = new RoomReservation();
+		
+		
 		retVal.setRegularUser(user);
 		retVal.setFastReserved(false);
 		retVal.setRoomFastReservationId(0L);

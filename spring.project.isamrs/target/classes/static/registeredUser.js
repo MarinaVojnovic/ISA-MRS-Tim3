@@ -2502,13 +2502,14 @@ function searchForCars(rentacarId) {
 		showMessage('Prices must be positive',"warning");
 	}
 	if (dozvola == 1) {
-
+		var dozvola2 = 1;
 		var endCity = document.getElementById("endCity").value;
 		var startCity = document.getElementById("pickupCity").value;
 		var carType = document.getElementById("carType").value;
 		var passengers = document.getElementById("passengers").value;
 		if (startDate == "" || endDate == "" || startCity == ""
 				|| endCity == "" || carType == "" || passengers == "") {
+			dozvola2=0;
 			showMessage('None of obligational fileds is allowed to be empty',"warning");
 		}
 		var fromPrice = document.getElementById("fromPrice").value;
@@ -2533,6 +2534,7 @@ function searchForCars(rentacarId) {
 		console.log('Rentacar id: ' + rentacarId);
 		console.log('type of res: '+typeOfRes);
 
+		if (dozvola2==1){
 		$
 				.ajax({
 					type : 'GET',
@@ -2674,13 +2676,9 @@ function searchForCars(rentacarId) {
 					}
 
 				})
+		}
 
-		// Uzmes getCars od chosen rentacar!!!
-		// Prolazis kroz sve njih i prvo gledas da li je car type
-		// zadovoljavajuci, da li je broj putnika zadovoljavajuci, da li je
-		// cenovni rang ako postoji zadvooljavajuci
-		// Prolazis kroz branch office i gledas jel odgovara start i end dest
-		// Na kraju proveravas cenu ako postoji
+		
 	}
 }
 
