@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import team_three_spring_project_isamrs.dto.InvitedFriendDTO;
+import team_three_spring_project_isamrs.dto.MessageDTO;
 import team_three_spring_project_isamrs.dto.ReportFlightAttendanceDTO;
 import team_three_spring_project_isamrs.model.Airline;
 import team_three_spring_project_isamrs.model.AirlineAdmin;
@@ -185,12 +186,23 @@ public class FlightReservationController {
 		}
 		return new ResponseEntity<>(retVal, HttpStatus.OK);
 	}
-
+	
 	@PostMapping(value = "/myReservation/{passportNum}/{seatId}")
-	public ResponseEntity<Long> myReservation(@PathVariable int passportNum, @PathVariable long seatId) {
+	public ResponseEntity<?> myReservation(@PathVariable int passportNum, @PathVariable long seatId) {
 		RegularUser logged = (RegularUser) this.userDetailsService
 				.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
-		Seat s = this.seatService.getOne(seatId);
+		Seat s = null;
+		try {
+			s=this.seatService.getOne(seatId);
+			if(s.getTaken()==true || s.getQuickBooking()==true || s==null) {
+				return new ResponseEntity<>(new MessageDTO("This reservation has just been deleted,reserved or set to fast booking","warning"),HttpStatus.OK);
+			}
+			s.setTaken(true);
+			this.seatService.save(s);
+		}
+		catch(Exception e) {
+			return new ResponseEntity<>(new MessageDTO("This reservation has just been deleted,reserved or set to fast booking","warning"),HttpStatus.OK);
+		}
 		Flight fl = s.getFlight();
 		Double price = fl.getCost();
 		s.setTaken(true);
@@ -232,7 +244,7 @@ public class FlightReservationController {
 	}
 
 	@PostMapping(value = "/reserveForFriend/{name}/{lastName}/{passportNumber}/{fromFriendList}/{seatId}")
-	public ResponseEntity<InvitedFriendDTO> reserveForFriend(@PathVariable String name, @PathVariable String lastName,
+	public ResponseEntity<?> reserveForFriend(@PathVariable String name, @PathVariable String lastName,
 			@PathVariable int passportNumber, @PathVariable boolean fromFriendList, @PathVariable long seatId) {
 		RegularUser logged = (RegularUser) this.userDetailsService
 				.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
@@ -240,7 +252,17 @@ public class FlightReservationController {
 		FlightReservation reservation;
 		int found = 0;
 		RegularUser foundUser = new RegularUser();
-		Seat s = this.seatService.getOne(seatId);
+		Seat s = null;
+		try {
+			s=this.seatService.getOne(seatId);
+			if(s.getTaken()==true || s.getQuickBooking()==true || s==null) {
+				return new ResponseEntity<>(new MessageDTO("This reservation has just been deleted or reserved","warning"),HttpStatus.OK);
+			}
+			s.setTaken(true);
+			this.seatService.save(s);
+		}catch(Exception e) {
+			return new ResponseEntity<>(new MessageDTO("This reservation has just been deleted or reserved","warning"),HttpStatus.OK);
+		}
 		if (fromFriendList) {
 			List<FriendRequest> fr = this.friendRequestService.findByReceivedAndAccepted(logged, true);
 			List<FriendRequest> fr2 = this.friendRequestService.findBySentAndAccepted(logged, true);
@@ -278,6 +300,8 @@ public class FlightReservationController {
 		}
 		return new ResponseEntity<>(dto, HttpStatus.OK);
 	}
+
+	
 
 	@GetMapping(value = "/findAirlineAmount/{startDate}/{endDate}")
 	@PreAuthorize("hasRole('ROLE_AIRLINE_ADMIN')")

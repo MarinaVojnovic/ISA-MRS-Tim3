@@ -1135,7 +1135,7 @@ $(document).on(
 			e.preventDefault();
 			var popust = document.getElementById("discount").value;
 			console.log("popust", popust);
-			if (isNaN(popust) || popust < 0 || popust > 70) {
+			if (isNaN(popust) || popust < 0 || popust > 70 || popust=="") {
 				showMessage("Discount must be number between 0 and 70",
 						"warning");
 			} else {

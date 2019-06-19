@@ -3578,6 +3578,10 @@ $(document).on('click','#inviteMore',function(e){
 			url: reserveForFriendUrl+'/'+friendName+'/'+lastName+'/'+passportNumber+'/'+cekiran+'/'+idSedista,
 			headers : createAuthorizationTokenHeader(TOKEN_KEY),
 		    success: function(data){
+		    	if(data.header!=undefined){
+		    		showMessage(data.message, data.header);
+		    		openCity(e, 'searchAndFilterFlight');
+		    	}else{
 		    	$("#inviteFriend").empty();
 		    	if(data.email!="no"){
 		    		sendEmail(data);
@@ -3619,6 +3623,7 @@ $(document).on('click','#inviteMore',function(e){
 							'<br><button type="submit" style="background: #cc0033; color: white" id="finishReservation" style="float: left;/">Finish reservation</button>');
 		    		
 		    	}
+		    }
 		    },
 			error : function(jqXHR, textStatus,errorThrown) {
 				showMessage(jqXHR.status,"error");
@@ -3648,6 +3653,10 @@ $(document).on('click',"#nextButton",function(e){
 		url: myReservationUrl+'/'+passportNumber+'/'+idSedista,
 		headers : createAuthorizationTokenHeader(TOKEN_KEY),
 	    success: function(data){
+	    	if(data.header!=undefined){
+	    		showMessage(data.message, data.header);
+	    		openCity(e, 'searchAndFilterFlight');
+	    	}else{
 	    	console.log(data);
 	    	sessionStorage
 			.setItem(
@@ -3692,6 +3701,7 @@ $(document).on('click',"#nextButton",function(e){
 							'<br><button type="submit" style="background: #cc0033; color: white" id="finishReservation" style="float: left;/">Finish reservation</button>');
 		    		
 	    	}
+	    }
 	    },
 		error : function(jqXHR, textStatus,errorThrown) {
 			showMessage(jqXHR.status,"error");

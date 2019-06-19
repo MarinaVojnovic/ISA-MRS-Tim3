@@ -197,6 +197,23 @@ public class UserController {
 		return new ResponseEntity<>(fr, HttpStatus.OK);
 
 	}
+	
+	@DeleteMapping(value = "/removeFriend/{userId}")
+	@PreAuthorize("hasRole('ROLE_USER')")
+	public ResponseEntity<FriendRequest> removeFriend(@PathVariable Long userId) {
+		User logged = (User) this.userDetailsService
+				.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+		RegularUser ru = this.regularUserService.findById(userId);
+		FriendRequest fr = this.friendRequestService.findByReceivedAndSentAndAccepted((RegularUser) logged, ru, true);
+		if (fr == null) {
+			fr = this.friendRequestService.findByReceivedAndSentAndAccepted(ru, (RegularUser) logged, true);
+			if(fr==null) {
+				return new ResponseEntity<>(fr, HttpStatus.OK);
+			}
+		}
+		this.friendRequestService.delete(fr.getId());
+		return new ResponseEntity<>(fr, HttpStatus.OK);
+	}
 
 	@DeleteMapping(value = "/rejectFriend/{userId}")
 	@PreAuthorize("hasRole('ROLE_USER')")
@@ -289,19 +306,7 @@ public class UserController {
 		return new ResponseEntity<>(friends, HttpStatus.OK);
 	}
 
-	@DeleteMapping(value = "/removeFriend/{userId}")
-	@PreAuthorize("hasRole('ROLE_USER')")
-	public ResponseEntity<FriendRequest> removeFriend(@PathVariable Long userId) {
-		User logged = (User) this.userDetailsService
-				.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
-		RegularUser ru = this.regularUserService.findById(userId);
-		FriendRequest fr = this.friendRequestService.findByReceivedAndSentAndAccepted((RegularUser) logged, ru, true);
-		if (fr == null) {
-			fr = this.friendRequestService.findByReceivedAndSentAndAccepted(ru, (RegularUser) logged, true);
-		}
-		this.friendRequestService.delete(fr.getId());
-		return new ResponseEntity<>(fr, HttpStatus.OK);
-	}
+
 
 	@GetMapping(value = "/user/all")
 	@PreAuthorize("hasRole('ROLE_USER')")
@@ -507,13 +512,16 @@ public class UserController {
 		return new ResponseEntity<>(brza, HttpStatus.OK);
 
 	}
-
+	
 	@PostMapping(value = "/reserveFastFlight/{id}")
 	@PreAuthorize("hasRole('ROLE_USER')")
 	public ResponseEntity<MessageDTO> reserveFastFlight(@PathVariable Long id) {
 		Seat s=null;
 		try {
 		s = this.seatService.getOne(id);
+		if(s.getTaken()==true) {
+			return new ResponseEntity<>(new MessageDTO("This reservation has just been deleted or reserved","warning"),HttpStatus.OK);
+		}
 		s.setTaken(true);
 		s.setQuickBooking(false);
 		this.seatService.save(s);
@@ -528,5 +536,7 @@ public class UserController {
 		return new ResponseEntity<>(new MessageDTO("Successfully made fast reservation!","success"),HttpStatus.CREATED);
 
 	}
+
+	
 
 }
