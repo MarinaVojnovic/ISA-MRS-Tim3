@@ -248,3 +248,11 @@ insert into seats(id,discount,class,quick_booking,taken,version,flight_id) value
 (29,0,2,false,false,1,101) on duplicate key update id=29;
 insert into seats(id,discount,class,quick_booking,taken,version,flight_id) values
 (30,0,2,false,false,1,101) on duplicate key update id=30;
+
+insert into hotel_customer_service(id, name, price, hotel_id)
+values (1, 'Fridge', 10, 1)
+ON DUPLICATE KEY UPDATE id = 1;
+
+insert into hotel_customer_service(id, name, price, hotel_id)
+values (2, 'Pool', 20, 1)
+ON DUPLICATE KEY UPDATE id = 2;

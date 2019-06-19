@@ -215,9 +215,9 @@ function fillDatas() {
 					}
 
 				})
-				var ocena=0;
-				if (data.gradeNumber!=0){
-					ocena=Math.round(data.score/data.gradeNumber);
+				var ocena = 0;
+				if (data.gradeNumber != 0) {
+					ocena = Math.round(data.score / data.gradeNumber);
 				}
 				$("#reportHotelAverageGrade").html(ocena);
 
@@ -382,9 +382,10 @@ function fillTableRooms(data, table) {
 		cell2.innerHTML = response[counter].roomNumber;
 		cell3.innerHTML = response[counter].price;
 		cell4.innerHTML = response[counter].numberPeople;
-		var ocena=0;
-		if (response[counter].gradeNumber!=0){
-			ocena=Math.round(response[counter].score/response[counter].gradeNumber);
+		var ocena = 0;
+		if (response[counter].gradeNumber != 0) {
+			ocena = Math.round(response[counter].score
+					/ response[counter].gradeNumber);
 		}
 		cell5.innerHTML = ocena;
 
@@ -425,9 +426,10 @@ function fillTableRoomPick(data, table) {
 		cell2.innerHTML = response[counter].roomNumber;
 		cell3.innerHTML = response[counter].price;
 		cell4.innerHTML = response[counter].numberPeople;
-		var ocena=0;
-		if (response[counter].gradeNumber!=0){
-			ocena=Math.round(response[counter].score/response[counter].gradeNumber);
+		var ocena = 0;
+		if (response[counter].gradeNumber != 0) {
+			ocena = Math.round(response[counter].score
+					/ response[counter].gradeNumber);
 		}
 		cell5.innerHTML = ocena;
 
@@ -457,6 +459,8 @@ function passwordValidation() {
 		showMessage('You have to fill both fields', "warning");
 	} else if (password1 != password2) {
 		showMessage('Passwords must match!', "warning");
+	} else if (password1.length < 6) {
+		showMessage('Passwords must be at least 6 characters long!', "warning");
 	} else {
 		$.ajax({
 			type : 'PUT',
@@ -578,6 +582,10 @@ $(document)
 								"warning");
 					} else if (password1 != password2) {
 						showMessage("Password must match, try again!",
+								"warning");
+					} else if (password1.length < 6) {
+						showMessage(
+								'Passwords must be at least 6 characters long!',
 								"warning");
 					} else {
 						$

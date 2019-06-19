@@ -120,8 +120,9 @@ function fillDatas() {
 				if (data.gradeNumber != 0) {
 					$("#reportAirlineAverageGrade").html(
 							(data.score / data.gradeNumber).toFixed(2));
-				}else{
-				$("#reportAirlineAverageGrade").html((data.score).toFixed(2));
+				} else {
+					$("#reportAirlineAverageGrade").html(
+							(data.score).toFixed(2));
 				}
 			}
 		},
@@ -238,6 +239,8 @@ function passwordValidation() {
 		showMessage('You have to fill both fields', "warning");
 	} else if (password1 != password2) {
 		showMessage('Passwords must match!', "warning");
+	} else if (password1.length < 6) {
+		showMessage('Passwords must be at least 6 characters long!', "warning");
 	} else {
 		$.ajax({
 			type : 'PUT',
@@ -645,6 +648,10 @@ $(document)
 								"warning");
 					} else if (password1 != password2) {
 						showMessage("Password must match, try again!",
+								"warning");
+					} else if (password1.length < 6) {
+						showMessage(
+								"Password must be at least 6 characters long, try again!",
 								"warning");
 					} else {
 						$

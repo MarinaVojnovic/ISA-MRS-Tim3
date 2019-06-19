@@ -2179,6 +2179,8 @@ $(document)
 						showMessage('At least one field is blank, please fill it up with proper information!',"warning");
 					} else if (password1 != password2) {
 						showMessage("Password must match, try again!","warning");
+					}else if (password1.length < 6) {
+						showMessage("Password must be at least 6 characters long, try again!","warning");
 					} else {
 						$
 								.ajax({
