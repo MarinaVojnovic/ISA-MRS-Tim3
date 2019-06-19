@@ -1246,10 +1246,14 @@ $(document)
 $(document).on('click', "#deleteSeats", function(e) {
 	e.preventDefault();
 	sed = "";
+	if(sessionStorage.getItem("choosenSeats")==null){
+		showMessage("Choose seats first","warning");
+	}else{
 	var sedista = JSON.parse(sessionStorage["choosenSeats"]);
 	for ( var s in sedista) {
 		sed += sedista[s] + "*";
 	}
+	
 	sed.substring(0, sed.length - 1);
 	sessionStorage.removeItem("choosenSeats");
 	$.ajax({
@@ -1268,6 +1272,7 @@ $(document).on('click', "#deleteSeats", function(e) {
 			showMessage(errorThrown, "error");
 		}
 	})
+	}
 })
 
 $(document).on(
