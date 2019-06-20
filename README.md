@@ -13,19 +13,19 @@
 
 * Features:
     - CRUD [Create Read Update Delete] operations for elements:
-        > Airline
-        > Hotel
-        > Rent-a-car
-        > Flight
-        > Room
-        > Car
-        > Hotel Service
-        > Branch Office
+        -> Airline
+        -> Hotel
+        -> Rent-a-car
+        -> Flight
+        -> Room
+        -> Car
+        -> Hotel Service
+        -> Branch Office
     - Creating users and admins that can login to app and manipulate with other objects
     - Reserving (regular or fast way):
-        > Flight(s)
-        > Room(s)
-        > Car(s)
+        -> Flight(s)
+        -> Room(s)
+        -> Car(s)
     - Defining discounts for users
     - Getting reports for attendence and amounts
     - Searching for datas in app even if you are unregistered user
@@ -42,7 +42,7 @@
 * Deployment 
     - For deploy this app online we used 'Heroku' and you can enjoy in our 
     application here:
-        >>> https://isamrs.herokuapp.com/
+        ->->-> https://isamrs.herokuapp.com/
 
 * Developers:
     - Leona Nedeljkovic [leona.nedeljkovic@gmail.com]
