@@ -60,7 +60,6 @@ $(document).on('click', '#reportsButton', function(e) {
 });
 
 window.onload = function(e) {
-	console.log('window loades');
 
 	var r;
 	$.ajax({
@@ -70,14 +69,11 @@ window.onload = function(e) {
 		dataType : "json",
 		success : function(data) {
 			if (data) {
-				console.log('You have to change your password!');
 				r = 1;
-				console.log('r posle you have to change your password ' + r)
 				$('.tab').hide();
 				openCity(e, 'passwordValidation');
 
 			} else {
-				console.log('You do not have to change your password!');
 				r = 0;
 
 			}
@@ -231,7 +227,6 @@ function createChart(canvasId, labelNames, data) {
 }
 
 function passwordValidation() {
-	console.log('password validation called');
 	var password1 = document.getElementById("newPasswordOne").value;
 	var password2 = document.getElementById("newPasswordTwo").value;
 
